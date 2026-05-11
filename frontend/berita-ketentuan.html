@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ketentuan & Pengaduan Berita - UASN</title>
+    <link rel="icon" href="fftkb.png" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap"
+      rel="stylesheet" />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Open Sans", Arial, sans-serif;
+        background: linear-gradient(to bottom, #f4f4f0 0%, #ebebe4 100%);
+        color: #111111;
+      }
+
+      .legal-topbar {
+        background: #000000;
+        color: #b6ff00;
+        padding: 14px 0;
+      }
+
+      .legal-topbar-inner {
+        width: min(1180px, 92vw);
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .legal-topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #b6ff00;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .legal-topbar-left img {
+        width: 28px;
+        height: auto;
+      }
+
+      .legal-header {
+        background: #b6ff00;
+        padding: 24px 0;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+      }
+
+      .legal-header-inner {
+        width: min(1180px, 92vw);
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      .legal-brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .legal-brand img {
+        width: 62px;
+        height: auto;
+      }
+
+      .legal-brand-text h1 {
+        margin: 0;
+        font-size: clamp(22px, 3vw, 30px);
+        line-height: 1.15;
+        color: #111111;
+      }
+
+      .legal-brand-text p {
+        margin: 4px 0 0;
+        font-size: 12px;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+        color: #474747;
+      }
+
+      .legal-header-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 18px;
+        border-radius: 999px;
+        background: #111111;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 800;
+        transition:
+          transform 0.2s ease,
+          opacity 0.2s ease;
+      }
+
+      .legal-header-link:hover {
+        transform: translateY(-1px);
+        opacity: 0.95;
+      }
+
+      .legal-main {
+        padding: 42px 0 70px;
+      }
+
+      .legal-hero {
+        width: min(1100px, 92vw);
+        margin: 0 auto 20px;
+      }
+
+      .legal-kicker {
+        display: inline-block;
+        margin-bottom: 14px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(182, 255, 0, 0.24);
+        color: #1e2a00;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .legal-hero h2 {
+        font-size: clamp(28px, 4vw, 52px);
+        line-height: 1.08;
+        color: #111111;
+        margin-bottom: 16px;
+      }
+
+      .legal-subtitle {
+        max-width: 900px;
+        font-size: 17px;
+        line-height: 1.8;
+        color: #555555;
+      }
+
+      .legal-card {
+        width: min(1100px, 92vw);
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 28px;
+        padding: 34px 30px;
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(17, 17, 17, 0.06);
+      }
+
+      .legal-section + .legal-section {
+        margin-top: 30px;
+        padding-top: 30px;
+        border-top: 1px solid #ececec;
+      }
+
+      .legal-section h3 {
+        margin-bottom: 14px;
+        font-size: 24px;
+        line-height: 1.2;
+        color: #111111;
+      }
+
+      .legal-section p {
+        margin-bottom: 16px;
+        font-size: 16px;
+        line-height: 1.95;
+        color: #333333;
+      }
+
+      .legal-section p:last-child {
+        margin-bottom: 0;
+      }
+
+      .legal-list {
+        padding-left: 20px;
+        margin: 10px 0 0;
+      }
+
+      .legal-list li {
+        margin-bottom: 12px;
+        font-size: 16px;
+        line-height: 1.8;
+        color: #333333;
+      }
+
+      .legal-highlight {
+        background: #f8fceb;
+        border: 1px solid rgba(182, 255, 0, 0.42);
+        border-radius: 22px;
+        padding: 22px 20px;
+      }
+
+      .legal-contact-box {
+        margin-top: 24px;
+        padding: 24px 22px;
+        border-radius: 24px;
+        background: #111111;
+        color: #ffffff;
+      }
+
+      .legal-contact-box h3 {
+        margin-bottom: 14px;
+        color: #b6ff00;
+        font-size: 24px;
+      }
+
+      .legal-contact-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px 18px;
+      }
+
+      .legal-contact-item {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        padding: 16px 16px 14px;
+      }
+
+      .legal-contact-item span {
+        display: block;
+        margin-bottom: 6px;
+        color: rgba(255, 255, 255, 0.58);
+        font-size: 12px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .legal-contact-item strong,
+      .legal-contact-item a {
+        color: #ffffff;
+        font-size: 15px;
+        line-height: 1.7;
+        text-decoration: none;
+        word-break: break-word;
+      }
+
+      .legal-bottom-actions {
+        margin-top: 28px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .legal-bottom-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 0 18px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 800;
+        transition:
+          transform 0.2s ease,
+          opacity 0.2s ease;
+      }
+
+      .legal-bottom-link-dark {
+        background: #111111;
+        color: #ffffff;
+      }
+
+      .legal-bottom-link-light {
+        background: #eef6d0;
+        color: #111111;
+      }
+
+      .legal-bottom-link:hover {
+        transform: translateY(-1px);
+        opacity: 0.96;
+      }
+
+      .legal-footer {
+        padding: 22px 0 34px;
+      }
+
+      .legal-footer-inner {
+        width: min(1100px, 92vw);
+        margin: 0 auto;
+        color: #666666;
+        font-size: 13px;
+        line-height: 1.8;
+        text-align: center;
+      }
+
+      @media (max-width: 768px) {
+        .legal-main {
+          padding: 28px 0 52px;
+        }
+
+        .legal-card {
+          padding: 24px 18px;
+          border-radius: 22px;
+        }
+
+        .legal-section h3,
+        .legal-contact-box h3 {
+          font-size: 21px;
+        }
+
+        .legal-section p,
+        .legal-list li {
+          font-size: 15px;
+          line-height: 1.85;
+        }
+
+        .legal-contact-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .legal-header-link,
+        .legal-bottom-link {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="legal-topbar">
+      <div class="legal-topbar-inner">
+        <a href="https://suryanusantara.ac.id/" class="legal-topbar-left" target="_blank" rel="noopener noreferrer">
+          <img src="uasnlogo.png" alt="Logo UASN" />
+          <span>Back to UASN</span>
+        </a>
+      </div>
+    </div>
+
+    <header class="legal-header">
+      <div class="legal-header-inner">
+        <div class="legal-brand">
+          <img src="fftkb.png" alt="Logo FFT" />
+          <div class="legal-brand-text">
+            <h1>FAKULTAS FILSAFAT TEOLOGI</h1>
+            <p>UNIVERSITAS ADVENT SURYA NUSANTARA</p>
+          </div>
+        </div>
+
+        <a href="indexfft.html#berita" class="legal-header-link">← Kembali ke Halaman Berita</a>
+      </div>
+    </header>
+
+    <main class="legal-main">
+      <section class="legal-hero">
+        <div class="legal-kicker">Ketentuan Resmi</div>
+        <h2>PERNYATAAN RESMI HAK CIPTA DAN KETENTUAN PENGADUAN BERITA UMUM UNIVERSITAS ADVENT SURYA NUSANTARA</h2>
+        <p class="legal-subtitle">
+          Halaman Berita Universitas Advent Surya Nusantara merupakan media publikasi resmi
+          untuk berita umum universitas, bukan halaman khusus milik satu fakultas tertentu.
+        </p>
+      </section>
+
+      <article class="legal-card">
+        <section class="legal-section">
+          <h3>Pernyataan Resmi</h3>
+
+          <p>
+            Seluruh informasi yang dimuat pada halaman Berita Universitas Advent Surya Nusantara
+            adalah publikasi resmi yang dikelola berdasarkan kebijakan editorial pengelola website.
+            Konten pada halaman ini dapat memuat berita universitas, kegiatan akademik, pengumuman,
+            kerja sama, edukasi, pelayanan, dan informasi umum lain yang dinilai relevan untuk
+            kepentingan publikasi universitas. Oleh karena itu, tidak benar apabila halaman ini
+            dianggap hanya diperuntukkan bagi satu fakultas tertentu, termasuk Fakultas Filsafat Teologi.
+          </p>
+
+          <p>
+            Setiap pengunjung wajib membaca isi berita secara lengkap, teliti, dan tidak menilai
+            isi halaman hanya berdasarkan asumsi pribadi. Kesalahpahaman karena tidak membaca
+            ketentuan, tidak memperhatikan hak cipta, atau hanya mengandalkan emosi pribadi bukan
+            menjadi dasar yang sah untuk melakukan tekanan, intimidasi, atau tuntutan sepihak
+            kepada pengelola website.
+          </p>
+
+          <p>
+            Seluruh teks, foto, video, desain, tata letak, dan unsur publikasi lain pada halaman
+            ini dilindungi oleh Undang-Undang Nomor 28 Tahun 2014 tentang Hak Cipta. Dalam Pasal 8,
+            hak ekonomi merupakan hak eksklusif Pencipta atau Pemegang Hak Cipta untuk memperoleh
+            manfaat ekonomi atas ciptaannya. Dalam Pasal 9 ayat (1), hak ekonomi tersebut mencakup
+            antara lain penerbitan, penggandaan, distribusi, pengumuman, komunikasi, dan penyewaan
+            ciptaan. Setiap penggunaan hak ekonomi tersebut wajib atas izin Pencipta atau Pemegang
+            Hak Cipta, dan penggunaan tanpa izin dilarang. Sanksi pidananya diatur dalam Pasal 113,
+            yang bergantung pada jenis pelanggarannya, dan untuk pembajakan dapat mencapai pidana
+            penjara paling lama 10 tahun dan/atau denda paling banyak Rp4.000.000.000,00.
+          </p>
+
+          <p>
+            Apabila ada pihak yang mengirimkan pesan elektronik secara langsung yang berisi ancaman
+            kekerasan, menakut-nakuti, atau bentuk intimidasi kepada pengelola, hal tersebut dapat
+            masuk ke Undang-Undang Nomor 1 Tahun 2024 tentang perubahan UU ITE, khususnya Pasal 29.
+            Ancaman pidananya diatur dalam Pasal 45B, yaitu pidana penjara paling lama 4 tahun
+            dan/atau denda paling banyak Rp750.000.000,00.
+          </p>
+
+          <p>
+            Dengan demikian, setiap keberatan terhadap isi berita harus disampaikan secara resmi,
+            tertulis, sopan, jelas, dan disertai bukti. Pengaduan yang berisi ancaman, teror,
+            intimidasi, paksaan, atau permintaan sepihak tanpa dasar yang jelas tidak akan diproses
+            sebagai pengaduan yang sah, dan bila memenuhi unsur hukum dapat diteruskan kepada pihak
+            yang berwenang. Dasar perlindungan hak cipta dan ancaman elektronik tersebut sudah
+            diatur dalam peraturan perundang-undangan yang berlaku.
+          </p>
+        </section>
+
+        <section class="legal-section">
+          <div class="legal-highlight">
+            <h3>Kesimpulan Sederhana</h3>
+            <p>
+              Halaman ini adalah berita umum resmi Universitas Advent Surya Nusantara, bukan halaman
+              khusus satu fakultas. Semua konten di dalamnya dilindungi hak cipta. Setiap keberatan
+              harus diajukan melalui jalur resmi dengan bukti yang lengkap. Penyalahgunaan konten,
+              ancaman, atau intimidasi terhadap pengelola dapat menimbulkan konsekuensi hukum sesuai
+              undang-undang yang berlaku.
+            </p>
+          </div>
+        </section>
+
+        <section class="legal-section">
+          <h3>Opsi Pengaduan</h3>
+          <p>
+            Apabila terdapat keberatan, koreksi, atau permintaan klarifikasi, pengaduan hanya dapat
+            diajukan melalui jalur resmi berikut:
+          </p>
+
+          <div class="legal-contact-box">
+            <h3>Kontak Pengaduan Resmi</h3>
+            <div class="legal-contact-grid">
+              <div class="legal-contact-item">
+                <span>Pihak yang Dihubungi</span>
+                <strong>Developer: GLAND JERMANO BLESSED SIAHAAN</strong>
+              </div>
+
+              <div class="legal-contact-item">
+                <span>Email Gmail</span>
+                <a href="mailto:glandjermanoblessedsiahaan@gmail.com">
+                  glandjermanoblessedsiahaan@gmail.com
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="legal-section">
+          <h3>Pengaduan Wajib Memuat</h3>
+          <ul class="legal-list">
+            <li>Nama lengkap pengadu.</li>
+            <li>Identitas atau instansi, bila ada.</li>
+            <li>Nomor telepon atau email aktif.</li>
+            <li>Judul berita atau tautan berita yang dipermasalahkan.</li>
+            <li>Penjelasan masalah secara rinci, jelas, dan masuk akal.</li>
+            <li>Kronologi singkat.</li>
+            <li>
+              Bukti pendukung yang lengkap dan terbaca, misalnya tangkapan layar, tautan,
+              dokumen Word, PDF, atau presentasi PowerPoint.
+            </li>
+            <li>
+              Permintaan tindak lanjut yang jelas, misalnya koreksi judul, revisi isi,
+              atau klarifikasi resmi.
+            </li>
+          </ul>
+        </section>
+
+        <section class="legal-section">
+          <h3>Ketentuan Tambahan Pengaduan</h3>
+          <ul class="legal-list">
+            <li>
+              Pengaduan tanpa identitas yang jelas, tanpa bukti, tanpa uraian masalah
+              yang masuk akal, atau hanya berdasarkan emosi pribadi dapat dinyatakan
+              tidak memenuhi syarat administrasi dan tidak wajib diproses.
+            </li>
+            <li>
+              Menghubungi pengelola secara sembarangan tidak otomatis merupakan tindak pidana.
+              Namun, apabila isi komunikasi memuat ancaman, intimidasi, menakut-nakuti,
+              atau penyalahgunaan konten, hal tersebut dapat diproses sesuai hukum yang berlaku.
+            </li>
+          </ul>
+        </section>
+
+        <div class="legal-bottom-actions">
+          <a href="indexfft.html#berita" class="legal-bottom-link legal-bottom-link-dark">
+            ← Kembali ke Halaman Berita
+          </a>
+
+          <a href="indexfft.html" class="legal-bottom-link legal-bottom-link-light">
+            Kembali ke Halaman Utama
+          </a>
+        </div>
+      </article>
+    </main>
+
+    <footer class="legal-footer">
+      <div class="legal-footer-inner">
+        © 2026 Universitas Advent Surya Nusantara. Halaman ini dibuat sebagai informasi resmi
+        mengenai hak cipta dan ketentuan pengaduan pada publikasi berita universitas.
+      </div>
+    </footer>
+  </body>
+</html>

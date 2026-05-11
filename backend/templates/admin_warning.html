@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Warning</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}" />
+</head>
+<body>
+  <div class="admin-page">
+    <div class="admin-header">
+      <h1>DASHBOARD ADMIN</h1>
+      <p>FAKULTAS FILSAFAT TEOLOGI</p>
+    </div>
+
+    <div class="admin-card warning-card">
+      <h2>FFT DEV</h2>
+      <h3>⚠ PERINGATAN PENTING</h3>
+
+      <div class="warning-text">
+        <p>Seluruh pengguna diwajibkan untuk menjaga integritas informasi pada website resmi Fakultas Filsafat Teologi UASN.</p>
+        <ul>
+          <li>Pemantauan real-time. Setiap aktivitas di dalam sistem dapat terekam.</li>
+          <li>Dilarang mengubah data tanpa izin resmi dari pihak fakultas.</li>
+          <li>Seluruh konten dilindungi sesuai ketentuan yang berlaku.</li>
+        </ul>
+      </div>
+
+      <div class="button-row right">
+        <a href="{{ url_for('admin_choose') }}" class="btn green">LANJUT...</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

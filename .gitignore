@@ -1,0 +1,77 @@
+﻿# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Virtual environments
+.venv/
+venv/
+env/
+backend/.venv/
+
+# Environment files and secrets
+.env
+*.env
+backend/.env
+akun admin.txt
+backend/akun admin.txt
+akun_admin.txt
+backend/akun_admin.txt
+admin.txt
+credentials.txt
+secret.txt
+secrets.txt
+*.pem
+*.key
+*.crt
+*.p12
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+database_dosen.db
+backend/database_dosen.db
+
+# SQL backup and database dump
+*.sql
+*.dump
+*.backup
+backup_fftuasn.sql
+backup_fftuasn_pg16.sql
+
+# Upload files from admin dashboard
+uploads/
+static/uploads/
+backend/static/uploads/
+
+# Vercel local config
+.vercel/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node or frontend dependencies if later used
+node_modules/
+dist/
+build/
+.cache/
+
+# Ignore generated/public deploy copy
+public/
+
+# Ignore unused experimental folders
+frontend/program lain/
+public/program lain/
+
+# Ignore compressed backup files
+*.zip
+
+# Ignore unused Vercel/serverless backend wrapper
+api/
+
+# Ignore experimental backup template folder
+backend/templates/New folder/

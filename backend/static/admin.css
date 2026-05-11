@@ -1,0 +1,406 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #e9e9e9;
+}
+
+.admin-page {
+  min-height: 100vh;
+  padding: 24px;
+  background: linear-gradient(to bottom, #b8ff00 0, #b8ff00 40px, #e9e9e9 40px);
+}
+
+.admin-header {
+  max-width: 780px;
+  margin: 0 auto 20px;
+  text-align: center;
+}
+
+.admin-header h1 {
+  margin: 0;
+  background: #ffffff;
+  padding: 10px;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.admin-header p {
+  margin: 0;
+  background: #b8ff00;
+  padding: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 6px;
+}
+
+.admin-card {
+  margin: 0 auto;
+  background: rgba(80, 80, 80, 0.35);
+  border-radius: 14px;
+  padding: 28px;
+}
+
+.small-card {
+  max-width: 360px;
+  text-align: center;
+}
+
+.warning-card {
+  max-width: 900px;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+}
+
+.wide-card {
+  max-width: 1150px;
+}
+
+.form-card {
+  max-width: 1050px;
+}
+
+.admin-card h2 {
+  margin-top: 0;
+  text-align: center;
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.warning-card h2 {
+  color: #b8ff00;
+}
+
+.warning-card h3 {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.warning-text {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.admin-form input {
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 14px;
+}
+
+.admin-form button,
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 999px;
+  border: none;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+}
+
+.admin-form button {
+  margin-top: 8px;
+  background: white;
+}
+
+.btn.green {
+  background: #b8ff00;
+  color: #111;
+}
+
+.btn.white {
+  background: #ffffff;
+  color: #111;
+}
+
+.btn.dark {
+  background: #111111;
+  color: #b8ff00;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+.button-row.right {
+  justify-content: flex-end;
+}
+
+.center-text {
+  text-align: center;
+  color: white;
+}
+
+.choose-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.error-text {
+  color: #ff2d2d;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.flash-stack {
+  max-width: 900px;
+  margin: 0 auto 18px;
+}
+
+.flash-item {
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.flash-item.success {
+  background: #d9ffd1;
+  color: #145c00;
+  border: 1px solid #8fe06f;
+}
+
+.flash-item.danger {
+  background: #ffe1e1;
+  color: #8c1010;
+  border: 1px solid #ff9d9d;
+}
+
+.flash-item.info {
+  background: #e7f2ff;
+  color: #0a4d8f;
+  border: 1px solid #8bc1ff;
+}
+
+.admin-toast {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  min-width: 240px;
+  max-width: 320px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: all 0.25s ease;
+  z-index: 9999;
+  background: #111;
+}
+
+.admin-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.admin-toast.success {
+  background: #1d7d12;
+}
+
+.admin-toast.info {
+  background: #175ea8;
+}
+
+.dosen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.dosen-box {
+  background: #000;
+  color: white;
+  border-radius: 14px;
+  padding: 12px;
+  text-align: center;
+}
+
+.thumb-box {
+  height: 80px;
+  background: #f2f2f2;
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.small-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #b8ff00;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.add-box .plus-sign {
+  font-size: 70px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.form-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 28px;
+  align-items: start;
+  margin-top: 24px;
+}
+
+.upload-box {
+  background: rgba(255, 255, 255, 0.6);
+  padding: 18px;
+  text-align: center;
+}
+
+.thumb-large {
+  height: 180px;
+  background: #fff;
+  border: 2px dashed #bbb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.detail-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.form-row label {
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.form-row input {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-bottom: 2px dotted #ddd;
+  background: transparent;
+  color: white;
+  font-size: 16px;
+}
+
+.preview-box {
+  margin-top: 28px;
+  padding: 18px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.15);
+  color: white;
+}
+
+.preview-box h3 {
+  margin-top: 0;
+}
+
+.preview-box p {
+  margin: 8px 0;
+}
+
+@media (max-width: 768px) {
+  .form-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-header h1 {
+    font-size: 24px;
+  }
+}
+
+.upload-box {
+  border-radius: 14px;
+}
+
+.upload-box p,
+.upload-box small,
+.upload-meta p,
+.upload-meta small {
+  color: #1e1e1e;
+  line-height: 1.5;
+}
+
+.thumb-large {
+  height: 260px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.thumb-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+.form-row input,
+.form-row select {
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-bottom: 2px dotted #ddd;
+  background: transparent;
+  color: white;
+  font-size: 16px;
+  outline: none;
+}
+
+.form-row input::placeholder {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.form-row select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.form-row select option {
+  color: #111;
+  background: #fff;
+}
+
+.form-row input[readonly] {
+  opacity: 0.92;
+}

@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Dosen FFT</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='admin.css') }}" />
+    <script
+      src="{{ url_for('static', filename='admin.js') }}"
+      defer></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='dosen.css') }}" />
+
+    
+  </head>
+  <body>
+    <div id="adminToast" class="admin-toast"></div>
+
+    <div class="admin-page">
+      <div class="admin-header">
+        <h1>DASHBOARD ADMIN</h1>
+        <p>FAKULTAS FILSAFAT TEOLOGI</p>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-stack">
+        {% for category, message in messages %}
+        <div class="flash-item {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      <div class="dosen-shell">
+        <div class="dosen-main-card">
+          <div class="dosen-title-wrap">
+            <h2>{{ 'TAMBAH DATA DOSEN' if mode == 'add' else 'EDIT DATA DOSEN' }}</h2>
+            <p>
+              Kelola informasi resmi dosen, foto biodata, thumbnail frontend, file biodata,
+              dan status publish frontend.
+            </p>
+          </div>
+
+          <form method="POST" enctype="multipart/form-data">
+            <div class="dosen-layout-clean">
+              <div class="dosen-left-stack">
+                <div class="upload-card-clean">
+                  <div class="upload-preview-frame">
+                    {% if dosen and dosen.foto %}
+                    <img
+                      src="{{ url_for('static', filename='uploads/dosen/' ~ dosen.foto) }}"
+                      alt="Foto Resmi Dosen"
+                      id="fotoFormalPreview" />
+                    {% else %}
+                    <img
+                      src=""
+                      alt="Foto Resmi Dosen"
+                      id="fotoFormalPreview"
+                      style="display: none" />
+                    <div id="fotoFormalPlaceholder" class="upload-preview-placeholder">
+                      FOTO RESMI<br />DOSEN
+                    </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="upload-heading">
+                    <h3>UNGGAH FOTO RESMI</h3>
+                    <p>
+                      Digunakan untuk biodata, export, dan kebutuhan administrasi resmi dosen.
+                    </p>
+                  </div>
+
+                  <div class="upload-field-clean">
+                    <label for="fotoFormalInput">PILIH FOTO SUMBER RESMI</label>
+                    <input
+                      type="file"
+                      name="foto"
+                      id="fotoFormalInput"
+                      accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+
+                    <input
+                      type="file"
+                      name="foto_cropped"
+                      id="fotoFormalCroppedInput"
+                      style="display: none" />
+
+                    <div
+                      id="fotoFormalErrorMessage"
+                      style="
+                        display: none;
+                        margin-top: 10px;
+                        color: #b00020;
+                        font-weight: 700;
+                        font-size: 14px;
+                      ">
+                      Ukuran file melebihi batas maksimum 10 MB.
+                    </div>
+                  </div>
+
+                  <div class="crop-info-note">
+                    <strong>Catatan:</strong> Setelah memilih foto resmi, sistem akan meminta
+                    crop <strong>rasio 3 × 4</strong> untuk kebutuhan biodata dosen.
+                  </div>
+
+                  <p
+                    style="
+                      margin: 0;
+                      font-size: 13px;
+                      line-height: 1.7;
+                      text-align: center;
+                    ">
+                    Format yang didukung: JPG, JPEG, PNG, WEBP
+                  </p>
+                </div>
+
+                <div class="upload-card-clean">
+                  <div class="upload-preview-frame" style="aspect-ratio: 460 / 300">
+                    {% if dosen and dosen.thumb %}
+                    <img
+                      src="{{ url_for('static', filename='uploads/dosen/' ~ dosen.thumb) }}"
+                      alt="Foto Frontend Dosen"
+                      id="fotoFrontendPreview" />
+                    {% else %}
+                    <img
+                      src=""
+                      alt="Foto Frontend Dosen"
+                      id="fotoFrontendPreview"
+                      style="display: none" />
+                    <div id="fotoFrontendPlaceholder" class="upload-preview-placeholder">
+                      FOTO FRONTEND<br />DOSEN
+                    </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="upload-heading">
+                    <h3>UNGGAH FOTO FRONTEND</h3>
+                    <p>
+                      Digunakan khusus untuk card dosen pada halaman frontend publik.
+                    </p>
+                  </div>
+
+                  <div class="upload-field-clean">
+                    <label for="fotoFrontendInput">PILIH FOTO SUMBER FRONTEND</label>
+                    <input
+                      type="file"
+                      name="foto_frontend"
+                      id="fotoFrontendInput"
+                      accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+
+                    <input
+                      type="file"
+                      name="foto_frontend_cropped"
+                      id="fotoFrontendCroppedInput"
+                      style="display: none" />
+
+                    <div
+                      id="fotoFrontendErrorMessage"
+                      style="
+                        display: none;
+                        margin-top: 10px;
+                        color: #b00020;
+                        font-weight: 700;
+                        font-size: 14px;
+                      ">
+                      Ukuran file melebihi batas maksimum 10 MB.
+                    </div>
+                  </div>
+
+                  <div class="crop-info-note">
+                    <strong>Catatan:</strong> Setelah memilih foto frontend, sistem akan meminta
+                    crop <strong>rasio 460 × 300</strong> untuk tampilan card dosen.
+                  </div>
+
+                  <p
+                    style="
+                      margin: 0;
+                      font-size: 13px;
+                      line-height: 1.7;
+                      text-align: center;
+                    ">
+                    Format yang didukung: JPG, JPEG, PNG, WEBP
+                  </p>
+                </div>
+
+                <div class="dosen-live-box">
+                  <h3>STATUS DATA LIVE</h3>
+
+                  <div class="dosen-live-item">
+                    <span class="label">STATUS PUBLISH</span>
+                    <span class="value">
+                      {% if dosen and dosen.is_published %}
+                        <span class="dosen-status-badge {{ 'draft' if dosen.needs_publish else 'live' }}">
+                          {{ 'PERLU UPDATE FRONTEND' if dosen.needs_publish else 'SUDAH LIVE' }}
+                        </span>
+                      {% else %}
+                        <span class="dosen-status-badge draft">BELUM DIPUBLISH</span>
+                      {% endif %}
+                    </span>
+                  </div>
+
+                  <div class="dosen-live-item">
+                    <span class="label">TERAKHIR DIPERBARUI</span>
+                    <span class="value">
+                      {{ dosen.updated_at.strftime('%d-%m-%Y %H:%M') if dosen and dosen.updated_at else '-' }}
+                    </span>
+                  </div>
+
+                  <div class="dosen-live-item">
+                    <span class="label">TERAKHIR DIPUBLISH</span>
+                    <span class="value">
+                      {{ dosen.published_at.strftime('%d-%m-%Y %H:%M') if dosen and dosen.published_at else 'BELUM PERNAH' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="detail-form">
+                <div class="form-row">
+                  <label>KODE DOSEN</label>
+                  <input
+                    type="text"
+                    name="kode_dosen_display"
+                    value="{{ dosen.kode_dosen if dosen else '' }}"
+                    readonly />
+                  <small class="inline-helper">
+                    {% if mode == 'add' %}
+                    Kode dosen akan dibuat otomatis saat data disimpan.
+                    {% else %}
+                    Kode dosen bersifat tetap dan tidak dapat diubah.
+                    {% endif %}
+                  </small>
+                </div>
+
+                <div class="form-row">
+                  <label>NUPTK</label>
+                  <input
+                    type="text"
+                    name="nuptk"
+                    value="{{ dosen.nuptk if dosen and dosen.nuptk else '' }}"
+                    placeholder="Masukkan NUPTK" />
+                </div>
+
+                <div class="form-row">
+                  <label>NAMA LENGKAP</label>
+                  <input
+                    type="text"
+                    name="nama"
+                    id="nama"
+                    value="{{ dosen.nama if dosen else '' }}"
+                    placeholder="Masukkan nama lengkap dosen"
+                    required />
+                </div>
+
+                <div class="form-row">
+                  <label>JABATAN</label>
+                  <select name="jabatan" id="jabatan" required>
+                    <option value="">Pilih jabatan</option>
+                    <option value="Dosen" {% if dosen and dosen.jabatan == "Dosen" %}selected{% endif %}>
+                      Dosen
+                    </option>
+                  </select>
+                  <small class="inline-helper">
+                    Gunakan pilihan jabatan yang tersedia agar data tetap seragam.
+                  </small>
+                </div>
+
+                <div class="form-row">
+                  <label>BIDANG DOSEN</label>
+                  <textarea
+                    name="bidang_dosen"
+                    id="bidang_dosen"
+                    rows="4"
+                    placeholder="Contoh:
+FILSAFAT AGAMA
+TEOLOGI SISTEMATIKA"
+                    oninput="this.value = this.value.toUpperCase()">{{ dosen.bidang_dosen if dosen and dosen.bidang_dosen else '' }}</textarea>
+                </div>
+
+                <div class="form-row">
+                  <label>STATUS KEPEGAWAIAN</label>
+                  <select name="status" id="status" required>
+                    <option value="">Pilih status kepegawaian</option>
+                    <option value="Aktif" {% if dosen and dosen.status == "Aktif" %}selected{% endif %}>
+                      Aktif
+                    </option>
+                    <option value="Nonaktif" {% if dosen and dosen.status == "Nonaktif" %}selected{% endif %}>
+                      Nonaktif
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-row">
+                  <label>TEMPAT LAHIR</label>
+                  <input
+                    type="text"
+                    name="tempat_lahir"
+                    id="tempat_lahir"
+                    value="{{ dosen.tempat_lahir if dosen else '' }}"
+                    placeholder="Masukkan tempat lahir"
+                    required />
+                </div>
+
+                <div class="form-row">
+                  <label>TANGGAL LAHIR</label>
+                  <input
+                    type="text"
+                    name="tanggal_lahir"
+                    id="tanggal_lahir"
+                    value="{{ dosen.tanggal_lahir if dosen else '' }}"
+                    placeholder="Contoh: 14 Mei 2007"
+                    required />
+                </div>
+
+                <div class="form-row">
+                  <label>FILE BIODATA</label>
+                  <input
+                    type="text"
+                    name="biodata_card_display"
+                    value="{{ dosen.biodata_card if dosen and dosen.biodata_card else 'Belum tersedia' }}"
+                    readonly />
+                </div>
+
+                <div class="dosen-summary-box">
+                  <h3>RINGKASAN DATA</h3>
+
+                  <div class="dosen-summary-grid">
+                    <div class="dosen-summary-item">
+                      <span class="label">KODE DOSEN</span>
+                      <span class="value" id="preview-dosen-kode">
+                        {{ dosen.kode_dosen if dosen and dosen.kode_dosen else '(OTOMATIS)' }}
+                      </span>
+                    </div>
+
+                    <div class="dosen-summary-item">
+                      <span class="label">NUPTK</span>
+                      <span class="value" id="preview-dosen-nuptk">
+                        {{ dosen.nuptk if dosen and dosen.nuptk else '-' }}
+                      </span>
+                    </div>
+
+                    <div class="dosen-summary-item">
+                      <span class="label">NAMA LENGKAP</span>
+                      <span class="value" id="preview-dosen-nama">
+                        {{ dosen.nama if dosen else '-' }}
+                      </span>
+                    </div>
+
+                    <div class="dosen-summary-item">
+                      <span class="label">JABATAN</span>
+                      <span class="value" id="preview-dosen-jabatan">
+                        {{ dosen.jabatan if dosen else '-' }}
+                      </span>
+                    </div>
+
+                    <div class="dosen-summary-item">
+                      <span class="label">BIDANG DOSEN</span>
+                      <span class="value" id="preview-dosen-bidang">
+                        {{ dosen.bidang_dosen if dosen and dosen.bidang_dosen else '-' }}
+                      </span>
+                    </div>
+
+                    <div class="dosen-summary-item">
+                      <span class="label">STATUS KEPEGAWAIAN</span>
+                      <span class="value" id="preview-dosen-status">
+                        {{ dosen.status if dosen else '-' }}
+                      </span>
+                    </div>
+
+                    <div class="dosen-summary-item">
+                      <span class="label">TEMPAT LAHIR</span>
+                      <span class="value" id="preview-dosen-tempat">
+                        {{ dosen.tempat_lahir if dosen else '-' }}
+                      </span>
+                    </div>
+
+                    <div class="dosen-summary-item">
+                      <span class="label">TANGGAL LAHIR</span>
+                      <span class="value" id="preview-dosen-tanggal">
+                        {{ dosen.tanggal_lahir if dosen else '-' }}
+                      </span>
+                    </div>
+
+                    <div class="dosen-summary-item">
+                      <span class="label">STATUS FOTO BIODATA</span>
+                      <span class="value" id="preview-main-status">
+                        {{ 'TERSEDIA' if dosen and dosen.foto else 'BELUM TERSEDIA' }}
+                      </span>
+                    </div>
+
+                    <div class="dosen-summary-item">
+                      <span class="label">STATUS THUMBNAIL FRONTEND</span>
+                      <span class="value" id="preview-thumb-status">
+                        {{ 'TERSEDIA' if dosen and dosen.thumb else 'BELUM TERSEDIA' }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="dosen-front-preview">
+                    <div class="dosen-front-preview-media">
+                      {% if dosen and dosen.thumb %}
+                      <img
+                        src="{{ url_for('static', filename='uploads/dosen/' ~ dosen.thumb) }}"
+                        alt="Preview Frontend Dosen"
+                        id="dosenFrontendCardImage" />
+                      {% else %}
+                      <img
+                        src=""
+                        alt="Preview Frontend Dosen"
+                        id="dosenFrontendCardImage"
+                        style="display: none" />
+                      <div id="dosenFrontendCardPlaceholder" class="dosen-front-preview-placeholder">
+                        PREVIEW CARD FRONTEND DOSEN
+                      </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="dosen-front-preview-body">
+                      <span class="dosen-front-preview-tag">DOSEN</span>
+                      <span class="dosen-front-preview-name" id="frontend-preview-dosen-nama">
+                        {{ dosen.nama if dosen else 'NAMA DOSEN' }}
+                      </span>
+                      <span class="dosen-front-preview-role" id="frontend-preview-dosen-role">
+                        {{ dosen.jabatan if dosen else 'DOSEN' }}
+                      </span>
+
+                      <div class="dosen-front-preview-meta">
+                        <div><strong>Bidang Dosen:</strong> <span id="frontend-preview-dosen-bidang">{{ dosen.bidang_dosen if dosen and dosen.bidang_dosen else '-' }}</span></div>
+                        <div><strong>Status Dosen:</strong> <span id="frontend-preview-dosen-status">{{ dosen.status if dosen else '-' }}</span></div>
+                        <div><strong>Tempat Lahir:</strong> <span id="frontend-preview-dosen-tempat">{{ dosen.tempat_lahir if dosen else '-' }}</span></div>
+                        <div><strong>Tanggal Lahir:</strong> <span id="frontend-preview-dosen-tanggal">{{ dosen.tanggal_lahir if dosen else '-' }}</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="dosen-publish-box">
+                  <div class="dosen-publish-info">
+                    <h3>PUBLISH / UPDATE FRONTEND</h3>
+                    <p>
+                      Simpan perubahan sebagai draft terlebih dahulu, lalu gunakan tombol ini
+                      untuk memperbarui data dosen pada frontend publik.
+                    </p>
+                  </div>
+
+                  <div class="dosen-publish-actions">
+                    <button type="submit" class="btn green">
+                      {{ 'SIMPAN DATA' if mode == 'add' else 'SIMPAN PERUBAHAN' }}
+                    </button>
+
+                    {% if mode == 'edit' and dosen and dosen.id %}
+                    <button
+                      type="submit"
+                      class="btn white"
+                      form="dosenPublishForm"
+                      formnovalidate>
+                      PUBLISH / UPDATE FRONTEND
+                    </button>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <div class="dosen-button-row">
+                  <a href="{{ url_for('admin_dosen_list') }}" class="btn dark">KEMBALI</a>
+
+                  {% if mode == 'edit' and dosen and dosen.id %}
+                  <button
+                    type="submit"
+                    class="btn white"
+                    formaction="{{ url_for('admin_dosen_export_biodata', dosen_id=dosen.id) }}"
+                    formmethod="POST">
+                    UNDUH BIODATA
+                  </button>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </form>
+
+          {% if mode == 'edit' and dosen and dosen.id %}
+          <form
+            id="dosenPublishForm"
+            method="POST"
+            action="{{ url_for('admin_dosen_publish') }}">
+          </form>
+          {% endif %}          
+        </div>
+      </div>
+    </div>
+
+    <div id="cropModal" class="crop-modal">
+      <div class="crop-panel">
+        <div class="crop-header">
+          <span class="crop-step-badge" id="cropStepBadge">Tahap 1 dari 2</span>
+          <h3 id="cropTitle">Crop Foto</h3>
+          <p id="cropSubtitle">Sesuaikan foto</p>
+        </div>
+
+        <div class="crop-body">
+          <div class="crop-area">
+            <img id="cropImage" src="" alt="Crop target" />
+          </div>
+
+          <div class="crop-controls">
+            <div class="crop-control-group">
+              <label for="zoomRange">Zoom</label>
+              <input type="range" id="zoomRange" min="0" max="100" value="0" />
+            </div>
+
+            <div class="crop-control-group">
+              <button type="button" class="crop-rotate-btn" id="rotateBtn">
+                Rotasi
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="crop-footer">
+          <div class="crop-footer-text" id="cropFooterText">
+            Area terpilih akan digunakan untuk foto.
+          </div>
+
+          <div class="crop-footer-actions">
+            <button type="button" class="crop-btn-cancel" id="cancelCropBtn">
+              BATAL
+            </button>
+            <button type="button" class="crop-btn-apply" id="applyCropBtn">
+              GUNAKAN FOTO
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const maxFileSize = 10 * 1024 * 1024;
+
+        const formalInput = document.getElementById("fotoFormalInput");
+        const formalCroppedInput = document.getElementById("fotoFormalCroppedInput");
+        const formalPreview = document.getElementById("fotoFormalPreview");
+        const formalPlaceholder = document.getElementById("fotoFormalPlaceholder");
+        const formalErrorMessage = document.getElementById("fotoFormalErrorMessage");
+
+        const frontendInput = document.getElementById("fotoFrontendInput");
+        const frontendCroppedInput = document.getElementById("fotoFrontendCroppedInput");
+        const frontendPreview = document.getElementById("fotoFrontendPreview");
+        const frontendPlaceholder = document.getElementById("fotoFrontendPlaceholder");
+        const frontendErrorMessage = document.getElementById("fotoFrontendErrorMessage");
+
+        const cropModal = document.getElementById("cropModal");
+        const cropImage = document.getElementById("cropImage");
+        const cropTitle = document.getElementById("cropTitle");
+        const cropDesc = document.getElementById("cropDesc");
+        const zoomRange = document.getElementById("zoomRange");
+        const rotateBtn = document.getElementById("rotateBtn");
+        const cancelCropBtn = document.getElementById("cancelCropBtn");
+        const applyCropBtn = document.getElementById("applyCropBtn");
+
+        let cropper = null;
+        let currentCropTarget = null;
+        let currentSourceFile = null;
+        let imageObjectUrl = null;
+        let currentZoomValue = 100;
+        let currentRotation = 0;
+
+        const CROPS = {
+          formal: {
+            aspectRatio: 3 / 4,
+            width: 900,
+            height: 1200,
+            title: "CROP FOTO RESMI DOSEN",
+            desc: "Sesuaikan foto resmi dengan rasio 3 × 4 untuk biodata dan export.",
+            outputName: "foto_cropped.jpg",
+          },
+          frontend: {
+            aspectRatio: 460 / 300,
+            width: 460,
+            height: 300,
+            title: "CROP FOTO FRONTEND DOSEN",
+            desc: "Sesuaikan foto frontend dengan rasio 460 × 300 untuk card website.",
+            outputName: "foto_frontend_cropped.jpg",
+          },
+        };
+
+        function blobToInputFile(blob, filename, inputEl) {
+          const file = new File([blob], filename, { type: "image/jpeg" });
+          const dt = new DataTransfer();
+          dt.items.add(file);
+          inputEl.files = dt.files;
+        }
+
+        function setPreview(previewEl, placeholderEl, blob) {
+          if (!previewEl) return;
+          const previewUrl = URL.createObjectURL(blob);
+          previewEl.src = previewUrl;
+          previewEl.style.display = "block";
+          if (placeholderEl) {
+            placeholderEl.style.display = "none";
+          }
+        }
+
+        function updateFrontendCardImage(blob) {
+          const frontImage = document.getElementById("dosenFrontendCardImage");
+          const frontPlaceholder = document.getElementById("dosenFrontendCardPlaceholder");
+
+          if (frontImage) {
+            frontImage.src = URL.createObjectURL(blob);
+            frontImage.style.display = "block";
+          }
+
+          if (frontPlaceholder) {
+            frontPlaceholder.style.display = "none";
+          }
+        }
+
+        function closeCropModal(resetInput = false) {
+          if (cropper) {
+            cropper.destroy();
+            cropper = null;
+          }
+
+          if (imageObjectUrl) {
+            URL.revokeObjectURL(imageObjectUrl);
+            imageObjectUrl = null;
+          }
+
+          if (cropModal) {
+            cropModal.classList.remove("show");
+          }
+
+          if (cropImage) {
+            cropImage.src = "";
+          }
+
+          if (zoomRange) {
+            zoomRange.value = 100;
+          }
+
+          currentZoomValue = 100;
+          currentRotation = 0;
+
+          if (resetInput) {
+            if (currentCropTarget === "formal" && formalInput) {
+              formalInput.value = "";
+            }
+            if (currentCropTarget === "frontend" && frontendInput) {
+              frontendInput.value = "";
+            }
+          }
+
+          currentCropTarget = null;
+          currentSourceFile = null;
+        }
+
+        function openCropModal(file, targetKey) {
+          if (!cropModal || !cropImage || !applyCropBtn || !cancelCropBtn) return;
+
+          const config = CROPS[targetKey];
+          if (!config) return;
+
+          currentCropTarget = targetKey;
+          currentSourceFile = file;
+          currentZoomValue = 100;
+          currentRotation = 0;
+
+          if (zoomRange) {
+            zoomRange.value = 100;
+          }
+
+          if (cropTitle) {
+            cropTitle.textContent = config.title;
+          }
+
+          if (cropDesc) {
+            cropDesc.textContent = config.desc;
+          }
+
+          if (imageObjectUrl) {
+            URL.revokeObjectURL(imageObjectUrl);
+          }
+
+          imageObjectUrl = URL.createObjectURL(file);
+          cropImage.src = imageObjectUrl;
+
+          cropImage.onload = function () {
+            if (cropper) {
+              cropper.destroy();
+            }
+
+            cropper = new Cropper(cropImage, {
+              aspectRatio: config.aspectRatio,
+              viewMode: 1,
+              dragMode: "move",
+              autoCropArea: 1,
+              responsive: true,
+              background: false,
+              guides: true,
+              center: true,
+              highlight: true,
+              cropBoxMovable: true,
+              cropBoxResizable: true,
+              toggleDragModeOnDblclick: false,
+              movable: true,
+              zoomable: true,
+              rotatable: true,
+              scalable: false,
+            });
+          };
+
+          cropModal.classList.add("show");
+        }
+
+        function handleSourceChange(fileInput, errorEl, targetKey) {
+          if (!fileInput) return;
+
+          fileInput.addEventListener("change", function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            if (file.size > maxFileSize) {
+              this.value = "";
+              if (errorEl) {
+                errorEl.style.display = "block";
+              }
+              return;
+            }
+
+            if (errorEl) {
+              errorEl.style.display = "none";
+            }
+
+            if (targetKey === "formal" && formalCroppedInput) {
+              formalCroppedInput.value = "";
+            }
+
+            if (targetKey === "frontend" && frontendCroppedInput) {
+              frontendCroppedInput.value = "";
+            }
+
+            openCropModal(file, targetKey);
+          });
+        }
+
+        handleSourceChange(formalInput, formalErrorMessage, "formal");
+        handleSourceChange(frontendInput, frontendErrorMessage, "frontend");
+
+        if (zoomRange) {
+          zoomRange.addEventListener("input", function () {
+            if (!cropper) return;
+
+            const newValue = parseInt(this.value, 10);
+            const delta = (newValue - currentZoomValue) / 100;
+            cropper.zoom(delta);
+            currentZoomValue = newValue;
+          });
+        }
+
+        if (rotateBtn) {
+          rotateBtn.addEventListener("click", function () {
+            if (!cropper) return;
+            currentRotation = (currentRotation + 90) % 360;
+            cropper.rotateTo(currentRotation);
+          });
+        }
+
+        if (cancelCropBtn) {
+          cancelCropBtn.addEventListener("click", function () {
+            closeCropModal(true);
+          });
+        }
+
+        if (applyCropBtn) {
+          applyCropBtn.addEventListener("click", function () {
+            if (!cropper || !currentCropTarget) return;
+
+            const config = CROPS[currentCropTarget];
+
+            const canvas = cropper.getCroppedCanvas({
+              width: config.width,
+              height: config.height,
+              imageSmoothingEnabled: true,
+              imageSmoothingQuality: "high",
+              fillColor: "#ffffff",
+            });
+
+            if (!canvas) return;
+
+            canvas.toBlob(
+              function (blob) {
+                if (!blob) return;
+
+                if (currentCropTarget === "formal" && formalCroppedInput) {
+                  blobToInputFile(blob, config.outputName, formalCroppedInput);
+                  setPreview(formalPreview, formalPlaceholder, blob);
+                }
+
+                if (currentCropTarget === "frontend" && frontendCroppedInput) {
+                  blobToInputFile(blob, config.outputName, frontendCroppedInput);
+                  setPreview(frontendPreview, frontendPlaceholder, blob);
+                  updateFrontendCardImage(blob);
+                }
+
+                closeCropModal(false);
+              },
+              "image/jpeg",
+              0.95
+            );
+          });
+        }
+
+        const previewMap = {
+          nuptk: "preview-dosen-nuptk",
+          nama: "preview-dosen-nama",
+          jabatan: "preview-dosen-jabatan",
+          bidang_dosen: "preview-dosen-bidang",
+          status: "preview-dosen-status",
+          tempat_lahir: "preview-dosen-tempat",
+          tanggal_lahir: "preview-dosen-tanggal",
+        };
+
+        function syncFrontendPreview() {
+          const nama = document.querySelector('[name="nama"]')?.value?.trim() || "-";
+          const jabatan = document.querySelector('[name="jabatan"]')?.value?.trim() || "-";
+          const bidang = document.querySelector('[name="bidang_dosen"]')?.value?.trim() || "-";
+          const status = document.querySelector('[name="status"]')?.value?.trim() || "-";
+          const tempat = document.querySelector('[name="tempat_lahir"]')?.value?.trim() || "-";
+          const tanggal = document.querySelector('[name="tanggal_lahir"]')?.value?.trim() || "-";
+
+          const elNama = document.getElementById("frontend-preview-dosen-nama");
+          const elRole = document.getElementById("frontend-preview-dosen-role");
+          const elBidang = document.getElementById("frontend-preview-dosen-bidang");
+          const elStatus = document.getElementById("frontend-preview-dosen-status");
+          const elTempat = document.getElementById("frontend-preview-dosen-tempat");
+          const elTanggal = document.getElementById("frontend-preview-dosen-tanggal");
+
+          if (elNama) elNama.textContent = nama.toUpperCase();
+          if (elRole) elRole.textContent = jabatan.toUpperCase();
+          if (elBidang) elBidang.textContent = bidang.toUpperCase();
+          if (elStatus) elStatus.textContent = status.toUpperCase();
+          if (elTempat) elTempat.textContent = tempat.toUpperCase();
+          if (elTanggal) elTanggal.textContent = tanggal.toUpperCase();
+        }
+
+        Object.keys(previewMap).forEach(function (fieldName) {
+          const input = document.querySelector(`[name="${fieldName}"]`);
+          const target = document.getElementById(previewMap[fieldName]);
+
+          if (input && target) {
+            const updateValue = function () {
+              target.textContent = input.value.trim() || "-";
+              syncFrontendPreview();
+            };
+
+            input.addEventListener("input", updateValue);
+            input.addEventListener("change", updateValue);
+            updateValue();
+          }
+        });
+
+        syncFrontendPreview();
+      });
+    </script>
+
+  </body>
+</html>

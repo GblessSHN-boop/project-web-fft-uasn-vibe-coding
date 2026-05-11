@@ -1,0 +1,1295 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Dekan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}" />
+    <script src="{{ url_for('static', filename='admin.js') }}" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+
+    <style>
+      .dekan-shell {
+        width: min(1080px, 94vw);
+        margin: 0 auto;
+      }
+
+      .dekan-main-card {
+        background: #b9b9b9;
+        border-radius: 22px;
+        padding: 26px 22px 22px;
+      }
+
+      .dekan-title-wrap {
+        text-align: center;
+        margin-bottom: 22px;
+      }
+
+      .dekan-title-wrap h2 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+      }
+
+      .dekan-title-wrap p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.7;
+        color: #2f2f2f;
+        opacity: 0.92;
+      }
+
+      .dekan-layout-clean {
+        display: grid;
+        grid-template-columns: 290px 1fr;
+        gap: 22px;
+        align-items: start;
+      }
+
+      .dekan-photo-stack {
+        display: grid;
+        gap: 16px;
+      }
+
+      .dekan-photo-panel {
+        background: rgba(255, 255, 255, 0.42);
+        border-radius: 18px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .dekan-photo-frame {
+        width: 100%;
+        max-width: 230px;
+        aspect-ratio: 3 / 4;
+        margin: 0 auto;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #ececec;
+        border: 2px solid rgba(255, 255, 255, 0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .dekan-photo-panel.frontend-panel .dekan-photo-frame {
+        max-width: 100%;
+        aspect-ratio: 460 / 300;
+      }
+
+      .dekan-photo-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .dekan-photo-placeholder {
+        text-align: center;
+        font-weight: 800;
+        color: #505050;
+        line-height: 1.5;
+        font-size: 15px;
+        padding: 16px;
+      }
+
+      .dekan-upload-head {
+        text-align: center;
+      }
+
+      .dekan-upload-head h3 {
+        margin: 0 0 6px;
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+        color: #1d1d1d;
+      }
+
+      .dekan-upload-head p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.65;
+        color: #383838;
+      }
+
+      .dekan-upload-field label {
+        display: block;
+        font-size: 13px;
+        font-weight: 800;
+        margin-bottom: 8px;
+        color: #1f1f1f;
+      }
+
+      .dekan-upload-field input[type="file"] {
+        width: 100%;
+        background: #f4f7fb;
+        border: 1px solid #d5dbe4;
+        border-radius: 10px;
+        padding: 10px 12px;
+        color: #222;
+      }
+
+      .dekan-upload-note {
+        background: rgba(183, 255, 0, 0.2);
+        border-left: 4px solid #b7ff00;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 13px;
+        line-height: 1.65;
+        color: #2a2a2a;
+      }
+
+      .dekan-upload-error {
+        display: none;
+        margin-top: 10px;
+        color: #b00020;
+        font-weight: 700;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .dekan-photo-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .dekan-photo-actions .btn {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .dekan-meta-box {
+        background: rgba(0, 0, 0, 0.12);
+        border-radius: 16px;
+        padding: 16px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .dekan-meta-box h3 {
+        margin: 0 0 4px;
+        font-size: 16px;
+        font-weight: 800;
+        color: #fff;
+      }
+
+      .dekan-meta-item {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 10px 12px;
+      }
+
+      .dekan-meta-item .label {
+        display: block;
+        font-size: 12px;
+        font-weight: 800;
+        color: rgba(255, 255, 255, 0.72);
+        margin-bottom: 4px;
+      }
+
+      .dekan-meta-item .value {
+        display: block;
+        font-size: 14px;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1.5;
+        word-break: break-word;
+      }
+
+      .dekan-status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+      }
+
+      .dekan-status-badge.live {
+        background: rgba(183, 255, 0, 0.2);
+        color: #1b2b00;
+        border: 1px solid rgba(183, 255, 0, 0.5);
+      }
+
+      .dekan-status-badge.draft {
+        background: rgba(255, 193, 7, 0.18);
+        color: #4a3400;
+        border: 1px solid rgba(255, 193, 7, 0.45);
+      }
+
+      .dekan-detail-panel {
+        display: grid;
+        gap: 12px;
+      }
+
+      .dekan-row-clean {
+        display: grid;
+        grid-template-columns: 170px 1fr;
+        gap: 16px;
+        align-items: start;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+        padding-bottom: 10px;
+      }
+
+      .dekan-row-clean label {
+        font-size: 14px;
+        font-weight: 800;
+        line-height: 1.5;
+        letter-spacing: 0.2px;
+        padding-top: 10px;
+        color: #ffffff;
+      }
+
+      .dekan-row-clean input,
+      .dekan-row-clean select {
+        width: 100%;
+        min-height: 44px;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        background: transparent;
+        color: #ffffff;
+        font-size: 15px;
+        padding: 8px 0;
+        outline: none;
+        text-transform: uppercase;
+      }
+
+      .dekan-row-clean input::placeholder {
+        color: rgba(255, 255, 255, 0.72);
+        text-transform: none;
+      }
+
+      .dekan-row-clean input[readonly] {
+        color: #f3f3f3;
+        font-weight: 700;
+      }
+
+      .dekan-row-clean select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image:
+          linear-gradient(45deg, transparent 50%, #ffffff 50%),
+          linear-gradient(135deg, #ffffff 50%, transparent 50%);
+        background-position:
+          calc(100% - 16px) calc(50% - 3px),
+          calc(100% - 10px) calc(50% - 3px);
+        background-size:
+          6px 6px,
+          6px 6px;
+        background-repeat: no-repeat;
+        padding-right: 34px;
+      }
+
+      .dekan-row-clean select option {
+        color: #222;
+        background: #fff;
+      }
+
+      .dekan-helper {
+        display: block;
+        margin-top: 6px;
+        font-size: 12px;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.88);
+      }
+
+      .dekan-summary-box {
+        margin-top: 22px;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        padding: 18px 18px 16px;
+      }
+
+      .dekan-summary-box h3 {
+        margin: 0 0 12px;
+        font-size: 18px;
+        font-weight: 800;
+        color: #ffffff;
+      }
+
+      .dekan-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px 20px;
+      }
+
+      .dekan-summary-item {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 12px 14px;
+      }
+
+      .dekan-summary-item .label {
+        display: block;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+        color: rgba(255, 255, 255, 0.76);
+        margin-bottom: 6px;
+      }
+
+      .dekan-summary-item .value {
+        display: block;
+        font-size: 15px;
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1.5;
+        text-transform: uppercase;
+        word-break: break-word;
+      }
+
+      .dekan-front-preview {
+        margin-top: 18px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        overflow: hidden;
+      }
+
+      .dekan-front-preview-media {
+        aspect-ratio: 460 / 300;
+        background: #dcdcdc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .dekan-front-preview-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .dekan-front-preview-placeholder {
+        font-size: 14px;
+        font-weight: 800;
+        color: #555;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .dekan-front-preview-body {
+        padding: 16px 18px 18px;
+        background: rgba(255, 255, 255, 0.92);
+      }
+
+      .dekan-front-preview-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #b7ff00;
+        color: #111;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.3px;
+        margin-bottom: 12px;
+      }
+
+      .dekan-front-preview-name {
+        display: block;
+        font-size: 28px;
+        font-weight: 900;
+        line-height: 1.2;
+        color: #111;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      .dekan-front-preview-role {
+        display: block;
+        font-size: 16px;
+        font-weight: 900;
+        line-height: 1.4;
+        color: #73821d;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+      }
+
+      .dekan-front-preview-meta {
+        display: grid;
+        gap: 8px;
+      }
+
+      .dekan-front-preview-meta div {
+        font-size: 14px;
+        line-height: 1.5;
+        color: #333;
+      }
+
+      .dekan-front-preview-meta strong {
+        color: #111;
+      }
+
+      .dekan-publish-box {
+        margin-top: 22px;
+        background: rgba(183, 255, 0, 0.14);
+        border: 1px solid rgba(183, 255, 0, 0.35);
+        border-radius: 16px;
+        padding: 16px 18px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .dekan-publish-info h3 {
+        margin: 0 0 6px;
+        font-size: 17px;
+        font-weight: 800;
+        color: #fff;
+      }
+
+      .dekan-publish-info p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.92);
+      }
+
+      .dekan-publish-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .dekan-button-row {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+      }
+
+      .dekan-crop-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.76);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        z-index: 9999;
+      }
+
+      .dekan-crop-modal.show {
+        display: flex;
+      }
+
+      .dekan-crop-panel {
+        width: min(760px, 96vw);
+        background: #ffffff;
+        border-radius: 22px;
+        padding: 20px;
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+      }
+
+      .dekan-crop-head {
+        text-align: center;
+        margin-bottom: 16px;
+      }
+
+      .dekan-crop-head span {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(183, 255, 0, 0.22);
+        color: #222;
+        font-size: 12px;
+        font-weight: 800;
+        margin-bottom: 10px;
+      }
+
+      .dekan-crop-head[data-mode="frontend"] span {
+        background: rgba(0, 153, 255, 0.14);
+      }
+
+      .dekan-crop-head h3 {
+        margin: 0 0 8px;
+        font-size: 24px;
+        font-weight: 800;
+        color: #111;
+      }
+
+      .dekan-crop-head p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.7;
+        color: #444;
+      }
+
+      .dekan-crop-canvas {
+        background: #111;
+        border-radius: 16px;
+        overflow: hidden;
+        max-height: 70vh;
+      }
+
+      .dekan-crop-canvas img {
+        display: block;
+        max-width: 100%;
+      }
+
+      .dekan-crop-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+      }
+
+      @media (max-width: 900px) {
+        .dekan-layout-clean {
+          grid-template-columns: 1fr;
+        }
+
+        .dekan-photo-frame {
+          max-width: 220px;
+        }
+
+        .dekan-summary-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .dekan-main-card {
+          padding: 20px 16px 18px;
+        }
+
+        .dekan-row-clean {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+
+        .dekan-row-clean label {
+          padding-top: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="adminToast" class="admin-toast"></div>
+
+    <div class="admin-page">
+      <div class="admin-header">
+        <h1>DASHBOARD ADMIN</h1>
+        <p>FAKULTAS FILSAFAT TEOLOGI</p>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-stack">
+        {% for category, message in messages %}
+        <div class="flash-item {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      <div class="dekan-shell">
+        <div class="dekan-main-card">
+          <div class="dekan-title-wrap">
+            <h2>DATA DEKAN</h2>
+            <p>
+              Kelola informasi resmi dekan, foto formal, foto frontend, dan file
+              biodata untuk kebutuhan administrasi fakultas.
+            </p>
+          </div>
+
+          <form method="POST" enctype="multipart/form-data" id="dekanForm">
+            <div class="dekan-layout-clean">
+              <div class="dekan-photo-stack">
+                <div class="dekan-photo-panel">
+                  <div class="dekan-photo-frame">
+                    {% if dekan and dekan.foto %}
+                    <img
+                      src="{{ url_for('static', filename=dekan.foto) }}"
+                      alt="Foto Resmi Dekan"
+                      id="dekanPhotoPreview" />
+                    {% else %}
+                    <img
+                      src=""
+                      alt="Foto Resmi Dekan"
+                      id="dekanPhotoPreview"
+                      style="display: none" />
+                    <div id="dekanPhotoPlaceholder" class="dekan-photo-placeholder">
+                      FOTO RESMI<br />DEKAN
+                    </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="dekan-upload-head">
+                    <h3>UNGGAH FOTO RESMI</h3>
+                    <p>
+                      Digunakan untuk biodata, export, dan kebutuhan administrasi resmi.
+                    </p>
+                  </div>
+
+                  <div class="dekan-upload-field">
+                    <label for="dekanFotoSourceInput">PILIH FOTO SUMBER RESMI</label>
+                    <input
+                      id="dekanFotoSourceInput"
+                      type="file"
+                      accept=".png,.jpg,.jpeg,.webp,image/jpeg,image/png,image/webp" />
+
+                    <input
+                      id="dekanFotoCroppedInput"
+                      type="file"
+                      name="foto_cropped"
+                      style="display: none" />
+
+                    <div id="dekanFotoErrorMessage" class="dekan-upload-error">
+                      Ukuran file melebihi batas maksimum 10 MB.
+                    </div>
+                  </div>
+
+                  <div class="dekan-upload-note">
+                    <strong>Catatan:</strong> Setelah memilih foto, sistem akan meminta
+                    crop <strong>rasio 3 × 4</strong> untuk foto formal dekan.
+                  </div>
+
+                  <div class="dekan-photo-actions">
+                    <button
+                      type="submit"
+                      class="btn dark"
+                      form="dekanDeleteFormalForm"
+                      formnovalidate>
+                      HAPUS FOTO RESMI
+                    </button>
+                  </div>
+                </div>
+
+                <div class="dekan-photo-panel frontend-panel">
+                  <div class="dekan-photo-frame">
+                    {% if dekan and dekan.foto_frontend %}
+                    <img
+                      src="{{ url_for('static', filename=dekan.foto_frontend) }}"
+                      alt="Foto Frontend Dekan"
+                      id="dekanFrontendPreview" />
+                    {% else %}
+                    <img
+                      src=""
+                      alt="Foto Frontend Dekan"
+                      id="dekanFrontendPreview"
+                      style="display: none" />
+                    <div id="dekanFrontendPlaceholder" class="dekan-photo-placeholder">
+                      FOTO FRONTEND<br />DEKAN
+                    </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="dekan-upload-head">
+                    <h3>UNGGAH FOTO FRONTEND</h3>
+                    <p>
+                      Digunakan khusus untuk card dekan pada halaman publik frontend.
+                    </p>
+                  </div>
+
+                  <div class="dekan-upload-field">
+                    <label for="dekanFrontendSourceInput">PILIH FOTO SUMBER FRONTEND</label>
+                    <input
+                      id="dekanFrontendSourceInput"
+                      type="file"
+                      accept=".png,.jpg,.jpeg,.webp,image/jpeg,image/png,image/webp" />
+
+                    <input
+                      id="dekanFrontendCroppedInput"
+                      type="file"
+                      name="foto_frontend_cropped"
+                      style="display: none" />
+
+                    <div id="dekanFrontendErrorMessage" class="dekan-upload-error">
+                      Ukuran file melebihi batas maksimum 10 MB.
+                    </div>
+                  </div>
+
+                  <div class="dekan-upload-note">
+                    <strong>Catatan:</strong> Setelah memilih foto, sistem akan meminta
+                    crop <strong>rasio 460 × 300</strong> untuk tampilan card frontend.
+                  </div>
+
+                  <div class="dekan-photo-actions">
+                    <button
+                      type="submit"
+                      class="btn dark"
+                      form="dekanDeleteFrontendForm"
+                      formnovalidate>
+                      HAPUS FOTO FRONTEND
+                    </button>
+                  </div>
+                </div>
+
+                <div class="dekan-meta-box">
+                  <h3>STATUS DATA LIVE</h3>
+
+                  <div class="dekan-meta-item">
+                    <span class="label">STATUS PUBLISH</span>
+                    <span class="value">
+                      {% if dekan and dekan.is_published %}
+                      <span class="dekan-status-badge {{ 'draft' if dekan.needs_publish else 'live' }}">
+                        {{ 'PERLU UPDATE FRONTEND' if dekan.needs_publish else 'SUDAH LIVE' }}
+                      </span>
+                      {% else %}
+                      <span class="dekan-status-badge draft">BELUM DIPUBLISH</span>
+                      {% endif %}
+                    </span>
+                  </div>
+
+                  <div class="dekan-meta-item">
+                    <span class="label">TERAKHIR DIPERBARUI</span>
+                    <span class="value">
+                      {{ dekan.updated_at.strftime('%d-%m-%Y %H:%M') if dekan and dekan.updated_at else '-' }}
+                    </span>
+                  </div>
+
+                  <div class="dekan-meta-item">
+                    <span class="label">TERAKHIR DIPUBLISH</span>
+                    <span class="value">
+                      {{ dekan.published_at.strftime('%d-%m-%Y %H:%M') if dekan and dekan.published_at else 'BELUM PERNAH' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dekan-detail-panel">
+                <div class="dekan-row-clean">
+                  <label for="nama">NAMA LENGKAP</label>
+                  <div>
+                    <input
+                      id="nama"
+                      type="text"
+                      name="nama"
+                      placeholder="Masukkan nama lengkap dekan"
+                      value="{{ dekan.nama if dekan else '' }}"
+                      required />
+                    <small class="dekan-helper">
+                      Nama akan ditampilkan dalam format huruf besar secara otomatis.
+                    </small>
+                  </div>
+                </div>
+
+                <div class="dekan-row-clean">
+                  <label for="jabatan_tampil">JABATAN</label>
+                  <div>
+                    <input
+                      id="jabatan_tampil"
+                      type="text"
+                      value="DEKAN FAKULTAS FILSAFAT TEOLOGI"
+                      readonly />
+                    <small class="dekan-helper">
+                      Jabatan dekan ditetapkan secara permanen dan tidak dapat diubah.
+                    </small>
+                  </div>
+                </div>
+
+                <div class="dekan-row-clean">
+                  <label for="status">STATUS KEPEGAWAIAN</label>
+                  <div>
+                    <select id="status" name="status" required>
+                      <option value="">PILIH STATUS KEPEGAWAIAN</option>
+                      <option value="Aktif" {% if dekan and dekan.status == 'Aktif' %}selected{% endif %}>AKTIF</option>
+                      <option value="Nonaktif" {% if dekan and dekan.status == 'Nonaktif' %}selected{% endif %}>NONAKTIF</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="dekan-row-clean">
+                  <label for="tempat_lahir">TEMPAT LAHIR</label>
+                  <div>
+                    <input
+                      id="tempat_lahir"
+                      type="text"
+                      name="tempat_lahir"
+                      placeholder="Masukkan tempat lahir"
+                      value="{{ dekan.tempat_lahir if dekan else '' }}"
+                      required />
+                  </div>
+                </div>
+
+                <div class="dekan-row-clean">
+                  <label for="tanggal_lahir">TANGGAL LAHIR</label>
+                  <div>
+                    <input
+                      id="tanggal_lahir"
+                      type="text"
+                      name="tanggal_lahir"
+                      placeholder="Contoh: 14 MEI 2006"
+                      value="{{ dekan.tanggal_lahir if dekan else '' }}"
+                      required />
+                  </div>
+                </div>
+
+                <div class="dekan-row-clean">
+                  <label for="biodata_card_display">FILE BIODATA</label>
+                  <div>
+                    <input
+                      id="biodata_card_display"
+                      type="text"
+                      value="{{ dekan.biodata_card if dekan and dekan.biodata_card else 'BELUM TERSEDIA' }}"
+                      readonly />
+                  </div>
+                </div>
+
+                <div class="dekan-summary-box">
+                  <h3>RINGKASAN DATA</h3>
+
+                  <div class="dekan-summary-grid">
+                    <div class="dekan-summary-item">
+                      <span class="label">NAMA LENGKAP</span>
+                      <span class="value" id="preview-dekan-nama">{{ dekan.nama if dekan else '-' }}</span>
+                    </div>
+
+                    <div class="dekan-summary-item">
+                      <span class="label">JABATAN</span>
+                      <span class="value" id="preview-dekan-jabatan">DEKAN FAKULTAS FILSAFAT TEOLOGI</span>
+                    </div>
+
+                    <div class="dekan-summary-item">
+                      <span class="label">STATUS KEPEGAWAIAN</span>
+                      <span class="value" id="preview-dekan-status">{{ dekan.status if dekan else '-' }}</span>
+                    </div>
+
+                    <div class="dekan-summary-item">
+                      <span class="label">TEMPAT LAHIR</span>
+                      <span class="value" id="preview-dekan-tempat">{{ dekan.tempat_lahir if dekan else '-' }}</span>
+                    </div>
+
+                    <div class="dekan-summary-item">
+                      <span class="label">TANGGAL LAHIR</span>
+                      <span class="value" id="preview-dekan-tanggal">{{ dekan.tanggal_lahir if dekan else '-' }}</span>
+                    </div>
+
+                    <div class="dekan-summary-item">
+                      <span class="label">STATUS FOTO RESMI</span>
+                      <span class="value" id="preview-dekan-foto">
+                        {{ 'TERSEDIA' if dekan and dekan.foto else 'BELUM TERSEDIA' }}
+                      </span>
+                    </div>
+
+                    <div class="dekan-summary-item">
+                      <span class="label">STATUS FOTO FRONTEND</span>
+                      <span class="value" id="preview-dekan-foto-frontend">
+                        {{ 'TERSEDIA' if dekan and dekan.foto_frontend else 'BELUM TERSEDIA' }}
+                      </span>
+                    </div>
+
+                    <div class="dekan-summary-item">
+                      <span class="label">STATUS LIVE FRONTEND</span>
+                      <span class="value">
+                        {% if dekan and dekan.is_published %}
+                          {{ 'PERLU UPDATE FRONTEND' if dekan.needs_publish else 'SUDAH LIVE' }}
+                        {% else %}
+                          BELUM DIPUBLISH
+                        {% endif %}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="dekan-front-preview">
+                    <div class="dekan-front-preview-media">
+                      {% if dekan and dekan.foto_frontend %}
+                      <img
+                        src="{{ url_for('static', filename=dekan.foto_frontend) }}"
+                        alt="Preview Frontend Dekan"
+                        id="dekanFrontendCardImage" />
+                      {% else %}
+                      <img
+                        src=""
+                        alt="Preview Frontend Dekan"
+                        id="dekanFrontendCardImage"
+                        style="display: none" />
+                      <div id="dekanFrontendCardPlaceholder" class="dekan-front-preview-placeholder">
+                        PREVIEW CARD FRONTEND DEKAN
+                      </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="dekan-front-preview-body">
+                      <span class="dekan-front-preview-tag">DEKAN</span>
+                      <span class="dekan-front-preview-name" id="frontend-preview-nama">
+                        {{ dekan.nama if dekan else 'NAMA DEKAN' }}
+                      </span>
+                      <span class="dekan-front-preview-role" id="frontend-preview-jabatan">
+                        DEKAN FAKULTAS FILSAFAT TEOLOGI
+                      </span>
+
+                      <div class="dekan-front-preview-meta">
+                        <div><strong>Status Dekan:</strong> <span id="frontend-preview-status">{{ dekan.status if dekan else '-' }}</span></div>
+                        <div><strong>Tempat Lahir:</strong> <span id="frontend-preview-tempat">{{ dekan.tempat_lahir if dekan else '-' }}</span></div>
+                        <div><strong>Tanggal Lahir:</strong> <span id="frontend-preview-tanggal">{{ dekan.tanggal_lahir if dekan else '-' }}</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="dekan-publish-box">
+                  <div class="dekan-publish-info">
+                    <h3>PUBLISH / UPDATE FRONTEND</h3>
+                    <p>
+                      Simpan perubahan sebagai draft terlebih dahulu, lalu gunakan tombol ini
+                      untuk memperbarui data dekan pada frontend publik.
+                    </p>
+                  </div>
+
+                  <div class="dekan-publish-actions">
+                    <button type="submit" class="btn green">SIMPAN PERUBAHAN</button>
+                    <button
+                      type="submit"
+                      class="btn white"
+                      form="dekanPublishForm"
+                      formnovalidate>
+                      PUBLISH / UPDATE FRONTEND
+                    </button>
+                  </div>
+                </div>
+
+                <div class="dekan-button-row">
+                  <a href="{{ url_for('admin_choose') }}" class="btn dark">KEMBALI</a>
+                  <a href="{{ url_for('admin_dekan_export') }}" class="btn white">UNDUH BIODATA</a>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <form
+            id="dekanDeleteFormalForm"
+            method="POST"
+            action="{{ url_for('admin_dekan_delete_photo', photo_kind='formal') }}">
+          </form>
+
+          <form
+            id="dekanDeleteFrontendForm"
+            method="POST"
+            action="{{ url_for('admin_dekan_delete_photo', photo_kind='frontend') }}">
+          </form>
+
+          <form
+            id="dekanPublishForm"
+            method="POST"
+            action="{{ url_for('admin_dekan_publish') }}">
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="dekanCropModal" class="dekan-crop-modal">
+      <div class="dekan-crop-panel">
+        <div class="dekan-crop-head" id="dekanCropHead" data-mode="formal">
+          <span id="dekanCropBadge">CROP FOTO DEKAN</span>
+          <h3 id="dekanCropTitle">Sesuaikan Foto Resmi</h3>
+          <p id="dekanCropDesc">
+            Gunakan area 3 × 4 untuk biodata dan tampilan formal dekan.
+          </p>
+        </div>
+
+        <div class="dekan-crop-canvas">
+          <img id="dekanCropImage" src="" alt="Crop foto dekan" />
+        </div>
+
+        <div class="dekan-crop-actions">
+          <button type="button" class="btn dark" id="dekanCropCancelBtn">BATAL</button>
+          <button type="button" class="btn green" id="dekanCropApplyBtn">GUNAKAN FOTO</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const namaInput = document.getElementById("nama");
+        const statusInput = document.getElementById("status");
+        const tempatInput = document.getElementById("tempat_lahir");
+        const tanggalInput = document.getElementById("tanggal_lahir");
+
+        const previewNama = document.getElementById("preview-dekan-nama");
+        const previewStatus = document.getElementById("preview-dekan-status");
+        const previewTempat = document.getElementById("preview-dekan-tempat");
+        const previewTanggal = document.getElementById("preview-dekan-tanggal");
+        const previewFoto = document.getElementById("preview-dekan-foto");
+        const previewFotoFrontend = document.getElementById("preview-dekan-foto-frontend");
+
+        const frontendPreviewNama = document.getElementById("frontend-preview-nama");
+        const frontendPreviewStatus = document.getElementById("frontend-preview-status");
+        const frontendPreviewTempat = document.getElementById("frontend-preview-tempat");
+        const frontendPreviewTanggal = document.getElementById("frontend-preview-tanggal");
+
+        const formalSourceInput = document.getElementById("dekanFotoSourceInput");
+        const formalCroppedInput = document.getElementById("dekanFotoCroppedInput");
+        const formalErrorMessage = document.getElementById("dekanFotoErrorMessage");
+
+        const frontendSourceInput = document.getElementById("dekanFrontendSourceInput");
+        const frontendCroppedInput = document.getElementById("dekanFrontendCroppedInput");
+        const frontendErrorMessage = document.getElementById("dekanFrontendErrorMessage");
+
+        const formalPreview = document.getElementById("dekanPhotoPreview");
+        const formalPlaceholder = document.getElementById("dekanPhotoPlaceholder");
+
+        const frontendPreview = document.getElementById("dekanFrontendPreview");
+        const frontendPlaceholder = document.getElementById("dekanFrontendPlaceholder");
+
+        const frontendCardImage = document.getElementById("dekanFrontendCardImage");
+        const frontendCardPlaceholder = document.getElementById("dekanFrontendCardPlaceholder");
+
+        const cropModal = document.getElementById("dekanCropModal");
+        const cropImage = document.getElementById("dekanCropImage");
+        const cropHead = document.getElementById("dekanCropHead");
+        const cropBadge = document.getElementById("dekanCropBadge");
+        const cropTitle = document.getElementById("dekanCropTitle");
+        const cropDesc = document.getElementById("dekanCropDesc");
+        const cropApplyBtn = document.getElementById("dekanCropApplyBtn");
+        const cropCancelBtn = document.getElementById("dekanCropCancelBtn");
+
+        const maxFileSize = 10 * 1024 * 1024;
+
+        let cropper = null;
+        let objectUrl = null;
+        let activeMode = "formal";
+
+        function forceUppercase(input) {
+          if (!input) return;
+          input.addEventListener("input", function () {
+            const start = this.selectionStart;
+            const end = this.selectionEnd;
+            this.value = this.value.toUpperCase();
+            this.setSelectionRange(start, end);
+          });
+        }
+
+        function syncPreview() {
+          const namaValue = (namaInput?.value || "").trim().toUpperCase() || "-";
+          const statusValue = (statusInput?.value || "").trim().toUpperCase() || "-";
+          const tempatValue = (tempatInput?.value || "").trim().toUpperCase() || "-";
+          const tanggalValue = (tanggalInput?.value || "").trim().toUpperCase() || "-";
+
+          if (previewNama) previewNama.textContent = namaValue;
+          if (previewStatus) previewStatus.textContent = statusValue;
+          if (previewTempat) previewTempat.textContent = tempatValue;
+          if (previewTanggal) previewTanggal.textContent = tanggalValue;
+
+          if (frontendPreviewNama) frontendPreviewNama.textContent = namaValue;
+          if (frontendPreviewStatus) frontendPreviewStatus.textContent = statusValue;
+          if (frontendPreviewTempat) frontendPreviewTempat.textContent = tempatValue;
+          if (frontendPreviewTanggal) frontendPreviewTanggal.textContent = tanggalValue;
+        }
+
+        function assignFileToInput(input, file) {
+          const dt = new DataTransfer();
+          dt.items.add(file);
+          input.files = dt.files;
+        }
+
+        function destroyCropper() {
+          if (cropper) {
+            cropper.destroy();
+            cropper = null;
+          }
+        }
+
+        function closeCropModal(resetSource = false) {
+          destroyCropper();
+          cropModal.classList.remove("show");
+
+          if (objectUrl) {
+            URL.revokeObjectURL(objectUrl);
+            objectUrl = null;
+          }
+
+          if (resetSource) {
+            if (activeMode === "formal" && formalSourceInput) formalSourceInput.value = "";
+            if (activeMode === "frontend" && frontendSourceInput) frontendSourceInput.value = "";
+          }
+        }
+
+        function getCropConfig(mode) {
+          if (mode === "frontend") {
+            return {
+              aspectRatio: 460 / 300,
+              width: 920,
+              height: 600,
+              badge: "CROP FOTO FRONTEND",
+              title: "Sesuaikan Foto Frontend",
+              desc: "Gunakan area 460 × 300 untuk card dekan di halaman publik frontend.",
+            };
+          }
+
+          return {
+            aspectRatio: 3 / 4,
+            width: 900,
+            height: 1200,
+            badge: "CROP FOTO DEKAN",
+            title: "Sesuaikan Foto Resmi",
+            desc: "Gunakan area 3 × 4 untuk biodata dan tampilan formal dekan.",
+          };
+        }
+
+        function openCropModal(file, mode) {
+          const config = getCropConfig(mode);
+          activeMode = mode;
+
+          if (objectUrl) {
+            URL.revokeObjectURL(objectUrl);
+          }
+
+          objectUrl = URL.createObjectURL(file);
+
+          cropHead.setAttribute("data-mode", mode);
+          cropBadge.textContent = config.badge;
+          cropTitle.textContent = config.title;
+          cropDesc.textContent = config.desc;
+
+          cropImage.src = objectUrl;
+          cropModal.classList.add("show");
+
+          cropImage.onload = function () {
+            destroyCropper();
+
+            cropper = new Cropper(cropImage, {
+              aspectRatio: config.aspectRatio,
+              viewMode: 1,
+              dragMode: "move",
+              autoCropArea: 1,
+              responsive: true,
+              background: false,
+            });
+          };
+        }
+
+        function handleSourceChange(file, mode) {
+          if (!file) return;
+
+          const errorEl = mode === "formal" ? formalErrorMessage : frontendErrorMessage;
+          const inputEl = mode === "formal" ? formalSourceInput : frontendSourceInput;
+
+          if (file.size > maxFileSize) {
+            if (errorEl) errorEl.style.display = "block";
+            if (inputEl) inputEl.value = "";
+            return;
+          }
+
+          if (errorEl) errorEl.style.display = "none";
+          openCropModal(file, mode);
+        }
+
+        forceUppercase(namaInput);
+        forceUppercase(tempatInput);
+        forceUppercase(tanggalInput);
+
+        [namaInput, statusInput, tempatInput, tanggalInput].forEach((el) => {
+          if (!el) return;
+          el.addEventListener("input", syncPreview);
+          el.addEventListener("change", syncPreview);
+        });
+
+        syncPreview();
+
+        if (formalSourceInput) {
+          formalSourceInput.addEventListener("change", function () {
+            handleSourceChange(this.files && this.files[0], "formal");
+          });
+        }
+
+        if (frontendSourceInput) {
+          frontendSourceInput.addEventListener("change", function () {
+            handleSourceChange(this.files && this.files[0], "frontend");
+          });
+        }
+
+        if (cropCancelBtn) {
+          cropCancelBtn.addEventListener("click", function () {
+            closeCropModal(true);
+          });
+        }
+
+        if (cropApplyBtn) {
+          cropApplyBtn.addEventListener("click", async function () {
+            if (!cropper) return;
+
+            const config = getCropConfig(activeMode);
+
+            const canvas = cropper.getCroppedCanvas({
+              width: config.width,
+              height: config.height,
+              imageSmoothingEnabled: true,
+              imageSmoothingQuality: "high",
+            });
+
+            if (!canvas) return;
+
+            const blob = await new Promise((resolve) =>
+              canvas.toBlob(resolve, "image/png")
+            );
+
+            if (!blob) return;
+
+            const fileName =
+              activeMode === "frontend"
+                ? "dekan_frontend_cropped.png"
+                : "dekan_formal_cropped.png";
+
+            const croppedFile = new File([blob], fileName, {
+              type: "image/png",
+            });
+
+            const previewUrl = URL.createObjectURL(blob);
+
+            if (activeMode === "formal") {
+              assignFileToInput(formalCroppedInput, croppedFile);
+
+              if (formalPreview) {
+                formalPreview.src = previewUrl;
+                formalPreview.style.display = "block";
+              }
+
+              if (formalPlaceholder) {
+                formalPlaceholder.style.display = "none";
+              }
+
+              if (previewFoto) {
+                previewFoto.textContent = "TERSEDIA";
+              }
+            } else {
+              assignFileToInput(frontendCroppedInput, croppedFile);
+
+              if (frontendPreview) {
+                frontendPreview.src = previewUrl;
+                frontendPreview.style.display = "block";
+              }
+
+              if (frontendPlaceholder) {
+                frontendPlaceholder.style.display = "none";
+              }
+
+              if (frontendCardImage) {
+                frontendCardImage.src = previewUrl;
+                frontendCardImage.style.display = "block";
+              }
+
+              if (frontendCardPlaceholder) {
+                frontendCardPlaceholder.style.display = "none";
+              }
+
+              if (previewFotoFrontend) {
+                previewFotoFrontend.textContent = "TERSEDIA";
+              }
+            }
+
+            closeCropModal(true);
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

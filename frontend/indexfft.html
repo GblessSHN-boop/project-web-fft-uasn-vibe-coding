@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FFT</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="fftkb.png" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap"
+      rel="stylesheet" />
+    <script src="script.js" defer></script>
+  </head>
+
+  <body>
+    <header>
+      <div class="topbar">
+        <div class="topbar_left">
+          <a href="https://suryanusantara.ac.id/">
+            <img class="image" src="uasnlogo.png" alt="back to uasn" />
+            <span>Back</span>
+          </a>
+        </div>
+        <div class="topbar_right">
+          <a href="#" class="daftar-btn">DAFTAR SEKARANG</a>
+        </div>
+      </div>
+      <div class="container">
+        <div class="brand-wrapper">
+          <div class="logo">
+            <img src="fftkb.png" alt="FILSAFAT TEOLOGI" />
+          </div>
+          <div class="branding">
+            <h1>FAKULTAS FILSAFAT TEOLOGI</h1>
+            <p class="brand-universitas">UNIVERSITAS ADVENT SURYA NUSANTARA</p>
+          </div>
+        </div>
+        <div>
+          <button class="menu-toggle">☰</button>
+          <nav class="sidebar-nav">
+            <ul>
+              <li><a href="#program-studi">Program Studi</a></li>
+              <li><a href="#latar-belakang">Latar Belakang</a></li>
+              <li><a href="#visi-misi">Visi & Misi</a></li>
+              <li><a href="#organisasi">Organisasi</a></li>
+              <li><a href="pimpinan-dosen.html">Pimpinan &amp; Dosen</a></li>
+              <li><a href="#berita">Berita</a></li>
+              <li><a href="#kontak">Kontak</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="hero-slider">
+          <img src="viewmore/1.png" class="slide active" />
+          <img src="viewmore/2.png" class="slide" />
+          <img src="viewmore/3.png" class="slide" />
+          <img src="viewmore/4.png" class="slide" />
+          <img src="viewmore/5.png" class="slide" />
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <a href="#" class="view-more" id="viewMoreBtn"> VIEW MORE </a>
+        </div>
+      </section>
+
+      <section class="fft-intro">
+        <a
+          href="https://www.instagram.com/himafftuasn01"
+          target="_blank"
+          class="fft-link">
+          <div class="fft-title">
+            <img src="fftkb.png" alt="Logo FFT" />
+            <h2>FAKULTAS FILSAFAT TEOLOGI</h2>
+          </div>
+        </a>
+      </section>
+
+      <section class="fft-about">
+        <div id="tentang-fft" class="fft-about-content">
+          <p>
+            Fakultas Filsafat Teologi (FFT) adalah fakultas yang berfokus pada
+            pengkajian:
+          </p>
+          <ul>
+            <li>Ilmu Filsafat</li>
+            <li>Ilmu Teologi (Ilmu Ketuhanan)</li>
+            <li>Studi Alkitab dan kepemimpinan rohani</li>
+            <li>Etika dan moralitas berbasis nilai Kristen Advent</li>
+          </ul>
+          <p>
+            Karena berada di bawah institusi “Advent”, maka secara teologis
+            fakultas ini berafiliasi dengan ajaran Gereja Masehi Advent Hari
+            Ketujuh.
+          </p>
+        </div>
+      </section>
+
+      <section id="program-studi" class="program-studi">
+        <h2 class="program-title">PROGRAM STUDI</h2>
+        <div class="program-image">
+          <img src="prodi.png" alt="Program Studi FFT" />
+        </div>
+      </section>
+
+      <div class="background-section">
+        <section id="latar-belakang" class="latar-belakang">
+          <div class="latar-card">
+            <div class="latar-container">
+              <h2 class="latar-title">LATAR BELAKANG</h2>
+              <p>
+                Fakultas Filsafat Teologi (FFT) Universitas Advent Surya
+                Nusantara didirikan untuk mempersiapkan mahasiswa menjadi
+                pemimpin rohani, pelayan gereja, serta pendidik yang memiliki
+                pemahaman teologis yang mendalam dan berlandaskan nilai-nilai
+                iman Kristen.
+              </p>
+              <p>
+                Dalam menghadapi perkembangan zaman, gereja dan masyarakat
+                membutuhkan sumber daya manusia yang tidak hanya memiliki
+                pengetahuan teologi, tetapi juga kemampuan berpikir kritis,
+                kepemimpinan rohani, serta integritas moral yang kuat.
+              </p>
+              <p>
+                Oleh karena itu, FFT hadir sebagai wadah pendidikan yang
+                memadukan kajian akademik, pembinaan spiritual, serta
+                pengembangan karakter untuk mempersiapkan lulusan yang siap
+                melayani di gereja, lembaga pendidikan, maupun masyarakat luas.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="visi-misi" class="visi-misi">
+          <div class="visi-card">
+            <h2 class="visi-title">VISI</h2>
+
+            <p>
+              Menjadi fakultas yang unggul dalam pengembangan ilmu filsafat dan
+              teologi yang berlandaskan nilai-nilai iman Kristen Advent serta
+              menghasilkan lulusan yang berintegritas, berkarakter rohani, dan
+              siap melayani gereja serta masyarakat.
+            </p>
+
+            <h2 class="misi-title">MISI</h2>
+
+            <ul>
+              <li>
+                Menyelenggarakan pendidikan dan pengajaran di bidang filsafat
+                dan teologi.
+              </li>
+              <li>
+                Mengembangkan pemahaman Alkitabiah yang mendalam bagi mahasiswa.
+              </li>
+              <li>Membentuk kepemimpinan rohani yang berintegritas.</li>
+              <li>
+                Mempersiapkan lulusan yang siap melayani gereja dan masyarakat.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <div class="popup-daftar" id="popupDaftar">
+        <div class="popup-content">
+          <h2>AYO GABUNG<br />BERSAMA KAMI</h2>
+
+          <a
+            href="https://wa.me/6282273345200"
+            target="_blank"
+            class="popup-btn">
+            <span>📱</span> DEKAN
+          </a>
+
+          <a
+            href="https://wa.me/6282129500506"
+            target="_blank"
+            class="popup-btn">
+            <span>📱</span> SEKRETARIS
+          </a>
+
+          <a
+            href="https://www.instagram.com/himafftuasn01"
+            target="_blank"
+            class="popup-btn">
+            <span>📷</span> @himafftuasn
+          </a>
+
+          <button class="popup-close" id="closePopup">Tutup</button>
+        </div>
+      </div>
+
+      <section id="organisasi" class="organisasi-header">
+        <div class="org-bar-top"></div>
+
+        <div class="org-title-box">
+          <h2>ORGANISASI</h2>
+        </div>
+
+        <div class="org-bar-bottom">
+          <span>HIMPUNAN MAHASISWA</span>
+        </div>
+      </section>
+
+      <section id="organisasi-content" class="organisasi-content">
+        <div class="org-container">
+          <div class="org-inner">
+            <div class="org-image">
+              <div class="org-bg"></div>
+              <img
+                src="organisasi/3diconfft.png"
+                class="org-logo-left"
+                alt="Logo Organisasi Kiri" />
+            </div>
+
+            <div class="org-text">
+              <span class="org-label">HIMA</span>
+
+              <h3>
+                HIMPUNAN MAHASISWA
+                <small>FAKULTAS FILSAFAT TEOLOGI</small>
+              </h3>
+
+              <p>
+                Himpunan Mahasiswa Fakultas Filsafat Teologi (HIMA FFT) adalah
+                organisasi kemahasiswaan yang menjadi wadah pengembangan
+                kepemimpinan, kebersamaan, dan pelayanan mahasiswa dalam
+                kegiatan akademik, rohani, dan sosial.
+              </p>
+
+              <a
+                href="https://www.instagram.com/himafftuasn01?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                class="org-link"
+                target="_blank"
+                rel="noopener noreferrer">
+                Selengkapnya...
+              </a>
+            </div>
+
+            <div class="org-image-right">
+              <img
+                src="organisasi/bgorganfft.png"
+                class="org-logo-right"
+                alt="Logo Organisasi Kanan" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="berita-wrapper">
+        <section id="berita" class="berita-header">
+          <div class="berita-bar-top"></div>
+          <div class="berita-title-box">
+            <h2>BERITA</h2>
+          </div>
+          <div class="berita-bar-bottom">
+            <span>UNIVERSITAS ADVENT SURYA NUSANTARA</span>
+          </div>
+        </section>
+
+        <section class="berita-section">
+          <div class="berita-watermark">
+            <img src="organisasi/bgorganfft.png" alt="Watermark HIMA FFT" />
+          </div>
+
+          <div class="berita-banner">
+            <a
+              href="#"
+              class="berita-banner-link"
+              id="frontendBannerLink"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="display: none;">
+              <img
+                id="frontendBannerImage"
+                class="berita-banner-media"
+                alt="Banner Informasi"
+                style="display: none;" />
+
+              <video
+                id="frontendBannerVideo"
+                class="berita-banner-media"
+                autoplay
+                muted
+                loop
+                playsinline
+                style="display: none;"></video>
+
+              <div class="berita-banner-label">i</div>
+            </a>
+
+            <div id="frontendBannerEmpty" class="berita-banner-link">
+              <div class="berita-banner-label">BANNER INFORMASI BELUM TERSEDIA</div>
+            </div>
+          </div>
+
+          <div class="berita-card">
+            <div class="berita-head-row">
+              <h3>TRENDING</h3>
+
+              <div class="berita-search-box">
+                <div class="group">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
+                    <g>
+                      <path
+                        d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
+                    </g>
+                  </svg>
+
+                  <input
+                    id="beritaSearch"
+                    class="input"
+                    type="search"
+                    placeholder="Cari berita..." />
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="beritaEmptyState"
+              class="berita-empty-state"
+              style="display: none">
+              Tidak ada berita yang sesuai dengan pencarian Anda.
+            </div>
+
+            <div class="berita-layout">
+              <div id="beritaTrendingContainer" class="berita-featured-column"></div>
+
+              <div class="berita-divider"></div>
+
+              <div class="berita-grid-column-scroll">
+                <div id="beritaGridContainer" class="berita-grid-column"></div>
+              </div>
+            </div>
+
+            <div class="berita-footer-note">
+              <span>Berita ini merupakan konten yang dilindungi hak cipta.</span>
+              <a href="berita-ketentuan.html" class="berita-footer-legal-link">
+                Ketentuan &amp; Pengaduan
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="fft-footer">
+      <div class="fft-footer-top">
+        <div class="fft-footer-inner">
+          <div class="fft-footer-brand">
+            <img src="fftkb.png" alt="Logo Fakultas Filsafat Teologi" />
+            <div class="fft-footer-brand-text">
+              <h3>FAKULTAS FILSAFAT TEOLOGI</h3>
+              <p>UNIVERSITAS ADVENT SURYA NUSANTARA</p>
+              <span>
+                Fakultas yang berkomitmen pada pengembangan karakter, pelayanan,
+                dan keunggulan akademik berdasarkan nilai-nilai Kristiani.
+              </span>
+            </div>
+          </div>
+
+          <div class="fft-footer-column">
+            <h4>Akademik</h4>
+            <a
+              href="https://suryanusantara.ac.id/fekon"
+              target="_blank"
+              rel="noopener noreferrer">
+              Fakultas Ekonomi
+            </a>
+            <a
+              href="https://suryanusantara.ac.id/fakes"
+              target="_blank"
+              rel="noopener noreferrer">
+              Fakultas Kesehatan
+            </a>
+            <a
+              href="https://suryanusantara.ac.id/fasilkom"
+              target="_blank"
+              rel="noopener noreferrer">
+              Fakultas Sistem Informasi &amp; Ilmu Komputer
+            </a>
+          </div>
+
+          <div class="fft-footer-column">
+            <h4>Kontak Fakultas</h4>
+            <p>Fakultas Filsafat Teologi</p>
+            <p>Universitas Advent Surya Nusantara</p>
+            <p>Jl. Rakutta Sembiring No. 01</p>
+            <p>Siantar Martoba, Pematangsiantar</p>
+            <p>Email: fft@uasn.ac.id</p>
+
+            <div class="footer-faculty-social">
+              <a
+                href="https://www.instagram.com/himafftuasn01?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-ig-faculty">
+                Instagram Fakultas
+              </a>
+            </div>
+          </div>
+
+          <div class="fft-footer-column fft-footer-map">
+            <h4>Lokasi Kampus</h4>
+            <div class="fft-map-wrap">
+              <iframe
+                src="https://www.google.com/maps?q=Jl.%20Rakutta%20Sembiring%20No.%2001,%20Siantar%20Martoba,%20Pematangsiantar&output=embed"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen
+                title="Peta Lokasi Universitas Advent Surya Nusantara">
+              </iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fft-subfooter">
+        <div class="fft-subfooter-inner">
+          <div class="subfooter-left">
+            <p class="subfooter-copy">
+              © 2026 Fakultas Filsafat Teologi - Universitas Advent Surya
+              Nusantara. Seluruh hak cipta dilindungi.
+            </p>
+            <p class="dev-text">
+              Website ini dikembangkan oleh mahasiswa Fakultas Sistem Informasi
+              &amp; Ilmu Komputer Universitas Advent Surya Nusantara:
+              <strong>Gland Siahaan</strong>
+            </p>
+          </div>
+
+          <div class="subfooter-right">
+            <a
+              href="https://www.instagram.com/glandsiahaan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              target="_blank"
+              rel="noopener noreferrer"
+              class="subfooter-icon ig"
+              aria-label="Instagram Gland Siahaan">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.8A3.95 3.95 0 0 0 3.8 7.75v8.5A3.95 3.95 0 0 0 7.75 20.2h8.5a3.95 3.95 0 0 0 3.95-3.95v-8.5a3.95 3.95 0 0 0-3.95-3.95h-8.5Zm8.95 1.35a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.8A3.2 3.2 0 1 0 12 15.2 3.2 3.2 0 0 0 12 8.8Z"></path>
+              </svg>
+            </a>
+
+            <a
+              href="https://www.linkedin.com/in/glandsiahaan/?lipi=urn%3Ali%3Apage%3Ad_flagship3_feed%3B%2BLGmqJ%2FqQWyGBJBrltf4AQ%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="subfooter-icon linkedin"
+              aria-label="LinkedIn Gland Siahaan">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A1.97 1.97 0 1 0 5.3 6.94 1.97 1.97 0 0 0 5.25 3ZM20.44 12.74c0-3.44-1.84-5.04-4.3-5.04-1.98 0-2.87 1.09-3.37 1.86V8.5H9.39c.05.7 0 11.5 0 11.5h3.38v-6.42c0-.34.02-.68.13-.92.27-.68.89-1.38 1.92-1.38 1.35 0 1.89 1.03 1.89 2.53V20h3.38v-7.26Z"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <div>
+      <div class="preloader">
+        <div class="loader">
+          <div class="inner one"></div>
+          <div class="inner two"></div>
+          <div class="inner three"></div>
+        </div>
+
+        <div class="loading-text">
+          <span>L</span>
+          <span>O</span>
+          <span>A</span>
+          <span>D</span>
+          <span>I</span>
+          <span>N</span>
+          <span>G</span><br />
+          <span>F</span>
+          <span>F</span>
+          <span>T</span>
+          <span>U</span>
+          <span>A</span>
+          <span>S</span>
+          <span>N</span>
+        </div>
+      </div>
+      <div class="cursor-glow"></div>
+    </div>
+  </body>
+
+  
+</html>

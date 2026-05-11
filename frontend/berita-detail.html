@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail Berita FFT</title>
+  <link rel="icon" href="fftkb.png" type="image/x-icon" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #111;
+    }
+
+    .detail-wrap {
+      max-width: 980px;
+      margin: 28px auto;
+      background: #fff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08);
+    }
+
+    .detail-head {
+      padding: 22px 24px 12px;
+      border-bottom: 1px solid #ececec;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .detail-back {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: #111;
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .detail-brand {
+      font-size: 14px;
+      color: #666;
+      font-weight: 700;
+    }
+
+    .detail-image {
+      width: 100%;
+      aspect-ratio: 1600 / 900;
+      object-fit: cover;
+      display: block;
+      background: #efefef;
+    }
+
+    .detail-body {
+      padding: 26px 24px 28px;
+    }
+
+    .detail-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: #b6ff00;
+      color: #111;
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .detail-title {
+      margin: 0 0 10px;
+      font-size: 34px;
+      line-height: 1.28;
+      font-weight: 900;
+      color: #111;
+    }
+
+    .detail-subtitle {
+      margin: 0 0 18px;
+      font-size: 17px;
+      line-height: 1.75;
+      color: #555;
+    }
+
+    .detail-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .detail-meta span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #f1f1f1;
+      color: #333;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .detail-content {
+      font-size: 16px;
+      line-height: 1.9;
+      color: #222;
+      white-space: pre-line;
+    }
+
+    .detail-footer-note {
+      margin-top: 26px;
+      padding-top: 18px;
+      border-top: 1px solid #ececec;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #666;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .detail-footer-note a {
+      color: #111;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .detail-empty {
+      padding: 40px 24px;
+      text-align: center;
+      color: #777;
+      font-size: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .detail-wrap {
+        margin: 16px;
+        border-radius: 18px;
+      }
+
+      .detail-body,
+      .detail-head {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .detail-title {
+        font-size: 26px;
+      }
+
+      .detail-subtitle {
+        font-size: 15px;
+      }
+
+      .detail-content {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="detail-wrap">
+    <div class="detail-head">
+      <a href="indexfft.html#berita" class="detail-back">← Kembali ke Berita</a>
+      <div class="detail-brand">Fakultas Filsafat Teologi</div>
+    </div>
+
+    <div id="detailContainer">
+      <div class="detail-empty">Memuat berita...</div>
+    </div>
+  </div>
+
+  <script>
+    (async function () {
+      const API_BASE = "http://127.0.0.1:5000";
+      const STATIC_BASE = `${API_BASE}/static/`;
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+      const container = document.getElementById("detailContainer");
+
+      if (!id || !container) {
+        container.innerHTML = '<div class="detail-empty">ID berita tidak ditemukan.</div>';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/api/berita`, {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const payload = await response.json();
+        const semuaBerita = [
+          ...(Array.isArray(payload.trending) ? payload.trending : []),
+          ...(Array.isArray(payload.umum) ? payload.umum : []),
+        ];
+
+        const berita = semuaBerita.find((item) => String(item.id) === String(id));
+
+        if (!berita) {
+          container.innerHTML = '<div class="detail-empty">Berita tidak ditemukan atau belum tersedia.</div>';
+          return;
+        }
+
+        await fetch(`${API_BASE}/api/track-click`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ articleId: berita.id }),
+        }).catch(() => {});
+
+        const imageUrl = berita.gambar_detail
+          ? STATIC_BASE + berita.gambar_detail
+          : (berita.thumbnail ? STATIC_BASE + berita.thumbnail : "berita/news-empty.png");
+
+        container.innerHTML = `
+          <img class="detail-image" src="${imageUrl}" alt="${escapeHtml(berita.judul || "Berita")}" />
+
+          <div class="detail-body">
+            ${berita.is_new ? '<span class="detail-badge">NEW TITLE</span>' : ""}
+            <h1 class="detail-title">${escapeHtml(berita.judul || "Tanpa Judul")}</h1>
+            <p class="detail-subtitle">${escapeHtml(berita.subjudul || "-")}</p>
+
+            <div class="detail-meta">
+              <span>Rilis: ${formatTanggal(berita.published_at || berita.tayang_pada || berita.created_at)}</span>
+              <span>Kode: ${escapeHtml(berita.kode_berita || "-")}</span>
+            </div>
+
+            <div class="detail-content">${escapeHtml(berita.isi || "")}</div>
+
+            <div class="detail-footer-note">
+              <span>Berita ini merupakan konten yang dilindungi hak cipta.</span>
+              <a href="berita-ketentuan.html">Ketentuan & Pengaduan</a>
+            </div>
+          </div>
+        `;
+
+        document.title = `${berita.judul || "Detail Berita"} - FFT`;
+      } catch (error) {
+        console.error("Gagal memuat detail berita:", error);
+        container.innerHTML = '<div class="detail-empty">Gagal memuat detail berita.</div>';
+      }
+
+      function formatTanggal(value) {
+        if (!value) return "-";
+
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return "-";
+
+        return new Intl.DateTimeFormat("id-ID", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(date);
+      }
+
+      function escapeHtml(text) {
+        return String(text || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+    })();
+  </script>
+</body>
+</html>

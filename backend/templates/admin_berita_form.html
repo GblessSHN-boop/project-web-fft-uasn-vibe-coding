@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ 'Edit Berita' if berita else 'Tambah Berita' }} - Admin FFT</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css" />
+
+  <style>
+    .berita-form-shell {
+      max-width: 1180px;
+      margin: 30px auto;
+      background: #f3f3f3;
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+    }
+
+    .berita-form-shell h2 {
+      margin: 0 0 20px 0;
+      font-size: 28px;
+      color: #111;
+    }
+
+    .berita-form-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .berita-meta-box {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+      padding: 16px;
+      background: #fafafa;
+      border: 1px solid #e5e5e5;
+      border-radius: 14px;
+    }
+
+    .berita-meta-item {
+      font-size: 13px;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .berita-meta-item strong {
+      color: #111;
+    }
+
+    .berita-form-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+    }
+
+    .berita-form-group {
+      margin-bottom: 16px;
+    }
+
+    .berita-form-group label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #111;
+    }
+
+    .berita-form-group input,
+    .berita-form-group textarea,
+    .berita-form-group select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #d8d8d8;
+      border-radius: 12px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .berita-form-group textarea {
+      min-height: 300px;
+      resize: vertical;
+    }
+
+    .berita-preview-card {
+      border: 1px solid #e5e5e5;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 16px;
+      background: #fafafa;
+    }
+
+    .berita-preview-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #111;
+    }
+
+    .berita-preview-image {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      display: block;
+      background: #f2f2f2;
+    }
+
+    .berita-preview-empty {
+      font-size: 13px;
+      color: #777;
+      padding: 12px;
+      background: #fff;
+      border: 1px dashed #ccc;
+      border-radius: 12px;
+    }
+
+    .berita-help {
+      font-size: 12px;
+      color: #666;
+      margin-top: 6px;
+      line-height: 1.7;
+    }
+
+    .berita-note {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #666;
+      line-height: 1.7;
+    }
+
+    .berita-form-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .berita-btn {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .berita-btn-green {
+      background: #b6ff00;
+      color: #111;
+    }
+
+    .berita-btn-dark {
+      background: #111;
+      color: #fff;
+    }
+
+    .flash-wrap {
+      margin-bottom: 16px;
+    }
+
+    .flash-item {
+      padding: 12px 14px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .flash-success {
+      background: #e8ffd2;
+      color: #246400;
+    }
+
+    .flash-danger {
+      background: #ffe0e0;
+      color: #8a1111;
+    }
+
+    .berita-inline-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .berita-status-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .berita-preview-frontend {
+      background: #0d0d0d;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+    }
+
+    .berita-preview-frontend-image {
+      width: 100%;
+      aspect-ratio: {{ berita_thumb_crop_width }} / {{ berita_thumb_crop_height }};
+      object-fit: cover;
+      display: block;
+      background: #111;
+    }
+
+    .berita-preview-frontend-body {
+      padding: 12px 14px 14px;
+      color: #fff;
+    }
+
+    .berita-preview-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #fff;
+      color: #111;
+      font-size: 10px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .berita-preview-badge-new {
+      background: #b6ff00;
+    }
+
+    .berita-preview-frontend-title {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.4;
+      font-weight: 800;
+    }
+
+    .berita-preview-frontend-sub {
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.72);
+    }
+
+    .berita-preview-detail {
+      border: 1px solid #e5e5e5;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .berita-preview-detail-image {
+      width: 100%;
+      aspect-ratio: {{ berita_detail_crop_width }} / {{ berita_detail_crop_height }};
+      object-fit: cover;
+      display: block;
+      background: #f1f1f1;
+    }
+
+    .berita-preview-detail-body {
+      padding: 16px 16px 18px;
+    }
+
+    .berita-preview-detail-body h4 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      line-height: 1.4;
+      color: #111;
+    }
+
+    .berita-preview-detail-body p {
+      margin: 0 0 10px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #444;
+    }
+
+    .berita-preview-detail-excerpt {
+      font-size: 13px !important;
+      color: #666 !important;
+    }
+
+    .crop-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,0.7);
+      padding: 30px 14px;
+      overflow: auto;
+    }
+
+    .crop-modal.is-open {
+      display: block;
+    }
+
+    .crop-modal-dialog {
+      width: min(960px, 96vw);
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 16px 42px rgba(0,0,0,0.22);
+    }
+
+    .crop-modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 18px;
+      background: #111;
+      color: #fff;
+    }
+
+    .crop-modal-head h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .crop-close-btn {
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .crop-modal-body {
+      padding: 16px;
+      background: #f6f6f6;
+    }
+
+    .crop-modal-image-wrap {
+      min-height: 420px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid #ddd;
+    }
+
+    #cropModalImage {
+      display: block;
+      max-width: 100%;
+    }
+
+    .crop-modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      padding: 16px 18px 18px;
+      background: #fff;
+    }
+
+    @media (max-width: 980px) {
+      .berita-form-grid,
+      .berita-meta-box,
+      .berita-inline-grid,
+      .berita-status-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+
+  <div class="berita-form-shell">
+    <h2>{{ 'EDIT BERITA' if berita else 'TAMBAH BERITA BARU' }}</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-wrap">
+          {% for category, message in messages %}
+            <div class="flash-item flash-{{ category if category in ['success', 'danger'] else 'success' }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="berita-form-card">
+      {% if berita %}
+      <div class="berita-meta-box">
+        <div class="berita-meta-item"><strong>Kode Berita:</strong> {{ berita.kode_berita or '-' }}</div>
+        <div class="berita-meta-item"><strong>Tanggal Pembuatan:</strong> {{ berita.created_at or '-' }}</div>
+        <div class="berita-meta-item"><strong>View Count:</strong> {{ berita.click_count or 0 }}</div>
+        <div class="berita-meta-item"><strong>Slug:</strong> {{ berita.slug or '-' }}</div>
+        <div class="berita-meta-item"><strong>Jadwal Tayang:</strong> {{ berita.tayang_pada or '-' }}</div>
+        <div class="berita-meta-item"><strong>Tanggal Rilis Frontend:</strong> {{ berita.published_at or '-' }}</div>
+      </div>
+      {% endif %}
+
+      <form id="beritaForm" action="{{ url_for('admin_berita_save') }}" method="post" enctype="multipart/form-data">
+        {% if berita %}
+          <input type="hidden" name="berita_id" value="{{ berita.id }}">
+        {% endif %}
+
+        <input type="hidden" id="thumbnail_crop_data" name="thumbnail_crop_data">
+        <input type="hidden" id="detail_crop_data" name="detail_crop_data">
+
+        <div class="berita-form-grid">
+          <div>
+            <div class="berita-form-group">
+              <label for="judul">Judul Berita</label>
+              <input
+                type="text"
+                id="judul"
+                name="judul"
+                placeholder="Masukkan judul berita"
+                value="{{ berita.judul if berita else '' }}"
+                required>
+            </div>
+
+            <div class="berita-form-group">
+              <label for="subjudul">Subjudul</label>
+              <input
+                type="text"
+                id="subjudul"
+                name="subjudul"
+                placeholder="Masukkan subjudul berita"
+                value="{{ berita.subjudul if berita else '' }}">
+            </div>
+
+            <div class="berita-form-group">
+              <label for="isi">Isi Berita</label>
+              <textarea
+                id="isi"
+                name="isi"
+                placeholder="Masukkan isi berita"
+                required>{{ berita.isi if berita else '' }}</textarea>
+            </div>
+          </div>
+
+          <div>
+            <div class="berita-inline-grid">
+              <div class="berita-preview-card">
+                <div class="berita-preview-title">Thumbnail Saat Ini</div>
+                {% if berita and berita.thumbnail %}
+                  <img
+                    src="{{ url_for('static', filename=berita.thumbnail) }}"
+                    alt="Thumbnail berita"
+                    class="berita-preview-image">
+                {% else %}
+                  <div class="berita-preview-empty">Belum ada thumbnail tersimpan.</div>
+                {% endif %}
+              </div>
+
+              <div class="berita-preview-card">
+                <div class="berita-preview-title">Gambar Detail Saat Ini</div>
+                {% if berita and berita.gambar_detail %}
+                  <img
+                    src="{{ url_for('static', filename=berita.gambar_detail) }}"
+                    alt="Gambar detail berita"
+                    class="berita-preview-image">
+                {% else %}
+                  <div class="berita-preview-empty">Belum ada gambar detail tersimpan.</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="berita-form-group">
+              <label for="thumbnail">Upload Thumbnail Frontend</label>
+              <input
+                type="file"
+                id="thumbnail"
+                name="thumbnail"
+                accept=".png,.jpg,.jpeg,.webp"
+                {% if not berita %}required{% endif %}>
+              <div class="berita-help">
+                Setelah pilih image, sistem akan langsung membuka popup crop manual untuk thumbnail frontend.
+              </div>
+            </div>
+
+            <div class="berita-preview-card">
+              <div class="berita-preview-title">Preview Thumbnail Baru</div>
+              <img
+                id="thumbnailNewPreview"
+                class="berita-preview-image"
+                alt="Preview thumbnail baru"
+                style="display:none;">
+              <div id="thumbnailNewPreviewEmpty" class="berita-preview-empty">
+                Pilih thumbnail baru untuk crop dan melihat preview hasilnya.
+              </div>
+            </div>
+
+            <div class="berita-form-group">
+              <label for="gambar_detail">Upload Gambar Halaman Detail</label>
+              <input
+                type="file"
+                id="gambar_detail"
+                name="gambar_detail"
+                accept=".png,.jpg,.jpeg,.webp"
+                {% if not berita %}required{% endif %}>
+              <div class="berita-help">
+                Setelah pilih image, sistem akan langsung membuka popup crop manual untuk gambar halaman detail.
+              </div>
+            </div>
+
+            <div class="berita-preview-card">
+              <div class="berita-preview-title">Preview Gambar Detail Baru</div>
+              <img
+                id="detailNewPreview"
+                class="berita-preview-image"
+                alt="Preview gambar detail baru"
+                style="display:none;">
+              <div id="detailNewPreviewEmpty" class="berita-preview-empty">
+                Pilih gambar detail baru untuk crop dan melihat preview hasilnya.
+              </div>
+            </div>
+
+            <div class="berita-preview-card">
+              <div class="berita-preview-title">Preview Frontend Card</div>
+              <div class="berita-preview-frontend">
+                <img
+                  id="frontendCardPreviewImage"
+                  class="berita-preview-frontend-image"
+                  alt="Preview frontend"
+                  {% if berita and berita.thumbnail %}
+                    src="{{ url_for('static', filename=berita.thumbnail) }}"
+                  {% else %}
+                    style="display:none;"
+                  {% endif %}>
+
+                <div
+                  id="frontendCardPreviewEmpty"
+                  class="berita-preview-empty"
+                  {% if berita and berita.thumbnail %}style="display:none;"{% endif %}>
+                  Thumbnail frontend belum tersedia.
+                </div>
+
+                <div class="berita-preview-frontend-body">
+                  <h4 id="frontendCardTitle" class="berita-preview-frontend-title">
+                    {{ berita.judul if berita and berita.judul else 'JUDUL BERITA' }}
+                  </h4>
+                  <div id="frontendCardSub" class="berita-preview-frontend-sub">
+                    {{ berita.subjudul if berita and berita.subjudul else 'Subjudul berita akan tampil di sini.' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="berita-preview-card">
+              <div class="berita-preview-title">Preview Halaman Detail Setelah Klik Berita</div>
+              <div class="berita-preview-detail">
+                <img
+                  id="detailPagePreviewImage"
+                  class="berita-preview-detail-image"
+                  alt="Preview detail page"
+                  {% if berita and berita.gambar_detail %}
+                    src="{{ url_for('static', filename=berita.gambar_detail) }}"
+                  {% else %}
+                    style="display:none;"
+                  {% endif %}>
+
+                <div
+                  id="detailPagePreviewEmpty"
+                  class="berita-preview-empty"
+                  {% if berita and berita.gambar_detail %}style="display:none;"{% endif %}>
+                  Gambar detail belum tersedia.
+                </div>
+
+                <div class="berita-preview-detail-body">
+                  <h4 id="detailPageTitle">{{ berita.judul if berita and berita.judul else 'Judul berita' }}</h4>
+                  <p id="detailPageSub">{{ berita.subjudul if berita and berita.subjudul else 'Subjudul berita akan tampil di sini.' }}</p>
+                  <p id="detailPageExcerpt" class="berita-preview-detail-excerpt">
+                    {{ berita.isi[:180] ~ '...' if berita and berita.isi else 'Ringkasan isi berita akan tampil di area ini setelah berita dibuka.' }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="berita-form-actions">
+          <button type="submit" class="berita-btn berita-btn-green">
+            {{ 'SIMPAN PERUBAHAN' if berita else 'SIMPAN BERITA' }}
+          </button>
+
+          <a href="{{ url_for('admin_berita_list') }}" class="berita-btn berita-btn-dark">
+            {{ 'KEMBALI KE DATA BERITA' if berita else 'BATAL' }}
+          </a>
+        </div>
+
+        
+      </form>
+    </div>
+  </div>
+
+  <div id="cropModal" class="crop-modal">
+    <div class="crop-modal-dialog">
+      <div class="crop-modal-head">
+        <h3 id="cropModalTitle">Crop Image</h3>
+        <button type="button" id="cropCloseBtn" class="crop-close-btn">×</button>
+      </div>
+
+      <div class="crop-modal-body">
+        <div class="crop-modal-image-wrap">
+          <img id="cropModalImage" alt="Crop image">
+        </div>
+      </div>
+
+      <div class="crop-modal-actions">
+        <button type="button" id="cropCancelBtn" class="berita-btn berita-btn-dark">Batal</button>
+        <button type="button" id="cropApplyBtn" class="berita-btn berita-btn-green">Gunakan Hasil Crop</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"></script>
+  <script>
+    (() => {
+      const form = document.getElementById("beritaForm");
+
+      const judulInput = document.getElementById("judul");
+      const subjudulInput = document.getElementById("subjudul");
+      const isiInput = document.getElementById("isi");
+
+      const frontendCardTitle = document.getElementById("frontendCardTitle");
+      const frontendCardSub = document.getElementById("frontendCardSub");
+      const detailPageTitle = document.getElementById("detailPageTitle");
+      const detailPageSub = document.getElementById("detailPageSub");
+      const detailPageExcerpt = document.getElementById("detailPageExcerpt");
+
+      const cropModal = document.getElementById("cropModal");
+      const cropModalTitle = document.getElementById("cropModalTitle");
+      const cropModalImage = document.getElementById("cropModalImage");
+      const cropCloseBtn = document.getElementById("cropCloseBtn");
+      const cropCancelBtn = document.getElementById("cropCancelBtn");
+      const cropApplyBtn = document.getElementById("cropApplyBtn");
+
+      const targets = {
+        thumbnail: {
+          input: document.getElementById("thumbnail"),
+          hidden: document.getElementById("thumbnail_crop_data"),
+          modalTitle: "Crop Thumbnail Frontend",
+          width: {{ berita_thumb_crop_width|int }},
+          height: {{ berita_thumb_crop_height|int }},
+          previewMain: document.getElementById("frontendCardPreviewImage"),
+          previewMainEmpty: document.getElementById("frontendCardPreviewEmpty"),
+          previewNew: document.getElementById("thumbnailNewPreview"),
+          previewNewEmpty: document.getElementById("thumbnailNewPreviewEmpty"),
+        },
+        detail: {
+          input: document.getElementById("gambar_detail"),
+          hidden: document.getElementById("detail_crop_data"),
+          modalTitle: "Crop Gambar Halaman Detail",
+          width: {{ berita_detail_crop_width|int }},
+          height: {{ berita_detail_crop_height|int }},
+          previewMain: document.getElementById("detailPagePreviewImage"),
+          previewMainEmpty: document.getElementById("detailPagePreviewEmpty"),
+          previewNew: document.getElementById("detailNewPreview"),
+          previewNewEmpty: document.getElementById("detailNewPreviewEmpty"),
+        },
+      };
+
+      let cropper = null;
+      let activeTargetKey = null;
+
+      function syncTextPreviews() {
+        const judul = judulInput.value.trim() || "JUDUL BERITA";
+        const subjudul = subjudulInput.value.trim() || "Subjudul berita akan tampil di sini.";
+        const isi = isiInput.value.trim() || "Ringkasan isi berita akan tampil di area ini setelah berita dibuka.";
+
+        frontendCardTitle.textContent = judul;
+        frontendCardSub.textContent = subjudul;
+        detailPageTitle.textContent = judul;
+        detailPageSub.textContent = subjudul;
+        detailPageExcerpt.textContent = isi.length > 180 ? isi.slice(0, 180) + "..." : isi;
+
+      }
+
+      function destroyCropper() {
+        if (cropper) {
+          cropper.destroy();
+          cropper = null;
+        }
+      }
+
+      function closeCropModal() {
+        cropModal.classList.remove("is-open");
+        destroyCropper();
+        cropModalImage.removeAttribute("src");
+      }
+
+      function openCropModal(targetKey, file) {
+        const target = targets[targetKey];
+        activeTargetKey = targetKey;
+
+        cropModalTitle.textContent = target.modalTitle;
+        cropModal.classList.add("is-open");
+
+        const objectUrl = URL.createObjectURL(file);
+
+        cropModalImage.onload = function () {
+          destroyCropper();
+          cropper = new Cropper(cropModalImage, {
+            aspectRatio: target.width / target.height,
+            viewMode: 1,
+            dragMode: "move",
+            autoCropArea: 1,
+            responsive: true,
+            background: false,
+          });
+        };
+
+        cropModalImage.src = objectUrl;
+      }
+
+      Object.entries(targets).forEach(([key, config]) => {
+        config.input.addEventListener("change", function () {
+          const file = config.input.files[0];
+          config.hidden.value = "";
+
+          if (!file) {
+            return;
+          }
+
+          openCropModal(key, file);
+        });
+      });
+
+      cropApplyBtn.addEventListener("click", function () {
+        if (!cropper || !activeTargetKey) return;
+
+        const target = targets[activeTargetKey];
+        const dataUrl = cropper
+          .getCroppedCanvas({
+            width: target.width,
+            height: target.height,
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: "high",
+          })
+          .toDataURL("image/jpeg", 0.92);
+
+        target.hidden.value = dataUrl;
+        target.previewMain.src = dataUrl;
+        target.previewMain.style.display = "block";
+        target.previewMainEmpty.style.display = "none";
+
+        target.previewNew.src = dataUrl;
+        target.previewNew.style.display = "block";
+        target.previewNewEmpty.style.display = "none";
+
+        closeCropModal();
+      });
+
+      cropCloseBtn.addEventListener("click", closeCropModal);
+      cropCancelBtn.addEventListener("click", closeCropModal);
+      cropModal.addEventListener("click", function (event) {
+        if (event.target === cropModal) closeCropModal();
+      });
+
+      [judulInput, subjudulInput, isiInput].forEach((el) => {
+        el.addEventListener("input", syncTextPreviews);
+      });
+
+      form.addEventListener("submit", function (event) {
+          if (targets.thumbnail.input.files[0] && !targets.thumbnail.hidden.value) {
+            event.preventDefault();
+            alert("Thumbnail frontend wajib dicrop terlebih dahulu.");
+            return;
+          }
+
+          if (targets.detail.input.files[0] && !targets.detail.hidden.value) {
+            event.preventDefault();
+            alert("Gambar halaman detail wajib dicrop terlebih dahulu.");
+            return;
+          }
+        });
+
+        syncTextPreviews();
+        })();
+  </script>
+</body>
+</html>

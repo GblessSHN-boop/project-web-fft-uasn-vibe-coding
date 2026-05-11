@@ -1,0 +1,31 @@
+﻿backend/
+api/
+.venv/
+backend/.venv/
+
+.env
+*.env
+backend/.env
+
+*.db
+*.sqlite
+*.sqlite3
+
+*.sql
+*.dump
+*.backup
+
+akun admin.txt
+backend/akun admin.txt
+credentials.txt
+secret.txt
+secrets.txt
+
+uploads/
+static/uploads/
+backend/static/uploads/
+
+__pycache__/
+*.pyc
+*.log
+.vercel/

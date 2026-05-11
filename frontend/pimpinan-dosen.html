@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pimpinan & Dosen - FFT</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="fftkb.png" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap"
+      rel="stylesheet" />
+    <script src="script.js" defer></script>
+  </head>
+
+  <body>
+    <header>
+      <div class="topbar">
+        <div class="topbar_left">
+          <a href="https://suryanusantara.ac.id/">
+            <img class="image" src="uasnlogo.png" alt="back to uasn" />
+            <span>Back</span>
+          </a>
+        </div>
+        <div class="topbar_right">
+          <a href="#" class="daftar-btn">DAFTAR SEKARANG</a>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="brand-wrapper">
+          <div class="logo">
+            <img src="fftkb.png" alt="FILSAFAT TEOLOGI" />
+          </div>
+          <div class="branding">
+            <h1>FAKULTAS FILSAFAT TEOLOGI</h1>
+            <p class="brand-universitas">UNIVERSITAS ADVENT SURYA NUSANTARA</p>
+          </div>
+        </div>
+
+        <div>
+          <button class="menu-toggle">☰</button>
+          <nav class="sidebar-nav">
+            <ul>
+              <li><a href="indexfft.html">Home</a></li>
+              <li><a href="indexfft.html#program-studi">Program Studi</a></li>
+              <li><a href="indexfft.html#latar-belakang">Latar Belakang</a></li>
+              <li><a href="indexfft.html#visi-misi">Visi &amp; Misi</a></li>
+              <li><a href="indexfft.html#organisasi">Organisasi</a></li>
+              <li><a href="indexfft.html#kontak">Kontak</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main class="pimpinan-page">
+      <!-- JUDUL HALAMAN -->
+      <section class="pimpinan-hero">
+        <div class="pimpinan-hero-inner">
+          <h2>PIMPINAN & DOSEN</h2>
+          <p>Fakultas Filsafat Teologi Universitas Advent Surya Nusantara</p>
+        </div>
+      </section>
+
+      <!-- AREA UTAMA -->
+      <section class="pimpinan-board">
+        <div class="pimpinan-board-inner">
+          <!-- KOLOM KIRI : DEKAN -->
+          <section class="dekan-panel" id="pimpinan">
+            <div class="dekan-card">
+              <div class="dekan-image-wrap">
+                <!-- GANTI FOTO DEKAN DI SINI -->
+                <img
+                  src="images/dekan-placeholder.jpg"
+                  alt="Foto Dekan"
+                  class="dekan-image" />
+              </div>
+
+              <div class="dekan-content">
+                <span class="dekan-tag">DEKAN</span>
+
+                <!-- GANTI NAMA DEKAN -->
+                <h3>NAMA DEKAN</h3>
+
+                <!-- GANTI JABATAN -->
+                <p class="dekan-role">JABATAN DEKAN / KEPALA PROGRAM STUDI</p>
+
+                <ul class="dekan-bio">
+                  <li><strong>Status Dosen:</strong> ISI DI SINI</li>
+                  <li><strong>Tempat Lahir:</strong> ISI DI SINI</li>
+                  <li><strong>Tanggal Lahir:</strong> ISI DI SINI</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- KOLOM KANAN : DOSEN -->
+          <section class="dosen-panel" id="dosen">
+            <div class="dosen-panel-head">
+              <h2>DOSEN</h2>
+              <p>Arahkan kursor ke kartu dosen untuk melihat tampilan detail</p>
+            </div>
+
+            
+            <div class="dosen-grid" id="dosenGrid">
+              <!-- Akan diisi dari API -->
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- POPUP PREVIEW DOSEN UNTUK DESKTOP -->
+      <div
+        class="dosen-preview-overlay"
+        id="dosenPreviewOverlay"
+        aria-hidden="true">
+        <div class="dosen-preview-card" id="dosenPreviewCard">
+          <button
+            type="button"
+            class="dosen-preview-close"
+            id="dosenPreviewClose">
+            ×
+          </button>
+
+          <div class="dosen-preview-image-wrap">
+            <img
+              src="images/dosen-1-placeholder.jpg"
+              alt="Preview Dosen"
+              id="previewImage"
+              class="dosen-preview-image" />
+          </div>
+
+          <div class="dosen-preview-content">
+            <span class="preview-tag">DOSEN</span>
+            <h3 id="previewName">NAMA DOSEN</h3>
+            <p class="preview-role" id="previewRole">JABATAN / BIDANG DOSEN</p>
+
+            <ul class="preview-bio">
+              <li>
+                <strong>Status Dosen:</strong>
+                <span id="previewStatus">ISI STATUS</span>
+              </li>
+              <li>
+                <strong>Tempat Lahir:</strong>
+                <span id="previewBirthplace">ISI TEMPAT LAHIR</span>
+              </li>
+              <li>
+                <strong>Tanggal Lahir:</strong>
+                <span id="previewBirthdate">ISI TANGGAL LAHIR</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+
+
+
+    
+
+
+
+  </body>
+</html>

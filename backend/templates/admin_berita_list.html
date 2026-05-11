@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Berita - Admin FFT</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+  <style>
+    .berita-shell {
+      max-width: 1240px;
+      margin: 30px auto;
+      background: #f3f3f3;
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+    }
+
+    .berita-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .berita-topbar h2 {
+      margin: 0;
+      font-size: 28px;
+      color: #111;
+    }
+
+    .berita-btn {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .berita-btn-green {
+      background: #b6ff00;
+      color: #111;
+    }
+
+    .berita-btn-dark {
+      background: #111;
+      color: #fff;
+    }
+
+    .flash-wrap {
+      margin-bottom: 16px;
+    }
+
+    .flash-item {
+      padding: 12px 14px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .flash-success {
+      background: #e8ffd2;
+      color: #246400;
+    }
+
+    .flash-danger {
+      background: #ffe0e0;
+      color: #8a1111;
+    }
+
+    .berita-stats {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .berita-stat-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px 16px 14px;
+      border: 1px solid #e8e8e8;
+    }
+
+    .berita-stat-card span {
+      display: block;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .berita-stat-card strong {
+      display: block;
+      font-size: 26px;
+      color: #111;
+    }
+
+    .berita-preview-section,
+    .berita-editor-section,
+    .analytics-section {
+      background: #fff;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 18px;
+      border: 1px solid #e9e9e9;
+    }
+
+    .berita-section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .berita-section-title h3 {
+      margin: 0;
+      font-size: 20px;
+      color: #111;
+    }
+
+    .berita-section-title p {
+      margin: 0;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .preview-board {
+      background: #000;
+      border-radius: 20px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 320px 1px 1fr;
+      gap: 18px;
+    }
+
+    .preview-featured-column {
+      display: grid;
+      gap: 14px;
+    }
+
+    .preview-divider {
+      background: rgba(255,255,255,0.16);
+      min-height: 100%;
+    }
+
+    .preview-grid-column {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      align-content: start;
+    }
+
+    .preview-feature-card,
+    .preview-grid-item {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .preview-feature-card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      min-height: 250px;
+      background: linear-gradient(180deg, #161616 0%, #050505 100%);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .preview-grid-item {
+      background: #0f0f0f;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .preview-image,
+    .preview-grid-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #181818;
+    }
+
+    .preview-image-wrap {
+      position: absolute;
+      inset: 0;
+      opacity: 0.76;
+    }
+
+    .preview-grid-thumb {
+      aspect-ratio: 1450 / 1000;
+      overflow: hidden;
+      background: #161616;
+    }
+
+    .preview-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.78) 100%);
+    }
+
+    .preview-grid-body {
+      padding: 12px;
+    }
+
+    .preview-title,
+    .preview-grid-title {
+      margin: 0;
+      color: #fff;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .preview-title {
+      font-size: 24px;
+    }
+
+    .preview-grid-title {
+      font-size: 16px;
+      min-height: 46px;
+    }
+
+    .preview-rank,
+    .preview-date,
+    .preview-card-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      margin-top: 8px;
+    }
+
+    .preview-rank {
+      background: #fff;
+      color: #111;
+    }
+
+    .preview-date {
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.82);
+    }
+
+    .preview-card-tag {
+      background: #b6ff00;
+      color: #111;
+    }
+
+    .preview-empty-card {
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      padding: 18px;
+      color: rgba(255,255,255,0.6);
+      background: linear-gradient(180deg, #161616 0%, #050505 100%);
+      border: 1px dashed rgba(255,255,255,0.18);
+      border-radius: 18px;
+      min-height: 250px;
+    }
+
+    .preview-empty-grid {
+      min-height: 180px;
+      background: #101010;
+      border: 1px dashed rgba(255,255,255,0.14);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.56);
+      padding: 14px;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .editor-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .editor-card {
+      background: #fafafa;
+      border: 1px solid #ececec;
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .editor-thumb {
+      aspect-ratio: 1450 / 1000;
+      overflow: hidden;
+      background: #efefef;
+    }
+
+    .editor-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .editor-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .editor-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .editor-code {
+      font-size: 12px;
+      font-weight: 800;
+      color: #111;
+      letter-spacing: 0.6px;
+    }
+
+    .editor-status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+
+    .status-draft {
+      background: #ececec;
+      color: #333;
+    }
+
+    .status-queue {
+      background: #ebf3ff;
+      color: #1f4ea8;
+    }
+
+    .status-schedule {
+      background: #fff1c7;
+      color: #6b4c00;
+    }
+
+    .status-live {
+      background: #b6ff00;
+      color: #111;
+    }
+
+    .editor-title {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.45;
+      color: #111;
+      font-weight: 800;
+    }
+
+    .editor-sub {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #666;
+      min-height: 42px;
+    }
+
+    .editor-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .editor-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+    }
+
+    .editor-tag-new {
+      background: #111;
+      color: #fff;
+    }
+
+    .editor-dates {
+      font-size: 12px;
+      line-height: 1.8;
+      color: #555;
+    }
+
+    .editor-note {
+      font-size: 12px;
+      line-height: 1.7;
+      color: #777;
+    }
+
+    .editor-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .editor-view {
+      font-size: 12px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .editor-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .analytics-kpi {
+      background: #fafafa;
+      border: 1px solid #ececec;
+      border-radius: 16px;
+      padding: 14px 16px;
+    }
+
+    .analytics-kpi span {
+      display: block;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .analytics-kpi strong {
+      display: block;
+      font-size: 24px;
+      color: #111;
+      font-weight: 800;
+    }
+
+    .analytics-chart-box {
+      background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+      border: 1px solid #ececec;
+      border-radius: 18px;
+      padding: 16px;
+      height: 380px;
+    }
+
+    .analytics-note {
+      margin-top: 12px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #666;
+    }
+
+    #beritaAnalyticsChart {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .berita-back {
+      margin-top: 18px;
+    }
+
+    @media (max-width: 1100px) {
+      .berita-stats,
+      .editor-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .preview-board {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-divider {
+        display: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .berita-stats,
+      .editor-grid,
+      .preview-grid-column,
+      .analytics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-title {
+        font-size: 20px;
+      }
+
+      .analytics-chart-box {
+        height: 320px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="berita-shell">
+    <div class="berita-topbar">
+      <h2>DATA BERITA</h2>
+
+      <a href="{{ url_for('admin_berita_add') }}" class="berita-btn berita-btn-green">
+        + TAMBAH BERITA BARU
+      </a>
+
+      <form action="{{ url_for('admin_berita_publish') }}" method="post" style="display:inline;">
+        <button
+          type="submit"
+          class="berita-btn berita-btn-green"
+          onclick="return confirm('Yakin ingin publish semua berita yang siap masuk snapshot frontend?');">
+          Publish / Update Frontend
+        </button>
+      </form>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-wrap">
+          {% for category, message in messages %}
+            <div class="flash-item flash-{{ category if category in ['success', 'danger'] else 'success' }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="berita-stats">
+      <div class="berita-stat-card">
+        <span>Total Berita</span>
+        <strong>{{ stats.total }}</strong>
+      </div>
+      <div class="berita-stat-card">
+        <span>Draft</span>
+        <strong>{{ stats.draft }}</strong>
+      </div>
+      <div class="berita-stat-card">
+        <span>Belum Dirilis</span>
+        <strong>{{ stats.queue }}</strong>
+      </div>
+      <div class="berita-stat-card">
+        <span>Terjadwal</span>
+        <strong>{{ stats.schedule }}</strong>
+      </div>
+      <div class="berita-stat-card">
+        <span>Sudah Rilis</span>
+        <strong>{{ stats.live }}</strong>
+      </div>
+    </div>
+
+    <div class="berita-preview-section">
+      <div class="berita-section-title">
+        <div>
+          <h3>Preview Susunan Frontend Saat Ini</h3>
+          <p>Trending 1 dan Trending 2 otomatis diambil dari jumlah view tertinggi yang sudah benar-benar rilis.</p>
+        </div>
+      </div>
+
+      <div class="preview-board">
+        <div class="preview-featured-column">
+          {% if preview_trending %}
+            {% for item in preview_trending %}
+              <a href="{{ url_for('admin_berita_edit', berita_id=item.id) }}" class="preview-feature-card">
+                <div class="preview-image-wrap">
+                  {% if item.thumbnail %}
+                    <img src="{{ url_for('static', filename=item.thumbnail) }}" alt="{{ item.judul }}" class="preview-image">
+                  {% endif %}
+                </div>
+                <div class="preview-overlay">
+                  {% if item.title_tag %}
+                    <span class="preview-card-tag">{{ item.title_tag }}</span>
+                  {% endif %}
+                  <p class="preview-title">{{ item.judul }}</p>
+                  <span class="preview-date">{{ item.published_at_text }}</span>
+                  <span class="preview-rank">TRENDING {{ loop.index }}</span>
+                </div>
+              </a>
+            {% endfor %}
+          {% else %}
+            <div class="preview-empty-card">Belum ada berita yang sudah rilis ke frontend.</div>
+            <div class="preview-empty-card">Belum ada berita yang sudah rilis ke frontend.</div>
+          {% endif %}
+        </div>
+
+        <div class="preview-divider"></div>
+
+        <div class="preview-grid-column">
+          {% if preview_grid %}
+            {% for item in preview_grid[:9] %}
+              <a href="{{ url_for('admin_berita_edit', berita_id=item.id) }}" class="preview-grid-item">
+                <div class="preview-grid-thumb">
+                  {% if item.thumbnail %}
+                    <img src="{{ url_for('static', filename=item.thumbnail) }}" alt="{{ item.judul }}">
+                  {% endif %}
+                </div>
+                <div class="preview-grid-body">
+                  {% if item.title_tag %}
+                    <span class="preview-card-tag">{{ item.title_tag }}</span>
+                  {% endif %}
+                  <p class="preview-grid-title">{{ item.judul }}</p>
+                  <span class="preview-date">{{ item.published_at_text }}</span>
+                </div>
+              </a>
+            {% endfor %}
+          {% else %}
+            <div class="preview-empty-grid">Belum ada daftar berita yang sudah rilis.</div>
+            <div class="preview-empty-grid">Belum ada daftar berita yang sudah rilis.</div>
+            <div class="preview-empty-grid">Belum ada daftar berita yang sudah rilis.</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="berita-editor-section">
+      <div class="berita-section-title">
+        <div>
+          <h3>Semua Berita Editor</h3>
+          <p>Di sini Anda bisa membedakan Draft, Belum Dirilis, Terjadwal, dan Sudah Rilis, lengkap dengan thumbnail, tanggal pembuatan, dan tanggal rilis frontend.</p>
+        </div>
+      </div>
+
+      <div class="editor-grid">
+        {% if editor_cards %}
+          {% for card in editor_cards %}
+            <div class="editor-card">
+              <div class="editor-thumb">
+                {% if card.thumbnail %}
+                  <img src="{{ url_for('static', filename=card.thumbnail) }}" alt="{{ card.judul }}">
+                {% endif %}
+              </div>
+
+              <div class="editor-body">
+                <div class="editor-top-row">
+                  <span class="editor-code">KODE {{ card.kode_berita }}</span>
+                  <span class="editor-status status-{{ card.status_key }}">{{ card.status_label }}</span>
+                </div>
+
+                <h4 class="editor-title">{{ card.judul }}</h4>
+                <p class="editor-sub">{{ card.subjudul or '-' }}</p>
+
+                <div class="editor-tags">
+                  {% if card.title_tag %}
+                    <span class="editor-tag editor-tag-new">{{ card.title_tag }}</span>
+                  {% endif %}
+                </div>
+
+                <div class="editor-dates">
+                  <div><strong>Dibuat:</strong> {{ card.created_at_text }}</div>
+                  <div><strong>Jadwal Tayang:</strong> {{ card.tayang_pada_text }}</div>
+                  <div><strong>Rilis Frontend:</strong> {{ card.published_at_text }}</div>
+                  <div><strong>Update Terakhir:</strong> {{ card.updated_at_text }}</div>
+                </div>
+
+                <div class="editor-note">{{ card.status_note }}</div>
+
+                <div class="editor-bottom">
+                  <div class="editor-view">View: {{ card.click_count }}</div>
+
+                  <div class="editor-actions">
+                    <a href="{{ url_for('admin_berita_edit', berita_id=card.id) }}" class="berita-btn berita-btn-dark">Edit</a>
+
+                    <form
+                      action="{{ url_for('admin_berita_delete', berita_id=card.id) }}"
+                      method="post"
+                      style="display:inline;"
+                      onsubmit="return confirm('Yakin ingin menghapus berita ini?');">
+                      <button type="submit" class="berita-btn berita-btn-dark">Hapus</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="preview-empty-grid" style="grid-column: 1 / -1; color:#666; background:#fafafa; border-color:#ddd;">
+            Belum ada berita.
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="analytics-section">
+      <div class="berita-section-title">
+        <div>
+          <h3>Analisa Klik Berita</h3>
+          <p>
+            Bagian ini menunjukkan berita mana yang paling sering dibuka di frontend.
+            Trending otomatis membaca view tertinggi dari data ini.
+          </p>
+        </div>
+      </div>
+
+      <div class="analytics-grid">
+        <div class="analytics-kpi">
+          <span>Total View Semua Berita</span>
+          <strong id="analyticsTotalViews">0</strong>
+        </div>
+
+        <div class="analytics-kpi">
+          <span>View Tertinggi</span>
+          <strong id="analyticsTopClick">0</strong>
+        </div>
+
+        <div class="analytics-kpi">
+          <span>Artikel Sudah Rilis</span>
+          <strong id="analyticsLiveCount">{{ stats.live }}</strong>
+        </div>
+      </div>
+
+      <div class="analytics-chart-box">
+        <canvas id="beritaAnalyticsChart"></canvas>
+      </div>
+
+      <div class="analytics-note">
+        Jika grafik masih 0, berarti halaman detail berita di frontend belum benar-benar dikunjungi,
+        atau tracking klik frontend belum aktif.
+      </div>
+    </div>
+
+    <div class="berita-back">
+      <a href="{{ url_for('admin_choose') }}" class="berita-btn berita-btn-dark">
+        ← KEMBALI KE DASHBOARD
+      </a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    (async () => {
+      const canvas = document.getElementById("beritaAnalyticsChart");
+      if (!canvas) return;
+
+      try {
+        const response = await fetch("/api/get-click-analytics", {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        const data = await response.json();
+
+        const labels = Array.isArray(data.labels) ? data.labels : [];
+        const clicks = Array.isArray(data.clicks) ? data.clicks : [];
+
+        const totalViewsEl = document.getElementById("analyticsTotalViews");
+        const topClickEl = document.getElementById("analyticsTopClick");
+        const liveCountEl = document.getElementById("analyticsLiveCount");
+
+        if (totalViewsEl) totalViewsEl.textContent = data.total_views || 0;
+        if (topClickEl) topClickEl.textContent = data.top_click || 0;
+        if (liveCountEl && typeof data.artikel_live !== "undefined") {
+          liveCountEl.textContent = data.artikel_live;
+        }
+
+        new Chart(canvas.getContext("2d"), {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Klik per Berita",
+                data: clicks,
+                borderColor: "#49c5cf",
+                backgroundColor: "rgba(73, 197, 207, 0.14)",
+                fill: true,
+                tension: 0.32,
+                pointRadius: 4,
+                pointHoverRadius: 5,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+              mode: "index",
+              intersect: false,
+            },
+            plugins: {
+              legend: {
+                display: true,
+                position: "top",
+              },
+              tooltip: {
+                backgroundColor: "#111",
+                titleColor: "#fff",
+                bodyColor: "#fff",
+                displayColors: false,
+              },
+            },
+            scales: {
+              x: {
+                grid: {
+                  display: false,
+                },
+                ticks: {
+                  color: "#555",
+                  callback: function (value) {
+                    const label = this.getLabelForValue(value) || "";
+                    return label.length > 18 ? label.slice(0, 18) + "…" : label;
+                  },
+                },
+              },
+              y: {
+                beginAtZero: true,
+                suggestedMax: Math.max(...clicks, 1),
+                ticks: {
+                  precision: 0,
+                  stepSize: 1,
+                  color: "#555",
+                },
+              },
+            },
+          },
+        });
+      } catch (error) {
+        console.error("Gagal memuat analytics berita:", error);
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Dosen</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='admin.css') }}" />
+    <script src="{{ url_for('static', filename='admin.js') }}" defer></script>
+
+    <style>
+      .dosen-page-shell {
+        width: min(1180px, 94vw);
+        margin: 0 auto;
+      }
+
+      .dosen-section-card {
+        background: #b9b9b9;
+        border-radius: 20px;
+        padding: 26px 22px 24px;
+      }
+
+      .dosen-section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 18px;
+        flex-wrap: wrap;
+        margin-bottom: 22px;
+      }
+
+      .dosen-section-title h2 {
+        margin: 0 0 6px;
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+      }
+
+      .dosen-section-title p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #2f2f2f;
+        opacity: 0.9;
+      }
+
+      .btn-add-dosen {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 44px;
+        padding: 0 18px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 14px;
+        background: #b7ff00;
+        color: #111;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+        transition: 0.2s ease;
+      }
+
+      .btn-add-dosen:hover {
+        transform: translateY(-1px);
+      }
+
+      .dosen-grid-clean {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+        gap: 20px;
+      }
+
+      .dosen-item-card {
+        background: #ffffff;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+      }
+
+      .dosen-item-thumb {
+        width: 100%;
+        aspect-ratio: 460 / 300;
+        background: #111;
+        overflow: hidden;
+      }
+
+      .dosen-item-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .dosen-item-thumb-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #d8d8d8, #efefef);
+        color: #4a4a4a;
+        font-weight: 800;
+        font-size: 14px;
+        letter-spacing: 0.4px;
+        text-align: center;
+        padding: 16px;
+      }
+
+      .dosen-item-body {
+        padding: 18px 18px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .dosen-item-top h3 {
+        margin: 0 0 6px;
+        font-size: 20px;
+        line-height: 1.3;
+        font-weight: 800;
+        color: #161616;
+      }
+
+      .dosen-meta-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .meta-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+      }
+
+      .meta-badge.code {
+        background: #f0f3f7;
+        color: #26323f;
+      }
+
+      .meta-badge.status-active {
+        background: rgba(183, 255, 0, 0.22);
+        color: #355000;
+      }
+
+      .meta-badge.status-inactive {
+        background: rgba(255, 120, 120, 0.16);
+        color: #8a1f1f;
+      }
+
+      .dosen-info-group {
+        border-top: 1px solid #ececec;
+        padding-top: 12px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .dosen-info-row {
+        display: grid;
+        grid-template-columns: 128px 1fr;
+        gap: 10px;
+        align-items: start;
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .dosen-info-row .label {
+        color: #686868;
+        font-weight: 700;
+      }
+
+      .dosen-info-row .value {
+        color: #1f1f1f;
+        font-weight: 600;
+        word-break: break-word;
+      }
+
+      .dosen-file-status {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding-top: 2px;
+      }
+
+      .file-chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        padding: 0 12px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .file-chip.ready {
+        background: #eef8dd;
+        color: #406300;
+      }
+
+      .file-chip.muted {
+        background: #f1f1f1;
+        color: #666;
+      }
+
+      .dosen-action-bar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 4px;
+      }
+
+      .dosen-action-bar .full {
+        grid-column: 1 / -1;
+      }
+
+      .action-btn,
+      .action-btn-form button {
+        width: 100%;
+        min-height: 42px;
+        border: none;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 13px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.2s ease;
+        padding: 0 14px;
+      }
+
+      .action-btn:hover,
+      .action-btn-form button:hover {
+        transform: translateY(-1px);
+      }
+
+      .action-btn.edit {
+        background: #111;
+        color: #b7ff00;
+      }
+
+      .action-btn.download,
+      .action-btn-form.download button {
+        background: #f4f7fb;
+        color: #1d2b39;
+      }
+
+      .action-btn.delete,
+      .action-btn-form.delete button {
+        background: #fff1f1;
+        color: #8f2222;
+      }
+
+      .action-btn-form {
+        margin: 0;
+      }
+
+      .empty-dosen-state {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 42px 22px;
+        text-align: center;
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+      }
+
+      .empty-dosen-icon {
+        width: 74px;
+        height: 74px;
+        margin: 0 auto 16px;
+        border-radius: 50%;
+        background: rgba(183, 255, 0, 0.28);
+        color: #222;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+        font-weight: 700;
+      }
+
+      .empty-dosen-state h3 {
+        margin: 0 0 8px;
+        font-size: 22px;
+        font-weight: 800;
+        color: #1c1c1c;
+      }
+
+      .empty-dosen-state p {
+        margin: 0 auto 18px;
+        max-width: 520px;
+        font-size: 14px;
+        line-height: 1.7;
+        color: #555;
+      }
+
+      .back-row-clean {
+        display: flex;
+        justify-content: center;
+        margin-top: 18px;
+      }
+
+      @media (max-width: 640px) {
+        .dosen-section-card {
+          padding: 20px 16px 18px;
+        }
+
+        .dosen-item-body {
+          padding: 16px;
+        }
+
+        .dosen-info-row {
+          grid-template-columns: 1fr;
+          gap: 2px;
+        }
+
+        .dosen-action-bar {
+          grid-template-columns: 1fr;
+        }
+
+        .dosen-action-bar .full {
+          grid-column: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="adminToast" class="admin-toast"></div>
+
+    <div class="admin-page">
+      <div class="admin-header">
+        <h1>DASHBOARD ADMIN</h1>
+        <p>FAKULTAS FILSAFAT TEOLOGI</p>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-stack">
+            {% for category, message in messages %}
+              <div class="flash-item {{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <div class="dosen-page-shell">
+        <div class="dosen-section-card">
+          <div class="dosen-section-head">
+            <div class="dosen-section-title">
+              <h2>DATA DOSEN</h2>
+              <p>
+                Kelola informasi dosen, foto utama, thumbnail frontend,
+                dan file biodata dalam satu halaman administrasi.
+              </p>
+            </div>
+
+            <a href="{{ url_for('admin_dosen_new') }}" class="btn-add-dosen">
+              + TAMBAH DOSEN
+            </a>
+          </div>
+          <div
+            class="dosen-search-bar"
+            style="
+              display: flex;
+              gap: 12px;
+              margin-bottom: 20px;
+              align-items: center;
+              flex-wrap: wrap;
+            ">
+            <form
+              method="GET"
+              action="{{ url_for('admin_dosen_list') }}"
+              style="display: flex; gap: 10px; flex-wrap: wrap; width: 100%;">
+              <input
+                type="text"
+                name="q"
+                id="dosenSearchInput"
+                value="{{ q if q else '' }}"
+                placeholder="Cari nama, kode dosen, atau jabatan..."
+                style="
+                  flex: 1;
+                  min-width: 260px;
+                  padding: 12px 14px;
+                  border: 1px solid #d6d6d6;
+                  border-radius: 10px;
+                  font-size: 14px;
+                  outline: none;
+                " />
+
+              <button
+                type="submit"
+                style="
+                  padding: 12px 18px;
+                  border: none;
+                  border-radius: 10px;
+                  background: #111;
+                  color: #fff;
+                  font-weight: 700;
+                  cursor: pointer;
+                ">
+                CARI
+              </button>
+
+              <a
+                href="{{ url_for('admin_dosen_list') }}"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 12px 18px;
+                  border-radius: 10px;
+                  background: #ececec;
+                  color: #111;
+                  font-weight: 700;
+                  text-decoration: none;
+                ">
+                RESET
+              </a>
+            </form>
+          </div>
+
+          {% if dosen_list %}
+            <div class="dosen-grid-clean">
+              {% for dosen in dosen_list %}
+            <div
+              class="dosen-item-card dosen-card-item"
+              data-nama="{{ dosen.nama|lower }}"
+              data-kode="{{ dosen.kode_dosen|lower }}"
+              data-jabatan="{{ dosen.jabatan|lower }}">
+                  <div class="dosen-item-thumb">
+                    {% if dosen.thumb %}
+                      <img
+                        src="{{ url_for('static', filename='uploads/dosen/' ~ dosen.thumb) }}"
+                        alt="Thumbnail {{ dosen.nama }}" />
+                    {% elif dosen.foto %}
+                      <img
+                        src="{{ url_for('static', filename='uploads/dosen/' ~ dosen.foto) }}"
+                        alt="Foto {{ dosen.nama }}" />
+                    {% else %}
+                      <div class="dosen-item-thumb-placeholder">
+                        FOTO DOSEN BELUM TERSEDIA
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="dosen-item-body">
+                    <div class="dosen-item-top">
+                      <h3>{{ dosen.nama }}</h3>
+
+                      <div class="dosen-meta-badges">
+                        <span class="meta-badge code">
+                          Kode {{ dosen.kode_dosen }}
+                        </span>
+
+                        {% if dosen.status == 'Aktif' %}
+                          <span class="meta-badge status-active">Aktif</span>
+                        {% else %}
+                          <span class="meta-badge status-inactive">
+                            {{ dosen.status if dosen.status else 'Nonaktif' }}
+                          </span>
+                        {% endif %}
+                      </div>
+                    </div>
+
+                    <div class="dosen-info-group">
+                      <div class="dosen-info-row">
+                        <div class="label">NUPTK</div>
+                        <div class="value">{{ dosen.nuptk if dosen.nuptk else '-' }}</div>
+                      </div>
+
+                      <div class="dosen-info-row">
+                        <div class="label">Jabatan</div>
+                        <div class="value">{{ dosen.jabatan if dosen.jabatan else '-' }}</div>
+                      </div>
+
+                      <div class="dosen-info-row">
+                        <div class="label">Status File</div>
+                        <div class="value">
+                          <div class="dosen-file-status">
+                            <span class="file-chip {{ 'ready' if dosen.thumb else 'muted' }}">
+                              Thumbnail {{ 'tersedia' if dosen.thumb else 'belum tersedia' }}
+                            </span>
+
+                            <span class="file-chip {{ 'ready' if dosen.biodata_card else 'muted' }}">
+                              Biodata {{ 'tersedia' if dosen.biodata_card else 'belum dibuat' }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="dosen-action-bar">
+                      <a
+                        href="{{ url_for('admin_dosen_edit', dosen_id=dosen.id) }}"
+                        class="action-btn edit">
+                        EDIT DATA
+                      </a>
+
+                      <form
+                        action="{{ url_for('admin_dosen_export_biodata', dosen_id=dosen.id) }}"
+                        method="POST"
+                        class="action-btn-form download">
+                        <button type="submit">UNDUH BIODATA</button>
+                      </form>
+
+                      <form
+                        action="{{ url_for('admin_dosen_delete', dosen_id=dosen.id) }}"
+                        method="POST"
+                        class="action-btn-form delete full"
+                        onsubmit="return confirm('Hapus data dosen ini beserta seluruh file terkait?');">
+                        <button type="submit">HAPUS DATA DOSEN</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="empty-dosen-state">
+              <div class="empty-dosen-icon">+</div>
+              <h3>Belum Ada Data Dosen</h3>
+              <p>
+                Saat ini belum terdapat data dosen yang tersimpan pada sistem.
+                Silakan tambahkan data dosen pertama untuk mulai mengelola
+                informasi dosen di panel administrasi.
+              </p>
+              <a href="{{ url_for('admin_dosen_new') }}" class="btn-add-dosen">
+                TAMBAH DOSEN PERTAMA
+              </a>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="back-row-clean">
+          <a href="{{ url_for('admin_choose') }}" class="btn dark">KEMBALI</a>
+        </div>
+      </div>
+    </div>
+
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("dosenSearchInput");
+        const cards = document.querySelectorAll(".dosen-card-item");
+
+        if (!searchInput) return;
+
+        searchInput.addEventListener("input", function () {
+          const keyword = this.value.toLowerCase().trim();
+
+          cards.forEach((card) => {
+            const nama = card.dataset.nama || "";
+            const kode = card.dataset.kode || "";
+            const jabatan = card.dataset.jabatan || "";
+
+            const match =
+              nama.includes(keyword) ||
+              kode.includes(keyword) ||
+              jabatan.includes(keyword);
+
+            if (match) {
+              card.style.display = "";
+            } else {
+              card.style.display = "none";
+            }
+          });
+        });
+      });
+    </script>
+
+  </body>
+</html>

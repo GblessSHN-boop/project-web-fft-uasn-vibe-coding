@@ -1,0 +1,67 @@
+{
+  "published": true,
+  "total": 5,
+  "data": [
+    {
+      "kode_dosen": "00001",
+      "nama": "Dr. Joseph Hamonangan Sianipar, MBA.",
+      "jabatan": "Dosen",
+      "status": "Aktif",
+      "bidang_dosen": "-",
+      "tempat_lahir": "BANDUNG",
+      "tanggal_lahir": "30 JUNI 1972",
+      "foto_formal": "00001/foto.jpg",
+      "foto_frontend": "00001/thumb.jpg",
+      "updated_at": "2026-04-06T08:27:51.045788"
+    },
+    {
+      "kode_dosen": "00002",
+      "nama": "Dr. Elfri Darlin Sinaga, M.Min., M. Fil.",
+      "jabatan": "Dosen",
+      "status": "Aktif",
+      "bidang_dosen": "-",
+      "tempat_lahir": "MEREK",
+      "tanggal_lahir": "13 desember 1964",
+      "foto_formal": "00002/foto.jpg",
+      "foto_frontend": "00002/thumb.jpg",
+      "updated_at": "2026-04-06T08:27:51.045788"
+    },
+    {
+      "kode_dosen": "00003",
+      "nama": "Manogang Simanjuntak, S.Th., M.Fil.",
+      "jabatan": "Dosen",
+      "status": "Aktif",
+      "bidang_dosen": "-",
+      "tempat_lahir": "Lbn. Gala-gala",
+      "tanggal_lahir": "1 April 1964",
+      "foto_formal": "00003/foto.jpg",
+      "foto_frontend": "00003/thumb.jpg",
+      "updated_at": "2026-04-06T08:27:51.045788"
+    },
+    {
+      "kode_dosen": "00004",
+      "nama": "Zainal Sibagariang, M.A.R.",
+      "jabatan": "Dosen",
+      "status": "Aktif",
+      "bidang_dosen": "-",
+      "tempat_lahir": "Hutaraja Habinsaran",
+      "tanggal_lahir": "23-Oct-1973",
+      "foto_formal": "00004/foto.jpg",
+      "foto_frontend": "00004/thumb.jpg",
+      "updated_at": "2026-04-06T08:27:51.045788"
+    },
+    {
+      "kode_dosen": "00005",
+      "nama": "Yoanes Lau De Yung Sinaga, AB HPR, M.Div,",
+      "jabatan": "Dosen",
+      "status": "Aktif",
+      "bidang_dosen": "-",
+      "tempat_lahir": "Pematangsiantar",
+      "tanggal_lahir": "20 maret 1990",
+      "foto_formal": "00005/foto.jpg",
+      "foto_frontend": "00005/thumb.jpg",
+      "updated_at": "2026-04-06T08:27:51.045788"
+    }
+  ],
+  "published_at": "2026-04-20T12:10:45.897942"
+}

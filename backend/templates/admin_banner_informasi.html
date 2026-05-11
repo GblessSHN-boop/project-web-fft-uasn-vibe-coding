@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kelola Banner Iklan - Admin FFT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css" />
+
+    <style>
+      .banner-shell {
+        width: min(1160px, 94vw);
+        margin: 0 auto;
+      }
+
+      .banner-main-card {
+        background: #b9b9b9;
+        border-radius: 24px;
+        padding: 34px 30px 28px;
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+      }
+
+      .banner-top {
+        text-align: center;
+        max-width: 860px;
+        margin: 0 auto 28px;
+      }
+
+      .banner-top h2 {
+        margin: 0 0 10px;
+        font-size: 28px;
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: 0.4px;
+      }
+
+      .banner-top p {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.8;
+        color: #2f2f2f;
+      }
+
+      .flash-wrap {
+        max-width: 980px;
+        margin: 0 auto 18px;
+      }
+
+      .flash-item {
+        padding: 12px 14px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .flash-success {
+        background: #e8ffd2;
+        color: #246400;
+      }
+
+      .flash-danger {
+        background: #ffe0e0;
+        color: #8a1111;
+      }
+
+      .banner-form-card {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 24px 22px;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+      }
+
+      .banner-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .banner-group {
+        margin-bottom: 18px;
+      }
+
+      .banner-group label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #111;
+      }
+
+      .banner-group input,
+      .banner-group select,
+      .banner-group textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #d8d8d8;
+        border-radius: 12px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+
+      .banner-help {
+        font-size: 12px;
+        color: #666;
+        margin-top: 6px;
+        line-height: 1.7;
+      }
+
+      .banner-error {
+        display: none;
+        margin-top: 8px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: #ffe0e0;
+        color: #8a1111;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .banner-preview-card {
+        border: 1px solid #e5e5e5;
+        border-radius: 16px;
+        padding: 16px;
+        margin-bottom: 16px;
+        background: #fafafa;
+      }
+
+      .banner-preview-title {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #111;
+      }
+
+      .banner-preview-empty {
+        font-size: 13px;
+        color: #777;
+        padding: 14px;
+        background: #fff;
+        border: 1px dashed #ccc;
+        border-radius: 12px;
+      }
+
+      .banner-meta-box {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+        padding: 16px;
+        background: #fafafa;
+        border: 1px solid #e5e5e5;
+        border-radius: 14px;
+      }
+
+      .banner-meta-item {
+        font-size: 13px;
+        color: #444;
+        line-height: 1.6;
+      }
+
+      .banner-meta-item strong {
+        color: #111;
+      }
+
+      .banner-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+      }
+
+      .banner-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 220px;
+        min-height: 46px;
+        padding: 0 20px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 14px;
+        letter-spacing: 0.2px;
+        transition: 0.2s ease;
+        border: none;
+        cursor: pointer;
+      }
+
+      .banner-btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .banner-btn-dark {
+        background: #111111;
+        color: #ffffff;
+      }
+
+      .banner-btn-green {
+        background: #b7ff00;
+        color: #111111;
+      }
+
+      .inline-form {
+        display: inline;
+      }
+
+      .banner-rule-list {
+        margin: 0;
+        padding-left: 18px;
+        color: #555;
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      .banner-live-preview {
+        width: 100%;
+        aspect-ratio: {{ banner_crop_width }} / {{ banner_crop_height }};
+        border-radius: 18px;
+        overflow: hidden;
+        background: #111;
+        position: relative;
+      }
+
+      .banner-live-link {
+        width: 100%;
+        height: 100%;
+        display: block;
+        position: relative;
+        text-decoration: none;
+      }
+
+      .banner-live-link.is-disabled {
+        pointer-events: none;
+      }
+
+      .banner-live-media {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        background: #000;
+      }
+
+      .banner-live-badge {
+        position: absolute;
+        left: 16px;
+        bottom: 16px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.72);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+      }
+
+      .crop-stage {
+        display: none;
+      }
+
+      .crop-stage.is-visible {
+        display: block;
+      }
+
+      .crop-image-box {
+        width: 100%;
+        min-height: 300px;
+        border: 1px dashed #d0d0d0;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #f7f7f7;
+      }
+
+      #bannerCropImage {
+        display: block;
+        max-width: 100%;
+      }
+
+      .banner-side-note {
+        font-size: 12px;
+        color: #666;
+        line-height: 1.8;
+      }
+
+      @media (max-width: 960px) {
+        .banner-grid,
+        .banner-meta-box {
+          grid-template-columns: 1fr;
+        }
+
+        .banner-main-card {
+          padding: 24px 18px 20px;
+        }
+
+        .banner-btn {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="admin-page">
+      <div class="admin-header">
+        <h1>DASHBOARD ADMIN</h1>
+        <p>FAKULTAS FILSAFAT TEOLOGI</p>
+      </div>
+
+      <div class="banner-shell">
+        <div class="banner-main-card">
+          <div class="banner-top">
+            <h2>KELOLA BANNER IKLAN</h2>
+            <p>
+              Modul ini khusus untuk banner utama. Banner akan tampil langsung di frontend
+              dan saat diklik akan menuju Target URL yang sudah divalidasi.
+            </p>
+          </div>
+
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <div class="flash-wrap">
+                {% for category, message in messages %}
+                  <div class="flash-item flash-{{ category if category in ['success', 'danger'] else 'success' }}">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
+
+          <div class="banner-form-card">
+            {% if banner %}
+              <div class="banner-meta-box">
+                <div class="banner-meta-item"><strong>ID Banner:</strong> {{ banner.id }}</div>
+                <div class="banner-meta-item"><strong>Updated At:</strong> {{ banner.updated_at or '-' }}</div>
+                <div class="banner-meta-item"><strong>Tipe Media Saat Ini:</strong> {{ banner.media_type or '-' }}</div>
+                <div class="banner-meta-item"><strong>Target URL Saat Ini:</strong> {{ banner.target_url or '-' }}</div>
+              </div>
+            {% endif %}
+
+            <form
+              id="bannerForm"
+              action="{{ url_for('admin_banner_informasi_save') }}"
+              method="post"
+              enctype="multipart/form-data">
+
+              <input type="hidden" id="media_crop_data" name="media_crop_data" />
+
+              <div class="banner-grid">
+                <div>
+                  <div class="banner-group">
+                    <label for="media_type">Tipe Media</label>
+                    <select id="media_type" name="media_type">
+                      <option value="image" {% if not banner or banner.media_type == 'image' %}selected{% endif %}>Image</option>
+                      <option value="video" {% if banner and banner.media_type == 'video' %}selected{% endif %}>Video</option>
+                    </select>
+                    <div class="banner-help">
+                      Pilih tipe media lebih dulu. Saat tipe media diganti, upload file baru yang sesuai.
+                    </div>
+                  </div>
+
+                  <div class="banner-group">
+                    <label for="media_file">Upload Media Banner</label>
+                    <input
+                      type="file"
+                      id="media_file"
+                      name="media_file"
+                      accept=".png,.jpg,.jpeg,.webp" />
+
+                    <div id="bannerImageRules" class="banner-help">
+                      Untuk image: PNG, JPG, JPEG, WEBP. Maksimal {{ banner_max_file_size_mb }} MB.
+                      Setelah pilih gambar, Anda wajib crop manual sesuai window card banner.
+                    </div>
+
+                    <div id="bannerVideoRules" class="banner-help" style="display:none;">
+                      Untuk video: MP4, WEBM, MOV. Maksimal {{ banner_max_file_size_mb }} MB.
+                      Video wajib mengikuti rasio tetap {{ banner_crop_width }} : {{ banner_crop_height }}.
+                      Jika rasio tidak sesuai, upload akan ditolak sebelum disimpan.
+                    </div>
+
+                    <div id="bannerMediaError" class="banner-error"></div>
+                  </div>
+
+                  <div id="bannerCropStage" class="banner-group crop-stage">
+                    <label>Crop Manual Banner Image</label>
+                    <div class="crop-image-box">
+                      <img id="bannerCropImage" alt="Crop banner image" />
+                    </div>
+                    <div class="banner-help">
+                      Geser dan sesuaikan area crop. Rasio akan terkunci otomatis agar hasilnya sama dengan window card frontend.
+                    </div>
+                  </div>
+
+                  <div class="banner-group">
+                    <label for="target_url">Target URL</label>
+                    <input
+                      type="url"
+                      id="target_url"
+                      name="target_url"
+                      placeholder="https://contoh.com/tujuan-banner"
+                      value="{{ banner.target_url if banner and banner.target_url else '' }}"
+                      required />
+                    <div class="banner-help">
+                      Saat banner diklik di frontend, pengunjung langsung diarahkan ke link ini.
+                      Saat disimpan, sistem akan mengecek apakah link valid dan bisa diakses.
+                    </div>
+                  </div>
+
+                  <div class="banner-preview-card">
+                    <div class="banner-preview-title">Rules Upload</div>
+                    <ul class="banner-rule-list">
+                      <li>Banner tidak punya halaman detail sendiri.</li>
+                      <li>Tujuan klik banner hanya ke Target URL.</li>
+                      <li>Image wajib crop manual.</li>
+                      <li>Video wajib rasio tetap {{ banner_crop_width }} : {{ banner_crop_height }}.</li>
+                      <li>Ukuran file maksimal {{ banner_max_file_size_mb }} MB.</li>
+                      <li>Simpan draft dulu, lalu tekan Publish / Update Frontend.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="banner-preview-card">
+                    <div class="banner-preview-title">Preview Frontend Saat Ini</div>
+
+                    {% if banner and banner.media_file %}
+                      <div class="banner-live-preview">
+                        <a
+                          href="{{ banner.target_url or '#' }}"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="banner-live-link {% if not banner.target_url %}is-disabled{% endif %}"
+                          id="bannerCurrentPreviewLink">
+
+                          {% if banner.media_type == 'image' %}
+                            <img
+                              src="{{ url_for('static', filename=banner.media_file) }}"
+                              alt="Banner informasi"
+                              class="banner-live-media" />
+                          {% else %}
+                            <video
+                              class="banner-live-media"
+                              autoplay
+                              muted
+                              loop
+                              playsinline
+                              controls>
+                              <source src="{{ url_for('static', filename=banner.media_file) }}">
+                            </video>
+                          {% endif %}
+
+                          <div class="banner-live-badge">BANNER INFORMASI</div>
+                        </a>
+                      </div>
+                    {% else %}
+                      <div class="banner-preview-empty">Belum ada banner yang tersimpan.</div>
+                    {% endif %}
+                  </div>
+
+                  <div class="banner-preview-card">
+                    <div class="banner-preview-title">Preview File Baru Sebelum Simpan</div>
+
+                    <div class="banner-live-preview">
+                      <div id="bannerNewPreviewEmpty" class="banner-preview-empty">
+                        Pilih file terlebih dahulu untuk melihat preview baru.
+                      </div>
+
+                      <a
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="banner-live-link is-disabled"
+                        id="bannerNewPreviewLink"
+                        style="display:none;">
+
+                        <img
+                          id="bannerNewPreviewImage"
+                          class="banner-live-media"
+                          alt="Preview banner baru"
+                          style="display:none;" />
+
+                        <video
+                          id="bannerNewPreviewVideo"
+                          class="banner-live-media"
+                          muted
+                          loop
+                          playsinline
+                          controls
+                          style="display:none;"></video>
+
+                        <div class="banner-live-badge">BANNER INFORMASI</div>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="banner-preview-card">
+                    <div class="banner-preview-title">Catatan Sistem</div>
+                    <div class="banner-side-note">
+                      Field internal lama seperti judul internal, poster video, status banner, dan sort order
+                      sengaja tidak dipakai lagi di form agar alur banner tetap rapi dan fokus.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <div class="banner-actions">
+              <button type="submit" form="bannerForm" class="banner-btn banner-btn-green">
+                SIMPAN DRAFT BANNER
+              </button>
+
+              <form
+                action="{{ url_for('admin_banner_informasi_publish') }}"
+                method="post"
+                class="inline-form"
+                onsubmit="return confirm('Yakin ingin publish banner ke frontend?');">
+                <button type="submit" class="banner-btn banner-btn-green">
+                  PUBLISH / UPDATE FRONTEND
+                </button>
+              </form>
+
+              <a href="{{ url_for('admin_berita_choose') }}" class="banner-btn banner-btn-dark">
+                ← KEMBALI KE PILIH TIPE KONTEN
+              </a>
+
+              <a href="{{ url_for('admin_choose') }}" class="banner-btn banner-btn-dark">
+                KEMBALI KE DASHBOARD ADMIN
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"></script>
+    <script>
+      (() => {
+        const form = document.getElementById("bannerForm");
+        const mediaType = document.getElementById("media_type");
+        const mediaInput = document.getElementById("media_file");
+        const targetUrl = document.getElementById("target_url");
+        const cropField = document.getElementById("media_crop_data");
+        const cropStage = document.getElementById("bannerCropStage");
+        const cropImage = document.getElementById("bannerCropImage");
+        const imageRules = document.getElementById("bannerImageRules");
+        const videoRules = document.getElementById("bannerVideoRules");
+        const errorBox = document.getElementById("bannerMediaError");
+
+        const currentPreviewLink = document.getElementById("bannerCurrentPreviewLink");
+        const newPreviewEmpty = document.getElementById("bannerNewPreviewEmpty");
+        const newPreviewLink = document.getElementById("bannerNewPreviewLink");
+        const newPreviewImage = document.getElementById("bannerNewPreviewImage");
+        const newPreviewVideo = document.getElementById("bannerNewPreviewVideo");
+
+        const cropWidth = {{ banner_crop_width|int }};
+        const cropHeight = {{ banner_crop_height|int }};
+        const bannerRatio = cropWidth / cropHeight;
+        const maxBytes = {{ banner_max_file_size_mb|int }} * 1024 * 1024;
+
+        let cropper = null;
+
+        function showError(message) {
+          errorBox.style.display = "block";
+          errorBox.textContent = message;
+        }
+
+        function clearError() {
+          errorBox.style.display = "none";
+          errorBox.textContent = "";
+        }
+
+        function destroyCropper() {
+          if (cropper) {
+            cropper.destroy();
+            cropper = null;
+          }
+        }
+
+        function resetNewPreview() {
+          newPreviewEmpty.style.display = "block";
+          newPreviewLink.style.display = "none";
+
+          newPreviewImage.style.display = "none";
+          newPreviewImage.removeAttribute("src");
+
+          newPreviewVideo.pause();
+          newPreviewVideo.style.display = "none";
+          newPreviewVideo.removeAttribute("src");
+          newPreviewVideo.load();
+
+          cropStage.classList.remove("is-visible");
+          destroyCropper();
+        }
+
+        function syncPreviewLinks() {
+          const hrefValue = targetUrl.value.trim();
+
+          if (currentPreviewLink) {
+            currentPreviewLink.href = hrefValue || "#";
+            currentPreviewLink.classList.toggle("is-disabled", !hrefValue);
+          }
+
+          if (newPreviewLink) {
+            newPreviewLink.href = hrefValue || "#";
+            newPreviewLink.classList.toggle("is-disabled", !hrefValue);
+          }
+        }
+
+        function applyMediaRules() {
+          clearError();
+          mediaInput.value = "";
+          cropField.value = "";
+          resetNewPreview();
+
+          if (mediaType.value === "image") {
+            mediaInput.setAttribute("accept", ".png,.jpg,.jpeg,.webp");
+            imageRules.style.display = "block";
+            videoRules.style.display = "none";
+          } else {
+            mediaInput.setAttribute("accept", ".mp4,.webm,.mov");
+            imageRules.style.display = "none";
+            videoRules.style.display = "block";
+          }
+        }
+
+        function renderNewImagePreview(file) {
+          const objectUrl = URL.createObjectURL(file);
+
+          newPreviewEmpty.style.display = "none";
+          newPreviewLink.style.display = "block";
+          newPreviewImage.style.display = "block";
+          newPreviewVideo.style.display = "none";
+
+          newPreviewImage.src = objectUrl;
+
+          cropImage.onload = function () {
+            destroyCropper();
+            cropStage.classList.add("is-visible");
+
+            cropper = new Cropper(cropImage, {
+              aspectRatio: bannerRatio,
+              viewMode: 1,
+              dragMode: "move",
+              autoCropArea: 1,
+              responsive: true,
+              background: false,
+            });
+          };
+
+          cropImage.src = objectUrl;
+          syncPreviewLinks();
+        }
+
+        function renderNewVideoPreview(file) {
+          const objectUrl = URL.createObjectURL(file);
+
+          newPreviewEmpty.style.display = "none";
+          newPreviewLink.style.display = "block";
+          newPreviewImage.style.display = "none";
+          newPreviewVideo.style.display = "block";
+          newPreviewVideo.src = objectUrl;
+          newPreviewVideo.load();
+          cropStage.classList.remove("is-visible");
+          destroyCropper();
+
+          newPreviewVideo.onloadedmetadata = function () {
+            const actualRatio = newPreviewVideo.videoWidth / newPreviewVideo.videoHeight;
+
+            if (Math.abs(actualRatio - bannerRatio) > 0.02) {
+              showError(
+                `Rasio video harus ${cropWidth}:${cropHeight}. Video terdeteksi ${newPreviewVideo.videoWidth}x${newPreviewVideo.videoHeight}.`
+              );
+              mediaInput.value = "";
+              cropField.value = "";
+              resetNewPreview();
+              return;
+            }
+
+            syncPreviewLinks();
+          };
+        }
+
+        mediaType.addEventListener("change", applyMediaRules);
+        targetUrl.addEventListener("input", syncPreviewLinks);
+
+        mediaInput.addEventListener("change", function () {
+          clearError();
+          cropField.value = "";
+
+          const file = mediaInput.files[0];
+          if (!file) {
+            resetNewPreview();
+            return;
+          }
+
+          if (file.size > maxBytes) {
+            showError(`Ukuran file melebihi {{ banner_max_file_size_mb }} MB.`);
+            mediaInput.value = "";
+            resetNewPreview();
+            return;
+          }
+
+          if (mediaType.value === "image") {
+            renderNewImagePreview(file);
+          } else {
+            renderNewVideoPreview(file);
+          }
+        });
+
+        form.addEventListener("submit", function (event) {
+          clearError();
+
+          if (!targetUrl.value.trim()) {
+            event.preventDefault();
+            showError("Target URL wajib diisi.");
+            return;
+          }
+
+          if (mediaType.value === "image" && mediaInput.files[0]) {
+            if (!cropper) {
+              event.preventDefault();
+              showError("Crop image banner terlebih dahulu.");
+              return;
+            }
+
+            cropField.value = cropper
+              .getCroppedCanvas({
+                width: cropWidth,
+                height: cropHeight,
+                imageSmoothingEnabled: true,
+                imageSmoothingQuality: "high",
+              })
+              .toDataURL("image/jpeg", 0.92);
+          } else {
+            cropField.value = "";
+          }
+        });
+
+        applyMediaRules();
+        syncPreviewLinks();
+      })();
+    </script>
+  </body>
+</html>
