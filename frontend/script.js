@@ -94,9 +94,34 @@ const translations = {
     nav_background: "Background",
     nav_vision: "Vision & Mission",
     nav_organization: "Organization",
-    nav_leaders: "Leaders & Lecturers",
+    nav_leaders: "Faculty",
     nav_news: "News",
     nav_contact: "Contact",
+
+    view_more: "VIEW MORE",
+
+    intro_title: "FACULTY OF PHILOSOPHY AND THEOLOGY",
+
+    about_kicker: "About FFT",
+    about_title: "Faculty of Philosophy and Theology",
+
+    about_intro:
+      "The Faculty of Philosophy and Theology (FFT) focuses on the study of:",
+    about_item_1: "Philosophy",
+    about_item_2: "Theology",
+    about_item_3: "Biblical studies and spiritual leadership",
+    about_item_4: "Ethics and morality based on Christian Adventist values",
+    about_closing:
+      "As part of an Adventist institution, this faculty is theologically affiliated with the teachings of the Seventh-day Adventist Church.",
+
+      about_desc_1:
+  "Develops reflective, critical, and ethical thinking in understanding academic, spiritual, and social issues.",
+about_desc_2:
+  "Studies Christian faith foundations, biblical doctrine, and theological understanding in a focused academic environment.",
+about_desc_3:
+  "Builds biblical literacy, service character, and spiritual leadership for the church and wider society.",
+about_desc_4:
+  "Strengthens moral sensitivity, integrity, and responsibility based on Christian Adventist values.",
 
     program_kicker: "Academic Program",
     program_title: "Study Program",
@@ -118,6 +143,80 @@ const translations = {
     program_2_point_1: "Focuses on philosophy, ethics, and religious education.",
     program_2_point_2: "Supports the development of critical thinking skills.",
     program_2_point_3: "Prepares graduates for schools, churches, and society.",
+
+    background_title: "BACKGROUND",
+    background_p1:
+      "The Faculty of Philosophy and Theology (FFT) of Universitas Advent Surya Nusantara was established to prepare students to become spiritual leaders, church servants, and educators with deep theological understanding grounded in Christian faith values.",
+    background_p2:
+      "In facing contemporary developments, the church and society need human resources who not only understand theology but also have critical thinking skills, spiritual leadership, and strong moral integrity.",
+    background_p3:
+      "Therefore, FFT serves as an educational space that integrates academic study, spiritual formation, and character development to prepare graduates who are ready to serve in churches, educational institutions, and wider society.",
+
+    vision_title: "VISION",
+    vision_text:
+      "To become an excellent faculty in the development of philosophy and theology based on Christian Adventist values, producing graduates with integrity, spiritual character, and readiness to serve the church and society.",
+
+    mission_title: "MISSION",
+    mission_1: "Provide education and teaching in philosophy and theology.",
+    mission_2: "Develop deep biblical understanding among students.",
+    mission_3: "Build spiritual leadership with integrity.",
+    mission_4: "Prepare graduates to serve the church and society.",
+
+    organization_title: "ORGANIZATION",
+    organization_subtitle: "STUDENT ASSOCIATION",
+    organization_label: "HIMA",
+    organization_heading: "STUDENT ASSOCIATION",
+    organization_small: "FACULTY OF PHILOSOPHY AND THEOLOGY",
+    organization_text:
+      "The Student Association of the Faculty of Philosophy and Theology (HIMA FFT) is a student organization that supports leadership development, togetherness, and student service through academic, spiritual, and social activities.",
+    organization_more: "Read more...",
+
+        organization_left_alt: "Left organization logo",
+    organization_right_alt: "Right organization logo",
+
+    news_watermark_alt: "HIMA FFT watermark",
+    footer_logo_alt: "Faculty of Philosophy and Theology logo",
+
+    footer_academic_economics: "Faculty of Economics",
+    footer_academic_health: "Faculty of Health",
+    footer_academic_information_system:
+      "Faculty of Information Systems and Computer Science",
+
+    footer_dev_text:
+      "This website was developed by a student of the Faculty of Information Systems and Computer Science, Universitas Advent Surya Nusantara:",
+
+    news_title: "NEWS",
+    news_subtitle: "UNIVERSITAS ADVENT SURYA NUSANTARA",
+    banner_empty: "INFORMATION BANNER IS NOT AVAILABLE YET",
+    trending_title: "LATEST NEWS",
+    news_search_placeholder: "Search news...",
+    news_empty_state: "No news matches your search.",
+    news_footer_note: "This news content is protected by copyright.",
+    news_legal: "Terms & Report",
+
+    footer_brand_title: "FACULTY OF PHILOSOPHY AND THEOLOGY",
+    footer_brand_university: "UNIVERSITAS ADVENT SURYA NUSANTARA",
+    footer_brand_desc:
+      "A faculty committed to character development, service, and academic excellence based on Christian values.",
+    footer_academic: "Academic",
+    footer_contact_title: "Faculty Contact",
+    footer_contact_faculty: "Faculty of Philosophy and Theology",
+    footer_contact_university: "Universitas Advent Surya Nusantara",
+    footer_address_1: "Jl. Rakutta Sembiring No. 01",
+    footer_address_2: "Siantar Martoba, Pematangsiantar",
+    footer_email: "Email: fft@uasn.ac.id",
+    footer_wa_dean: "Dean WhatsApp",
+    footer_wa_secretary: "Secretary WhatsApp",
+    footer_email_button: "Faculty Email",
+    footer_instagram: "Faculty Instagram",
+    footer_map: "Campus Location",
+    footer_copy:
+      "© 2026 Faculty of Philosophy and Theology - Universitas Advent Surya Nusantara. All rights reserved.",
+
+      popup_title: "JOIN US",
+      popup_dean: "DEAN",
+      popup_secretary: "SECRETARY",
+      popup_close: "Close",
   },
 
   id: {
@@ -132,9 +231,34 @@ const translations = {
     nav_background: "Latar Belakang",
     nav_vision: "Visi & Misi",
     nav_organization: "Organisasi",
-    nav_leaders: "Pimpinan & Dosen",
+    nav_leaders: "Dosen",
     nav_news: "Berita",
     nav_contact: "Kontak",
+
+    view_more: "VIEW MORE",
+
+    intro_title: "FAKULTAS FILSAFAT TEOLOGI",
+
+    about_kicker: "Tentang FFT",
+    about_title: "Fakultas Filsafat Teologi",
+
+    about_intro:
+      "Fakultas Filsafat Teologi (FFT) adalah fakultas yang berfokus pada pengkajian:",
+    about_item_1: "Ilmu Filsafat",
+    about_item_2: "Ilmu Teologi (Ilmu Ketuhanan)",
+    about_item_3: "Studi Alkitab dan kepemimpinan rohani",
+    about_item_4: "Etika dan moralitas berbasis nilai Kristen Advent",
+    about_closing:
+      "Karena berada di bawah institusi “Advent”, maka secara teologis fakultas ini berafiliasi dengan ajaran Gereja Masehi Advent Hari Ketujuh.",
+
+    about_desc_1:
+  "Mengembangkan kemampuan berpikir reflektif, kritis, dan etis dalam memahami persoalan akademik, spiritual, dan sosial.",
+about_desc_2:
+  "Mengkaji dasar iman Kristen, doktrin Alkitabiah, dan pemahaman teologis dalam ruang akademik yang terarah.",
+about_desc_3:
+  "Membentuk literasi Alkitab, karakter pelayanan, dan kepemimpinan rohani untuk gereja serta masyarakat.",
+about_desc_4:
+  "Menanamkan kepekaan moral, integritas, dan tanggung jawab berdasarkan nilai-nilai Kristen Advent.",
 
     program_kicker: "Program Akademik",
     program_title: "Program Studi",
@@ -156,7 +280,81 @@ const translations = {
     program_2_point_1: "Fokus pada filsafat, etika, dan pendidikan agama.",
     program_2_point_2: "Mendukung pengembangan kemampuan berpikir kritis.",
     program_2_point_3: "Mempersiapkan lulusan untuk sekolah, gereja, dan masyarakat.",
-  },
+
+    background_title: "LATAR BELAKANG",
+    background_p1:
+      "Fakultas Filsafat Teologi (FFT) Universitas Advent Surya Nusantara didirikan untuk mempersiapkan mahasiswa menjadi pemimpin rohani, pelayan gereja, serta pendidik yang memiliki pemahaman teologis yang mendalam dan berlandaskan nilai-nilai iman Kristen.",
+    background_p2:
+      "Dalam menghadapi perkembangan zaman, gereja dan masyarakat membutuhkan sumber daya manusia yang tidak hanya memiliki pengetahuan teologi, tetapi juga kemampuan berpikir kritis, kepemimpinan rohani, serta integritas moral yang kuat.",
+    background_p3:
+      "Oleh karena itu, FFT hadir sebagai wadah pendidikan yang memadukan kajian akademik, pembinaan spiritual, serta pengembangan karakter untuk mempersiapkan lulusan yang siap melayani di gereja, lembaga pendidikan, maupun masyarakat luas.",
+
+    vision_title: "VISI",
+    vision_text:
+      "Menjadi fakultas yang unggul dalam pengembangan ilmu filsafat dan teologi yang berlandaskan nilai-nilai iman Kristen Advent serta menghasilkan lulusan yang berintegritas, berkarakter rohani, dan siap melayani gereja serta masyarakat.",
+
+    mission_title: "MISI",
+    mission_1: "Menyelenggarakan pendidikan dan pengajaran di bidang filsafat dan teologi.",
+    mission_2: "Mengembangkan pemahaman Alkitabiah yang mendalam bagi mahasiswa.",
+    mission_3: "Membentuk kepemimpinan rohani yang berintegritas.",
+    mission_4: "Mempersiapkan lulusan yang siap melayani gereja dan masyarakat.",
+
+    organization_title: "ORGANISASI",
+    organization_subtitle: "HIMPUNAN MAHASISWA",
+    organization_label: "HIMA",
+    organization_heading: "HIMPUNAN MAHASISWA",
+    organization_small: "FAKULTAS FILSAFAT TEOLOGI",
+    organization_text:
+      "Himpunan Mahasiswa Fakultas Filsafat Teologi (HIMA FFT) adalah organisasi kemahasiswaan yang menjadi wadah pengembangan kepemimpinan, kebersamaan, dan pelayanan mahasiswa dalam kegiatan akademik, rohani, dan sosial.",
+    organization_more: "Selengkapnya...",
+
+        organization_left_alt: "Logo Organisasi Kiri",
+    organization_right_alt: "Logo Organisasi Kanan",
+
+    news_watermark_alt: "Watermark HIMA FFT",
+    footer_logo_alt: "Logo Fakultas Filsafat Teologi",
+
+    footer_academic_economics: "Fakultas Ekonomi",
+    footer_academic_health: "Fakultas Kesehatan",
+    footer_academic_information_system:
+      "Fakultas Sistem Informasi & Ilmu Komputer",
+
+    footer_dev_text:
+      "Website ini dikembangkan oleh mahasiswa Fakultas Sistem Informasi & Ilmu Komputer Universitas Advent Surya Nusantara:",
+
+    news_title: "BERITA",
+    news_subtitle: "UNIVERSITAS ADVENT SURYA NUSANTARA",
+    banner_empty: "BANNER INFORMASI BELUM TERSEDIA",
+    trending_title: "BERITA TERBARU",
+    news_search_placeholder: "Cari berita...",
+    news_empty_state: "Tidak ada berita yang sesuai dengan pencarian Anda.",
+    news_footer_note: "Berita ini merupakan konten yang dilindungi hak cipta.",
+    news_legal: "Ketentuan & Pengaduan",
+
+    footer_brand_title: "FAKULTAS FILSAFAT TEOLOGI",
+    footer_brand_university: "UNIVERSITAS ADVENT SURYA NUSANTARA",
+    footer_brand_desc:
+      "Fakultas yang berkomitmen pada pengembangan karakter, pelayanan, dan keunggulan akademik berdasarkan nilai-nilai Kristiani.",
+    footer_academic: "Akademik",
+    footer_contact_title: "Kontak Fakultas",
+    footer_contact_faculty: "Fakultas Filsafat Teologi",
+    footer_contact_university: "Universitas Advent Surya Nusantara",
+    footer_address_1: "Jl. Rakutta Sembiring No. 01",
+    footer_address_2: "Siantar Martoba, Pematangsiantar",
+    footer_email: "Email: fft@uasn.ac.id",
+    footer_wa_dean: "WhatsApp Dekan",
+    footer_wa_secretary: "WhatsApp Sekretaris",
+    footer_email_button: "Email Fakultas",
+    footer_instagram: "Instagram Fakultas",
+    footer_map: "Lokasi Kampus",
+    footer_copy:
+      "© 2026 Fakultas Filsafat Teologi - Universitas Advent Surya Nusantara. Seluruh hak cipta dilindungi.",
+    
+      popup_title: "AYO GABUNG BERSAMA KAMI",
+      popup_dean: "DEKAN",
+      popup_secretary: "SEKRETARIS",
+      popup_close: "Tutup",
+    },
 };
 
 const langButtons = document.querySelectorAll(".lang-btn");
@@ -172,6 +370,24 @@ function applyLanguage(language) {
 
     if (translatedText) {
       element.textContent = translatedText;
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+    const key = element.dataset.i18nPlaceholder;
+    const translatedText = translations[selectedLanguage][key];
+
+    if (translatedText) {
+      element.setAttribute("placeholder", translatedText);
+    }
+  });
+
+    document.querySelectorAll("[data-i18n-alt]").forEach((element) => {
+    const key = element.dataset.i18nAlt;
+    const translatedText = translations[selectedLanguage][key];
+
+    if (translatedText) {
+      element.setAttribute("alt", translatedText);
     }
   });
 
@@ -192,20 +408,15 @@ langButtons.forEach((button) => {
 applyLanguage(savedLanguage);
 
 /* ===================== */
-/* EN: SMART STICKY HEADER | ID: HEADER STICKY HALUS */
+/* EN: HEADER STAYS STABLE BY CSS | ID: HEADER DIBUAT STABIL DENGAN CSS */
 /* ===================== */
 
 const siteHeader = document.getElementById("siteHeader");
 
-function updateHeaderState() {
-  if (!siteHeader) return;
-
-  siteHeader.classList.toggle("is-scrolled", window.scrollY > 80);
+if (siteHeader) {
+  siteHeader.classList.remove("is-scrolled");
 }
-
-updateHeaderState();
-window.addEventListener("scroll", updateHeaderState, { passive: true });
-
+  
   /* ===================== */
   /* HERO VIEW MORE */
   /* ===================== */
@@ -836,29 +1047,7 @@ if (isPimpinanPage) {
   }
 });
 
-document.addEventListener("mousemove", function (e) {
-  const particle = document.createElement("div");
-  particle.classList.add("particle");
 
-  const redPalette = [
-    "rgba(133, 14, 53, 0.78)",
-    "rgba(95, 14, 14, 0.78)",
-    "rgba(255, 42, 42, 0.55)",
-    "rgba(252, 245, 238, 0.45)",
-  ];
-
-  const color = redPalette[Math.floor(Math.random() * redPalette.length)];
-
-  particle.style.background = color;
-  particle.style.left = e.clientX + "px";
-  particle.style.top = e.clientY + "px";
-
-  document.body.appendChild(particle);
-
-  setTimeout(() => {
-    particle.remove();
-  }, 800);
-});
 
 /* HERO SLIDER */
 

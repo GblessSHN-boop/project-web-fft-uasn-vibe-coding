@@ -3870,3 +3870,1375 @@ body.program-zoom-ready .program-image img {
     font-size: 21px;
   }
 }
+
+/* ===================== */
+/* EN: MASTER UI RESET PATCH | ID: PATCH RESET UI UTAMA */
+/* ===================== */
+
+:root {
+  --fft-red: #5f0e0e;
+  --fft-red-dark: #430808;
+  --fft-black: #111111;
+  --fft-text: #222222;
+  --fft-muted: #666666;
+  --fft-line: rgba(17, 17, 17, 0.1);
+  --fft-cream: #f7f4f1;
+  --fft-white: #ffffff;
+  --fft-font: Arial, Helvetica, sans-serif;
+}
+
+html,
+body {
+  font-family: var(--fft-font) !important;
+}
+
+/* EN: Disable experimental effects | ID: Matikan efek eksperimental */
+.cursor-glow,
+.particle {
+  display: none !important;
+}
+
+/* ===================== */
+/* EN: STABLE OFFICIAL HEADER | ID: HEADER RESMI STABIL */
+/* ===================== */
+
+.site-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  background: var(--fft-white) !important;
+  transform: none !important;
+}
+
+/* EN: Keep header stable even if old JS class exists | ID: Header tetap stabil walau class lama ada */
+.site-header.is-scrolled .topbar,
+.site-header .topbar {
+  height: 38px !important;
+  padding: 0 52px !important;
+  background: var(--fft-red) !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+}
+
+.site-header.is-scrolled .container,
+.site-header .container {
+  min-height: 82px !important;
+  padding: 0 52px !important;
+  background: var(--fft-white) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 34px !important;
+  border-bottom: 1px solid var(--fft-line) !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* EN: Remove old entrance animation | ID: Hapus animasi masuk lama */
+.brand-wrapper {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+.site-header .brand-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  flex: 0 0 auto !important;
+}
+
+.site-header .logo img,
+.site-header.is-scrolled .logo img {
+  width: 52px !important;
+  height: auto !important;
+}
+
+.site-header .branding h1,
+.site-header.is-scrolled .branding h1 {
+  margin: 0 !important;
+  color: var(--fft-red) !important;
+  font-size: 20px !important;
+  line-height: 1.08 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.16em !important;
+  max-width: 420px !important;
+}
+
+.site-header .brand-universitas,
+.site-header.is-scrolled .brand-universitas {
+  margin: 6px 0 0 !important;
+  color: var(--fft-black) !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* EN: Topbar content | ID: Isi topbar */
+.site-header .topbar_left,
+.site-header .topbar_right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 20px !important;
+}
+
+.site-header .topbar a {
+  color: var(--fft-white) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  letter-spacing: 0.02em !important;
+}
+
+.site-header .topbar_left img {
+  width: 22px !important;
+}
+
+/* EN: Language switcher | ID: Tombol bahasa */
+.language-switcher {
+  height: 24px !important;
+  padding: 0 9px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.lang-btn {
+  border: 0 !important;
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.58) !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+}
+
+.lang-btn.active,
+.lang-btn:hover {
+  color: var(--fft-white) !important;
+}
+
+.lang-separator {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+
+/* EN: Desktop navigation | ID: Navigasi desktop */
+.site-header .sidebar-nav {
+  flex: 1 1 auto !important;
+}
+
+.site-header .sidebar-nav ul {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  flex-wrap: nowrap !important;
+  gap: clamp(18px, 1.8vw, 30px) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  list-style: none !important;
+}
+
+.site-header .sidebar-nav a {
+  color: var(--fft-black) !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.01em !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+.site-header .sidebar-nav a:hover {
+  color: var(--fft-red) !important;
+}
+
+.site-header .sidebar-nav a::after {
+  background: var(--fft-red) !important;
+  bottom: -8px !important;
+}
+
+/* EN: Study program remains readable | ID: Program Studi tetap mudah dibaca */
+.program-card {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.program-section-clean {
+  background: #ffffff !important;
+}
+
+.program-card-number,
+.program-card li::before {
+  background: var(--fft-red) !important;
+}
+
+.section-kicker,
+.program-label {
+  color: var(--fft-red) !important;
+}
+
+/* ===================== */
+/* EN: CLEANER FOOTER | ID: FOOTER LEBIH RAPI */
+/* ===================== */
+
+.fft-footer {
+  margin-top: 0 !important;
+  background: #080808 !important;
+  color: #ffffff !important;
+}
+
+.fft-footer-top {
+  padding: 54px 0 42px !important;
+  border-top: 5px solid var(--fft-red) !important;
+}
+
+.fft-footer-inner {
+  width: min(1180px, 92vw) !important;
+  display: grid !important;
+  grid-template-columns: 1.15fr 0.75fr 1fr 1.05fr !important;
+  gap: 42px !important;
+  align-items: start !important;
+}
+
+.fft-footer-brand {
+  gap: 16px !important;
+}
+
+.fft-footer-brand img {
+  width: 58px !important;
+}
+
+.fft-footer-brand-text h3 {
+  color: #ffffff !important;
+  font-size: 18px !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.06em !important;
+}
+
+.fft-footer-brand-text p {
+  color: rgba(255, 255, 255, 0.82) !important;
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+  letter-spacing: 0.12em !important;
+}
+
+.fft-footer-brand-text span,
+.fft-footer-column p,
+.fft-footer-column a {
+  color: rgba(255, 255, 255, 0.76) !important;
+  font-size: 14px !important;
+  line-height: 1.75 !important;
+}
+
+.fft-footer-column h4 {
+  color: #ffffff !important;
+  font-size: 16px !important;
+  letter-spacing: 0.03em !important;
+}
+
+.fft-footer-column h4::after {
+  background: var(--fft-red) !important;
+}
+
+.fft-footer-column a:hover {
+  color: #ffffff !important;
+}
+
+.footer-contact-actions {
+  margin-top: 16px !important;
+  gap: 10px !important;
+}
+
+.footer-contact-btn {
+  width: 100% !important;
+  max-width: 220px !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+}
+
+.footer-contact-btn:hover {
+  background: var(--fft-red) !important;
+  border-color: var(--fft-red) !important;
+  color: #ffffff !important;
+}
+
+.fft-footer-map .fft-map-wrap {
+  height: 210px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+}
+
+.fft-subfooter {
+  background: #050505 !important;
+}
+
+.fft-subfooter-inner {
+  width: min(1180px, 92vw) !important;
+}
+
+/* EN: Mobile layout | ID: Tampilan mobile */
+@media (max-width: 980px) {
+  .site-header.is-scrolled .container,
+  .site-header .container {
+    padding: 14px 22px !important;
+    min-height: 78px !important;
+  }
+
+  .site-header.is-scrolled .topbar,
+  .site-header .topbar {
+    padding: 0 22px !important;
+  }
+
+  .site-header .sidebar-nav ul {
+    gap: 16px !important;
+  }
+
+  .site-header .sidebar-nav a {
+    font-size: 12px !important;
+  }
+
+  .fft-footer-inner {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header.is-scrolled .topbar,
+  .site-header .topbar {
+    height: 36px !important;
+    padding: 0 16px !important;
+  }
+
+  .topbar-quick-link {
+    display: none !important;
+  }
+
+  .site-header .topbar a {
+    font-size: 12px !important;
+  }
+
+  .site-header.is-scrolled .container,
+  .site-header .container {
+    display: flex !important;
+    padding: 12px 16px !important;
+  }
+
+  .site-header .logo img,
+  .site-header.is-scrolled .logo img {
+    width: 46px !important;
+  }
+
+  .site-header .branding h1,
+  .site-header.is-scrolled .branding h1 {
+    font-size: 14px !important;
+    letter-spacing: 0.08em !important;
+    max-width: 260px !important;
+  }
+
+  .site-header .brand-universitas,
+  .site-header.is-scrolled .brand-universitas {
+    font-size: 9px !important;
+  }
+
+  .menu-toggle {
+    color: var(--fft-red) !important;
+  }
+
+  .sidebar-nav {
+    background: #ffffff !important;
+  }
+
+  .sidebar-nav a {
+    color: var(--fft-black) !important;
+  }
+
+  .fft-footer-inner {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+
+  .footer-contact-btn {
+    max-width: 100% !important;
+  }
+}
+
+/* ===================== */
+/* FFT PREMIUM UI PATCH V2 */
+/* ===================== */
+
+:root {
+  --fft-red: #5f0e0e;
+  --fft-red-dark: #430808;
+  --fft-black: #0f0f10;
+  --fft-text: #1f1f22;
+  --fft-muted: #68686f;
+  --fft-line: rgba(15, 15, 16, 0.1);
+  --fft-soft: #f7f4f1;
+  --fft-white: #ffffff;
+  --fft-font-main: "Inter", Arial, Helvetica, sans-serif;
+  --fft-font-body: "Open Sans", Arial, Helvetica, sans-serif;
+}
+
+html,
+body {
+  font-family: var(--fft-font-main) !important;
+  color: var(--fft-text) !important;
+  background: #ffffff !important;
+  overflow-x: hidden !important;
+}
+
+body {
+  letter-spacing: 0 !important;
+}
+
+/* ===================== */
+/* HEADER PREMIUM STABLE */
+/* ===================== */
+
+.site-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  background: #ffffff !important;
+  transform: none !important;
+}
+
+.site-header .topbar,
+.site-header.is-scrolled .topbar {
+  height: 38px !important;
+  padding: 0 clamp(20px, 4vw, 56px) !important;
+  background: var(--fft-red) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+}
+
+.site-header .topbar_left,
+.site-header .topbar_right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 18px !important;
+  min-width: 0 !important;
+}
+
+.site-header .topbar a {
+  color: #ffffff !important;
+  text-decoration: none !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em !important;
+}
+
+.site-header .topbar_left img {
+  width: 22px !important;
+  height: auto !important;
+}
+
+.topbar-quick-link {
+  padding-left: 18px !important;
+}
+
+.topbar-quick-link::before {
+  background: rgba(255, 255, 255, 0.32) !important;
+}
+
+/* Main header */
+.site-header .container,
+.site-header.is-scrolled .container {
+  height: 78px !important;
+  min-height: 78px !important;
+  padding: 0 clamp(20px, 4vw, 56px) !important;
+  background: #ffffff !important;
+  display: grid !important;
+  grid-template-columns: minmax(330px, 470px) minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 24px !important;
+  border-bottom: 1px solid rgba(15, 15, 16, 0.08) !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.055) !important;
+}
+
+.site-header .container > div:last-child {
+  min-width: 0 !important;
+}
+
+.site-header .brand-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  min-width: 0 !important;
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+.site-header .logo img,
+.site-header.is-scrolled .logo img {
+  width: 52px !important;
+  height: auto !important;
+  display: block !important;
+}
+
+.site-header .branding {
+  min-width: 0 !important;
+}
+
+.site-header .branding h1,
+.site-header.is-scrolled .branding h1 {
+  margin: 0 !important;
+  color: var(--fft-red) !important;
+  font-size: clamp(15px, 1.22vw, 19px) !important;
+  line-height: 1.15 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  max-width: 460px !important;
+}
+
+.site-header .brand-universitas,
+.site-header.is-scrolled .brand-universitas {
+  margin: 6px 0 0 !important;
+  color: var(--fft-black) !important;
+  font-size: clamp(9px, 0.8vw, 11px) !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.035em !important;
+  text-transform: uppercase !important;
+}
+
+/* Desktop navigation */
+.site-header .sidebar-nav {
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+.site-header .sidebar-nav ul {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: clamp(12px, 1.35vw, 22px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  list-style: none !important;
+  flex-wrap: nowrap !important;
+}
+
+.site-header .sidebar-nav a {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 38px !important;
+  color: var(--fft-black) !important;
+  text-decoration: none !important;
+  font-size: clamp(12px, 0.92vw, 14px) !important;
+  line-height: 1 !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.005em !important;
+  white-space: nowrap !important;
+}
+
+.site-header .sidebar-nav a::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: auto !important;
+  bottom: 4px !important;
+  width: 0 !important;
+  height: 2px !important;
+  background: var(--fft-red) !important;
+  transition: width 0.22s ease !important;
+}
+
+.site-header .sidebar-nav a:hover {
+  color: var(--fft-red) !important;
+}
+
+.site-header .sidebar-nav a:hover::after {
+  width: 100% !important;
+}
+
+/* Language switcher */
+.language-switcher {
+  height: 24px !important;
+  padding: 0 9px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+}
+
+.lang-btn {
+  border: 0 !important;
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.58) !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+}
+
+.lang-btn.active,
+.lang-btn:hover {
+  color: #ffffff !important;
+}
+
+.lang-separator {
+  color: rgba(255, 255, 255, 0.34) !important;
+}
+
+/* CTA */
+.daftar-btn {
+  padding: 0 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em !important;
+}
+
+.daftar-btn::before {
+  display: none !important;
+}
+
+/* ===================== */
+/* HERO CLEAN */
+/* ===================== */
+
+.hero {
+  position: relative !important;
+  height: calc(100svh - 116px) !important;
+  min-height: 560px !important;
+  max-height: 760px !important;
+  overflow: hidden !important;
+  background: #111111 !important;
+}
+
+.hero-slider,
+.slide {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.slide {
+  object-fit: cover !important;
+  object-position: center center !important;
+  opacity: 0 !important;
+  transition: opacity 900ms ease !important;
+}
+
+.slide.active {
+  opacity: 1 !important;
+}
+
+.hero-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.18) 0%,
+      rgba(0, 0, 0, 0.28) 48%,
+      rgba(95, 14, 14, 0.32) 100%
+    ) !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+.hero-content {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 3 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: none !important;
+}
+
+.view-more {
+  min-width: 230px !important;
+  min-height: 54px !important;
+  padding: 0 34px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(255, 255, 255, 0.78) !important;
+  border-radius: 0 !important;
+  background: rgba(0, 0, 0, 0.16) !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.24em !important;
+  backdrop-filter: blur(8px) !important;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease !important;
+}
+
+.view-more:hover {
+  background: #ffffff !important;
+  color: var(--fft-black) !important;
+  border-color: #ffffff !important;
+  transform: translateY(-2px) !important;
+}
+
+/* ===================== */
+/* POPUP CLEAN SVG ICON */
+/* ===================== */
+
+.popup-daftar {
+  background: rgba(0, 0, 0, 0.62) !important;
+  backdrop-filter: blur(6px) !important;
+  z-index: 9999 !important;
+}
+
+.popup-content {
+  width: min(420px, calc(100vw - 32px)) !important;
+  padding: 38px 34px 30px !important;
+  border-radius: 28px !important;
+  background: #ffffff !important;
+  color: var(--fft-black) !important;
+  text-align: center !important;
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.22) !important;
+  border: 1px solid rgba(15, 15, 16, 0.08) !important;
+}
+
+.popup-eyebrow {
+  margin: 0 0 12px !important;
+  color: var(--fft-red) !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+}
+
+.popup-content h2 {
+  margin: 0 0 28px !important;
+  color: var(--fft-black) !important;
+  font-size: 26px !important;
+  line-height: 1.18 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+.popup-action-list {
+  display: grid !important;
+  gap: 12px !important;
+}
+
+.popup-btn {
+  height: 54px !important;
+  padding: 0 18px !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(15, 15, 16, 0.1) !important;
+  background: var(--fft-black) !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+  transition:
+    transform 0.22s ease,
+    background-color 0.22s ease,
+    border-color 0.22s ease !important;
+}
+
+.popup-btn:hover {
+  transform: translateY(-2px) !important;
+  background: var(--fft-red) !important;
+  border-color: var(--fft-red) !important;
+}
+
+.popup-icon {
+  width: 18px !important;
+  height: 18px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 18px !important;
+}
+
+.popup-icon svg {
+  width: 18px !important;
+  height: 18px !important;
+  display: block !important;
+  fill: currentColor !important;
+}
+
+.popup-close {
+  margin-top: 22px !important;
+  padding: 8px 12px !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: var(--fft-muted) !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+}
+
+.popup-close:hover {
+  color: var(--fft-red) !important;
+}
+
+/* ===================== */
+/* SECTION TYPOGRAPHY CLEANUP */
+/* ===================== */
+
+.program-section-clean,
+.latar-belakang,
+.visi-misi,
+.organisasi-content,
+.berita-section,
+.fft-footer {
+  font-family: var(--fft-font-main) !important;
+}
+
+.program-section-clean {
+  padding: clamp(70px, 8vw, 112px) clamp(20px, 4vw, 56px) !important;
+}
+
+.program-shell {
+  width: min(1180px, 100%) !important;
+}
+
+.section-kicker {
+  color: var(--fft-red) !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.16em !important;
+}
+
+.program-section-clean .program-title {
+  font-size: clamp(38px, 5vw, 64px) !important;
+  line-height: 0.98 !important;
+  letter-spacing: 0.08em !important;
+  color: var(--fft-black) !important;
+}
+
+.program-lead {
+  max-width: 850px !important;
+  color: var(--fft-muted) !important;
+  font-family: var(--fft-font-body) !important;
+  font-size: clamp(16px, 1.2vw, 19px) !important;
+  line-height: 1.85 !important;
+}
+
+.program-card-grid {
+  gap: 24px !important;
+  margin-top: 42px !important;
+}
+
+.program-card {
+  border-radius: 24px !important;
+  border: 1px solid rgba(95, 14, 14, 0.16) !important;
+  background: #ffffff !important;
+  box-shadow: 0 18px 55px rgba(15, 15, 16, 0.07) !important;
+}
+
+.program-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 24px 70px rgba(95, 14, 14, 0.12) !important;
+}
+
+/* ===================== */
+/* FOOTER CALM PREMIUM */
+/* ===================== */
+
+.fft-footer {
+  background: #050505 !important;
+  color: #ffffff !important;
+  margin-top: 0 !important;
+}
+
+.fft-footer-top {
+  padding: 54px 0 46px !important;
+  border-top: 4px solid var(--fft-red) !important;
+}
+
+.fft-footer-inner {
+  width: min(1180px, 92vw) !important;
+  gap: 38px !important;
+}
+
+.fft-footer-brand img {
+  width: 54px !important;
+}
+
+.fft-footer-brand-text h3,
+.fft-footer-column h4 {
+  font-family: var(--fft-font-main) !important;
+  font-weight: 900 !important;
+}
+
+.fft-footer-brand-text span,
+.fft-footer-column p,
+.fft-footer-column a {
+  font-family: var(--fft-font-body) !important;
+}
+
+.footer-contact-btn {
+  border-radius: 14px !important;
+  min-height: 44px !important;
+  justify-content: center !important;
+}
+
+/* ===================== */
+/* RESPONSIVE PREMIUM */
+/* ===================== */
+
+@media (max-width: 1200px) {
+  .site-header .container,
+  .site-header.is-scrolled .container {
+    grid-template-columns: minmax(280px, 410px) minmax(0, 1fr) !important;
+    gap: 18px !important;
+  }
+
+  .site-header .sidebar-nav ul {
+    gap: 12px !important;
+  }
+
+  .site-header .sidebar-nav a {
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 980px) {
+  .site-header .container,
+  .site-header.is-scrolled .container {
+    display: flex !important;
+    min-height: 74px !important;
+    height: 74px !important;
+  }
+
+  .menu-toggle {
+    display: block !important;
+    color: var(--fft-red) !important;
+    font-size: 28px !important;
+  }
+
+  .site-header .sidebar-nav {
+    position: fixed !important;
+    top: 0 !important;
+    right: -290px !important;
+    width: 290px !important;
+    height: 100vh !important;
+    padding: 118px 28px 28px !important;
+    background: #ffffff !important;
+    box-shadow: -20px 0 50px rgba(0, 0, 0, 0.18) !important;
+    transition: right 0.28s ease !important;
+    z-index: 998 !important;
+  }
+
+  .site-header .sidebar-nav.active {
+    right: 0 !important;
+  }
+
+  .site-header .sidebar-nav ul {
+    display: grid !important;
+    gap: 18px !important;
+    justify-content: stretch !important;
+  }
+
+  .site-header .sidebar-nav a {
+    font-size: 15px !important;
+    min-height: 34px !important;
+  }
+
+  .hero {
+    height: calc(100svh - 112px) !important;
+    min-height: 480px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header .topbar,
+  .site-header.is-scrolled .topbar {
+    height: 36px !important;
+    padding: 0 16px !important;
+  }
+
+  .topbar-quick-link {
+    display: none !important;
+  }
+
+  .site-header .container,
+  .site-header.is-scrolled .container {
+    padding: 0 16px !important;
+  }
+
+  .site-header .logo img,
+  .site-header.is-scrolled .logo img {
+    width: 44px !important;
+  }
+
+  .site-header .branding h1,
+  .site-header.is-scrolled .branding h1 {
+    font-size: 13px !important;
+    letter-spacing: 0.08em !important;
+    max-width: 260px !important;
+  }
+
+  .site-header .brand-universitas,
+  .site-header.is-scrolled .brand-universitas {
+    font-size: 8.5px !important;
+  }
+
+  .hero {
+    height: 62vh !important;
+    min-height: 430px !important;
+  }
+
+  .view-more {
+    min-width: 190px !important;
+    min-height: 48px !important;
+    font-size: 12px !important;
+  }
+
+  .program-card-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .program-card {
+    grid-template-columns: 1fr !important;
+  }
+
+  .fft-footer-inner {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ===================== */
+/* EN: FFT ABOUT PROFESSIONAL SECTION | ID: SECTION TENTANG FFT PROFESIONAL */
+/* ===================== */
+
+.fft-about-pro {
+  position: relative !important;
+  padding: clamp(76px, 8vw, 124px) clamp(18px, 4vw, 56px) !important;
+  background:
+    radial-gradient(
+      circle at 12% 18%,
+      rgba(95, 14, 14, 0.22) 0%,
+      rgba(95, 14, 14, 0.08) 28%,
+      transparent 52%
+    ),
+    radial-gradient(
+      circle at 86% 76%,
+      rgba(255, 255, 255, 0.055) 0%,
+      transparent 38%
+    ),
+    linear-gradient(180deg, #050505 0%, #090909 52%, #070202 100%) !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+}
+
+.fft-about-pro::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px) !important;
+  background-size: 72px 72px !important;
+  opacity: 0.16 !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+.fft-about-pro::after {
+  content: "" !important;
+  position: absolute !important;
+  width: 520px !important;
+  height: 520px !important;
+  right: -180px !important;
+  top: 18% !important;
+  border-radius: 999px !important;
+  background: radial-gradient(
+    circle,
+    rgba(95, 14, 14, 0.24) 0%,
+    rgba(95, 14, 14, 0.1) 42%,
+    transparent 70%
+  ) !important;
+  filter: blur(8px) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* EN: Reset old grey card styles | ID: Matikan gaya card abu-abu lama */
+.fft-about-pro .fft-about-content {
+  position: relative !important;
+  z-index: 2 !important;
+  width: min(1180px, 100%) !important;
+  max-width: 1180px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+.fft-about-shell {
+  display: grid !important;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr) !important;
+  gap: clamp(34px, 5vw, 72px) !important;
+  align-items: center !important;
+}
+
+.fft-about-copy {
+  max-width: 540px !important;
+}
+
+.fft-section-kicker {
+  margin: 0 0 16px !important;
+  color: #f0c7c7 !important;
+  font-family: var(--fft-font-main, "Inter", Arial, sans-serif) !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+.fft-about-copy h2 {
+  margin: 0 0 22px !important;
+  color: #ffffff !important;
+  font-family: var(--fft-font-main, "Inter", Arial, sans-serif) !important;
+  font-size: clamp(34px, 4.6vw, 62px) !important;
+  line-height: 1.02 !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.035em !important;
+  text-transform: none !important;
+}
+
+.fft-about-lead {
+  margin: 0 0 22px !important;
+  color: rgba(255, 255, 255, 0.82) !important;
+  font-family: var(--fft-font-body, "Open Sans", Arial, sans-serif) !important;
+  font-size: clamp(16px, 1.2vw, 19px) !important;
+  line-height: 1.85 !important;
+  font-weight: 500 !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+.fft-about-note {
+  margin: 0 !important;
+  padding-left: 18px !important;
+  border-left: 3px solid #5f0e0e !important;
+  color: rgba(255, 255, 255, 0.66) !important;
+  font-family: var(--fft-font-body, "Open Sans", Arial, sans-serif) !important;
+  font-size: 15px !important;
+  line-height: 1.8 !important;
+  font-weight: 500 !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+.fft-about-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+}
+
+.fft-about-card {
+  position: relative !important;
+  min-height: 210px !important;
+  padding: 26px 24px 24px !important;
+  border-radius: 22px !important;
+  border: 1px solid rgba(255, 255, 255, 0.11) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.075) 0%, rgba(255, 255, 255, 0.026) 100%) !important;
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  transform: translateY(22px) !important;
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease !important;
+}
+
+.fft-about-card::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: 4px !important;
+  height: 100% !important;
+  background: #5f0e0e !important;
+  opacity: 0.9 !important;
+}
+
+.fft-about-card:hover {
+  border-color: rgba(95, 14, 14, 0.55) !important;
+  background:
+    linear-gradient(180deg, rgba(95, 14, 14, 0.22) 0%, rgba(255, 255, 255, 0.035) 100%) !important;
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(95, 14, 14, 0.12) inset !important;
+  transform: translateY(-4px) !important;
+}
+
+.fft-about-number {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  margin-bottom: 22px !important;
+  border-radius: 14px !important;
+  background: rgba(95, 14, 14, 0.92) !important;
+  color: #ffffff !important;
+  font-family: var(--fft-font-main, "Inter", Arial, sans-serif) !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.08em !important;
+}
+
+.fft-about-card h3 {
+  margin: 0 0 12px !important;
+  color: #ffffff !important;
+  font-family: var(--fft-font-main, "Inter", Arial, sans-serif) !important;
+  font-size: 18px !important;
+  line-height: 1.35 !important;
+  font-weight: 850 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.fft-about-card p {
+  margin: 0 !important;
+  color: rgba(255, 255, 255, 0.68) !important;
+  font-family: var(--fft-font-body, "Open Sans", Arial, sans-serif) !important;
+  font-size: 14px !important;
+  line-height: 1.75 !important;
+  font-weight: 500 !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* EN: Clean animation after observer adds .show | ID: Animasi bersih setelah observer menambah .show */
+.fft-about-content.show .fft-about-card {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.fft-about-content.show .fft-about-card:nth-child(1) {
+  transition-delay: 0.08s !important;
+}
+
+.fft-about-content.show .fft-about-card:nth-child(2) {
+  transition-delay: 0.16s !important;
+}
+
+.fft-about-content.show .fft-about-card:nth-child(3) {
+  transition-delay: 0.24s !important;
+}
+
+.fft-about-content.show .fft-about-card:nth-child(4) {
+  transition-delay: 0.32s !important;
+}
+
+/* EN: Override old text animation from previous CSS | ID: Timpa animasi teks lama */
+.fft-about-pro .fft-about-content p,
+.fft-about-pro .fft-about-content li,
+.fft-about-pro .fft-about-content h2,
+.fft-about-pro .fft-about-content h3 {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* EN: Responsive layout | ID: Layout responsif */
+@media (max-width: 980px) {
+  .fft-about-shell {
+    grid-template-columns: 1fr !important;
+  }
+
+  .fft-about-copy {
+    max-width: 760px !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .fft-about-pro {
+    padding: 68px 16px !important;
+  }
+
+  .fft-about-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .fft-about-card {
+    min-height: auto !important;
+    padding: 24px 20px 22px !important;
+  }
+
+  .fft-about-copy h2 {
+    font-size: 34px !important;
+  }
+
+  .fft-about-lead {
+    font-size: 15px !important;
+    line-height: 1.75 !important;
+  }
+
+  .fft-about-note {
+    font-size: 14px !important;
+    line-height: 1.75 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fft-about-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* EN | ID: Remove bottom curve from FFT intro banner | Hilangkan lengkungan bawah banner intro FFT */
+.fft-intro {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
