@@ -3020,3 +3020,158 @@ body.reveal-ready .dosen-card.is-visible {
   font-weight: 700;
   letter-spacing: 0.3px;
 }
+
+/* ===================== */
+/* PATCH FINAL MERAH FFT */
+/* ===================== */
+
+:root {
+  --fft-maroon: #850E35;
+  --fft-dark-maroon: #5f0e0e;
+  --fft-soft-red: #ff2a2a;
+  --fft-cream: #FCF5EE;
+}
+
+#kontak {
+  scroll-margin-top: 130px;
+}
+
+/* Preloader */
+.inner.one {
+  border-bottom-color: var(--fft-maroon) !important;
+}
+
+.inner.two {
+  border-right-color: var(--fft-soft-red) !important;
+}
+
+/* Cursor glow */
+.cursor-glow {
+  background: radial-gradient(
+    circle,
+    rgba(133, 14, 53, 0.58) 0%,
+    rgba(95, 14, 14, 0.34) 40%,
+    transparent 70%
+  ) !important;
+}
+
+/* Tentang FFT glow */
+.fft-about::after {
+  background: radial-gradient(
+    circle,
+    rgba(133, 14, 53, 0.22) 0%,
+    rgba(95, 14, 14, 0.08) 45%,
+    transparent 72%
+  ) !important;
+}
+
+.fft-about-content {
+  border-color: rgba(133, 14, 53, 0.34) !important;
+}
+
+/* Program Studi glow */
+body.program-zoom-ready .program-image img {
+  box-shadow:
+    0 18px 38px rgba(0, 0, 0, 0.2),
+    0 20px 80px rgba(133, 14, 53, 0.18) !important;
+}
+
+/* Pimpinan dan Dosen */
+.pimpinan-page {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(133, 14, 53, 0.1),
+      transparent 280px
+    ),
+    linear-gradient(to bottom, #f7f7f4 0%, #efefea 100%) !important;
+}
+
+.dekan-tag,
+.preview-tag {
+  background: var(--fft-maroon) !important;
+  color: #ffffff !important;
+}
+
+.dekan-role,
+.preview-role,
+.dosen-card-content p {
+  color: var(--fft-maroon) !important;
+}
+
+.dosen-card:hover {
+  border-color: rgba(133, 14, 53, 0.95) !important;
+}
+
+/* Search berita */
+.input:focus,
+.input:hover {
+  border-color: rgba(133, 14, 53, 0.45) !important;
+  box-shadow: 0 0 0 4px rgba(133, 14, 53, 0.14) !important;
+}
+
+/* Link ketentuan */
+.berita-footer-legal-link:hover {
+  border-color: rgba(133, 14, 53, 0.55) !important;
+  background: rgba(133, 14, 53, 0.16) !important;
+  color: #ffffff !important;
+}
+
+/* Footer link */
+.fft-footer-column a:hover {
+  color: #ffb3b3 !important;
+}
+
+/* Tombol kontak footer */
+.footer-contact-actions {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-contact-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-width: 170px;
+  padding: 8px 14px;
+  border: 1px solid var(--fft-maroon);
+  color: #ffb3b3 !important;
+  background: transparent;
+  border-radius: 999px;
+  font-size: 12px !important;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.footer-contact-btn:hover {
+  background: var(--fft-maroon) !important;
+  color: #ffffff !important;
+  border-color: var(--fft-maroon) !important;
+  transform: translateY(-1px);
+}
+
+/* Class lama Instagram Fakultas jika masih kepakai */
+.footer-ig-faculty {
+  border-color: var(--fft-maroon) !important;
+  color: #ffb3b3 !important;
+}
+
+.footer-ig-faculty:hover {
+  background: var(--fft-maroon) !important;
+  color: #ffffff !important;
+}
+
+/* Badge berita */
+.berita-badge-new {
+  background: var(--fft-maroon) !important;
+  color: #ffffff !important;
+}

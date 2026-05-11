@@ -711,11 +711,16 @@ document.addEventListener("mousemove", function (e) {
   const particle = document.createElement("div");
   particle.classList.add("particle");
 
-  const r = Math.floor(Math.random() * 255);
-  const g = Math.floor(Math.random() * 255);
-  const b = Math.floor(Math.random() * 255);
+  const redPalette = [
+    "rgba(133, 14, 53, 0.78)",
+    "rgba(95, 14, 14, 0.78)",
+    "rgba(255, 42, 42, 0.55)",
+    "rgba(252, 245, 238, 0.45)",
+  ];
 
-  particle.style.background = `rgb(${r}, ${g}, ${b})`;
+  const color = redPalette[Math.floor(Math.random() * redPalette.length)];
+
+  particle.style.background = color;
   particle.style.left = e.clientX + "px";
   particle.style.top = e.clientY + "px";
 
