@@ -168,7 +168,7 @@ project-web-fft-uasn-vibe-coding
 │   ├── app.py
 │   └── crud_dosen.py
 ├── frontend
-│   ├── index.html
+│   ├── indexfft.html
 │   ├── indexfft.html
 │   ├── berita-detail.html
 │   ├── berita-ketentuan.html
@@ -254,13 +254,13 @@ Open the frontend using Live Server.
 Main frontend file:
 
 ```text
-frontend/index.html
+frontend/indexfft.html
 ```
 
 Local frontend preview usually runs on:
 
 ```text
-http://127.0.0.1:5500/frontend/index.html
+http://127.0.0.1:5500/frontend/indexfft.html
 ```
 
 ---
