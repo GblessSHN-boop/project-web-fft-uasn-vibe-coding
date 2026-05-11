@@ -77,6 +77,135 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+/* ===================== */
+/* EN: LANGUAGE SWITCHER | ID: PENGGANTI BAHASA */
+/* ===================== */
+
+const translations = {
+  en: {
+    top_website: "UASN Website",
+    top_quick_access: "Quick Access",
+    top_apply: "APPLY NOW",
+
+    brand_faculty: "FACULTY OF PHILOSOPHY AND THEOLOGY",
+    brand_university: "UNIVERSITAS ADVENT SURYA NUSANTARA",
+
+    nav_program: "Study Program",
+    nav_background: "Background",
+    nav_vision: "Vision & Mission",
+    nav_organization: "Organization",
+    nav_leaders: "Leaders & Lecturers",
+    nav_news: "News",
+    nav_contact: "Contact",
+
+    program_kicker: "Academic Program",
+    program_title: "Study Program",
+    program_lead:
+      "The Faculty of Philosophy and Theology offers academic programs focused on developing spiritual leaders, educators, and community servants with a strong foundation in theology, philosophy, and Christian character.",
+
+    program_1_label: "Undergraduate",
+    program_1_title: "Theology Study Program",
+    program_1_desc:
+      "This program studies Christian theology in depth, including biblical doctrine, spiritual leadership, church ministry, and spiritual character development.",
+    program_1_point_1: "Focuses on biblical understanding and church ministry.",
+    program_1_point_2: "Develops spiritual leadership with integrity.",
+    program_1_point_3: "Prepares graduates for ministry and education.",
+
+    program_2_label: "Undergraduate",
+    program_2_title: "Religious Philosophy Study Program",
+    program_2_desc:
+      "This program prepares students to become competent Christian religious educators in teaching, faith formation, ethics, and educational ministry.",
+    program_2_point_1: "Focuses on philosophy, ethics, and religious education.",
+    program_2_point_2: "Supports the development of critical thinking skills.",
+    program_2_point_3: "Prepares graduates for schools, churches, and society.",
+  },
+
+  id: {
+    top_website: "Website UASN",
+    top_quick_access: "Akses Cepat",
+    top_apply: "DAFTAR SEKARANG",
+
+    brand_faculty: "FAKULTAS FILSAFAT TEOLOGI",
+    brand_university: "UNIVERSITAS ADVENT SURYA NUSANTARA",
+
+    nav_program: "Program Studi",
+    nav_background: "Latar Belakang",
+    nav_vision: "Visi & Misi",
+    nav_organization: "Organisasi",
+    nav_leaders: "Pimpinan & Dosen",
+    nav_news: "Berita",
+    nav_contact: "Kontak",
+
+    program_kicker: "Program Akademik",
+    program_title: "Program Studi",
+    program_lead:
+      "Fakultas Filsafat Teologi menyediakan program studi yang berfokus pada pembentukan pemimpin rohani, pendidik, dan pelayan masyarakat yang memiliki dasar teologi, filsafat, dan karakter Kristiani.",
+
+    program_1_label: "Sarjana",
+    program_1_title: "Program Studi Teologi",
+    program_1_desc:
+      "Program ini mempelajari teologi Kristen secara mendalam, meliputi doktrin Alkitab, kepemimpinan rohani, pelayanan gereja, dan pengembangan karakter spiritual.",
+    program_1_point_1: "Fokus pada pemahaman Alkitab dan pelayanan gereja.",
+    program_1_point_2: "Membentuk kepemimpinan rohani yang berintegritas.",
+    program_1_point_3: "Mempersiapkan lulusan untuk pelayanan dan pendidikan.",
+
+    program_2_label: "Sarjana",
+    program_2_title: "Program Studi Filsafat Keagamaan",
+    program_2_desc:
+      "Program ini mempersiapkan mahasiswa menjadi pendidik agama Kristen yang kompeten dalam pengajaran, pembinaan iman, etika, dan pelayanan pendidikan.",
+    program_2_point_1: "Fokus pada filsafat, etika, dan pendidikan agama.",
+    program_2_point_2: "Mendukung pengembangan kemampuan berpikir kritis.",
+    program_2_point_3: "Mempersiapkan lulusan untuk sekolah, gereja, dan masyarakat.",
+  },
+};
+
+const langButtons = document.querySelectorAll(".lang-btn");
+const translatableElements = document.querySelectorAll("[data-i18n]");
+const savedLanguage = localStorage.getItem("fftLanguage") || "id";
+
+function applyLanguage(language) {
+  const selectedLanguage = translations[language] ? language : "id";
+
+  translatableElements.forEach((element) => {
+    const key = element.dataset.i18n;
+    const translatedText = translations[selectedLanguage][key];
+
+    if (translatedText) {
+      element.textContent = translatedText;
+    }
+  });
+
+  langButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.lang === selectedLanguage);
+  });
+
+  document.documentElement.lang = selectedLanguage;
+  localStorage.setItem("fftLanguage", selectedLanguage);
+}
+
+langButtons.forEach((button) => {
+  button.addEventListener("click", function () {
+    applyLanguage(button.dataset.lang);
+  });
+});
+
+applyLanguage(savedLanguage);
+
+/* ===================== */
+/* EN: SMART STICKY HEADER | ID: HEADER STICKY HALUS */
+/* ===================== */
+
+const siteHeader = document.getElementById("siteHeader");
+
+function updateHeaderState() {
+  if (!siteHeader) return;
+
+  siteHeader.classList.toggle("is-scrolled", window.scrollY > 80);
+}
+
+updateHeaderState();
+window.addEventListener("scroll", updateHeaderState, { passive: true });
+
   /* ===================== */
   /* HERO VIEW MORE */
   /* ===================== */
@@ -787,41 +916,27 @@ if (fftAboutContent) {
   aboutObserver.observe(fftAboutContent);
 }
 
-const programSection = document.querySelector(".program-studi");
+const programCards = document.querySelectorAll(".program-card");
 
-if (programSection) {
-  const updateProgramZoom = () => {
-    const rect = programSection.getBoundingClientRect();
-    const viewportHeight =
-      window.innerHeight || document.documentElement.clientHeight;
+if (programCards.length) {
+  const programCardObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
 
-    const startPoint = viewportHeight * 0.95;
-    const endPoint = viewportHeight * 0.2;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: 0.18,
+      rootMargin: "0px 0px -60px 0px",
+    },
+  );
 
-    let progress = (startPoint - rect.top) / (startPoint - endPoint);
-    progress = Math.max(0, Math.min(progress, 1));
-
-    programSection.style.setProperty("--program-progress", progress.toFixed(4));
-  };
-
-  let ticking = false;
-
-  const requestProgramUpdate = () => {
-    if (ticking) return;
-
-    window.requestAnimationFrame(() => {
-      updateProgramZoom();
-      ticking = false;
-    });
-
-    ticking = true;
-  };
-
-  updateProgramZoom();
-  document.body.classList.add("program-zoom-ready");
-
-  window.addEventListener("scroll", requestProgramUpdate, { passive: true });
-  window.addEventListener("resize", requestProgramUpdate);
+  programCards.forEach((card) => {
+    programCardObserver.observe(card);
+  });
 }
 
 const visiCard = document.querySelector(".visi-card");

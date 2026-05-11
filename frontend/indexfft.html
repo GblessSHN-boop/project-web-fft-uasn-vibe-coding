@@ -13,16 +13,29 @@
   </head>
 
   <body>
-    <header>
+    <header class="site-header" id="siteHeader">
       <div class="topbar">
         <div class="topbar_left">
           <a href="https://suryanusantara.ac.id/">
-            <img class="image" src="uasnlogo.png" alt="back to uasn" />
-            <span>Back</span>
+            <img class="image" src="uasnlogo.png" alt="Universitas Advent Surya Nusantara" />
+            <span data-i18n="top_website">Website UASN</span>
+          </a>
+
+          <a href="#kontak" class="topbar-quick-link" data-i18n="top_quick_access">
+            Akses Cepat
           </a>
         </div>
+
         <div class="topbar_right">
-          <a href="#" class="daftar-btn">DAFTAR SEKARANG</a>
+          <div class="language-switcher" aria-label="Language switcher">
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
+            <span class="lang-separator">|</span>
+            <button type="button" class="lang-btn active" data-lang="id">ID</button>
+          </div>
+
+          <a href="#" class="daftar-btn" data-i18n="top_apply">
+            DAFTAR SEKARANG
+          </a>
         </div>
       </div>
       <div class="container">
@@ -31,21 +44,23 @@
             <img src="fftkb.png" alt="FILSAFAT TEOLOGI" />
           </div>
           <div class="branding">
-            <h1>FAKULTAS FILSAFAT TEOLOGI</h1>
-            <p class="brand-universitas">UNIVERSITAS ADVENT SURYA NUSANTARA</p>
+            <h1 data-i18n="brand_faculty">FAKULTAS FILSAFAT TEOLOGI</h1>
+            <p class="brand-universitas" data-i18n="brand_university">
+              UNIVERSITAS ADVENT SURYA NUSANTARA
+            </p>
           </div>
         </div>
         <div>
           <button class="menu-toggle">☰</button>
           <nav class="sidebar-nav">
             <ul>
-              <li><a href="#program-studi">Program Studi</a></li>
-              <li><a href="#latar-belakang">Latar Belakang</a></li>
-              <li><a href="#visi-misi">Visi & Misi</a></li>
-              <li><a href="#organisasi">Organisasi</a></li>
-              <li><a href="pimpinan-dosen.html">Pimpinan &amp; Dosen</a></li>
-              <li><a href="#berita">Berita</a></li>
-              <li><a href="#kontak">Kontak</a></li>
+              <li><a href="#program-studi" data-i18n="nav_program">Program Studi</a></li>
+              <li><a href="#latar-belakang" data-i18n="nav_background">Latar Belakang</a></li>
+              <li><a href="#visi-misi" data-i18n="nav_vision">Visi & Misi</a></li>
+              <li><a href="#organisasi" data-i18n="nav_organization">Organisasi</a></li>
+              <li><a href="pimpinan-dosen.html" data-i18n="nav_leaders">Pimpinan &amp; Dosen</a></li>
+              <li><a href="#berita" data-i18n="nav_news">Berita</a></li>
+              <li><a href="#kontak" data-i18n="nav_contact">Kontak</a></li>
             </ul>
           </nav>
         </div>
@@ -98,10 +113,61 @@
         </div>
       </section>
 
-      <section id="program-studi" class="program-studi">
-        <h2 class="program-title">PROGRAM STUDI</h2>
-        <div class="program-image">
-          <img src="prodi.png" alt="Program Studi FFT" />
+      <section id="program-studi" class="program-studi program-section-clean">
+        <div class="program-shell">
+          <p class="section-kicker" data-i18n="program_kicker">
+            Program Akademik
+          </p>
+
+          <h2 class="program-title" data-i18n="program_title">
+            Program Studi
+          </h2>
+
+          <p class="program-lead" data-i18n="program_lead">
+            Fakultas Filsafat Teologi menyediakan program studi yang berfokus pada pembentukan pemimpin rohani, pendidik, dan pelayan masyarakat yang memiliki dasar teologi, filsafat, dan karakter Kristiani.
+          </p>
+
+          <div class="program-card-grid">
+            <article class="program-card">
+              <div class="program-card-number">01</div>
+              <div class="program-card-body">
+                <p class="program-label" data-i18n="program_1_label">
+                  Sarjana
+                </p>
+                <h3 data-i18n="program_1_title">
+                  Program Studi Teologi
+                </h3>
+                <p data-i18n="program_1_desc">
+                  Program ini mempelajari teologi Kristen secara mendalam, meliputi doktrin Alkitab, kepemimpinan rohani, pelayanan gereja, dan pengembangan karakter spiritual.
+                </p>
+                <ul>
+                  <li data-i18n="program_1_point_1">Fokus pada pemahaman Alkitab dan pelayanan gereja.</li>
+                  <li data-i18n="program_1_point_2">Membentuk kepemimpinan rohani yang berintegritas.</li>
+                  <li data-i18n="program_1_point_3">Mempersiapkan lulusan untuk pelayanan dan pendidikan.</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="program-card">
+              <div class="program-card-number">02</div>
+              <div class="program-card-body">
+                <p class="program-label" data-i18n="program_2_label">
+                  Sarjana
+                </p>
+                <h3 data-i18n="program_2_title">
+                  Program Studi Filsafat Keagamaan
+                </h3>
+                <p data-i18n="program_2_desc">
+                  Program ini mempersiapkan mahasiswa menjadi pendidik agama Kristen yang kompeten dalam pengajaran, pembinaan iman, etika, dan pelayanan pendidikan.
+                </p>
+                <ul>
+                  <li data-i18n="program_2_point_1">Fokus pada filsafat, etika, dan pendidikan agama.</li>
+                  <li data-i18n="program_2_point_2">Mendukung pengembangan kemampuan berpikir kritis.</li>
+                  <li data-i18n="program_2_point_3">Mempersiapkan lulusan untuk sekolah, gereja, dan masyarakat.</li>
+                </ul>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 

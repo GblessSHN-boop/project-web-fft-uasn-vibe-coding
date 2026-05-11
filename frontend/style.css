@@ -3175,3 +3175,698 @@ body.program-zoom-ready .program-image img {
   background: var(--fft-maroon) !important;
   color: #ffffff !important;
 }
+
+/* ===================== */
+/* EN: CLEAN OFFICIAL HEADER | ID: HEADER RESMI BERSIH */
+/* ===================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #ffffff;
+}
+
+/* EN: Official topbar | ID: Topbar resmi */
+.site-header .topbar {
+  height: 46px;
+  padding: 0 42px;
+  background: #850E35;
+  box-shadow: none;
+  transition:
+    height 0.24s ease,
+    background-color 0.24s ease;
+}
+
+.site-header .topbar_left,
+.site-header .topbar_right {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.site-header .topbar a {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.site-header .topbar_left img {
+  width: 24px;
+}
+
+.topbar-quick-link {
+  position: relative;
+  padding-left: 18px;
+}
+
+.topbar-quick-link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.36);
+  transform: translateY(-50%);
+}
+
+/* EN: Small language switcher | ID: Pengganti bahasa kecil */
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.lang-btn {
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  padding: 0;
+}
+
+.lang-btn.active,
+.lang-btn:hover {
+  color: #ffffff;
+}
+
+.lang-separator {
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 12px;
+}
+
+/* EN: Main navigation like official faculty website | ID: Navigasi utama seperti website fakultas resmi */
+.site-header .container {
+  background: #ffffff;
+  padding: 22px 42px;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.06);
+  transition:
+    padding 0.24s ease,
+    box-shadow 0.24s ease;
+}
+
+.site-header .brand-wrapper {
+  gap: 14px;
+}
+
+.site-header .logo img {
+  width: 66px;
+  transition: width 0.24s ease;
+}
+
+.site-header .branding h1 {
+  color: #222222;
+  font-size: 25px;
+  letter-spacing: 0.08em;
+  line-height: 1.12;
+}
+
+.site-header .brand-universitas {
+  color: #5f0e0e;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* EN: Clean navbar, no heavy pill look | ID: Navbar bersih tanpa bentuk pil berat */
+.site-header .sidebar-nav ul {
+  gap: 26px;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.site-header .sidebar-nav a {
+  color: #222222;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.site-header .sidebar-nav a:hover {
+  color: #850E35;
+}
+
+.site-header .sidebar-nav a::after {
+  bottom: -8px;
+  height: 2px;
+  background: #850E35;
+}
+
+/* EN: Header after scroll | ID: Header setelah scroll */
+.site-header.is-scrolled .topbar {
+  height: 0;
+  overflow: hidden;
+}
+
+.site-header.is-scrolled .container {
+  padding: 14px 42px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.14);
+}
+
+.site-header.is-scrolled .logo img {
+  width: 52px;
+}
+
+.site-header.is-scrolled .branding h1 {
+  font-size: 21px;
+}
+
+/* EN: Keep hero from hiding under sticky header | ID: Jaga hero tidak tertutup header sticky */
+.hero {
+  margin-top: 0;
+}
+
+/* EN: Mobile header | ID: Header mobile */
+@media (max-width: 1024px) {
+  .site-header .container {
+    padding: 18px 24px;
+  }
+
+  .site-header.is-scrolled .container {
+    padding: 12px 24px;
+  }
+
+  .site-header .sidebar-nav ul {
+    gap: 18px;
+  }
+
+  .site-header .branding h1 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header .topbar {
+    height: 42px;
+    padding: 0 16px;
+  }
+
+  .site-header .topbar_left {
+    gap: 10px;
+  }
+
+  .topbar-quick-link {
+    display: none;
+  }
+
+  .site-header .topbar_left span {
+    display: inline;
+    font-size: 12px;
+  }
+
+  .site-header .topbar_right {
+    gap: 10px;
+  }
+
+  .language-switcher {
+    height: 26px;
+    padding: 0 9px;
+  }
+
+  .lang-btn {
+    font-size: 11px;
+  }
+
+  .site-header .container,
+  .site-header.is-scrolled .container {
+    padding: 14px 16px;
+  }
+
+  .site-header .logo img,
+  .site-header.is-scrolled .logo img {
+    width: 48px;
+  }
+
+  .site-header .branding h1,
+  .site-header.is-scrolled .branding h1 {
+    font-size: 16px;
+    letter-spacing: 0.04em;
+  }
+
+  .site-header .brand-universitas {
+    font-size: 10px;
+  }
+
+  .menu-toggle {
+    color: #850E35;
+  }
+
+  .sidebar-nav {
+    background: #ffffff;
+  }
+
+  .sidebar-nav a {
+    color: #222222 !important;
+  }
+
+  .sidebar-nav a:hover {
+    color: #850E35 !important;
+  }
+}
+
+/* ===================== */
+/* EN: FINAL PATCH HEADER + PROGRAM | ID: PATCH FINAL HEADER + PROGRAM */
+/* ===================== */
+
+:root {
+  --fft-red: #5f0e0e;
+  --fft-red-dark: #430808;
+  --fft-black: #111111;
+  --fft-text: #222222;
+  --fft-muted: #666666;
+  --fft-border: rgba(17, 17, 17, 0.1);
+  --fft-soft-bg: #f7f4f1;
+}
+
+/* EN: Fix mixed old red colors | ID: Samakan warna merah lama */
+.site-header .topbar,
+.org-bar-top,
+.org-bar-bottom,
+.fft-intro {
+  background: var(--fft-red) !important;
+}
+
+.lang-btn,
+.daftar-btn,
+.site-header .sidebar-nav a,
+.site-header .topbar a {
+  font-family: Arial, sans-serif;
+}
+
+/* EN: Clean topbar | ID: Topbar bersih */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #ffffff;
+}
+
+.site-header .topbar {
+  height: 42px !important;
+  padding: 0 42px !important;
+  background: var(--fft-red) !important;
+  box-shadow: none !important;
+}
+
+.site-header .topbar_left,
+.site-header .topbar_right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 20px !important;
+}
+
+.site-header .topbar a {
+  color: #ffffff !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.site-header .topbar_left img {
+  width: 24px !important;
+}
+
+.topbar-quick-link::before {
+  background: rgba(255, 255, 255, 0.35) !important;
+}
+
+/* EN: Small language switcher | ID: Tombol bahasa kecil */
+.language-switcher {
+  height: 26px !important;
+  padding: 0 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.34) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-radius: 999px !important;
+}
+
+.lang-btn {
+  color: rgba(255, 255, 255, 0.58) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  border: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+}
+
+.lang-btn.active,
+.lang-btn:hover {
+  color: #ffffff !important;
+}
+
+.lang-separator {
+  color: rgba(255, 255, 255, 0.38) !important;
+}
+
+/* EN: Main header layout | ID: Layout header utama */
+.site-header .container {
+  display: grid !important;
+  grid-template-columns: minmax(330px, 420px) minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 28px !important;
+  background: #ffffff !important;
+  padding: 18px 42px !important;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06) !important;
+}
+
+.site-header .brand-wrapper {
+  gap: 14px !important;
+  min-width: 0 !important;
+}
+
+.site-header .logo img {
+  width: 60px !important;
+  height: auto !important;
+}
+
+.site-header .branding h1 {
+  color: var(--fft-red) !important;
+  font-size: 22px !important;
+  line-height: 1.12 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.08em !important;
+}
+
+.site-header .brand-universitas {
+  color: var(--fft-black) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.03em !important;
+  margin-top: 5px !important;
+}
+
+/* EN: Navbar fix | ID: Perbaikan navbar */
+.site-header .sidebar-nav ul {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  gap: clamp(14px, 1.7vw, 26px) !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  flex-wrap: nowrap !important;
+}
+
+.site-header .sidebar-nav a {
+  color: #222222 !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.01em !important;
+  white-space: nowrap !important;
+}
+
+.site-header .sidebar-nav a:hover {
+  color: var(--fft-red) !important;
+}
+
+.site-header .sidebar-nav a::after {
+  background: var(--fft-red) !important;
+  bottom: -7px !important;
+}
+
+/* EN: Scrolled header should be stable | ID: Header saat scroll tetap stabil */
+.site-header.is-scrolled .topbar {
+  height: 0 !important;
+  overflow: hidden !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.site-header.is-scrolled .container {
+  padding: 12px 42px !important;
+}
+
+.site-header.is-scrolled .logo img {
+  width: 50px !important;
+}
+
+.site-header.is-scrolled .branding h1 {
+  font-size: 18px !important;
+}
+
+.site-header.is-scrolled .brand-universitas {
+  font-size: 10px !important;
+}
+
+/* EN: Scroll target fix | ID: Perbaikan target scroll */
+#program-studi,
+#latar-belakang,
+#visi-misi,
+#organisasi,
+#berita,
+#kontak {
+  scroll-margin-top: 125px;
+}
+
+/* ===================== */
+/* EN: CLEAN STUDY PROGRAM CARDS | ID: CARD PROGRAM STUDI BERSIH */
+/* ===================== */
+
+.program-section-clean {
+  background: #ffffff !important;
+  margin-top: 0 !important;
+  padding: 92px 20px 96px !important;
+  overflow: hidden !important;
+}
+
+.program-shell {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+  text-align: left;
+}
+
+.section-kicker {
+  margin: 0 0 12px;
+  color: var(--fft-red);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.program-section-clean .program-title {
+  margin: 0;
+  color: var(--fft-black) !important;
+  font-size: clamp(32px, 4vw, 48px) !important;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.program-lead {
+  max-width: 820px;
+  margin: 18px 0 0;
+  color: var(--fft-muted);
+  font-family: "Open Sans", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.program-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 38px;
+}
+
+.program-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  gap: 22px;
+  padding: 30px 30px 32px;
+  border: 1px solid var(--fft-border);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #fbfaf8 100%);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06);
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.65s ease,
+    transform 0.65s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.program-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.program-card:hover {
+  border-color: rgba(95, 14, 14, 0.28);
+  box-shadow: 0 22px 46px rgba(95, 14, 14, 0.1);
+}
+
+.program-card-number {
+  width: 64px;
+  height: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: var(--fft-red);
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.program-label {
+  margin: 0 0 8px;
+  color: var(--fft-red);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.program-card h3 {
+  margin: 0 0 14px;
+  color: var(--fft-black);
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 900;
+}
+
+.program-card p {
+  margin: 0;
+  color: #555555;
+  font-family: "Open Sans", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.program-card ul {
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.program-card li {
+  position: relative;
+  margin: 10px 0;
+  padding-left: 22px;
+  color: #333333;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.program-card li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fft-red);
+}
+
+/* EN: Remove old image program style | ID: Matikan gaya gambar program lama */
+.program-image,
+.program-image img {
+  display: none !important;
+}
+
+/* EN: Mobile responsive | ID: Responsif mobile */
+@media (max-width: 1024px) {
+  .site-header .container {
+    grid-template-columns: 1fr auto !important;
+  }
+
+  .site-header .sidebar-nav ul {
+    gap: 16px !important;
+  }
+
+  .site-header .sidebar-nav a {
+    font-size: 12px !important;
+  }
+
+  .program-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header .topbar {
+    padding: 0 16px !important;
+  }
+
+  .site-header .topbar_left {
+    gap: 10px !important;
+  }
+
+  .topbar-quick-link {
+    display: none !important;
+  }
+
+  .site-header .container,
+  .site-header.is-scrolled .container {
+    display: flex !important;
+    padding: 14px 16px !important;
+  }
+
+  .site-header .logo img,
+  .site-header.is-scrolled .logo img {
+    width: 46px !important;
+  }
+
+  .site-header .branding h1,
+  .site-header.is-scrolled .branding h1 {
+    font-size: 15px !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  .site-header .brand-universitas,
+  .site-header.is-scrolled .brand-universitas {
+    font-size: 9px !important;
+  }
+
+  .menu-toggle {
+    color: var(--fft-red) !important;
+  }
+
+  .program-section-clean {
+    padding: 68px 16px 72px !important;
+  }
+
+  .program-lead {
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  .program-card {
+    grid-template-columns: 1fr;
+    padding: 24px 20px;
+    gap: 16px;
+  }
+
+  .program-card-number {
+    width: 54px;
+    height: 54px;
+    font-size: 17px;
+  }
+
+  .program-card h3 {
+    font-size: 21px;
+  }
+}
