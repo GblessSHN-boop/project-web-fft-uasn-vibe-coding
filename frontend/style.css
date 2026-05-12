@@ -2693,335 +2693,6 @@ body.reveal-ready .dosen-card.is-visible {
 }
 
 /* ===================== */
-/* FOOTER FINAL FFT */
-/* ===================== */
-
-.fft-footer {
-  margin-top: 60px;
-  background: #0b0b0b;
-  color: #ffffff;
-}
-
-.fft-footer-top {
-  padding: 42px 0 28px;
-  border-top: 4px solid #5f0e0e;
-}
-
-.fft-footer-inner {
-  width: min(1200px, 92vw);
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr 0.9fr 1.1fr;
-  gap: 28px;
-  align-items: start;
-}
-
-/* BRAND */
-.fft-footer-brand {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-}
-
-.fft-footer-brand img {
-  width: 70px;
-  height: auto;
-  display: block;
-  flex-shrink: 0;
-}
-
-.fft-footer-brand-text h3 {
-  margin: 0 0 6px;
-  font-size: 20px;
-  line-height: 1.2;
-  font-weight: 900;
-  color: #ffffff;
-}
-
-.fft-footer-brand-text p {
-  margin: 0 0 10px;
-  font-size: 12px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #ebebeb;
-}
-
-.fft-footer-brand-text span {
-  display: block;
-  font-size: 14px;
-  line-height: 1.7;
-  color: #cfcfcf;
-}
-
-/* COLUMN */
-.fft-footer-column h4 {
-  margin: 0 0 16px;
-  font-size: 17px;
-  font-weight: 800;
-  color: #ffffff;
-  position: relative;
-  padding-bottom: 10px;
-}
-
-.fft-footer-column h4::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 64px;
-  height: 2px;
-  background: #ff2a2a;
-}
-
-.fft-footer-column a {
-  display: block;
-  text-decoration: none;
-  color: #d2d2d2;
-  font-size: 14px;
-  line-height: 1.8;
-  margin-bottom: 10px;
-  transition: color 0.2s ease;
-}
-
-.fft-footer-column a:hover {
-  color: #baff02;
-}
-
-.fft-footer-column p {
-  margin: 0 0 8px;
-  color: #d2d2d2;
-  font-size: 14px;
-  line-height: 1.8;
-}
-
-/* IG Fakultas */
-.footer-faculty-social {
-  margin-top: 14px;
-}
-
-.footer-ig-faculty {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 14px;
-  border: 1px solid #baff02;
-  color: #baff02 !important;
-  border-radius: 999px;
-  font-size: 12px !important;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.footer-ig-faculty:hover {
-  background: #baff02;
-  color: #000000 !important;
-  transform: translateY(-1px);
-}
-
-/* MAP */
-.fft-footer-map .fft-map-wrap {
-  width: 100%;
-  height: 240px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: #131313;
-}
-
-.fft-footer-map iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
-  filter: grayscale(0.12) contrast(1.02);
-}
-
-/* SUB FOOTER */
-.fft-subfooter {
-  background: #050505;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 14px 0;
-}
-
-.fft-subfooter-inner {
-  width: min(1200px, 92vw);
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-}
-
-.subfooter-left {
-  max-width: 820px;
-}
-
-.subfooter-copy {
-  margin: 0 0 4px;
-  font-size: 12px;
-  line-height: 1.6;
-  color: #9e9e9e;
-}
-
-.dev-text {
-  margin: 0;
-  font-size: 12px;
-  line-height: 1.6;
-  color: #c9c9c9;
-}
-
-.dev-text strong {
-  color: #ffffff;
-  font-weight: 700;
-}
-
-.subfooter-right {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.subfooter-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    opacity 0.2s ease;
-}
-
-.subfooter-icon:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
-  opacity: 0.96;
-}
-
-.subfooter-icon svg {
-  width: 17px;
-  height: 17px;
-  display: block;
-}
-
-.subfooter-icon.ig svg {
-  fill: #111111;
-}
-
-.subfooter-icon.linkedin svg {
-  fill: #0a66c2;
-}
-
-/* RESPONSIVE */
-@media (max-width: 1100px) {
-  .fft-footer-inner {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .fft-footer-top {
-    padding: 34px 0 24px;
-  }
-
-  .fft-footer-inner {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .fft-footer-brand-text h3 {
-    font-size: 18px;
-  }
-
-  .fft-footer-brand-text p {
-    font-size: 11px;
-    letter-spacing: 1.5px;
-  }
-
-  .fft-footer-brand-text span,
-  .fft-footer-column p,
-  .fft-footer-column a {
-    font-size: 13px;
-  }
-
-  .fft-footer-map .fft-map-wrap {
-    height: 220px;
-  }
-
-  .fft-subfooter-inner {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .subfooter-left {
-    max-width: 100%;
-  }
-
-  .subfooter-right {
-    justify-content: center;
-  }
-}
-
-.berita-badge-new {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: #ffffff;
-  color: #111;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.4px;
-  margin-bottom: 8px;
-}
-
-.berita-badge-inline {
-  margin-top: 10px;
-}
-
-.berita-date-chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.84);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  margin-bottom: 8px;
-}
-
-.berita-grid-meta {
-  margin-top: 10px;
-}
-
-.berita-grid-date {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.74);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-}
-
-/* ===================== */
 /* PATCH FINAL MERAH FFT */
 /* ===================== */
 
@@ -3115,48 +2786,6 @@ body.program-zoom-ready .program-image img {
   border-color: rgba(133, 14, 53, 0.55) !important;
   background: rgba(133, 14, 53, 0.16) !important;
   color: #ffffff !important;
-}
-
-/* Footer link */
-.fft-footer-column a:hover {
-  color: #ffb3b3 !important;
-}
-
-/* Tombol kontak footer */
-.footer-contact-actions {
-  margin-top: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.footer-contact-btn {
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  min-width: 170px;
-  padding: 8px 14px;
-  border: 1px solid var(--fft-maroon);
-  color: #ffb3b3 !important;
-  background: transparent;
-  border-radius: 999px;
-  font-size: 12px !important;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.footer-contact-btn:hover {
-  background: var(--fft-maroon) !important;
-  color: #ffffff !important;
-  border-color: var(--fft-maroon) !important;
-  transform: translateY(-1px);
 }
 
 /* Class lama Instagram Fakultas jika masih kepakai */
@@ -4083,194 +3712,6 @@ body {
 }
 
 /* ===================== */
-/* EN: CLEANER FOOTER | ID: FOOTER LEBIH RAPI */
-/* ===================== */
-
-.fft-footer {
-  margin-top: 0 !important;
-  background: #080808 !important;
-  color: #ffffff !important;
-}
-
-.fft-footer-top {
-  padding: 54px 0 42px !important;
-  border-top: 5px solid var(--fft-red) !important;
-}
-
-.fft-footer-inner {
-  width: min(1180px, 92vw) !important;
-  display: grid !important;
-  grid-template-columns: 1.15fr 0.75fr 1fr 1.05fr !important;
-  gap: 42px !important;
-  align-items: start !important;
-}
-
-.fft-footer-brand {
-  gap: 16px !important;
-}
-
-.fft-footer-brand img {
-  width: 58px !important;
-}
-
-.fft-footer-brand-text h3 {
-  color: #ffffff !important;
-  font-size: 18px !important;
-  line-height: 1.25 !important;
-  letter-spacing: 0.06em !important;
-}
-
-.fft-footer-brand-text p {
-  color: rgba(255, 255, 255, 0.82) !important;
-  font-size: 11px !important;
-  line-height: 1.5 !important;
-  letter-spacing: 0.12em !important;
-}
-
-.fft-footer-brand-text span,
-.fft-footer-column p,
-.fft-footer-column a {
-  color: rgba(255, 255, 255, 0.76) !important;
-  font-size: 14px !important;
-  line-height: 1.75 !important;
-}
-
-.fft-footer-column h4 {
-  color: #ffffff !important;
-  font-size: 16px !important;
-  letter-spacing: 0.03em !important;
-}
-
-.fft-footer-column h4::after {
-  background: var(--fft-red) !important;
-}
-
-.fft-footer-column a:hover {
-  color: #ffffff !important;
-}
-
-.footer-contact-actions {
-  margin-top: 16px !important;
-  gap: 10px !important;
-}
-
-.footer-contact-btn {
-  width: 100% !important;
-  max-width: 220px !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-  color: #ffffff !important;
-  background: rgba(255, 255, 255, 0.04) !important;
-  border-radius: 12px !important;
-  padding: 10px 14px !important;
-}
-
-.footer-contact-btn:hover {
-  background: var(--fft-red) !important;
-  border-color: var(--fft-red) !important;
-  color: #ffffff !important;
-}
-
-.fft-footer-map .fft-map-wrap {
-  height: 210px !important;
-  border-radius: 14px !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-}
-
-.fft-subfooter {
-  background: #050505 !important;
-}
-
-.fft-subfooter-inner {
-  width: min(1180px, 92vw) !important;
-}
-
-/* EN: Mobile layout | ID: Tampilan mobile */
-@media (max-width: 980px) {
-  .site-header.is-scrolled .container,
-  .site-header .container {
-    padding: 14px 22px !important;
-    min-height: 78px !important;
-  }
-
-  .site-header.is-scrolled .topbar,
-  .site-header .topbar {
-    padding: 0 22px !important;
-  }
-
-  .site-header .sidebar-nav ul {
-    gap: 16px !important;
-  }
-
-  .site-header .sidebar-nav a {
-    font-size: 12px !important;
-  }
-
-  .fft-footer-inner {
-    grid-template-columns: 1fr 1fr !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .site-header.is-scrolled .topbar,
-  .site-header .topbar {
-    height: 36px !important;
-    padding: 0 16px !important;
-  }
-
-  .topbar-quick-link {
-    display: none !important;
-  }
-
-  .site-header .topbar a {
-    font-size: 12px !important;
-  }
-
-  .site-header.is-scrolled .container,
-  .site-header .container {
-    display: flex !important;
-    padding: 12px 16px !important;
-  }
-
-  .site-header .logo img,
-  .site-header.is-scrolled .logo img {
-    width: 46px !important;
-  }
-
-  .site-header .branding h1,
-  .site-header.is-scrolled .branding h1 {
-    font-size: 14px !important;
-    letter-spacing: 0.08em !important;
-    max-width: 260px !important;
-  }
-
-  .site-header .brand-universitas,
-  .site-header.is-scrolled .brand-universitas {
-    font-size: 9px !important;
-  }
-
-  .menu-toggle {
-    color: var(--fft-red) !important;
-  }
-
-  .sidebar-nav {
-    background: #ffffff !important;
-  }
-
-  .sidebar-nav a {
-    color: var(--fft-black) !important;
-  }
-
-  .fft-footer-inner {
-    grid-template-columns: 1fr !important;
-    gap: 28px !important;
-  }
-
-  .footer-contact-btn {
-    max-width: 100% !important;
-  }
-}
-
-/* ===================== */
 /* FFT PREMIUM UI PATCH V2 */
 /* ===================== */
 
@@ -4766,173 +4207,6 @@ body {
 }
 
 /* ===================== */
-/* FOOTER CALM PREMIUM */
-/* ===================== */
-
-.fft-footer {
-  background: #050505 !important;
-  color: #ffffff !important;
-  margin-top: 0 !important;
-}
-
-.fft-footer-top {
-  padding: 54px 0 46px !important;
-  border-top: 4px solid var(--fft-red) !important;
-}
-
-.fft-footer-inner {
-  width: min(1180px, 92vw) !important;
-  gap: 38px !important;
-}
-
-.fft-footer-brand img {
-  width: 54px !important;
-}
-
-.fft-footer-brand-text h3,
-.fft-footer-column h4 {
-  font-family: var(--fft-font-main) !important;
-  font-weight: 900 !important;
-}
-
-.fft-footer-brand-text span,
-.fft-footer-column p,
-.fft-footer-column a {
-  font-family: var(--fft-font-body) !important;
-}
-
-.footer-contact-btn {
-  border-radius: 14px !important;
-  min-height: 44px !important;
-  justify-content: center !important;
-}
-
-/* ===================== */
-/* RESPONSIVE PREMIUM */
-/* ===================== */
-
-@media (max-width: 1200px) {
-  .site-header .container,
-  .site-header.is-scrolled .container {
-    grid-template-columns: minmax(280px, 410px) minmax(0, 1fr) !important;
-    gap: 18px !important;
-  }
-
-  .site-header .sidebar-nav ul {
-    gap: 12px !important;
-  }
-
-  .site-header .sidebar-nav a {
-    font-size: 12px !important;
-  }
-}
-
-@media (max-width: 980px) {
-  .site-header .container,
-  .site-header.is-scrolled .container {
-    display: flex !important;
-    min-height: 74px !important;
-    height: 74px !important;
-  }
-
-  .menu-toggle {
-    display: block !important;
-    color: var(--fft-red) !important;
-    font-size: 28px !important;
-  }
-
-  .site-header .sidebar-nav {
-    position: fixed !important;
-    top: 0 !important;
-    right: -290px !important;
-    width: 290px !important;
-    height: 100vh !important;
-    padding: 118px 28px 28px !important;
-    background: #ffffff !important;
-    box-shadow: -20px 0 50px rgba(0, 0, 0, 0.18) !important;
-    transition: right 0.28s ease !important;
-    z-index: 998 !important;
-  }
-
-  .site-header .sidebar-nav.active {
-    right: 0 !important;
-  }
-
-  .site-header .sidebar-nav ul {
-    display: grid !important;
-    gap: 18px !important;
-    justify-content: stretch !important;
-  }
-
-  .site-header .sidebar-nav a {
-    font-size: 15px !important;
-    min-height: 34px !important;
-  }
-
-  .hero {
-    height: calc(100svh - 112px) !important;
-    min-height: 480px !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .site-header .topbar,
-  .site-header.is-scrolled .topbar {
-    height: 36px !important;
-    padding: 0 16px !important;
-  }
-
-  .topbar-quick-link {
-    display: none !important;
-  }
-
-  .site-header .container,
-  .site-header.is-scrolled .container {
-    padding: 0 16px !important;
-  }
-
-  .site-header .logo img,
-  .site-header.is-scrolled .logo img {
-    width: 44px !important;
-  }
-
-  .site-header .branding h1,
-  .site-header.is-scrolled .branding h1 {
-    font-size: 13px !important;
-    letter-spacing: 0.08em !important;
-    max-width: 260px !important;
-  }
-
-  .site-header .brand-universitas,
-  .site-header.is-scrolled .brand-universitas {
-    font-size: 8.5px !important;
-  }
-
-  .hero {
-    height: 62vh !important;
-    min-height: 430px !important;
-  }
-
-  .view-more {
-    min-width: 190px !important;
-    min-height: 48px !important;
-    font-size: 12px !important;
-  }
-
-  .program-card-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .program-card {
-    grid-template-columns: 1fr !important;
-  }
-
-  .fft-footer-inner {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-/* ===================== */
 /* EN: FFT ABOUT PROFESSIONAL SECTION | ID: SECTION TENTANG FFT PROFESIONAL */
 /* ===================== */
 
@@ -5241,4 +4515,662 @@ body {
 .fft-intro {
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
+}
+
+/* =========================================================
+   FINAL FOOTER FFT, SERAGAM UNTUK SEMUA HALAMAN
+========================================================= */
+
+.fft-footer {
+  position: relative !important;
+  overflow: hidden !important;
+  background: #050505 !important;
+  color: #ffffff !important;
+  border-top: 5px solid #5f0e0e !important;
+  font-family: "Inter", Arial, Helvetica, sans-serif !important;
+}
+
+.footer-orbit-canvas {
+  display: none !important;
+}
+
+.fft-footer-top {
+  padding: 54px 0 34px !important;
+}
+
+.fft-footer-inner {
+  width: min(1200px, 92vw) !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  grid-template-columns: 1.1fr 0.9fr 1.1fr 1.15fr !important;
+  gap: 44px !important;
+  align-items: start !important;
+}
+
+.fft-footer-brand {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 16px !important;
+}
+
+.fft-footer-brand img {
+  width: 70px !important;
+  height: auto !important;
+  flex: 0 0 auto !important;
+}
+
+.fft-footer-brand-text h3,
+.fft-footer-column h4 {
+  margin: 0 0 14px !important;
+  color: #ffffff !important;
+  font-size: 17px !important;
+  line-height: 1.25 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+.fft-footer-brand-text p {
+  margin: 0 0 16px !important;
+  color: rgba(255, 255, 255, 0.82) !important;
+  font-size: 12px !important;
+  line-height: 1.7 !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.11em !important;
+  text-transform: uppercase !important;
+}
+
+.fft-footer-brand-text span {
+  display: block !important;
+  max-width: 320px !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  font-size: 14px !important;
+  line-height: 1.8 !important;
+  font-weight: 500 !important;
+}
+
+.fft-footer-column h4 {
+  position: relative !important;
+  padding-bottom: 13px !important;
+}
+
+.fft-footer-column h4::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: 56px !important;
+  height: 2px !important;
+  background: #5f0e0e !important;
+}
+
+.fft-footer-column a {
+  display: block !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  margin: 0 0 10px !important;
+  color: rgba(255, 255, 255, 0.74) !important;
+  font-size: 14px !important;
+  line-height: 1.7 !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  transition:
+    color 0.22s ease,
+    transform 0.22s ease !important;
+}
+
+.fft-footer-column a:hover {
+  color: #ffffff !important;
+  transform: translateX(3px) !important;
+}
+
+.footer-address {
+  margin: 0 !important;
+  font-style: normal !important;
+}
+
+.footer-address p,
+.fft-footer-column p {
+  margin: 0 0 10px !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  font-size: 14px !important;
+  line-height: 1.7 !important;
+  font-weight: 500 !important;
+}
+
+.footer-contact-actions {
+  margin-top: 18px !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+  max-width: 420px !important;
+}
+
+.footer-contact-btn {
+  width: 100% !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 10px 13px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  background: #101010 !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 4px !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+  transition:
+    background-color 0.22s ease,
+    border-color 0.22s ease,
+    color 0.22s ease !important;
+}
+
+.footer-contact-btn::before,
+.footer-contact-btn::after {
+  display: none !important;
+  content: none !important;
+}
+
+.footer-contact-btn:hover {
+  background: #171717 !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  color: #ffffff !important;
+  transform: none !important;
+}
+
+.footer-contact-icon {
+  display: none !important;
+}
+
+.fft-map-wrap {
+  width: 100% !important;
+  height: 230px !important;
+  overflow: hidden !important;
+  background: #121212 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 8px !important;
+}
+
+.fft-map-wrap iframe {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  border: 0 !important;
+}
+
+.fft-subfooter {
+  background: #050505 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 0 !important;
+}
+
+.fft-subfooter-inner {
+  width: min(1200px, 92vw) !important;
+  margin: 0 auto !important;
+  padding: 18px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+}
+
+.subfooter-copy,
+.dev-text {
+  margin: 0 !important;
+  color: rgba(255, 255, 255, 0.62) !important;
+  font-size: 12px !important;
+  line-height: 1.65 !important;
+  font-weight: 500 !important;
+}
+
+.dev-text {
+  margin-top: 3px !important;
+}
+
+.dev-text strong {
+  color: #ffffff !important;
+  font-weight: 900 !important;
+}
+
+.subfooter-right {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  flex: 0 0 auto !important;
+}
+
+.subfooter-icon {
+  width: 38px !important;
+  height: 38px !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  text-decoration: none !important;
+  transform: none !important;
+  transition:
+    transform 0.22s ease,
+    background-color 0.22s ease !important;
+}
+
+.subfooter-icon svg {
+  width: 17px !important;
+  height: 17px !important;
+  display: block !important;
+  fill: currentColor !important;
+}
+
+.subfooter-icon:hover {
+  background: #f1f1f1 !important;
+  transform: translateY(-2px) !important;
+}
+
+.subfooter-icon.linkedin {
+  color: #0a66c2 !important;
+}
+
+@media (max-width: 1120px) {
+  .fft-footer-inner {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 36px !important;
+  }
+
+  .fft-footer-map {
+    grid-column: span 2 !important;
+  }
+
+  .fft-map-wrap {
+    height: 250px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .fft-footer-top {
+    padding: 38px 0 28px !important;
+  }
+
+  .fft-footer-inner {
+    width: min(100% - 30px, 1200px) !important;
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+
+  .fft-footer-map {
+    grid-column: auto !important;
+  }
+
+  .fft-footer-brand {
+    gap: 14px !important;
+  }
+
+  .fft-footer-brand img {
+    width: 58px !important;
+  }
+
+  .fft-footer-brand-text h3,
+  .fft-footer-column h4 {
+    font-size: 16px !important;
+  }
+
+  .footer-contact-actions {
+    grid-template-columns: 1fr !important;
+    max-width: 100% !important;
+  }
+
+  .fft-map-wrap {
+    height: 220px !important;
+  }
+
+  .fft-subfooter-inner {
+    width: min(100% - 30px, 1200px) !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  .subfooter-right {
+    justify-content: flex-start !important;
+  }
+}
+/* =========================================================
+   EN | ID: FIX FOOTER CANVAS LAYOUT
+   Fix canvas footer agar tidak muncul sebagai kotak hitam
+========================================================= */
+
+.fft-footer {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.fft-footer .footer-orbit-canvas,
+footer.fft-footer .footer-orbit-canvas,
+#footerOrbitCanvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  pointer-events: none !important;
+  opacity: 0.16 !important;
+  z-index: 0 !important;
+}
+
+.fft-footer-top,
+.fft-subfooter {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.fft-footer-inner,
+.fft-subfooter-inner {
+  position: relative !important;
+  z-index: 3 !important;
+}
+
+/* =========================================================
+   EN | ID: FINAL FOOTER SYNC WITH INDEXFFT
+   Footer seragam untuk semua halaman
+========================================================= */
+
+.fft-footer {
+  position: relative !important;
+  overflow: hidden !important;
+  background: #050505 !important;
+  color: #ffffff !important;
+  border-top: 5px solid #5f0e0e !important;
+}
+
+.fft-footer .footer-orbit-canvas,
+.fft-footer #footerOrbitCanvas,
+#footerOrbitCanvas {
+  display: none !important;
+}
+
+.fft-footer-top {
+  background: #050505 !important;
+  padding: 72px 0 58px !important;
+}
+
+.fft-footer-inner {
+  width: min(1200px, 92vw) !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  grid-template-columns: 1.08fr 0.95fr 1.15fr 1.25fr !important;
+  gap: 52px !important;
+  align-items: start !important;
+}
+
+.fft-footer-brand {
+  display: grid !important;
+  grid-template-columns: 74px minmax(0, 1fr) !important;
+  gap: 22px !important;
+  align-items: start !important;
+}
+
+.fft-footer-brand img {
+  width: 72px !important;
+  height: auto !important;
+  display: block !important;
+}
+
+.fft-footer-brand-text h3,
+.fft-footer-column h4 {
+  margin: 0 0 18px !important;
+  color: #ffffff !important;
+  font-size: 20px !important;
+  line-height: 1.18 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.11em !important;
+  text-transform: uppercase !important;
+}
+
+.fft-footer-column h4 {
+  position: relative !important;
+  padding-bottom: 14px !important;
+}
+
+.fft-footer-column h4::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: 52px !important;
+  height: 2px !important;
+  background: #5f0e0e !important;
+}
+
+.fft-footer-brand-text p {
+  margin: 0 0 18px !important;
+  color: #ffffff !important;
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.09em !important;
+  text-transform: uppercase !important;
+}
+
+.fft-footer-brand-text span,
+.fft-footer-column p,
+.footer-address p,
+.fft-footer-column a {
+  color: rgba(255, 255, 255, 0.72) !important;
+  font-size: 14px !important;
+  line-height: 1.75 !important;
+  font-weight: 500 !important;
+}
+
+.fft-footer-column a {
+  display: block !important;
+  text-decoration: none !important;
+  margin: 0 0 12px !important;
+  transition: color 0.2s ease, transform 0.2s ease !important;
+}
+
+.fft-footer-column a:hover {
+  color: #ffffff !important;
+  transform: translateX(3px) !important;
+}
+
+.footer-address {
+  font-style: normal !important;
+}
+
+.footer-contact-actions {
+  margin-top: 18px !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  max-width: 420px !important;
+}
+
+.footer-contact-btn {
+  width: 100% !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 10px 13px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  background: #101010 !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 4px !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.footer-contact-btn:hover {
+  background: #171717 !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  color: #ffffff !important;
+  transform: none !important;
+}
+
+.footer-contact-btn::before,
+.footer-contact-btn::after {
+  display: none !important;
+  content: none !important;
+}
+
+.footer-contact-icon {
+  display: none !important;
+}
+
+.fft-map-wrap {
+  width: 100% !important;
+  height: 230px !important;
+  overflow: hidden !important;
+  background: #121212 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 8px !important;
+}
+
+.fft-map-wrap iframe {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  border: 0 !important;
+}
+
+.fft-subfooter {
+  background: #050505 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.fft-subfooter-inner {
+  width: min(1200px, 92vw) !important;
+  margin: 0 auto !important;
+  padding: 18px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+}
+
+.subfooter-copy,
+.dev-text {
+  margin: 0 !important;
+  color: rgba(255, 255, 255, 0.62) !important;
+  font-size: 12px !important;
+  line-height: 1.65 !important;
+  font-weight: 500 !important;
+}
+
+.dev-text {
+  margin-top: 3px !important;
+}
+
+.dev-text strong {
+  color: #ffffff !important;
+}
+
+.subfooter-right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex: 0 0 auto !important;
+}
+
+.subfooter-icon {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  transition: transform 0.2s ease, background-color 0.2s ease !important;
+}
+
+.subfooter-icon svg {
+  width: 18px !important;
+  height: 18px !important;
+  fill: currentColor !important;
+}
+
+.subfooter-icon:hover {
+  transform: translateY(-2px) !important;
+  background: #f4f4f4 !important;
+}
+
+@media (max-width: 1100px) {
+  .fft-footer-inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 42px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .fft-footer-top {
+    padding: 48px 0 40px !important;
+  }
+
+  .fft-footer-inner {
+    grid-template-columns: 1fr !important;
+    gap: 34px !important;
+  }
+
+  .fft-footer-brand {
+    grid-template-columns: 58px minmax(0, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  .fft-footer-brand img {
+    width: 58px !important;
+  }
+
+  .footer-contact-actions {
+    grid-template-columns: 1fr !important;
+    max-width: 100% !important;
+  }
+
+  .fft-subfooter-inner {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .subfooter-right {
+    align-self: flex-start !important;
+  }
+}
+
+
+/* =========================================================
+   EN | ID: FIX TOPBAR LOGO SIZE
+   Mengunci ukuran logo kecil UASN di topbar agar tidak bentrok
+========================================================= */
+
+.topbar-logo-img {
+  width: 24px !important;
+  height: 24px !important;
+  max-width: 24px !important;
+  max-height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  object-fit: contain !important;
+  display: inline-block !important;
+  flex: 0 0 24px !important;
+}
+
+.topbar_left a img.topbar-logo-img {
+  width: 24px !important;
+  height: 24px !important;
 }

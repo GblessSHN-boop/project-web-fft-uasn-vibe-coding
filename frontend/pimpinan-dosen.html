@@ -1,165 +1,2365 @@
-<!doctype html>
-<html lang="en">
+﻿<!doctype html>
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pimpinan & Dosen - FFT</title>
-    <link rel="stylesheet" href="style.css" />
+
+    <title>Pimpinan & Dosen - Fakultas Filsafat Teologi UASN</title>
+    <meta
+      name="description"
+      content="Profil pimpinan dan dosen Fakultas Filsafat Teologi Universitas Advent Surya Nusantara." />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Universitas Advent Surya Nusantara" />
+
+    <meta property="og:title" content="Pimpinan & Dosen - Fakultas Filsafat Teologi UASN" />
+    <meta
+      property="og:description"
+      content="Daftar pimpinan dan dosen Fakultas Filsafat Teologi Universitas Advent Surya Nusantara." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Fakultas Filsafat Teologi UASN" />
+
+    <link rel="canonical" href="pimpinan-dosen.html" />
     <link rel="icon" href="fftkb.png" type="image/x-icon" />
+
     <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet" />
+
+    <style>
+      :root {
+        --fft-red: #5f0e0e;
+        --fft-red-dark: #360808;
+        --fft-black: #0f0f12;
+        --fft-text: #242429;
+        --fft-muted: #6d6d74;
+        --fft-soft: #f7f4ef;
+        --fft-soft-2: #fbfaf8;
+        --fft-white: #ffffff;
+        --fft-line: rgba(15, 15, 18, 0.12);
+        --fft-line-red: rgba(95, 14, 14, 0.24);
+        --font-main: "Inter", Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: #ffffff;
+        color: var(--fft-text);
+        font-family: var(--font-main);
+        overflow-x: hidden;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99999;
+        width: 0%;
+        height: 3px;
+        background: var(--fft-red);
+        transition: width 0.08s linear;
+      }
+      /* EN: Hero section | ID: Bagian hero */
+      .staff-hero {
+        background:
+          linear-gradient(120deg, rgba(95, 14, 14, 0.98), rgba(18, 10, 10, 0.98)),
+          var(--fft-red);
+        color: #ffffff;
+      }
+
+      .staff-hero-inner {
+        width: min(1180px, calc(100% - 48px));
+        margin: 0 auto;
+        padding: clamp(58px, 7vw, 110px) 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: clamp(34px, 5vw, 68px);
+        align-items: end;
+      }
+
+      .staff-kicker {
+        margin: 0 0 16px;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      .staff-hero h2 {
+        max-width: 900px;
+        margin: 0;
+        color: #ffffff;
+        font-size: clamp(42px, 6vw, 82px);
+        line-height: 0.96;
+        font-weight: 900;
+        letter-spacing: -0.065em;
+      }
+
+      .staff-subtitle {
+        max-width: 820px;
+        margin: 22px 0 0;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: clamp(15px, 1.2vw, 18px);
+        line-height: 1.85;
+      }
+
+      .hero-side {
+        border-left: 5px solid rgba(255, 255, 255, 0.86);
+        padding-left: 20px;
+      }
+
+      .hero-side strong {
+        display: block;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .hero-side span {
+        display: block;
+        margin-top: 10px;
+        color: rgba(255, 255, 255, 0.76);
+        font-size: 14px;
+        line-height: 1.75;
+      }
+
+      /* EN: Main content | ID: Konten utama */
+      .staff-main {
+        background:
+          radial-gradient(circle at top left, rgba(95, 14, 14, 0.06), transparent 32%),
+          linear-gradient(180deg, #ffffff 0%, #ffffff 52%, var(--fft-soft) 100%);
+      }
+
+      .staff-content {
+        width: min(1180px, calc(100% - 48px));
+        margin: 0 auto;
+        padding: 34px 0 88px;
+      }
+
+      .breadcrumb {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 26px;
+        color: var(--fft-muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .breadcrumb a {
+        color: var(--fft-red);
+        text-decoration: none;
+      }
+
+      .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+
+      .section-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 24px;
+        align-items: end;
+        margin-bottom: 28px;
+      }
+
+      .section-head p {
+        margin: 0 0 10px;
+        color: var(--fft-red);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .section-head h3 {
+        margin: 0;
+        color: var(--fft-black);
+        font-size: clamp(30px, 4vw, 52px);
+        line-height: 1.04;
+        font-weight: 900;
+        letter-spacing: -0.052em;
+      }
+
+      .staff-tools {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .search-wrap {
+        position: relative;
+        min-width: min(320px, 100%);
+      }
+
+      .search-wrap svg {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 17px;
+        height: 17px;
+        fill: var(--fft-muted);
+      }
+
+      .search-input {
+        width: 100%;
+        height: 44px;
+        padding: 0 14px 0 42px;
+        border: 1px solid var(--fft-line);
+        background: #ffffff;
+        color: var(--fft-black);
+        font-family: var(--font-main);
+        font-size: 13px;
+        font-weight: 700;
+        outline: none;
+      }
+
+      .search-input:focus {
+        border-color: var(--fft-red);
+        box-shadow: 0 0 0 4px rgba(95, 14, 14, 0.1);
+      }
+
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 28px;
+      }
+
+      .stat-card {
+        background: #ffffff;
+        border: 1px solid var(--fft-line);
+        padding: 20px 22px;
+      }
+
+      .stat-card strong {
+        display: block;
+        color: var(--fft-black);
+        font-size: 30px;
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: -0.05em;
+      }
+
+      .stat-card span {
+        display: block;
+        margin-top: 8px;
+        color: var(--fft-muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .leader-layout {
+        display: grid;
+        grid-template-columns: 390px minmax(0, 1fr);
+        gap: 28px;
+        align-items: start;
+      }
+
+      .dean-panel,
+      .lecturer-panel {
+        background: #ffffff;
+        border: 1px solid var(--fft-line);
+        box-shadow: 0 30px 90px rgba(15, 15, 18, 0.08);
+      }
+
+      .panel-top {
+        padding: 22px 24px;
+        border-bottom: 1px solid var(--fft-line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .panel-top h3 {
+        margin: 0;
+        color: var(--fft-black);
+        font-size: 20px;
+        line-height: 1.25;
+        font-weight: 900;
+        letter-spacing: -0.03em;
+      }
+
+      .panel-top span {
+        color: var(--fft-red);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .dean-content {
+        padding: 24px;
+      }
+
+      .dean-photo {
+        position: relative;
+        background: var(--fft-soft);
+        border: 1px solid var(--fft-line);
+        overflow: hidden;
+      }
+
+      .dean-photo img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      .dean-badge {
+        position: absolute;
+        left: 16px;
+        bottom: 16px;
+        min-height: 34px;
+        padding: 0 14px;
+        background: var(--fft-red);
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .person-name {
+        margin: 22px 0 0;
+        color: var(--fft-black);
+        font-size: clamp(25px, 3vw, 36px);
+        line-height: 1.08;
+        font-weight: 900;
+        letter-spacing: -0.045em;
+      }
+
+      .person-role {
+        margin: 10px 0 0;
+        color: var(--fft-red);
+        font-size: 14px;
+        line-height: 1.65;
+        font-weight: 900;
+      }
+
+      .person-bio {
+        list-style: none;
+        margin: 20px 0 0;
+        padding: 0;
+        display: grid;
+        gap: 10px;
+      }
+
+      .person-bio li {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        padding-top: 10px;
+        border-top: 1px solid var(--fft-line);
+        color: var(--fft-muted);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .person-bio strong {
+        color: var(--fft-black);
+        font-weight: 900;
+      }
+
+      .lecturer-panel {
+        min-width: 0;
+      }
+
+      .lecturer-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        padding: 24px;
+      }
+
+      .lecturer-card {
+        border: 1px solid var(--fft-line);
+        background: #ffffff;
+        cursor: pointer;
+        overflow: hidden;
+        transition:
+          border-color 0.2s ease,
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .lecturer-card:hover {
+        border-color: var(--fft-red);
+        transform: translateY(-3px);
+        box-shadow: 0 20px 50px rgba(15, 15, 18, 0.09);
+      }
+
+      .lecturer-photo {
+        background: var(--fft-soft);
+        border-bottom: 1px solid var(--fft-line);
+      }
+
+      .lecturer-photo img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      .lecturer-info {
+        padding: 16px 16px 18px;
+      }
+
+      .lecturer-tag {
+        display: inline-flex;
+        min-height: 26px;
+        align-items: center;
+        padding: 0 10px;
+        background: rgba(95, 14, 14, 0.08);
+        color: var(--fft-red);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .lecturer-info h4 {
+        margin: 12px 0 0;
+        color: var(--fft-black);
+        font-size: 16px;
+        line-height: 1.35;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+      }
+
+      .lecturer-info p {
+        margin: 7px 0 0;
+        color: var(--fft-muted);
+        font-size: 12px;
+        line-height: 1.6;
+        font-weight: 700;
+      }
+
+      .empty-state {
+        padding: 44px 24px;
+        color: var(--fft-muted);
+        text-align: center;
+        font-size: 14px;
+        line-height: 1.75;
+      }
+
+      .skeleton-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        padding: 24px;
+      }
+
+      .skeleton {
+        min-height: 330px;
+        background:
+          linear-gradient(90deg, #f2f2f2 25%, #fafafa 37%, #f2f2f2 63%);
+        background-size: 400% 100%;
+        animation: skeletonMove 1.3s ease infinite;
+      }
+
+      @keyframes skeletonMove {
+        0% {
+          background-position: 100% 0;
+        }
+        100% {
+          background-position: 0 0;
+        }
+      }
+
+      /* EN: Modal | ID: Modal detail */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: rgba(0, 0, 0, 0.64);
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.22s ease,
+          visibility 0.22s ease;
+      }
+
+      .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .modal-card {
+        width: min(900px, 100%);
+        max-height: 90vh;
+        overflow: auto;
+        background: #ffffff;
+        border-top: 6px solid var(--fft-red);
+        display: grid;
+        grid-template-columns: 340px minmax(0, 1fr);
+        transform: translateY(20px) scale(0.98);
+        transition: transform 0.22s ease;
+      }
+
+      .modal-overlay.active .modal-card {
+        transform: translateY(0) scale(1);
+      }
+
+      .modal-image img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-height: 460px;
+        object-fit: cover;
+        object-position: center;
+        background: var(--fft-soft);
+      }
+
+      .modal-content {
+        padding: 34px;
+        position: relative;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        width: 42px;
+        height: 42px;
+        border: 1px solid var(--fft-line);
+        background: #ffffff;
+        color: var(--fft-black);
+        cursor: pointer;
+      }
+
+      .modal-close svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+      }
+
+      .modal-label {
+        display: inline-flex;
+        min-height: 30px;
+        align-items: center;
+        padding: 0 12px;
+        background: var(--fft-red);
+        color: #ffffff;
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .modal-content h3 {
+        margin: 18px 50px 0 0;
+        color: var(--fft-black);
+        font-size: clamp(28px, 4vw, 44px);
+        line-height: 1.08;
+        font-weight: 900;
+        letter-spacing: -0.05em;
+      }
+
+      .modal-role {
+        margin: 12px 0 0;
+        color: var(--fft-red);
+        font-size: 15px;
+        line-height: 1.65;
+        font-weight: 900;
+      }
+
+      .modal-bio {
+        list-style: none;
+        margin: 28px 0 0;
+        padding: 0;
+        display: grid;
+        gap: 12px;
+      }
+
+      .modal-bio li {
+        padding-top: 12px;
+        border-top: 1px solid var(--fft-line);
+        color: var(--fft-muted);
+        font-size: 14px;
+        line-height: 1.65;
+      }
+
+      .modal-bio strong {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--fft-black);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      /* EN: Footer | ID: Footer */
+      .site-footer {
+        background: var(--fft-black);
+        color: rgba(255, 255, 255, 0.76);
+        border-top: 5px solid var(--fft-red);
+      }
+
+      .footer-inner {
+        width: min(1180px, calc(100% - 48px));
+        margin: 0 auto;
+        padding: 54px 0 30px;
+        display: grid;
+        grid-template-columns: 1.3fr 0.8fr 1fr;
+        gap: 44px;
+      }
+
+      .footer-brand {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+
+      .footer-brand img {
+        width: 72px;
+        height: auto;
+        flex: 0 0 auto;
+      }
+
+      .footer-brand h3,
+      .footer-col h3 {
+        margin: 0 0 14px;
+        color: #ffffff;
+        font-size: 18px;
+        line-height: 1.25;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .footer-brand p,
+      .footer-col p,
+      .footer-col a {
+        margin: 0 0 10px;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 14px;
+        line-height: 1.7;
+        text-decoration: none;
+      }
+
+      .footer-col a:hover {
+        color: #ffffff;
+      }
+
+      .subfooter {
+        width: min(1180px, calc(100% - 48px));
+        margin: 0 auto;
+        padding: 22px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.58);
+        font-size: 13px;
+        line-height: 1.7;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition:
+          opacity 0.55s ease,
+          transform 0.55s ease;
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 1180px) {
+        .leader-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .dean-panel {
+          max-width: 620px;
+        }
+
+        .lecturer-grid,
+        .skeleton-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 860px) {
+        .header-inner {
+          min-height: auto;
+          padding: 18px 0;
+        }
+
+        .menu-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .site-nav {
+          position: fixed;
+          top: 0;
+          right: -290px;
+          z-index: 9998;
+          width: 290px;
+          height: 100vh;
+          padding: 110px 28px 28px;
+          background: #ffffff;
+          border-left: 1px solid var(--fft-line);
+          box-shadow: -18px 0 70px rgba(15, 15, 18, 0.18);
+          transition: right 0.25s ease;
+        }
+
+        .site-nav.active {
+          right: 0;
+        }
+
+        .nav-list {
+          align-items: stretch;
+          flex-direction: column;
+          gap: 22px;
+        }
+
+        .nav-list a {
+          font-size: 16px;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .topbar-inner,
+        .header-inner,
+        .staff-hero-inner,
+        .staff-content,
+        .footer-inner,
+        .subfooter {
+          width: min(100% - 30px, 1180px);
+        }
+
+        .topbar-inner {
+          min-height: auto;
+          padding: 10px 0;
+        }
+
+        .topbar-left,
+        .topbar-right {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .top-divider,
+        .apply-link {
+          display: none;
+        }
+
+        .brand {
+          align-items: flex-start;
+        }
+
+        .brand img {
+          width: 58px;
+        }
+
+        .brand-text h1 {
+          font-size: 18px;
+          line-height: 1.18;
+          letter-spacing: 0.12em;
+        }
+
+        .brand-text p {
+          font-size: 11px;
+          line-height: 1.5;
+        }
+
+        .staff-hero-inner {
+          grid-template-columns: 1fr;
+          padding: 44px 0;
+        }
+
+        .staff-hero h2 {
+          font-size: 40px;
+          line-height: 1.03;
+        }
+
+        .staff-subtitle {
+          font-size: 15px;
+          line-height: 1.75;
+        }
+
+        .section-head {
+          grid-template-columns: 1fr;
+        }
+
+        .staff-tools,
+        .search-wrap {
+          width: 100%;
+        }
+
+        .stats-row {
+          grid-template-columns: 1fr;
+        }
+
+        .panel-top {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .lecturer-grid,
+        .skeleton-grid {
+          grid-template-columns: 1fr;
+          padding: 18px;
+        }
+
+        .dean-content {
+          padding: 18px;
+        }
+
+        .modal-card {
+          grid-template-columns: 1fr;
+        }
+
+        .modal-image img {
+          min-height: 320px;
+          aspect-ratio: 4 / 4.4;
+        }
+
+        .modal-content {
+          padding: 24px 18px 28px;
+        }
+
+        .footer-inner {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+
+        .reveal {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
+
+      /* EN | ID: Final professional layout override for leaders and lecturers page | Override final desain profesional halaman pimpinan dan dosen */
+body {
+  background: #f6f3ef;
+}
+
+.header-inner {
+  width: min(1240px, calc(100% - 56px));
+  min-height: 92px;
+}
+
+.brand img {
+  width: 64px;
+}
+
+.brand-text h1 {
+  max-width: 520px;
+  color: var(--fft-red);
+  font-size: clamp(20px, 2vw, 30px);
+  line-height: 1.08;
+  letter-spacing: 0.17em;
+}
+
+.brand-text p {
+  color: #151515;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+.nav-list {
+  gap: clamp(14px, 1.8vw, 26px);
+}
+
+.nav-list a {
+  font-size: 13px;
+  letter-spacing: 0.01em;
+}
+
+.staff-hero {
+  background:
+    linear-gradient(125deg, rgba(95, 14, 14, 0.98), rgba(12, 12, 14, 0.98)),
+    #5f0e0e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.staff-hero-inner {
+  width: min(1240px, calc(100% - 56px));
+  padding: clamp(48px, 6vw, 86px) 0;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+  align-items: center;
+}
+
+.staff-kicker {
+  margin-bottom: 14px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+}
+
+.staff-hero h2 {
+  max-width: 760px;
+  font-size: clamp(42px, 5.6vw, 76px);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.staff-subtitle {
+  max-width: 760px;
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.hero-side {
+  border-left: 3px solid rgba(255, 255, 255, 0.72);
+  padding-left: 18px;
+}
+
+.staff-content {
+  width: min(1240px, calc(100% - 56px));
+  padding: 38px 0 86px;
+}
+
+.section-head {
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+  gap: 30px;
+  margin-bottom: 26px;
+}
+
+.section-head h3 {
+  max-width: 760px;
+  font-size: clamp(32px, 4.4vw, 58px);
+  line-height: 1;
+  letter-spacing: -0.055em;
+}
+
+.search-wrap {
+  width: 100%;
+  min-width: 0;
+}
+
+.search-input {
+  height: 48px;
+  border: 1px solid rgba(15, 15, 18, 0.14);
+  background: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.stats-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  border: 1px solid rgba(15, 15, 18, 0.1);
+  background: #ffffff;
+  padding: 18px 20px;
+  box-shadow: 0 18px 48px rgba(15, 15, 18, 0.04);
+}
+
+.stat-card strong {
+  color: var(--fft-red);
+  font-size: 28px;
+}
+
+.stat-card span {
+  color: #55565d;
+  font-size: 12px;
+}
+
+.leader-layout {
+  grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.dean-panel,
+.lecturer-panel {
+  border: 1px solid rgba(15, 15, 18, 0.1);
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(15, 15, 18, 0.07);
+}
+
+.dean-panel {
+  position: sticky;
+  top: 118px;
+}
+
+.panel-top {
+  min-height: 70px;
+  padding: 20px 22px;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(15, 15, 18, 0.1);
+}
+
+.panel-top h3 {
+  font-size: 19px;
+  letter-spacing: -0.03em;
+}
+
+.dean-content {
+  padding: 22px;
+}
+
+.dean-photo {
+  border: 1px solid rgba(15, 15, 18, 0.1);
+  background: #f2eee8;
+}
+
+.dean-photo img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center;
+}
+
+.dean-badge {
+  left: 14px;
+  bottom: 14px;
+  min-height: 36px;
+  padding: 0 16px;
+  background: var(--fft-red);
+  font-size: 11px;
+}
+
+.person-name {
+  margin-top: 22px;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+}
+
+.person-role {
+  margin-top: 10px;
+  color: var(--fft-red);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.person-bio {
+  margin-top: 22px;
+}
+
+.person-bio li {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+  padding: 13px 0;
+  border-top: 1px solid rgba(15, 15, 18, 0.1);
+}
+
+.person-bio span {
+  text-align: right;
+}
+
+.lecturer-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  padding: 22px;
+}
+
+.lecturer-card {
+  width: 100%;
+  padding: 0;
+  text-align: left;
+  border: 1px solid rgba(15, 15, 18, 0.1);
+  background: #ffffff;
+  color: inherit;
+  box-shadow: 0 16px 44px rgba(15, 15, 18, 0.04);
+}
+
+.lecturer-card:hover {
+  border-color: rgba(95, 14, 14, 0.55);
+  transform: translateY(-4px);
+  box-shadow: 0 26px 70px rgba(15, 15, 18, 0.11);
+}
+
+.lecturer-photo {
+  background: #f2eee8;
+  border-bottom: 1px solid rgba(15, 15, 18, 0.1);
+  overflow: hidden;
+}
+
+.lecturer-photo img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.32s ease;
+}
+
+.lecturer-card:hover .lecturer-photo img {
+  transform: scale(1.025);
+}
+
+.lecturer-info {
+  padding: 17px 18px 20px;
+}
+
+.lecturer-tag {
+  min-height: 25px;
+  padding: 0 10px;
+  background: rgba(95, 14, 14, 0.08);
+  color: var(--fft-red);
+  font-size: 10px;
+}
+
+.lecturer-info h4 {
+  min-height: 66px;
+  margin-top: 13px;
+  color: #101014;
+  font-size: clamp(16px, 1.35vw, 20px);
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+}
+
+.lecturer-info p {
+  margin-top: 10px;
+  color: #5d5e66;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.modal-overlay {
+  padding: 28px;
+  background: rgba(10, 10, 12, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.modal-card {
+  width: min(920px, 100%);
+  max-height: 86vh;
+  grid-template-columns: 330px minmax(0, 1fr);
+  border-top: 5px solid var(--fft-red);
+  box-shadow: 0 36px 100px rgba(0, 0, 0, 0.34);
+}
+
+.modal-image {
+  background: #f2eee8;
+}
+
+.modal-image img {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.modal-content {
+  padding: 40px 40px 34px;
+}
+
+.modal-close {
+  top: 20px;
+  right: 20px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 15, 18, 0.16);
+}
+
+.modal-label {
+  min-height: 32px;
+  padding: 0 13px;
+  background: var(--fft-red);
+  font-size: 11px;
+}
+
+.modal-content h3 {
+  margin-top: 22px;
+  margin-right: 54px;
+  color: #101014;
+  font-size: clamp(34px, 4.2vw, 54px);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+}
+
+.modal-role {
+  color: var(--fft-red);
+  font-size: 15px;
+}
+
+.modal-bio {
+  margin-top: 30px;
+}
+
+.modal-bio li {
+  padding: 14px 0;
+  border-top: 1px solid rgba(15, 15, 18, 0.1);
+}
+
+.modal-bio strong {
+  color: #111114;
+  font-size: 11px;
+}
+
+.modal-bio span {
+  color: #5d5e66;
+  font-size: 14px;
+}
+
+@media (max-width: 1200px) {
+  .leader-layout {
+    grid-template-columns: 340px minmax(0, 1fr);
+  }
+
+  .lecturer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px) {
+  .dean-panel {
+    position: static;
+  }
+
+  .leader-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .dean-panel {
+    max-width: none;
+  }
+
+  .dean-content {
+    display: grid;
+    grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .dean-photo {
+    grid-row: 1 / 4;
+  }
+}
+
+@media (max-width: 760px) {
+  .topbar-inner,
+  .header-inner,
+  .staff-hero-inner,
+  .staff-content,
+  .footer-inner,
+  .subfooter {
+    width: min(100% - 30px, 1240px);
+  }
+
+  .header-inner {
+    min-height: 82px;
+  }
+
+  .brand img {
+    width: 54px;
+  }
+
+  .brand-text h1 {
+    font-size: 17px;
+    letter-spacing: 0.11em;
+  }
+
+  .brand-text p {
+    font-size: 10px;
+  }
+
+  .staff-hero-inner {
+    grid-template-columns: 1fr;
+    padding: 42px 0;
+  }
+
+  .staff-hero h2 {
+    font-size: clamp(38px, 13vw, 52px);
+  }
+
+  .section-head {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dean-content {
+    display: block;
+    padding: 18px;
+  }
+
+  .person-bio li {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .person-bio span {
+    text-align: left;
+  }
+
+  .lecturer-grid {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .lecturer-info h4 {
+    min-height: auto;
+  }
+
+  .modal-overlay {
+    padding: 16px;
+  }
+
+  .modal-card {
+    grid-template-columns: 1fr;
+    max-height: 88vh;
+  }
+
+  .modal-image img {
+    min-height: auto;
+    aspect-ratio: 4 / 5;
+  }
+
+  .modal-content {
+    padding: 28px 20px 26px;
+  }
+
+  .modal-content h3 {
+    margin-right: 46px;
+    font-size: clamp(30px, 9vw, 42px);
+  }
+}
+    </style>
+
+      <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
   </head>
 
   <body>
-    <header>
+    <div class="page-progress" id="pageProgress"></div>
+
+    
+    <header class="site-header" id="siteHeader">
       <div class="topbar">
         <div class="topbar_left">
-          <a href="https://suryanusantara.ac.id/">
-            <img class="image" src="uasnlogo.png" alt="back to uasn" />
-            <span>Back</span>
+          <a
+            href="https://suryanusantara.ac.id/"
+            target="_blank"
+            rel="noopener noreferrer">
+            <img class="topbar-logo-img" src="uasnlogo.png" alt="Logo UASN" />
+            <span data-i18n="top_website">Website UASN</span>
+          </a>
+
+          <a href="indexfft.html" class="topbar-quick-link">
+            <span data-i18n="top_quick_access">Akses Cepat</span>
           </a>
         </div>
+
         <div class="topbar_right">
-          <a href="#" class="daftar-btn">DAFTAR SEKARANG</a>
+          <div class="language-switcher" aria-label="Pilih bahasa">
+            <button class="lang-btn active" type="button" data-lang="id">ID</button>
+            <span class="lang-separator">|</span>
+            <button class="lang-btn" type="button" data-lang="en">EN</button>
+          </div>
+
+          <a href="#" class="daftar-btn" data-i18n="top_apply">
+            DAFTAR SEKARANG
+          </a>
         </div>
       </div>
 
       <div class="container">
-        <div class="brand-wrapper">
+        <a href="indexfft.html" class="brand-wrapper" style="text-decoration: none">
           <div class="logo">
-            <img src="fftkb.png" alt="FILSAFAT TEOLOGI" />
+            <img src="fftkb.png" alt="Logo Fakultas Filsafat Teologi" />
           </div>
+
           <div class="branding">
-            <h1>FAKULTAS FILSAFAT TEOLOGI</h1>
-            <p class="brand-universitas">UNIVERSITAS ADVENT SURYA NUSANTARA</p>
+            <h1 data-i18n="brand_faculty">FAKULTAS FILSAFAT TEOLOGI</h1>
+            <p class="brand-universitas" data-i18n="brand_university">
+              UNIVERSITAS ADVENT SURYA NUSANTARA
+            </p>
           </div>
-        </div>
+        </a>
 
         <div>
-          <button class="menu-toggle">☰</button>
-          <nav class="sidebar-nav">
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Buka menu">
+            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M4 7h16v2H4V7Zm0 4h16v2H4v-2Zm0 4h16v2H4v-2Z" />
+            </svg>
+          </button>
+
+          <nav class="sidebar-nav" id="siteNav" aria-label="Navigasi utama">
             <ul>
-              <li><a href="indexfft.html">Home</a></li>
-              <li><a href="indexfft.html#program-studi">Program Studi</a></li>
-              <li><a href="indexfft.html#latar-belakang">Latar Belakang</a></li>
-              <li><a href="indexfft.html#visi-misi">Visi &amp; Misi</a></li>
-              <li><a href="indexfft.html#organisasi">Organisasi</a></li>
-              <li><a href="indexfft.html#kontak">Kontak</a></li>
+              <li><a href="indexfft.html#program-studi" data-i18n="nav_program">Program Studi</a></li>
+              <li><a href="indexfft.html#latar-belakang" data-i18n="nav_background">Latar Belakang</a></li>
+              <li><a href="indexfft.html#visi-misi" data-i18n="nav_vision">Visi &amp; Misi</a></li>
+              <li><a href="indexfft.html#organisasi" data-i18n="nav_organization">Organisasi</a></li>
+              <li><a href="pimpinan-dosen.html" class="active" data-i18n="nav_leaders">Pimpinan &amp; Dosen</a></li>
+              <li><a href="indexfft.html#berita" data-i18n="nav_news">Berita</a></li>
+              <li><a href="#kontak" data-i18n="nav_contact">Kontak</a></li>
             </ul>
           </nav>
         </div>
       </div>
     </header>
 
-    <main class="pimpinan-page">
-      <!-- JUDUL HALAMAN -->
-      <section class="pimpinan-hero">
-        <div class="pimpinan-hero-inner">
-          <h2>PIMPINAN & DOSEN</h2>
-          <p>Fakultas Filsafat Teologi Universitas Advent Surya Nusantara</p>
+
+    <main class="staff-main">
+      <section class="staff-hero">
+        <div class="staff-hero-inner">
+          <div>
+            <p class="staff-kicker" data-i18n="hero_kicker">Profil Akademik</p>
+            <h2 data-i18n="hero_title">Pimpinan dan Dosen</h2>
+            <p class="staff-subtitle" data-i18n="hero_desc">
+              Kenali pimpinan dan dosen Fakultas Filsafat Teologi Universitas Advent Surya Nusantara.
+            </p>
+          </div>
+
+          <aside class="hero-side">
+            <strong data-i18n="hero_side_title">Tenaga Akademik FFT</strong>
+            <span data-i18n="hero_side_desc">
+              Informasi dosen ditampilkan untuk membantu mahasiswa, calon mahasiswa, dan masyarakat mengenal struktur akademik fakultas.
+            </span>
+          </aside>
         </div>
       </section>
 
-      <!-- AREA UTAMA -->
-      <section class="pimpinan-board">
-        <div class="pimpinan-board-inner">
-          <!-- KOLOM KIRI : DEKAN -->
-          <section class="dekan-panel" id="pimpinan">
-            <div class="dekan-card">
-              <div class="dekan-image-wrap">
-                <!-- GANTI FOTO DEKAN DI SINI -->
-                <img
-                  src="images/dekan-placeholder.jpg"
-                  alt="Foto Dekan"
-                  class="dekan-image" />
-              </div>
+      <section class="staff-content">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="indexfft.html">FFT</a>
+          <span>/</span>
+          <span data-i18n="breadcrumb_current">Pimpinan & Dosen</span>
+        </nav>
 
-              <div class="dekan-content">
-                <span class="dekan-tag">DEKAN</span>
+        <div class="section-head reveal">
+          <div>
+            <p data-i18n="section_kicker">Direktori Fakultas</p>
+            <h3 data-i18n="section_title">Struktur Pimpinan dan Daftar Dosen</h3>
+          </div>
 
-                <!-- GANTI NAMA DEKAN -->
-                <h3>NAMA DEKAN</h3>
+          <div class="staff-tools">
+            <div class="search-wrap">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9.5 3a6.5 6.5 0 0 1 5.16 10.45l5.45 5.44-1.42 1.42-5.44-5.45A6.5 6.5 0 1 1 9.5 3Zm0 2a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Z" />
+              </svg>
+              <input
+                id="staffSearch"
+                class="search-input"
+                type="search"
+                autocomplete="off"
+                placeholder="Cari dosen atau bidang..."
+                data-i18n-placeholder="search_placeholder" />
+            </div>
+          </div>
+        </div>
 
-                <!-- GANTI JABATAN -->
-                <p class="dekan-role">JABATAN DEKAN / KEPALA PROGRAM STUDI</p>
+        <div class="stats-row reveal">
+          <div class="stat-card">
+            <strong id="statDean">1</strong>
+            <span data-i18n="stat_dean">Pimpinan Fakultas</span>
+          </div>
 
-                <ul class="dekan-bio">
-                  <li><strong>Status Dosen:</strong> ISI DI SINI</li>
-                  <li><strong>Tempat Lahir:</strong> ISI DI SINI</li>
-                  <li><strong>Tanggal Lahir:</strong> ISI DI SINI</li>
-                </ul>
-              </div>
+          <div class="stat-card">
+            <strong id="statLecturer">0</strong>
+            <span data-i18n="stat_lecturer">Dosen Terdata</span>
+          </div>
+
+          <div class="stat-card">
+            <strong id="statTotal">0</strong>
+            <span data-i18n="stat_total">Total Profil</span>
+          </div>
+        </div>
+
+        <div class="leader-layout">
+          <section class="dean-panel reveal" id="pimpinan">
+            <div class="panel-top">
+              <h3 data-i18n="dean_panel_title">Pimpinan Fakultas</h3>
+              <span data-i18n="dean_panel_label">Dekan</span>
+            </div>
+
+            <div class="dean-content" id="deanContent">
+              <div class="empty-state" data-i18n="loading_dean">Memuat data pimpinan...</div>
             </div>
           </section>
 
-          <!-- KOLOM KANAN : DOSEN -->
-          <section class="dosen-panel" id="dosen">
-            <div class="dosen-panel-head">
-              <h2>DOSEN</h2>
-              <p>Arahkan kursor ke kartu dosen untuk melihat tampilan detail</p>
+          <section class="lecturer-panel reveal" id="dosen">
+            <div class="panel-top">
+              <h3 data-i18n="lecturer_panel_title">Daftar Dosen</h3>
+              <span id="resultInfo" data-i18n="loading_lecturer">Memuat data</span>
             </div>
 
-            
-            <div class="dosen-grid" id="dosenGrid">
-              <!-- Akan diisi dari API -->
+            <div id="lecturerGrid" class="lecturer-grid">
+              <div class="skeleton"></div>
+              <div class="skeleton"></div>
+              <div class="skeleton"></div>
             </div>
           </section>
         </div>
       </section>
-
-      <!-- POPUP PREVIEW DOSEN UNTUK DESKTOP -->
-      <div
-        class="dosen-preview-overlay"
-        id="dosenPreviewOverlay"
-        aria-hidden="true">
-        <div class="dosen-preview-card" id="dosenPreviewCard">
-          <button
-            type="button"
-            class="dosen-preview-close"
-            id="dosenPreviewClose">
-            ×
-          </button>
-
-          <div class="dosen-preview-image-wrap">
-            <img
-              src="images/dosen-1-placeholder.jpg"
-              alt="Preview Dosen"
-              id="previewImage"
-              class="dosen-preview-image" />
-          </div>
-
-          <div class="dosen-preview-content">
-            <span class="preview-tag">DOSEN</span>
-            <h3 id="previewName">NAMA DOSEN</h3>
-            <p class="preview-role" id="previewRole">JABATAN / BIDANG DOSEN</p>
-
-            <ul class="preview-bio">
-              <li>
-                <strong>Status Dosen:</strong>
-                <span id="previewStatus">ISI STATUS</span>
-              </li>
-              <li>
-                <strong>Tempat Lahir:</strong>
-                <span id="previewBirthplace">ISI TEMPAT LAHIR</span>
-              </li>
-              <li>
-                <strong>Tanggal Lahir:</strong>
-                <span id="previewBirthdate">ISI TANGGAL LAHIR</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </main>
 
+    <footer id="kontak" class="fft-footer" aria-labelledby="footerTitle">
+        <canvas
+          id="footerOrbitCanvas"
+          class="footer-orbit-canvas"
+          aria-hidden="true">
+        </canvas>
 
+        <div class="fft-footer-top">
+          <div class="fft-footer-inner">
+            <!-- FOOTER BRAND -->
+            <section class="fft-footer-brand" aria-labelledby="footerTitle">
+              <img
+                src="fftkb.png"
+                alt="Logo Fakultas Filsafat Teologi"
+                />
 
+              <div class="fft-footer-brand-text">
+                <h3 id="footerTitle">
+                  FAKULTAS FILSAFAT TEOLOGI
+                </h3>
 
-    
+                <p>
+                  UNIVERSITAS ADVENT SURYA NUSANTARA
+                </p>
 
+                <span>
+                  Fakultas yang berkomitmen pada pengembangan karakter, pelayanan,
+                  dan keunggulan akademik berdasarkan nilai-nilai Kristiani.
+                </span>
+              </div>
+            </section>
 
+            <!-- FOOTER ACADEMIC -->
+            <nav class="fft-footer-column" aria-labelledby="footerAcademicTitle">
+              <h4 id="footerAcademicTitle">
+                Akademik
+              </h4>
 
+              <a
+                href="https://suryanusantara.ac.id/fekon"
+                target="_blank"
+                rel="noopener noreferrer">
+                <span>
+                  Fakultas Ekonomi
+                </span>
+              </a>
+
+              <a
+                href="https://suryanusantara.ac.id/fakes"
+                target="_blank"
+                rel="noopener noreferrer">
+                <span>
+                  Fakultas Kesehatan
+                </span>
+              </a>
+
+              <a
+                href="https://suryanusantara.ac.id/fasilkom"
+                target="_blank"
+                rel="noopener noreferrer">
+                <span>
+                  Fakultas Sistem Informasi &amp; Ilmu Komputer
+                </span>
+              </a>
+            </nav>
+
+            <!-- FOOTER CONTACT -->
+            <section class="fft-footer-column" aria-labelledby="footerContactTitle">
+              <h4 id="footerContactTitle">
+                Kontak Fakultas
+              </h4>
+
+              <address class="footer-address">
+                <p>
+                  Fakultas Filsafat Teologi
+                </p>
+
+                <p>
+                  Universitas Advent Surya Nusantara
+                </p>
+
+                <p>
+                  Jl. Rakutta Sembiring No. 01
+                </p>
+
+                <p>
+                  Siantar Martoba, Pematangsiantar
+                </p>
+
+                <p>
+                  Email: fft@uasn.ac.id
+                </p>
+              </address>
+
+              <div class="footer-contact-actions" aria-label="Aksi kontak fakultas">
+                <a
+                  href="https://wa.me/6282273345200"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="footer-contact-btn">
+                  <span class="footer-contact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M12.04 2a9.86 9.86 0 0 0-8.56 14.75L2 22l5.38-1.42A9.94 9.94 0 1 0 12.04 2Zm0 1.8a8.14 8.14 0 1 1 0 16.28 8.2 8.2 0 0 1-4.16-1.14l-.3-.18-3.2.84.86-3.1-.2-.32A8.08 8.08 0 0 1 12.04 3.8Zm-3.3 4.28c-.18 0-.46.06-.7.34-.24.28-.92.9-.92 2.18 0 1.28.94 2.52 1.08 2.7.14.18 1.82 2.9 4.5 3.94 2.22.88 2.68.7 3.16.66.48-.04 1.56-.64 1.78-1.26.22-.62.22-1.14.16-1.26-.08-.12-.26-.18-.54-.32-.28-.14-1.56-.78-1.8-.86-.24-.1-.42-.14-.6.14-.18.28-.7.86-.86 1.04-.16.18-.32.2-.6.06-.28-.14-1.16-.42-2.2-1.36-.82-.72-1.38-1.62-1.54-1.9-.16-.28-.02-.42.12-.56.12-.12.28-.32.42-.48.14-.16.18-.28.28-.46.1-.18.04-.34-.02-.48-.06-.14-.6-1.44-.82-1.98-.22-.52-.44-.44-.6-.44h-.5Z"></path>
+                    </svg>
+                  </span>
+                  <span>WhatsApp Dekan</span>
+                </a>
+
+                <a
+                  href="https://wa.me/6282129500506"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="footer-contact-btn">
+                  <span class="footer-contact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M12.04 2a9.86 9.86 0 0 0-8.56 14.75L2 22l5.38-1.42A9.94 9.94 0 1 0 12.04 2Zm0 1.8a8.14 8.14 0 1 1 0 16.28 8.2 8.2 0 0 1-4.16-1.14l-.3-.18-3.2.84.86-3.1-.2-.32A8.08 8.08 0 0 1 12.04 3.8Zm-3.3 4.28c-.18 0-.46.06-.7.34-.24.28-.92.9-.92 2.18 0 1.28.94 2.52 1.08 2.7.14.18 1.82 2.9 4.5 3.94 2.22.88 2.68.7 3.16.66.48-.04 1.56-.64 1.78-1.26.22-.62.22-1.14.16-1.26-.08-.12-.26-.18-.54-.32-.28-.14-1.56-.78-1.8-.86-.24-.1-.42-.14-.6.14-.18.28-.7.86-.86 1.04-.16.18-.32.2-.6.06-.28-.14-1.16-.42-2.2-1.36-.82-.72-1.38-1.62-1.54-1.9-.16-.28-.02-.42.12-.56.12-.12.28-.32.42-.48.14-.16.18-.28.28-.46.1-.18.04-.34-.02-.48-.06-.14-.6-1.44-.82-1.98-.22-.52-.44-.44-.6-.44h-.5Z"></path>
+                    </svg>
+                  </span>
+                  <span>WhatsApp Sekretaris</span>
+                </a>
+
+                <a
+                  href="mailto:fft@uasn.ac.id"
+                  class="footer-contact-btn">
+                  <span class="footer-contact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4.5 5h15A2.5 2.5 0 0 1 22 7.5v9A2.5 2.5 0 0 1 19.5 19h-15A2.5 2.5 0 0 1 2 16.5v-9A2.5 2.5 0 0 1 4.5 5Zm0 2A.5.5 0 0 0 4 7.5v.32l8 5.02 8-5.02V7.5a.5.5 0 0 0-.5-.5h-15ZM20 10.18l-7.47 4.68a1 1 0 0 1-1.06 0L4 10.18v6.32a.5.5 0 0 0 .5.5h15a.5.5 0 0 0 .5-.5v-6.32Z"></path>
+                    </svg>
+                  </span>
+                  <span>Email Fakultas</span>
+                </a>
+
+                <a
+                  href="https://www.instagram.com/himafftuasn01?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="footer-contact-btn">
+                  <span class="footer-contact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.8A3.95 3.95 0 0 0 3.8 7.75v8.5a3.95 3.95 0 0 0 3.95 3.95h8.5a3.95 3.95 0 0 0 3.95-3.95v-8.5a3.95 3.95 0 0 0-3.95-3.95h-8.5Zm8.95 1.35a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.8A3.2 3.2 0 1 0 12 15.2 3.2 3.2 0 0 0 12 8.8Z"></path>
+                    </svg>
+                  </span>
+                  <span>Instagram Fakultas</span>
+                </a>
+              </div>
+            </section>
+
+            <!-- FOOTER MAP -->
+            <section class="fft-footer-column fft-footer-map" aria-labelledby="footerMapTitle">
+              <h4 id="footerMapTitle">
+                Lokasi Kampus
+              </h4>
+
+              <div class="fft-map-wrap">
+                <iframe
+                  src="https://www.google.com/maps?q=Jl.%20Rakutta%20Sembiring%20No.%2001,%20Siantar%20Martoba,%20Pematangsiantar&output=embed"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  allowfullscreen
+                  title="Peta Lokasi Universitas Advent Surya Nusantara">
+                </iframe>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="fft-subfooter">
+          <div class="fft-subfooter-inner">
+            <div class="subfooter-left">
+              <p class="subfooter-copy">
+                © 2026 Fakultas Filsafat Teologi - Universitas Advent Surya Nusantara.
+                Seluruh hak cipta dilindungi.
+              </p>
+
+              <p class="dev-text">
+                <span>
+                  Website ini dikembangkan oleh mahasiswa Fakultas Sistem Informasi
+                  &amp; Ilmu Komputer Universitas Advent Surya Nusantara:
+                </span>
+                <strong>Gland Siahaan</strong>
+              </p>
+            </div>
+
+            <div class="subfooter-right" aria-label="Media sosial pengembang">
+              <a
+                href="https://www.instagram.com/glandsiahaan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                target="_blank"
+                rel="noopener noreferrer"
+                class="subfooter-icon ig"
+                aria-label="Instagram Gland Siahaan">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.8A3.95 3.95 0 0 0 3.8 7.75v8.5a3.95 3.95 0 0 0 3.95 3.95h8.5a3.95 3.95 0 0 0 3.95-3.95v-8.5a3.95 3.95 0 0 0-3.95-3.95h-8.5Zm8.95 1.35a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.8A3.2 3.2 0 1 0 12 15.2 3.2 3.2 0 0 0 12 8.8Z"></path>
+                </svg>
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/glandsiahaan/?lipi=urn%3Ali%3Apage%3Ad_flagship3_feed%3B%2BLGmqJ%2FqQWyGBJBrltf4AQ%3D%3D"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="subfooter-icon linkedin"
+                aria-label="LinkedIn Gland Siahaan">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A1.97 1.97 0 1 0 5.3 6.94 1.97 1.97 0 0 0 5.25 3ZM20.44 12.74c0-3.44-1.84-5.04-4.3-5.04-1.98 0-2.87 1.09-3.37 1.86V8.5H9.39c.05.7 0 11.5 0 11.5h3.38v-6.42c0-.34.02-.68.13-.92.27-.68.89-1.38 1.92-1.38 1.35 0 1.89 1.03 1.89 2.53V20h3.38v-7.26Z"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="profileModal" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalName">
+        <div class="modal-image">
+          <img id="modalImage" src="fftkb.png" alt="Foto Dosen" />
+        </div>
+
+        <div class="modal-content">
+          <button class="modal-close" type="button" id="modalClose" aria-label="Tutup detail">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m6.4 5 5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19 5 17.6l5.6-5.6L5 6.4 6.4 5Z" />
+            </svg>
+          </button>
+
+          <span class="modal-label" id="modalLabel">Dosen</span>
+          <h3 id="modalName">Nama Dosen</h3>
+          <p class="modal-role" id="modalRole">Jabatan</p>
+
+          <ul class="modal-bio">
+            <li>
+              <strong data-i18n="bio_status">Status Dosen</strong>
+              <span id="modalStatus">-</span>
+            </li>
+            <li>
+              <strong data-i18n="bio_birthplace">Tempat Lahir</strong>
+              <span id="modalBirthplace">-</span>
+            </li>
+            <li>
+              <strong data-i18n="bio_birthdate">Tanggal Lahir</strong>
+              <span id="modalBirthdate">-</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const API_BASE = "http://127.0.0.1:5000";
+      const STATIC_BASE = `${API_BASE}/static/`;
+
+      const translations = {
+        id: {
+          top_uasn: "Website UASN",
+          top_home: "Halaman Utama FFT",
+          top_apply: "Daftar Sekarang",
+          brand_title: "Fakultas Filsafat Teologi",
+          brand_university: "Universitas Advent Surya Nusantara",
+          nav_program: "Program Studi",
+          nav_background: "Latar Belakang",
+          nav_vision: "Visi & Misi",
+          nav_organization: "Organisasi",
+          nav_staff: "Pimpinan & Dosen",
+          nav_news: "Berita",
+          nav_contact: "Kontak",
+          hero_kicker: "Profil Akademik",
+          hero_title: "Pimpinan dan Dosen",
+          hero_desc: "Kenali pimpinan dan dosen Fakultas Filsafat Teologi Universitas Advent Surya Nusantara.",
+          hero_side_title: "Tenaga Akademik FFT",
+          hero_side_desc: "Informasi dosen ditampilkan untuk membantu mahasiswa, calon mahasiswa, dan masyarakat mengenal struktur akademik fakultas.",
+          breadcrumb_current: "Pimpinan & Dosen",
+          section_kicker: "Direktori Fakultas",
+          section_title: "Struktur Pimpinan dan Daftar Dosen",
+          search_placeholder: "Cari dosen atau bidang...",
+          stat_dean: "Pimpinan Fakultas",
+          stat_lecturer: "Dosen Terdata",
+          stat_total: "Total Profil",
+          dean_panel_title: "Pimpinan Fakultas",
+          dean_panel_label: "Dekan",
+          lecturer_panel_title: "Daftar Dosen",
+          loading_dean: "Memuat data pimpinan...",
+          loading_lecturer: "Memuat data",
+          no_dean: "Data pimpinan belum tersedia.",
+          no_lecturer: "Data dosen belum tersedia.",
+          no_result: "Tidak ada dosen yang sesuai dengan pencarian.",
+          result_count: "profil",
+          lecturer_label: "Dosen",
+          dean_label: "Dekan",
+          bio_status: "Status Dosen",
+          bio_birthplace: "Tempat Lahir",
+          bio_birthdate: "Tanggal Lahir",
+          footer_title: "Fakultas Filsafat Teologi",
+          footer_desc: "Fakultas yang berkomitmen pada pengembangan karakter, pelayanan, dan keunggulan akademik berdasarkan nilai-nilai Kristiani.",
+          footer_nav: "Navigasi",
+          footer_contact: "Kontak Fakultas",
+          footer_copy: "© 2026 Fakultas Filsafat Teologi - Universitas Advent Surya Nusantara. Seluruh hak cipta dilindungi."
+        },
+        en: {
+          top_uasn: "UASN Website",
+          top_home: "FFT Main Page",
+          top_apply: "Apply Now",
+          brand_title: "Faculty of Philosophy and Theology",
+          brand_university: "Universitas Advent Surya Nusantara",
+          nav_program: "Study Program",
+          nav_background: "Background",
+          nav_vision: "Vision & Mission",
+          nav_organization: "Organization",
+          nav_staff: "Leaders & Lecturers",
+          nav_news: "News",
+          nav_contact: "Contact",
+          hero_kicker: "Academic Profile",
+          hero_title: "Leaders and Lecturers",
+          hero_desc: "Meet the leaders and lecturers of the Faculty of Philosophy and Theology, Universitas Advent Surya Nusantara.",
+          hero_side_title: "FFT Academic Staff",
+          hero_side_desc: "Lecturer information helps students, prospective students, and the public understand the faculty academic structure.",
+          breadcrumb_current: "Leaders & Lecturers",
+          section_kicker: "Faculty Directory",
+          section_title: "Leadership Structure and Lecturer Directory",
+          search_placeholder: "Search lecturer or field...",
+          stat_dean: "Faculty Leader",
+          stat_lecturer: "Listed Lecturers",
+          stat_total: "Total Profiles",
+          dean_panel_title: "Faculty Leadership",
+          dean_panel_label: "Dean",
+          lecturer_panel_title: "Lecturer Directory",
+          loading_dean: "Loading leadership data...",
+          loading_lecturer: "Loading data",
+          no_dean: "Leadership data is not available yet.",
+          no_lecturer: "Lecturer data is not available yet.",
+          no_result: "No lecturer matches your search.",
+          result_count: "profiles",
+          lecturer_label: "Lecturer",
+          dean_label: "Dean",
+          bio_status: "Lecturer Status",
+          bio_birthplace: "Place of Birth",
+          bio_birthdate: "Date of Birth",
+          footer_title: "Faculty of Philosophy and Theology",
+          footer_desc: "A faculty committed to character development, service, and academic excellence based on Christian values.",
+          footer_nav: "Navigation",
+          footer_contact: "Faculty Contact",
+          footer_copy: "© 2026 Faculty of Philosophy and Theology - Universitas Advent Surya Nusantara. All rights reserved."
+        }
+      };
+
+      let lecturers = [];
+      let deanProfile = null;
+
+      const elements = {
+        pageProgress: document.getElementById("pageProgress"),
+        menuToggle: document.getElementById("menuToggle"),
+        siteNav: document.getElementById("siteNav"),
+        deanContent: document.getElementById("deanContent"),
+        lecturerGrid: document.getElementById("lecturerGrid"),
+        staffSearch: document.getElementById("staffSearch"),
+        resultInfo: document.getElementById("resultInfo"),
+        statDean: document.getElementById("statDean"),
+        statLecturer: document.getElementById("statLecturer"),
+        statTotal: document.getElementById("statTotal"),
+        modal: document.getElementById("profileModal"),
+        modalClose: document.getElementById("modalClose"),
+        modalImage: document.getElementById("modalImage"),
+        modalLabel: document.getElementById("modalLabel"),
+        modalName: document.getElementById("modalName"),
+        modalRole: document.getElementById("modalRole"),
+        modalStatus: document.getElementById("modalStatus"),
+        modalBirthplace: document.getElementById("modalBirthplace"),
+        modalBirthdate: document.getElementById("modalBirthdate")
+      };
+
+      function getLang() {
+        return localStorage.getItem("fftLanguage") || "id";
+      }
+
+      function setLang(lang) {
+        localStorage.setItem("fftLanguage", lang);
+        document.documentElement.lang = lang;
+
+        document.querySelectorAll(".lang-btn").forEach((button) => {
+          button.classList.toggle("active", button.dataset.lang === lang);
+        });
+
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+          const key = element.dataset.i18n;
+          element.textContent = translations[lang][key] || translations.id[key] || key;
+        });
+
+        document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+          const key = element.dataset.i18nPlaceholder;
+          element.placeholder = translations[lang][key] || translations.id[key] || key;
+        });
+
+        renderDean();
+        renderLecturers();
+      }
+
+      function t(key) {
+        const lang = getLang();
+        return translations[lang]?.[key] || translations.id[key] || key;
+      }
+      function pickFirst(...values) {
+  for (const value of values) {
+    if (value === null || value === undefined) continue;
+
+    const text = String(value).trim();
+
+    if (text !== "") {
+      return text;
+    }
+  }
+
+  return "";
+}
+
+function pickMeaningful(...values) {
+  for (const value of values) {
+    if (value === null || value === undefined) continue;
+
+    const text = String(value).trim();
+
+    if (text !== "" && text !== "-") {
+      return text;
+    }
+  }
+
+  return "";
+}
+
+function normalizePerson(item = {}) {
+  const nama =
+    pickMeaningful(
+      item.nama,
+      item.name,
+      item.nama_dosen,
+      item.nama_lengkap
+    ) || "Nama belum tersedia";
+
+  const bidang = pickMeaningful(
+    item.bidang_dosen,
+    item.bidang,
+    item.keahlian,
+    item.expertise
+  );
+
+  const jabatanDasar =
+    pickMeaningful(
+      item.jabatan,
+      item.role,
+      item.posisi,
+      item.position
+    ) || "Dosen";
+
+  const jabatan = bidang
+    ? `${jabatanDasar} / ${formatBidang(bidang)}`
+    : jabatanDasar;
+
+  const foto = pickMeaningful(
+    item.foto_frontend,
+    item.foto_formal,
+    item.foto,
+    item.photo,
+    item.image,
+    item.gambar,
+    item.thumbnail,
+    item.thumb,
+    item.file_foto,
+    item.path_foto
+  );
+
+  return {
+    id: pickMeaningful(item.id, item.kode, item.nidn) || cryptoRandomId(),
+    nama,
+    jabatan,
+    status:
+      pickMeaningful(item.status, item.status_dosen, item.tipe) || "-",
+    tempatLahir:
+      pickMeaningful(
+        item.tempat_lahir,
+        item.tempatLahir,
+        item.birthplace
+      ) || "-",
+    tanggalLahir:
+      pickMeaningful(
+        item.tanggal_lahir,
+        item.tanggalLahir,
+        item.birthdate
+      ) || "-",
+    foto
+  };
+}
+
+function formatBidang(bidang) {
+  if (!bidang) return "";
+
+  const cleaned = String(bidang)
+    .replace(/\s+DAN\s+/gi, "\n")
+    .replace(/\s+dan\s+/gi, "\n")
+    .replace(/,/g, "\n");
+
+  const list = cleaned
+    .split("\n")
+    .map((item) => item.trim())
+    .filter((item) => item && item !== "-");
+
+  if (list.length === 0) return "";
+  if (list.length === 1) return list[0];
+  if (list.length === 2) return `${list[0]} dan ${list[1]}`;
+
+  const last = list.pop();
+  return `${list.join(", ")}, dan ${last}`;
+}
+
+      function cryptoRandomId() {
+        return Math.random().toString(36).slice(2);
+      }
+
+      function resolveImage(path, type = "generic") {
+  if (!path) return "fftkb.png";
+
+  const cleanPath = String(path).trim().replace(/^\/+/, "");
+
+  if (!cleanPath) return "fftkb.png";
+
+  if (/^https?:\/\//i.test(cleanPath)) {
+    return cleanPath;
+  }
+
+  if (cleanPath.startsWith("static/")) {
+    return `${API_BASE}/${cleanPath}`;
+  }
+
+  if (cleanPath.startsWith("uploads/")) {
+    return `${API_BASE}/static/${cleanPath}`;
+  }
+
+  if (cleanPath.includes("/uploads/")) {
+    return `${API_BASE}/static/${cleanPath.split("/static/").pop()}`;
+  }
+
+  if (type === "dosen") {
+    return `${API_BASE}/static/uploads/dosen/${cleanPath}`;
+  }
+
+  if (type === "dekan") {
+    return `${API_BASE}/static/uploads/dekan/${cleanPath}`;
+  }
+
+  return `${API_BASE}/static/${cleanPath}`;
+}
+
+      async function fetchJson(url) {
+        const response = await fetch(url, { method: "GET", cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      }
+
+      async function loadData() {
+        try {
+          const [deanPayload, lecturerPayload] = await Promise.allSettled([
+            fetchJson(`${API_BASE}/api/dekan`),
+            fetchJson(`${API_BASE}/api/dosen`)
+          ]);
+
+          if (deanPayload.status === "fulfilled") {
+            const rawDean = Array.isArray(deanPayload.value)
+              ? deanPayload.value[0]
+              : Array.isArray(deanPayload.value?.data)
+                ? deanPayload.value.data[0]
+                : deanPayload.value?.data || deanPayload.value;
+
+            deanProfile = rawDean ? normalizePerson(rawDean) : null;
+          }
+
+          if (lecturerPayload.status === "fulfilled") {
+            const rawLecturers = Array.isArray(lecturerPayload.value)
+              ? lecturerPayload.value
+              : Array.isArray(lecturerPayload.value?.data)
+                ? lecturerPayload.value.data
+                : Array.isArray(lecturerPayload.value?.dosen)
+                  ? lecturerPayload.value.dosen
+                  : [];
+
+            lecturers = rawLecturers.map(normalizePerson);
+          }
+
+          renderDean();
+          renderLecturers();
+          updateStats();
+        } catch (error) {
+          console.error("Gagal memuat data pimpinan dan dosen:", error);
+          renderDean();
+          renderLecturers();
+          updateStats();
+        }
+      }
+
+      function renderDean() {
+        if (!elements.deanContent) return;
+
+        if (!deanProfile) {
+          elements.deanContent.innerHTML = `<div class="empty-state">${t("no_dean")}</div>`;
+          return;
+        }
+
+        elements.deanContent.innerHTML = `
+          <div class="dean-photo">
+            <img
+            src="${resolveImage(deanProfile.foto, "dekan")}"
+            alt="${escapeHtml(deanProfile.nama)}"
+            onerror="this.onerror=null; this.src='fftkb.png';" />
+            <span class="dean-badge">${t("dean_label")}</span>
+          </div>
+
+          <h3 class="person-name">${escapeHtml(deanProfile.nama)}</h3>
+          <p class="person-role">${escapeHtml(deanProfile.jabatan)}</p>
+
+          <ul class="person-bio">
+            <li><strong>${t("bio_status")}</strong><span>${escapeHtml(deanProfile.status)}</span></li>
+            <li><strong>${t("bio_birthplace")}</strong><span>${escapeHtml(deanProfile.tempatLahir)}</span></li>
+            <li><strong>${t("bio_birthdate")}</strong><span>${escapeHtml(formatDate(deanProfile.tanggalLahir))}</span></li>
+          </ul>
+        `;
+      }
+
+      function renderLecturers() {
+        if (!elements.lecturerGrid) return;
+
+        const keyword = (elements.staffSearch?.value || "").trim().toLowerCase();
+
+        const filtered = lecturers.filter((person) => {
+          const text = `${person.nama} ${person.jabatan} ${person.status}`.toLowerCase();
+          return text.includes(keyword);
+        });
+
+        elements.resultInfo.textContent = `${filtered.length} ${t("result_count")}`;
+
+        if (!lecturers.length) {
+          elements.lecturerGrid.innerHTML = `<div class="empty-state">${t("no_lecturer")}</div>`;
+          return;
+        }
+
+        if (!filtered.length) {
+          elements.lecturerGrid.innerHTML = `<div class="empty-state">${t("no_result")}</div>`;
+          return;
+        }
+
+        elements.lecturerGrid.innerHTML = filtered
+          .map((person, index) => {
+            return `
+              <button
+                class="lecturer-card reveal"
+                type="button"
+                data-index="${lecturers.indexOf(person)}"
+                style="--delay:${index * 0.04}s">
+                <div class="lecturer-photo">
+                  <img
+                    src="${resolveImage(person.foto, "dosen")}"
+                    alt="${escapeHtml(person.nama)}"
+                    loading="lazy"
+                    onerror="this.onerror=null; this.src='fftkb.png';" />
+                </div>
+
+                <div class="lecturer-info">
+                  <span class="lecturer-tag">${t("lecturer_label")}</span>
+                  <h4>${escapeHtml(person.nama)}</h4>
+                  <p>${escapeHtml(person.jabatan)}</p>
+                </div>
+              </button>
+            `;
+          })
+          .join("");
+
+        document.querySelectorAll(".lecturer-card").forEach((card) => {
+          card.addEventListener("click", () => {
+            const index = Number(card.dataset.index);
+            openModal(lecturers[index]);
+          });
+        });
+
+        revealElements();
+      }
+
+      function updateStats() {
+        const deanCount = deanProfile ? 1 : 0;
+        const lecturerCount = lecturers.length;
+
+        elements.statDean.textContent = deanCount;
+        elements.statLecturer.textContent = lecturerCount;
+        elements.statTotal.textContent = deanCount + lecturerCount;
+      }
+
+      function openModal(person) {
+        if (!person || !elements.modal) return;
+
+        elements.modalImage.src = resolveImage(person.foto, "dosen");
+        elements.modalImage.alt = person.nama;
+        elements.modalLabel.textContent = t("lecturer_label");
+        elements.modalName.textContent = person.nama;
+        elements.modalRole.textContent = person.jabatan;
+        elements.modalStatus.textContent = person.status;
+        elements.modalBirthplace.textContent = person.tempatLahir;
+        elements.modalBirthdate.textContent = formatDate(person.tanggalLahir);
+
+        elements.modal.classList.add("active");
+        elements.modal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal() {
+        if (!elements.modal) return;
+
+        elements.modal.classList.remove("active");
+        elements.modal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+      }
+
+      function formatDate(value) {
+        if (!value || value === "-") return "-";
+
+        const safeValue =
+          typeof value === "string" && value.includes(" ")
+            ? value.replace(" ", "T")
+            : value;
+
+        const date = new Date(safeValue);
+        if (Number.isNaN(date.getTime())) return String(value);
+
+        const locale = getLang() === "en" ? "en-US" : "id-ID";
+
+        return new Intl.DateTimeFormat(locale, {
+          day: "2-digit",
+          month: "long",
+          year: "numeric"
+        }).format(date);
+      }
+
+      function escapeHtml(text) {
+        return String(text ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function updateProgress() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+
+        const width = height > 0 ? (scrollTop / height) * 100 : 0;
+        if (elements.pageProgress) elements.pageProgress.style.width = `${Math.min(100, Math.max(0, width))}%`;
+      }
+
+      function revealElements() {
+        const reveals = document.querySelectorAll(".reveal");
+
+        if (!("IntersectionObserver" in window)) {
+          reveals.forEach((element) => element.classList.add("visible"));
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12 }
+        );
+
+        reveals.forEach((element) => observer.observe(element));
+      }
+
+      document.querySelectorAll(".lang-btn").forEach((button) => {
+        button.addEventListener("click", () => setLang(button.dataset.lang));
+      });
+
+      elements.menuToggle.addEventListener("click", () => {
+        elements.siteNav.classList.toggle("active");
+      });
+
+      document.querySelectorAll(".site-nav a, .sidebar-nav a").forEach((link) => {
+        link.addEventListener("click", () => {
+          elements.siteNav.classList.remove("active");
+        });
+      });
+
+      elements.staffSearch.addEventListener("input", renderLecturers);
+
+      elements.modalClose.addEventListener("click", closeModal);
+
+      elements.modal.addEventListener("click", (event) => {
+        if (event.target === elements.modal) closeModal();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeModal();
+      });
+
+      window.addEventListener("scroll", updateProgress, { passive: true });
+
+      window.addEventListener("load", () => {
+        setLang(getLang());
+        updateProgress();
+        revealElements();
+        loadData();
+      });
+
+      const schema = document.createElement("script");
+      schema.type = "application/ld+json";
+      schema.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: "Pimpinan dan Dosen Fakultas Filsafat Teologi UASN",
+        description:
+          "Profil pimpinan dan dosen Fakultas Filsafat Teologi Universitas Advent Surya Nusantara.",
+        publisher: {
+          "@type": "Organization",
+          name: "Universitas Advent Surya Nusantara"
+        },
+        mainEntityOfPage: window.location.href
+      });
+      document.head.appendChild(schema);
+    </script>
   </body>
 </html>
+
+

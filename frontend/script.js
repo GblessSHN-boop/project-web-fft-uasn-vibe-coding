@@ -1147,3 +1147,22 @@ if (visiCard) {
 
   visiObserver.observe(visiCard);
 }
+
+/* EN | ID: Reading progress bar */
+document.addEventListener("DOMContentLoaded", function () {
+  const readingProgress = document.getElementById("readingProgress");
+
+  if (!readingProgress) return;
+
+  function updateReadingProgress() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+    readingProgress.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+  }
+
+  updateReadingProgress();
+  window.addEventListener("scroll", updateReadingProgress, { passive: true });
+  window.addEventListener("resize", updateReadingProgress);
+});
