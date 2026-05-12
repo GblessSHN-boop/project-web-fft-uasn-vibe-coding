@@ -112,6 +112,28 @@ const translations = {
     nav_requirements: "Requirements",
     nav_brochure: "E-Brochure",
     nav_testimonials: "Testimonials",
+    why_kicker: "WHY CHOOSE FFT",
+    why_title: "Why Choose the Faculty of Philosophy and Theology",
+    why_subtitle: "Universitas Advent Surya Nusantara",
+    why_desc: "Content not available yet.",
+    why_cta_admission: "View Admission Flow",
+    why_cta_faculty: "Meet the Faculty",
+    why_media_placeholder: "Content Not Available Yet",
+    why_media_badge_1: "Faith",
+    why_media_badge_2: "Character",
+    why_media_badge_3: "Service",
+    why_card_1_title: "Content Not Available Yet",
+    why_card_1_desc: "Content not available yet.",
+    why_card_2_title: "Content Not Available Yet",
+    why_card_2_desc: "Content not available yet.",
+    why_card_3_title: "Content Not Available Yet",
+    why_card_3_desc: "Content not available yet.",
+    why_card_4_title: "Content Not Available Yet",
+    why_card_4_desc: "Content not available yet.",
+    why_card_5_title: "Content Not Available Yet",
+    why_card_5_desc: "Content not available yet.",
+    why_card_6_title: "Content Not Available Yet",
+    why_card_6_desc: "Content not available yet.",
 
     view_more: "VIEW MORE",
 
@@ -264,6 +286,28 @@ about_desc_4:
     nav_requirements: "Persyaratan",
     nav_brochure: "E-Brochure",
     nav_testimonials: "Testimoni",
+    why_kicker: "ALASAN MEMILIH FFT",
+    why_title: "Alasan Memilih Fakultas Filsafat Teologia",
+    why_subtitle: "Universitas Advent Surya Nusantara",
+    why_desc: "Konten belum tersedia.",
+    why_cta_admission: "Lihat Alur Pendaftaran",
+    why_cta_faculty: "Kenali Dosen",
+    why_media_placeholder: "Konten Belum Tersedia",
+    why_media_badge_1: "Iman",
+    why_media_badge_2: "Karakter",
+    why_media_badge_3: "Pelayanan",
+    why_card_1_title: "Konten Belum Tersedia",
+    why_card_1_desc: "Konten belum tersedia.",
+    why_card_2_title: "Konten Belum Tersedia",
+    why_card_2_desc: "Konten belum tersedia.",
+    why_card_3_title: "Konten Belum Tersedia",
+    why_card_3_desc: "Konten belum tersedia.",
+    why_card_4_title: "Konten Belum Tersedia",
+    why_card_4_desc: "Konten belum tersedia.",
+    why_card_5_title: "Konten Belum Tersedia",
+    why_card_5_desc: "Konten belum tersedia.",
+    why_card_6_title: "Konten Belum Tersedia",
+    why_card_6_desc: "Konten belum tersedia.",
 
     view_more: "VIEW MORE",
 
@@ -1253,4 +1297,155 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+
+/* =========================================================
+   EN | ID: FFT WHY CHOOSE REVEAL FINAL
+   Animasi ringan untuk section Why Choose FFT
+========================================================= */
+document.addEventListener("DOMContentLoaded", function () {
+  const revealItems = document.querySelectorAll("[data-why-reveal]");
+
+  if (!revealItems.length) return;
+
+  if (!("IntersectionObserver" in window)) {
+    revealItems.forEach(function (item) {
+      item.classList.add("is-visible");
+    });
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.16
+    }
+  );
+
+  revealItems.forEach(function (item) {
+    observer.observe(item);
+  });
+});
+
+/* FFT WHY CHOOSE I18N PATCH START */
+const FFT_WHY_CHOOSE_I18N = {
+  en: {
+    why_kicker: "WHY CHOOSE FFT",
+    why_title: "Why Choose the Faculty of Philosophy and Theology",
+    why_subtitle: "Universitas Advent Surya Nusantara",
+    why_desc: "Content not available yet.",
+    why_media_placeholder: "Content Not Available Yet",
+    why_card_1_title: "Content Not Available Yet",
+    why_card_1_desc: "Content not available yet.",
+    why_card_2_title: "Content Not Available Yet",
+    why_card_2_desc: "Content not available yet.",
+    why_card_3_title: "Content Not Available Yet",
+    why_card_3_desc: "Content not available yet.",
+    why_card_4_title: "Content Not Available Yet",
+    why_card_4_desc: "Content not available yet.",
+    why_card_5_title: "Content Not Available Yet",
+    why_card_5_desc: "Content not available yet.",
+    why_card_6_title: "Content Not Available Yet",
+    why_card_6_desc: "Content not available yet."
+  },
+  id: {
+    why_kicker: "ALASAN MEMILIH FFT",
+    why_title: "Alasan Memilih Fakultas Filsafat Teologia",
+    why_subtitle: "Universitas Advent Surya Nusantara",
+    why_desc: "Konten belum tersedia.",
+    why_media_placeholder: "Konten Belum Tersedia",
+    why_card_1_title: "Konten Belum Tersedia",
+    why_card_1_desc: "Konten belum tersedia.",
+    why_card_2_title: "Konten Belum Tersedia",
+    why_card_2_desc: "Konten belum tersedia.",
+    why_card_3_title: "Konten Belum Tersedia",
+    why_card_3_desc: "Konten belum tersedia.",
+    why_card_4_title: "Konten Belum Tersedia",
+    why_card_4_desc: "Konten belum tersedia.",
+    why_card_5_title: "Konten Belum Tersedia",
+    why_card_5_desc: "Konten belum tersedia.",
+    why_card_6_title: "Konten Belum Tersedia",
+    why_card_6_desc: "Konten belum tersedia."
+  }
+};
+
+(function () {
+  function detectLanguage() {
+    var active = document.querySelector("[data-lang].active, [data-language].active, .lang-btn.active, .language-btn.active");
+    var activeValue = "";
+
+    if (active) {
+      activeValue = (
+        active.getAttribute("data-lang") ||
+        active.getAttribute("data-language") ||
+        active.textContent ||
+        ""
+      ).trim().toLowerCase();
+    }
+
+    var storedValue = (
+      localStorage.getItem("lang") ||
+      localStorage.getItem("language") ||
+      localStorage.getItem("selectedLanguage") ||
+      ""
+    ).trim().toLowerCase();
+
+    var htmlValue = (document.documentElement.getAttribute("lang") || "").trim().toLowerCase();
+
+    var candidates = [activeValue, storedValue, htmlValue];
+
+    for (var index = 0; index < candidates.length; index += 1) {
+      var value = candidates[index];
+
+      if (value === "id" || value === "indonesia" || value === "indonesian" || value.indexOf("id") === 0) {
+        return "id";
+      }
+
+      if (value === "en" || value === "english" || value.indexOf("en") === 0) {
+        return "en";
+      }
+    }
+
+    return "en";
+  }
+
+  function applyWhyChooseLanguage() {
+    var lang = detectLanguage();
+    var dictionary = FFT_WHY_CHOOSE_I18N[lang] || FFT_WHY_CHOOSE_I18N.en;
+
+    document.querySelectorAll("#why-choose [data-i18n]").forEach(function (element) {
+      var key = element.getAttribute("data-i18n");
+
+      if (dictionary[key]) {
+        element.textContent = dictionary[key];
+      }
+    });
+  }
+
+  window.FFT_WHY_CHOOSE_I18N = FFT_WHY_CHOOSE_I18N;
+  window.applyWhyChooseLanguage = applyWhyChooseLanguage;
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", applyWhyChooseLanguage);
+  } else {
+    applyWhyChooseLanguage();
+  }
+
+  document.addEventListener("click", function (event) {
+    var languageButton = event.target.closest("[data-lang], [data-language], .lang-btn, .language-btn, .translate-btn, .language-toggle, .language-option");
+
+    if (languageButton) {
+      window.setTimeout(applyWhyChooseLanguage, 0);
+      window.setTimeout(applyWhyChooseLanguage, 120);
+    }
+  }, true);
+}());
+/* FFT WHY CHOOSE I18N PATCH END */
 
