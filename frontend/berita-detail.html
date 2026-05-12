@@ -774,15 +774,71 @@
             </svg>
           </button>
 
-          <nav class="sidebar-nav" aria-label="Navigasi utama">
-            <ul>
-              <li><a href="indexfft.html#program-studi" data-i18n="nav_program">Program Studi</a></li>
-              <li><a href="indexfft.html#latar-belakang" data-i18n="nav_background">Latar Belakang</a></li>
-              <li><a href="indexfft.html#visi-misi" data-i18n="nav_vision">Visi &amp; Misi</a></li>
-              <li><a href="indexfft.html#organisasi" data-i18n="nav_organization">Organisasi</a></li>
-              <li><a href="pimpinan-dosen.html" data-i18n="nav_leaders">Dosen</a></li>
-              <li><a href="indexfft.html#berita" data-i18n="nav_news">Berita</a></li>
-              <li><a href="#kontak" data-i18n="nav_contact">Kontak</a></li>
+                    <nav class="sidebar-nav" aria-label="Navigasi utama">
+            <ul class="nav-root">
+              <li class="nav-item">
+                <a href="indexfft.html#program-studi" data-i18n="nav_program">Program Studi</a>
+              </li>
+
+              <li class="nav-item nav-dropdown">
+                <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+                  <span data-i18n="nav_about">Tentang FFT</span>
+                  <span class="nav-chevron" aria-hidden="true">▾</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="indexfft.html#latar-belakang" data-i18n="nav_background">Latar Belakang</a></li>
+                  <li><a href="indexfft.html#visi-misi" data-i18n="nav_vision">Visi &amp; Misi</a></li>
+                  <li><a href="indexfft.html#organisasi" data-i18n="nav_organization">Organisasi</a></li>
+                  <li><a href="indexfft.html#why-choose" data-i18n="nav_why_choose">Why Choose FFT</a></li>
+                  <li><a href="pimpinan-dosen.html" data-i18n="nav_leaders">Pimpinan &amp; Dosen</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item nav-dropdown">
+                <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+                  <span data-i18n="nav_academic">Akademik</span>
+                  <span class="nav-chevron" aria-hidden="true">▾</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="quick-facts.html#quick-facts" data-i18n="nav_quick_facts">Quick Facts</a></li>
+                  <li><a href="quick-facts.html#prestasi" data-i18n="nav_student_achievement">Prestasi Mahasiswa</a></li>
+                  <li><a href="quick-facts.html#top-leader" data-i18n="nav_top_leader">Top Leader Mahasiswa</a></li>
+                  <li><a href="quick-facts.html#lulusan" data-i18n="nav_graduates">Lulusan FFT</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item nav-dropdown">
+                <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+                  <span data-i18n="nav_admission">Pendaftaran</span>
+                  <span class="nav-chevron" aria-hidden="true">▾</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="pendaftaran.html#alur" data-i18n="nav_admission_flow">Alur Pendaftaran</a></li>
+                  <li><a href="pendaftaran.html#offline" data-i18n="nav_offline_simulation">Simulasi Offline</a></li>
+                  <li><a href="pendaftaran.html#persyaratan" data-i18n="nav_requirements">Persyaratan</a></li>
+                  <li><a href="e-brochure.html" data-i18n="nav_brochure">E-Brochure</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item nav-dropdown">
+                <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+                  <span data-i18n="nav_students">Mahasiswa</span>
+                  <span class="nav-chevron" aria-hidden="true">▾</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="indexfft.html#testimoni" data-i18n="nav_testimonials">Testimoni</a></li>
+                  <li><a href="quick-facts.html#top-leader" data-i18n="nav_top_leader_short">Top Leader</a></li>
+                  <li><a href="quick-facts.html#prestasi" data-i18n="nav_student_achievement">Prestasi Mahasiswa</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item">
+                <a href="indexfft.html#berita" data-i18n="nav_news">Berita</a>
+              </li>
+
+              <li class="nav-item">
+                <a href="#kontak" data-i18n="nav_contact">Kontak</a>
+              </li>
             </ul>
           </nav>
         </div>
@@ -1658,3 +1714,4 @@
     </script>
   </body>
 </html>
+
