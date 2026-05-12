@@ -5174,3 +5174,357 @@ footer.fft-footer .footer-orbit-canvas,
   width: 24px !important;
   height: 24px !important;
 }
+
+/* =========================================================
+   FFT NAV DROPDOWN FINAL
+   Dropdown resmi untuk navigasi fitur baru
+========================================================= */
+
+.sidebar-nav {
+  position: relative;
+  z-index: 80;
+}
+
+.sidebar-nav > .nav-root,
+.sidebar-nav > ul.nav-root {
+  list-style: none !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: clamp(14px, 1.5vw, 24px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.sidebar-nav .nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-nav a,
+.nav-dropdown-toggle {
+  position: relative;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  background: transparent;
+  color: #111111;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sidebar-nav a::after,
+.nav-dropdown-toggle::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 4px;
+  width: 0;
+  height: 2px;
+  background: #5f0e0e;
+  transition: width 0.2s ease;
+}
+
+.sidebar-nav a:hover::after,
+.sidebar-nav a.active::after,
+.nav-dropdown:hover .nav-dropdown-toggle::after,
+.nav-dropdown.is-open .nav-dropdown-toggle::after {
+  width: 100%;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active,
+.nav-dropdown-toggle:hover,
+.nav-dropdown.is-open .nav-dropdown-toggle {
+  color: #5f0e0e;
+}
+
+.nav-chevron {
+  width: 12px;
+  height: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.nav-dropdown:hover .nav-chevron,
+.nav-dropdown.is-open .nav-chevron {
+  transform: rotate(180deg);
+}
+
+.sidebar-nav .dropdown-menu {
+  position: absolute !important;
+  top: calc(100% + 12px) !important;
+  left: 50% !important;
+  min-width: 250px !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 10px !important;
+  list-style: none !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(95, 14, 14, 0.12) !important;
+  border-radius: 4px !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18) !important;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 10px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+}
+
+.sidebar-nav .dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  background: #ffffff;
+  border-left: 1px solid rgba(95, 14, 14, 0.12);
+  border-top: 1px solid rgba(95, 14, 14, 0.12);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.nav-dropdown:hover > .dropdown-menu,
+.nav-dropdown:focus-within > .dropdown-menu,
+.nav-dropdown.is-open > .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.sidebar-nav .dropdown-menu li {
+  display: block;
+}
+
+.sidebar-nav .dropdown-menu a {
+  width: 100%;
+  min-height: auto;
+  display: flex;
+  padding: 12px 13px;
+  border-radius: 3px;
+  color: #242424;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.sidebar-nav .dropdown-menu a::after {
+  display: none;
+}
+
+.sidebar-nav .dropdown-menu a:hover,
+.sidebar-nav .dropdown-menu a.active {
+  background: rgba(95, 14, 14, 0.08);
+  color: #5f0e0e;
+}
+
+@media (max-width: 1100px) {
+  .sidebar-nav > .nav-root,
+  .sidebar-nav > ul.nav-root {
+    gap: 13px !important;
+  }
+
+  .sidebar-nav a,
+  .nav-dropdown-toggle {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar-nav > .nav-root,
+  .sidebar-nav > ul.nav-root {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 0 26px 30px !important;
+  }
+
+  .sidebar-nav .nav-item {
+    display: block;
+    width: 100%;
+  }
+
+  .sidebar-nav a,
+  .nav-dropdown-toggle {
+    width: 100%;
+    min-height: 42px;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+
+  .sidebar-nav .dropdown-menu {
+    position: static !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    display: none !important;
+    margin: 2px 0 8px !important;
+    padding: 6px 0 6px 12px !important;
+    background: rgba(95, 14, 14, 0.045) !important;
+    border: 0 !important;
+    border-left: 2px solid rgba(95, 14, 14, 0.35) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .sidebar-nav .dropdown-menu::before {
+    display: none;
+  }
+
+  .nav-dropdown.is-open > .dropdown-menu {
+    display: block !important;
+  }
+
+  .sidebar-nav .dropdown-menu a {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
+
+/* =========================================================
+   FFT NAV DROPDOWN SOLID WHITE FIX
+   Membuat submenu navbar jelas, putih, dan tidak transparan
+========================================================= */
+
+.site-header,
+.site-header .container {
+  position: relative;
+  z-index: 200;
+}
+
+.sidebar-nav {
+  position: relative;
+  z-index: 220;
+}
+
+.sidebar-nav .nav-dropdown {
+  position: relative;
+}
+
+.sidebar-nav .nav-dropdown > .dropdown-menu {
+  position: absolute !important;
+  top: calc(100% + 10px) !important;
+  left: 50% !important;
+  width: max-content !important;
+  min-width: 250px !important;
+  max-width: 320px !important;
+  display: block !important;
+  flex-direction: initial !important;
+  margin: 0 !important;
+  padding: 10px !important;
+  list-style: none !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid rgba(95, 14, 14, 0.18) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22) !important;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 10px);
+  z-index: 9999 !important;
+  overflow: visible !important;
+}
+
+.sidebar-nav .nav-dropdown > .dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  background: #ffffff !important;
+  border-left: 1px solid rgba(95, 14, 14, 0.18);
+  border-top: 1px solid rgba(95, 14, 14, 0.18);
+  transform: translateX(-50%) rotate(45deg);
+  z-index: -1;
+}
+
+.sidebar-nav .nav-dropdown:hover > .dropdown-menu,
+.sidebar-nav .nav-dropdown:focus-within > .dropdown-menu,
+.sidebar-nav .nav-dropdown.is-open > .dropdown-menu {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translate(-50%, 0) !important;
+}
+
+.sidebar-nav .nav-dropdown > .dropdown-menu > li {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.sidebar-nav .nav-dropdown > .dropdown-menu > li > a {
+  width: 100% !important;
+  min-height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 12px 14px !important;
+  border-radius: 4px !important;
+  background: transparent !important;
+  color: #161616 !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+}
+
+.sidebar-nav .nav-dropdown > .dropdown-menu > li > a:hover,
+.sidebar-nav .nav-dropdown > .dropdown-menu > li > a.active {
+  background: rgba(95, 14, 14, 0.09) !important;
+  color: #5f0e0e !important;
+}
+
+.sidebar-nav .nav-dropdown > .dropdown-menu > li > a::after {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .sidebar-nav .nav-dropdown > .dropdown-menu {
+    position: static !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    display: none !important;
+    margin: 4px 0 10px !important;
+    padding: 8px !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(95, 14, 14, 0.12) !important;
+    border-left: 3px solid #5f0e0e !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+
+  .sidebar-nav .nav-dropdown > .dropdown-menu::before {
+    display: none !important;
+  }
+
+  .sidebar-nav .nav-dropdown.is-open > .dropdown-menu {
+    display: block !important;
+  }
+
+  .sidebar-nav .nav-dropdown > .dropdown-menu > li > a {
+    white-space: normal !important;
+  }
+}

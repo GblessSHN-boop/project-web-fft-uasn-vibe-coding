@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+﻿document.addEventListener("DOMContentLoaded", function () {
   console.log("JS TERLOAD");
 
   /* ===================== */
@@ -97,6 +97,21 @@ const translations = {
     nav_leaders: "Faculty",
     nav_news: "News",
     nav_contact: "Contact",
+    nav_about: "About FFT",
+    nav_academic: "Academic",
+    nav_admission: "Admission",
+    nav_students: "Students",
+    nav_why_choose: "Why Choose FFT",
+    nav_quick_facts: "Quick Facts",
+    nav_student_achievement: "Student Achievement",
+    nav_top_leader: "Student Top Leader",
+    nav_top_leader_short: "Top Leader",
+    nav_graduates: "FFT Graduates",
+    nav_admission_flow: "Admission Flow",
+    nav_offline_simulation: "Offline Simulation",
+    nav_requirements: "Requirements",
+    nav_brochure: "E-Brochure",
+    nav_testimonials: "Testimonials",
 
     view_more: "VIEW MORE",
 
@@ -234,6 +249,21 @@ about_desc_4:
     nav_leaders: "Dosen",
     nav_news: "Berita",
     nav_contact: "Kontak",
+    nav_about: "Tentang FFT",
+    nav_academic: "Akademik",
+    nav_admission: "Pendaftaran",
+    nav_students: "Mahasiswa",
+    nav_why_choose: "Why Choose FFT",
+    nav_quick_facts: "Quick Facts",
+    nav_student_achievement: "Prestasi Mahasiswa",
+    nav_top_leader: "Top Leader Mahasiswa",
+    nav_top_leader_short: "Top Leader",
+    nav_graduates: "Lulusan FFT",
+    nav_admission_flow: "Alur Pendaftaran",
+    nav_offline_simulation: "Simulasi Offline",
+    nav_requirements: "Persyaratan",
+    nav_brochure: "E-Brochure",
+    nav_testimonials: "Testimoni",
 
     view_more: "VIEW MORE",
 
@@ -1166,3 +1196,61 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("scroll", updateReadingProgress, { passive: true });
   window.addEventListener("resize", updateReadingProgress);
 });
+
+/* =========================================================
+   EN | ID: FFT NAV DROPDOWN LOGIC FINAL
+   Logic dropdown desktop dan mobile untuk navbar utama
+========================================================= */
+document.addEventListener("DOMContentLoaded", function () {
+  const dropdowns = document.querySelectorAll(".nav-dropdown");
+
+  if (!dropdowns.length) return;
+
+  function closeDropdowns(exceptItem) {
+    dropdowns.forEach(function (item) {
+      if (item === exceptItem) return;
+
+      item.classList.remove("is-open");
+
+      const button = item.querySelector(".nav-dropdown-toggle");
+      if (button) {
+        button.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
+  dropdowns.forEach(function (item) {
+    const button = item.querySelector(".nav-dropdown-toggle");
+
+    if (!button) return;
+
+    button.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const willOpen = !item.classList.contains("is-open");
+
+      closeDropdowns(item);
+
+      item.classList.toggle("is-open", willOpen);
+      button.setAttribute("aria-expanded", String(willOpen));
+    });
+  });
+
+  document.addEventListener("click", function () {
+    closeDropdowns();
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeDropdowns();
+    }
+  });
+
+  document.querySelectorAll(".dropdown-menu a").forEach(function (link) {
+    link.addEventListener("click", function () {
+      closeDropdowns();
+    });
+  });
+});
+
