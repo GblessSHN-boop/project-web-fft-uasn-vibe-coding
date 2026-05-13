@@ -1,4 +1,4 @@
-body {
+﻿body {
   background: #000000;
   overflow-x: hidden;
 }
@@ -6916,3 +6916,101 @@ footer.fft-footer .footer-orbit-canvas,
   }
 }
 /* FFT WHY CHOOSE FIT ONE PAGE END */
+ 
+/* FFT BRAND HOME LINK FIX */
+.brand-wrapper {
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-wrapper:visited {
+  color: inherit;
+}
+
+.brand-wrapper:hover {
+  opacity: 0.94;
+}
+/* FFT FLOATING LANGUAGE SWITCHER START */
+.fft-floating-language {
+  position: fixed;
+  right: 26px;
+  bottom: 24px;
+  z-index: 99999;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 15px;
+  border: 1px solid rgba(67, 8, 8, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #430808;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  box-shadow: 0 18px 45px rgba(67, 8, 8, 0.14);
+}
+
+.fft-floating-language-btn {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: rgba(67, 8, 8, 0.42);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+
+.fft-floating-language-btn:hover {
+  color: #430808;
+  transform: translateY(-1px);
+}
+
+.fft-floating-language-btn.is-active {
+  color: #430808;
+}
+
+.fft-floating-language-separator {
+  color: rgba(67, 8, 8, 0.32);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Hide old header language control, but keep it in DOM for old JS compatibility */
+.site-header .language-switcher,
+.site-header .language-toggle,
+.site-header .language-pill,
+.site-header .lang-switch,
+.site-header .lang-toggle,
+.site-header .lang-selector,
+.site-header [class*="language"],
+.site-header [class*="lang"] {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .fft-floating-language {
+    right: 16px;
+    bottom: 16px;
+    padding: 9px 12px;
+  }
+
+  .fft-floating-language-btn,
+  .fft-floating-language-separator {
+    font-size: 12px;
+  }
+}
+/* FFT FLOATING LANGUAGE SWITCHER END */
+/* FFT FLOATING LANGUAGE CLICK FIX */
+.fft-floating-language {
+  pointer-events: auto !important;
+}
+
+.fft-floating-language-btn {
+  pointer-events: auto !important;
+  user-select: none;
+}
+

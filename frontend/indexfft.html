@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,6 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;600;700&display=swap"
       rel="stylesheet" />
     <script src="script.js" defer></script>
+    <script src="fft-language-switcher.js" defer></script>
+    <script src="site-nav-fix.js" defer></script>
   </head>
 
   <body>
@@ -40,7 +42,7 @@
         </div>
       </div>
       <div class="container">
-        <div class="brand-wrapper">
+        <a href="indexfft.html" class="brand-wrapper" aria-label="Kembali ke halaman utama FFT">
           <div class="logo">
             <img src="fftkb.png" alt="FILSAFAT TEOLOGI" />
           </div>
@@ -50,7 +52,7 @@
               UNIVERSITAS ADVENT SURYA NUSANTARA
             </p>
           </div>
-        </div>
+        </a>
         <div>
           <button class="menu-toggle">☰</button>
                     <nav class="sidebar-nav" aria-label="Navigasi utama">
@@ -79,10 +81,8 @@
                   <span class="nav-chevron" aria-hidden="true">▾</span>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a href="quick-facts.html#quick-facts" data-i18n="nav_quick_facts">Quick Facts</a></li>
-                  <li><a href="quick-facts.html#prestasi" data-i18n="nav_student_achievement">Prestasi Mahasiswa</a></li>
-                  <li><a href="quick-facts.html#top-leader" data-i18n="nav_top_leader">Top Leader Mahasiswa</a></li>
-                  <li><a href="quick-facts.html#lulusan" data-i18n="nav_graduates">Lulusan FFT</a></li>
+                  <li><a href="kurikulum.html" data-i18n="nav_curriculum">Kurikulum</a></li>
+                  <li><a href="kalender-akademik.html" data-i18n="nav_academic_calendar">Kalender Akademik</a></li>
                 </ul>
               </li>
 
@@ -105,9 +105,9 @@
                   <span class="nav-chevron" aria-hidden="true">▾</span>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a href="indexfft.html#testimoni" data-i18n="nav_testimonials">Testimoni</a></li>
-                  <li><a href="quick-facts.html#top-leader" data-i18n="nav_top_leader_short">Top Leader</a></li>
-                  <li><a href="quick-facts.html#prestasi" data-i18n="nav_student_achievement">Prestasi Mahasiswa</a></li>
+<li><a href="papan-peringkat.html" data-i18n="nav_ranking_board">Papan Peringkat</a></li>
+                  <li><a href="testimoni.html" data-i18n="nav_testimonials">Testimoni</a></li>
+                  <li><a href="aturan-akademik.html" data-i18n="nav_academic_rules">Aturan Akademik</a></li>
                 </ul>
               </li>
 
@@ -837,7 +837,21 @@
       </div>
       <div class="cursor-glow"></div>
     </div>
-  </body>
+    <div class="fft-floating-language" aria-label="Language switcher">
+    <button type="button" class="fft-floating-language-btn" data-fft-lang="en" aria-pressed="false">EN</button>
+    <span class="fft-floating-language-separator">|</span>
+    <button type="button" class="fft-floating-language-btn is-active" data-fft-lang="id" aria-pressed="true">ID</button>
+  </div>
+</body>
 
   
 </html>
+
+
+
+
+
+
+
+
+

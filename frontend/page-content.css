@@ -1,0 +1,228 @@
+﻿.page-content {
+  min-height: calc(100vh - 150px);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.98), rgba(252,248,247,0.98)),
+    repeating-linear-gradient(135deg, rgba(67,8,8,0.024) 0 1px, transparent 1px 34px);
+  color: #19191f;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+}
+
+.page-content-hero {
+  padding: clamp(72px, 7vw, 108px) 0 clamp(42px, 5vw, 72px);
+  border-bottom: 1px solid rgba(67, 8, 8, 0.10);
+}
+
+.page-content-shell {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.page-content-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 18px;
+  color: #430808;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.page-content-kicker::before {
+  content: "";
+  width: 42px;
+  height: 3px;
+  background: #430808;
+}
+
+.page-content h1 {
+  max-width: 900px;
+  margin: 0;
+  color: #202026;
+  font-size: clamp(44px, 6vw, 82px);
+  line-height: 1.02;
+  font-weight: 900;
+  letter-spacing: -0.055em;
+}
+
+.page-content-lead {
+  max-width: 760px;
+  margin: 22px 0 0;
+  color: rgba(32, 32, 38, 0.70);
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+.page-content-body {
+  padding: clamp(44px, 6vw, 82px) 0;
+}
+
+.page-content-grid {
+  display: block;
+}
+
+.page-content-sidebar {
+  padding: 28px;
+  background: #430808;
+  color: #ffffff;
+  box-shadow: 0 24px 52px rgba(67, 8, 8, 0.18);
+}
+
+.page-content-sidebar h2 {
+  margin: 0 0 18px;
+  color: #ffffff;
+  font-size: 28px;
+  line-height: 1.12;
+  font-weight: 900;
+}
+
+.page-content-sidebar a {
+  display: block;
+  padding: 15px 0;
+  border-top: 1px solid rgba(255,255,255,0.16);
+  color: rgba(255,255,255,0.86);
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.page-content-sidebar a:hover,
+.page-content-sidebar a.is-active {
+  color: #ffffff;
+}
+
+.page-content-panel {
+  border: 1px solid rgba(67, 8, 8, 0.14);
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 24px 52px rgba(67, 8, 8, 0.08);
+}
+
+.page-content-panel-header {
+  padding: clamp(28px, 4vw, 46px);
+  border-bottom: 1px solid rgba(67, 8, 8, 0.12);
+}
+
+.page-content-panel-header h2 {
+  margin: 0;
+  color: #430808;
+  font-size: clamp(30px, 4vw, 54px);
+  line-height: 1.08;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+}
+
+.page-content-panel-header p {
+  max-width: 780px;
+  margin: 14px 0 0;
+  color: rgba(32,32,38,0.68);
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.maintenance-box {
+  margin: clamp(28px, 4vw, 46px);
+  padding: clamp(30px, 5vw, 58px);
+  border: 1px dashed rgba(67, 8, 8, 0.28);
+  background:
+    linear-gradient(135deg, rgba(67,8,8,0.045), rgba(255,255,255,0.84));
+}
+
+.maintenance-box strong {
+  display: block;
+  color: #430808;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+}
+
+.maintenance-box p {
+  max-width: 760px;
+  margin: 14px 0 0;
+  color: rgba(32,32,38,0.70);
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.curriculum-preview {
+  margin: 0 clamp(28px, 4vw, 46px) clamp(28px, 4vw, 46px);
+  border-top: 1px solid rgba(67, 8, 8, 0.12);
+}
+
+.curriculum-semester {
+  border-bottom: 1px solid rgba(67, 8, 8, 0.12);
+}
+
+.curriculum-semester button {
+  width: 100%;
+  min-height: 64px;
+  border: 0;
+  background: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  color: #430808;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.curriculum-semester span {
+  width: 26px;
+  height: 26px;
+  border: 2px solid #202026;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  font-size: 14px;
+  color: #202026;
+}
+
+.curriculum-table {
+  display: none;
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+}
+
+.curriculum-semester.is-open .curriculum-table {
+  display: table;
+}
+
+.curriculum-table th {
+  background: #430808;
+  color: #ffffff;
+  text-align: left;
+  padding: 16px 18px;
+  font-weight: 800;
+}
+
+.curriculum-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(67, 8, 8, 0.10);
+  color: #202026;
+}
+
+@media (max-width: 900px) {
+  .page-content-grid {
+    display: block;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-content-shell {
+    width: min(100% - 32px, 1180px);
+  }
+
+  .page-content h1 {
+    font-size: clamp(36px, 12vw, 52px);
+  }
+}
+
