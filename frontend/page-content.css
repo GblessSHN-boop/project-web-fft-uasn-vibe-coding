@@ -1,4 +1,4 @@
-﻿.page-content {
+.page-content {
   min-height: calc(100vh - 150px);
   background:
     linear-gradient(180deg, rgba(255,255,255,0.98), rgba(252,248,247,0.98)),
@@ -226,3 +226,635 @@
   }
 }
 
+/* FFT CURRICULUM PAGE START */
+.curriculum-page {
+  background: #ffffff;
+}
+
+.curriculum-hero {
+  padding: clamp(42px, 6vw, 86px) clamp(24px, 5vw, 72px);
+  border-bottom: 1px solid rgba(67, 8, 8, 0.12);
+  background:
+    radial-gradient(circle at top right, rgba(67, 8, 8, 0.08), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #fbf7f6 100%);
+}
+
+.curriculum-hero-kicker {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  color: #640b0b;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.curriculum-hero-kicker span {
+  width: 54px;
+  height: 4px;
+  background: #640b0b;
+}
+
+.curriculum-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: end;
+}
+
+.curriculum-hero h1 {
+  margin: 0;
+  max-width: 980px;
+  color: #19191f;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: clamp(48px, 7vw, 92px);
+  line-height: 0.92;
+  letter-spacing: -0.07em;
+}
+
+.curriculum-hero p {
+  margin: 24px 0 0;
+  max-width: 860px;
+  color: rgba(32, 32, 38, 0.72);
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: clamp(16px, 1.6vw, 21px);
+  line-height: 1.75;
+}
+
+.curriculum-hero-note {
+  padding: 28px;
+  border-left: 4px solid #640b0b;
+  background: rgba(255,255,255,0.78);
+  box-shadow: 0 24px 70px rgba(67, 8, 8, 0.08);
+}
+
+.curriculum-hero-note strong {
+  display: block;
+  color: #640b0b;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.curriculum-hero-note p {
+  margin: 14px 0 0;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.curriculum-shell {
+  padding: clamp(34px, 5vw, 72px) clamp(24px, 5vw, 72px);
+}
+
+.curriculum-section-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 26px;
+}
+
+.curriculum-section-head p {
+  margin: 0 0 10px;
+  color: #640b0b;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.curriculum-section-head h2 {
+  margin: 0;
+  color: #19191f;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: clamp(32px, 4vw, 58px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.curriculum-section-head span {
+  color: #640b0b;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.curriculum-semester-list {
+  display: grid;
+  gap: 14px;
+}
+
+.curriculum-semester-card {
+  border: 1px solid rgba(67, 8, 8, 0.15);
+  background: #ffffff;
+  box-shadow: 0 18px 46px rgba(67, 8, 8, 0.06);
+}
+
+.curriculum-semester-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px 26px;
+  border: 0;
+  background: #ffffff;
+  color: #640b0b;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  text-align: left;
+  cursor: pointer;
+}
+
+.curriculum-semester-toggle[aria-expanded="true"] {
+  background: #640b0b;
+  color: #ffffff;
+}
+
+.curriculum-toggle-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.curriculum-semester-panel {
+  display: none;
+  padding: 0 26px 26px;
+  background: #ffffff;
+}
+
+.curriculum-semester-panel[data-open="true"] {
+  display: block;
+}
+
+.curriculum-table-wrap {
+  overflow-x: auto;
+  border: 1px solid rgba(67, 8, 8, 0.12);
+}
+
+.curriculum-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+}
+
+.curriculum-table th {
+  padding: 18px 20px;
+  background: #640b0b;
+  color: #ffffff;
+  font-weight: 900;
+  text-align: left;
+}
+
+.curriculum-table th:last-child,
+.curriculum-table td:last-child {
+  width: 110px;
+  text-align: center;
+}
+
+.curriculum-table td {
+  padding: 17px 20px;
+  border-bottom: 1px solid rgba(67, 8, 8, 0.1);
+  color: #303038;
+}
+
+.curriculum-table tr:nth-child(even) td {
+  background: #f8f2f1;
+}
+
+.curriculum-table tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (max-width: 860px) {
+  .curriculum-hero-grid,
+  .curriculum-section-head {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .curriculum-section-head {
+    align-items: start;
+  }
+
+  .curriculum-hero h1 {
+    font-size: clamp(42px, 13vw, 68px);
+  }
+}
+/* FFT CURRICULUM PAGE END */
+
+/* FFT ACADEMIC CALENDAR PAGE START */
+.academic-calendar-page {
+  background: #ffffff;
+}
+
+.academic-calendar-hero {
+  padding: clamp(42px, 6vw, 88px) clamp(24px, 5vw, 72px);
+  border-bottom: 1px solid rgba(67, 8, 8, 0.12);
+  background:
+    radial-gradient(circle at 88% 12%, rgba(100, 11, 11, 0.1), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #fbf7f6 100%);
+}
+
+.academic-calendar-kicker,
+.academic-calendar-head > div > p,
+.academic-calendar-subhead p {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 18px;
+  color: #640b0b;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.academic-calendar-kicker span {
+  width: 54px;
+  height: 4px;
+  background: #640b0b;
+}
+
+.academic-calendar-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 390px);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: end;
+}
+
+.academic-calendar-hero h1 {
+  margin: 0;
+  max-width: 980px;
+  color: #19191f;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: clamp(52px, 7vw, 96px);
+  line-height: 0.92;
+  letter-spacing: -0.07em;
+}
+
+.academic-calendar-hero p {
+  margin: 24px 0 0;
+  max-width: 860px;
+  color: rgba(32, 32, 38, 0.72);
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: clamp(16px, 1.6vw, 21px);
+  line-height: 1.75;
+}
+
+.academic-calendar-hero-card {
+  padding: 30px;
+  border-left: 5px solid #640b0b;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(67, 8, 8, 0.1);
+}
+
+.academic-calendar-hero-card p {
+  margin: 0 0 12px;
+  color: #640b0b;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.academic-calendar-hero-card strong {
+  display: block;
+  color: #19191f;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 46px;
+  line-height: 1;
+}
+
+.academic-calendar-hero-card span {
+  display: block;
+  margin-top: 16px;
+  color: rgba(32, 32, 38, 0.72);
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  line-height: 1.65;
+}
+
+.academic-calendar-workspace {
+  padding: clamp(34px, 5vw, 72px) clamp(24px, 5vw, 72px);
+}
+
+.academic-calendar-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 520px);
+  gap: 28px;
+  align-items: end;
+  margin-bottom: 24px;
+}
+
+.academic-calendar-head h2,
+.academic-calendar-subhead h3 {
+  margin: 0;
+  color: #19191f;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.academic-calendar-head h2 {
+  font-size: clamp(32px, 4vw, 58px);
+}
+
+.academic-calendar-subhead h3 {
+  font-size: 26px;
+}
+
+.academic-calendar-controls {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.academic-calendar-controls label {
+  display: grid;
+  gap: 8px;
+  color: #640b0b;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.academic-calendar-controls select,
+.academic-calendar-controls input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 15px;
+  border: 1px solid rgba(100, 11, 11, 0.18);
+  background: #ffffff;
+  color: #19191f;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  outline: none;
+}
+
+.academic-calendar-controls input:focus,
+.academic-calendar-controls select:focus {
+  border-color: #640b0b;
+  box-shadow: 0 0 0 3px rgba(100, 11, 11, 0.1);
+}
+
+.academic-calendar-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 22px;
+  padding: 18px;
+  background: #080808;
+}
+
+.academic-calendar-tabs button {
+  min-height: 46px;
+  padding: 0 22px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.06);
+  color: #ffffff;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.academic-calendar-tabs button.is-active {
+  background: #ffffff;
+  color: #640b0b;
+  border-color: #ffffff;
+}
+
+.academic-calendar-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.academic-calendar-stats article {
+  padding: 22px;
+  border: 1px solid rgba(67, 8, 8, 0.12);
+  background: #ffffff;
+  box-shadow: 0 18px 42px rgba(67, 8, 8, 0.055);
+}
+
+.academic-calendar-stats span {
+  display: block;
+  color: rgba(32, 32, 38, 0.62);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.academic-calendar-stats strong {
+  display: block;
+  margin-top: 10px;
+  color: #640b0b;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.academic-calendar-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.35fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.academic-calendar-timeline,
+.academic-calendar-table-section {
+  border: 1px solid rgba(67, 8, 8, 0.12);
+  background: #ffffff;
+  box-shadow: 0 18px 46px rgba(67, 8, 8, 0.06);
+}
+
+.academic-calendar-subhead {
+  padding: 24px 26px;
+  border-bottom: 1px solid rgba(67, 8, 8, 0.1);
+}
+
+.academic-calendar-subhead p {
+  margin-bottom: 8px;
+}
+
+.academic-calendar-timeline-list {
+  display: grid;
+  gap: 0;
+}
+
+.calendar-event-card {
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr);
+  gap: 18px;
+  padding: 22px 26px;
+  border-bottom: 1px solid rgba(67, 8, 8, 0.09);
+}
+
+.calendar-event-card:last-child {
+  border-bottom: 0;
+}
+
+.calendar-event-date {
+  display: grid;
+  place-items: center;
+  min-height: 70px;
+  background: #640b0b;
+  color: #ffffff;
+  text-align: center;
+}
+
+.calendar-event-date strong {
+  display: block;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.calendar-event-date span {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.calendar-event-body h4 {
+  margin: 0;
+  color: #19191f;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.calendar-event-body p {
+  margin: 8px 0 0;
+  color: rgba(32, 32, 38, 0.68);
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+
+.calendar-event-status {
+  display: inline-flex;
+  margin-top: 12px;
+  padding: 7px 10px;
+  background: rgba(100, 11, 11, 0.08);
+  color: #640b0b;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.academic-calendar-table-wrap {
+  overflow-x: auto;
+}
+
+.academic-calendar-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+}
+
+.academic-calendar-table th {
+  padding: 17px 18px;
+  background: #640b0b;
+  color: #ffffff;
+  font-weight: 900;
+  text-align: left;
+}
+
+.academic-calendar-table th:first-child,
+.academic-calendar-table td:first-child {
+  width: 150px;
+}
+
+.academic-calendar-table th:last-child,
+.academic-calendar-table td:last-child {
+  width: 150px;
+}
+
+.academic-calendar-table td {
+  padding: 17px 18px;
+  border-bottom: 1px solid rgba(67, 8, 8, 0.1);
+  color: #303038;
+  vertical-align: top;
+}
+
+.academic-calendar-table tr:nth-child(even) td {
+  background: #f8f2f1;
+}
+
+.academic-calendar-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.calendar-empty {
+  padding: 26px;
+  color: rgba(32, 32, 38, 0.68);
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+}
+
+.academic-calendar-maintenance {
+  margin-top: 26px;
+  padding: 24px 28px;
+  border: 1px solid rgba(67, 8, 8, 0.13);
+  background: linear-gradient(135deg, rgba(100, 11, 11, 0.06), rgba(100, 11, 11, 0.015));
+}
+
+.academic-calendar-maintenance strong {
+  display: block;
+  color: #640b0b;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.academic-calendar-maintenance p {
+  margin: 10px 0 0;
+  max-width: 960px;
+  color: rgba(32, 32, 38, 0.72);
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  line-height: 1.7;
+}
+
+@media (max-width: 1060px) {
+  .academic-calendar-head,
+  .academic-calendar-layout,
+  .academic-calendar-hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .academic-calendar-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .academic-calendar-controls,
+  .academic-calendar-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-event-card {
+    grid-template-columns: 1fr;
+  }
+
+  .academic-calendar-hero h1 {
+    font-size: clamp(42px, 13vw, 70px);
+  }
+}
+/* FFT ACADEMIC CALENDAR PAGE END */

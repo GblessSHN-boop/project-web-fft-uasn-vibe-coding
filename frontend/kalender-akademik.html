@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
@@ -125,32 +125,123 @@
       </div>
     </header>
 
-    <main class="page-content">
-      <section class="page-content-hero">
-        <div class="page-content-shell">
-          <p class="page-content-kicker" data-page-id="AKADEMIK" data-page-en="ACADEMIC">AKADEMIK</p>
-          <h1 data-page-id="Kalender Akademik" data-page-en="Academic Calendar">Kalender Akademik</h1>
-          <p class="page-content-lead" data-page-id="Halaman ini disiapkan untuk menampilkan jadwal akademik resmi fakultas." data-page-en="This page is prepared to display the faculty official academic schedule.">Halaman ini disiapkan untuk menampilkan jadwal akademik resmi fakultas.</p>
-        </div>
-      </section>
+    <main class="page-content academic-calendar-page" data-calendar-root>
+            <section class="academic-calendar-hero">
+              <div class="academic-calendar-kicker">
+                <span></span>
+                <strong data-page-id="AKADEMIK" data-page-en="ACADEMIC">AKADEMIK</strong>
+              </div>
 
-      <section class="page-content-body">
-        <div class="page-content-shell page-content-grid">
-<article class="page-content-panel">
-            <div class="page-content-panel-header">
-              <h2 data-page-id="Informasi Kalender Akademik" data-page-en="Academic Calendar Information">Informasi Kalender Akademik</h2>
-              <p data-page-id="Jadwal perkuliahan, masa registrasi, ujian, dan agenda akademik akan ditampilkan setelah data tersedia." data-page-en="Class schedules, registration periods, examinations, and academic agendas will be displayed after the data is available.">Jadwal perkuliahan, masa registrasi, ujian, dan agenda akademik akan ditampilkan setelah data tersedia.</p>
-            </div>
-              <div class="maintenance-box">
-                <strong data-page-id="Konten Sedang Maintenance" data-page-en="Content Under Maintenance">Konten Sedang Maintenance</strong>
-                <p data-page-id="Konten halaman ini sedang disiapkan dan akan dikelola melalui backend. Informasi akan ditampilkan setelah data resmi fakultas tersedia." data-page-en="This page content is being prepared and will be managed through the backend. Information will be displayed after official faculty data is available.">
-                  Konten halaman ini sedang disiapkan dan akan dikelola melalui backend. Informasi akan ditampilkan setelah data resmi fakultas tersedia.
+              <div class="academic-calendar-hero-grid">
+                <div class="academic-calendar-hero-copy">
+                  <h1 data-page-id="Kalender Akademik Fakultas" data-page-en="Faculty Academic Calendar">Kalender Akademik Fakultas</h1>
+                  <p data-page-id="Kalender akademik digunakan untuk membaca alur kegiatan akademik secara terstruktur, mulai dari registrasi, perkuliahan, ujian, sampai penutupan semester."
+                     data-page-en="The academic calendar is used to read academic activities in a structured sequence, from registration, lectures, examinations, to semester completion.">
+                    Kalender akademik digunakan untuk membaca alur kegiatan akademik secara terstruktur, mulai dari registrasi, perkuliahan, ujian, sampai penutupan semester.
+                  </p>
+                </div>
+
+                <aside class="academic-calendar-hero-card">
+                  <p data-page-id="TAHUN AKADEMIK AKTIF" data-page-en="ACTIVE ACADEMIC YEAR">TAHUN AKADEMIK AKTIF</p>
+                  <strong>2025-2026</strong>
+                  <span data-page-id="Data final akan dikelola melalui backend agar admin dapat memperbarui agenda setiap tahun akademik."
+                        data-page-en="Final data will be managed through the backend so administrators can update agendas for each academic year.">
+                    Data final akan dikelola melalui backend agar admin dapat memperbarui agenda setiap tahun akademik.
+                  </span>
+                </aside>
+              </div>
+            </section>
+
+            <section class="academic-calendar-workspace" aria-labelledby="academicCalendarTitle">
+              <div class="academic-calendar-head">
+                <div>
+                  <p data-page-id="AGENDA AKADEMIK" data-page-en="ACADEMIC AGENDA">AGENDA AKADEMIK</p>
+                  <h2 id="academicCalendarTitle" data-page-id="Jadwal Kegiatan Akademik" data-page-en="Academic Activity Schedule">Jadwal Kegiatan Akademik</h2>
+                </div>
+
+                <div class="academic-calendar-controls">
+                  <label>
+                    <span data-page-id="Tahun Akademik" data-page-en="Academic Year">Tahun Akademik</span>
+                    <select data-calendar-year aria-label="Pilih Tahun Akademik">
+                      <option value="2025-2026">2025-2026</option>
+                    </select>
+                  </label>
+
+                  <label>
+                    <span data-page-id="Cari Agenda" data-page-en="Search Agenda">Cari Agenda</span>
+                    <input type="search"
+                           data-calendar-search
+                           data-placeholder-id="Cari registrasi, ujian, perkuliahan..."
+                           data-placeholder-en="Search registration, exams, lectures..."
+                           placeholder="Cari registrasi, ujian, perkuliahan...">
+                  </label>
+                </div>
+              </div>
+
+              <div class="academic-calendar-tabs" role="tablist" aria-label="Academic semester tabs">
+                <button type="button" class="is-active" data-calendar-semester="ganjil" data-page-id="Semester Ganjil" data-page-en="Odd Semester">Semester Ganjil</button>
+                <button type="button" data-calendar-semester="genap" data-page-id="Semester Genap" data-page-en="Even Semester">Semester Genap</button>
+              </div>
+
+              <div class="academic-calendar-stats">
+                <article>
+                  <span data-page-id="Tahun" data-page-en="Year">Tahun</span>
+                  <strong data-calendar-stat-year>2025-2026</strong>
+                </article>
+                <article>
+                  <span data-page-id="Semester Aktif" data-page-en="Active Semester">Semester Aktif</span>
+                  <strong data-calendar-stat-semester>Ganjil</strong>
+                </article>
+                <article>
+                  <span data-page-id="Jumlah Agenda" data-page-en="Total Agenda">Jumlah Agenda</span>
+                  <strong data-calendar-stat-count>0</strong>
+                </article>
+                <article>
+                  <span data-page-id="Status Data" data-page-en="Data Status">Status Data</span>
+                  <strong data-calendar-stat-status>Maintenance</strong>
+                </article>
+              </div>
+
+              <div class="academic-calendar-layout">
+                <section class="academic-calendar-timeline" aria-labelledby="timelineTitle">
+                  <div class="academic-calendar-subhead">
+                    <p data-page-id="LINI MASA" data-page-en="TIMELINE">LINI MASA</p>
+                    <h3 id="timelineTitle" data-page-id="Urutan Agenda" data-page-en="Agenda Sequence">Urutan Agenda</h3>
+                  </div>
+                  <div class="academic-calendar-timeline-list" data-calendar-timeline></div>
+                </section>
+
+                <section class="academic-calendar-table-section" aria-labelledby="calendarTableTitle">
+                  <div class="academic-calendar-subhead">
+                    <p data-page-id="TABEL" data-page-en="TABLE">TABEL</p>
+                    <h3 id="calendarTableTitle" data-page-id="Daftar Jadwal" data-page-en="Schedule List">Daftar Jadwal</h3>
+                  </div>
+
+                  <div class="academic-calendar-table-wrap">
+                    <table class="academic-calendar-table">
+                      <thead>
+                        <tr>
+                          <th data-page-id="Tanggal" data-page-en="Date">Tanggal</th>
+                          <th data-page-id="Agenda" data-page-en="Agenda">Agenda</th>
+                          <th data-page-id="Keterangan" data-page-en="Notes">Keterangan</th>
+                          <th data-page-id="Status" data-page-en="Status">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody data-calendar-table></tbody>
+                    </table>
+                  </div>
+                </section>
+              </div>
+
+              <div class="academic-calendar-maintenance">
+                <strong data-page-id="Catatan Sistem" data-page-en="System Note">Catatan Sistem</strong>
+                <p data-page-id="Konten kalender akademik masih bersifat sementara. Struktur halaman sudah disiapkan agar data resmi dapat ditarik dari backend berdasarkan tahun akademik dan semester."
+                   data-page-en="The academic calendar content is still temporary. The page structure is prepared so official data can later be fetched from the backend by academic year and semester.">
+                  Konten kalender akademik masih bersifat sementara. Struktur halaman sudah disiapkan agar data resmi dapat ditarik dari backend berdasarkan tahun akademik dan semester.
                 </p>
               </div>
-          </article>
-        </div>
-      </section>
-    </main>
+            </section>
+          </main>
 
 <footer id="kontak" class="fft-footer" aria-labelledby="footerTitle">
       <canvas

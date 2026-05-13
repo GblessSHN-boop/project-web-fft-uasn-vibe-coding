@@ -16,14 +16,40 @@ document.addEventListener("DOMContentLoaded", function () {
   let payload = { data: [], ranking_model: null };
 
   function getLang() {
-    const lang = localStorage.getItem("fft-language")
-      || localStorage.getItem("siteLanguage")
-      || localStorage.getItem("fftLang")
-      || document.documentElement.lang
-      || "id";
+    const keys = [
+      "fft-language",
+      "siteLanguage",
+      "fftLang",
+      "fft_language",
+      "selectedLanguage",
+      "language"
+    ];
 
-    return lang === "en" ? "en" : "id";
+    for (const key of keys) {
+      const value = (localStorage.getItem(key) || "").toLowerCase();
+      if (value === "en" || value.startsWith("en")) return "en";
+      if (value === "id" || value.startsWith("id")) return "id";
+    }
+
+    const activeButton = document.querySelector(".fft-floating-language-btn.is-active, .fft-floating-language-btn[aria-pressed='true']");
+    if (activeButton) {
+      const value = (
+        activeButton.dataset.fftLang ||
+        activeButton.dataset.lang ||
+        activeButton.textContent ||
+        ""
+      ).trim().toLowerCase();
+
+      if (value === "en" || value.startsWith("en")) return "en";
+      if (value === "id" || value.startsWith("id")) return "id";
+    }
+
+    const htmlLang = (document.documentElement.lang || "").toLowerCase();
+    if (htmlLang.startsWith("en")) return "en";
+
+    return "id";
   }
+
 
   function applyLabels() {
     const lang = getLang();
@@ -417,6 +443,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.addEventListener("fft-language-change", render);
   window.addEventListener("storage", render);
+
+  // FFT RANKING LANGUAGE CLICK FIX START
+  document.querySelectorAll(".fft-floating-language-btn, [data-fft-lang], [data-lang]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      setTimeout(render, 0);
+      setTimeout(render, 80);
+      setTimeout(render, 180);
+    });
+  });
+  // FFT RANKING LANGUAGE CLICK FIX END
 
   loadRanking();
 });
