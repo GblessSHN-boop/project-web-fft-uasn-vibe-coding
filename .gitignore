@@ -75,3 +75,8 @@ api/
 
 # Ignore experimental backup template folder
 backend/templates/New folder/
+
+# Local generated backups
+.local-backups/
+backup-*/
+
