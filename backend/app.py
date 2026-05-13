@@ -2979,5 +2979,53 @@ def get_click_analytics():
     )
 
 
+# FFT RANKING API START
+@app.route("/api/papan-peringkat")
+@app.route("/api/ranking-mahasiswa")
+def api_papan_peringkat():
+    import json as _json
+    import os as _os
+
+    data_path = _os.path.join(app.root_path, "static", "published", "papan_peringkat.json")
+
+    fallback_payload = {
+        "status": "success",
+        "source": "fallback",
+        "default_category": "umum",
+        "default_period": "sekarang",
+        "data": [
+            {
+                "rank": 1,
+                "name": "Konten Sedang Maintenance",
+                "name_en": "Content Under Maintenance",
+                "program": "Data akan dikelola melalui backend.",
+                "program_en": "Data will be managed through the backend.",
+                "score": "0.00",
+                "category": "umum",
+                "period": "sekarang",
+                "trend": "stay",
+                "change": 0
+            }
+        ]
+    }
+
+    try:
+        if _os.path.exists(data_path):
+            with open(data_path, "r", encoding="utf-8-sig") as file:
+                payload = _json.load(file)
+        else:
+            payload = fallback_payload
+    except Exception as exc:
+        payload = fallback_payload
+        payload["source"] = "fallback-error"
+        payload["error"] = str(exc)
+
+    return app.response_class(
+        response=_json.dumps(payload, ensure_ascii=False),
+        status=200,
+        mimetype="application/json"
+    )
+# FFT RANKING API END
+
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False)

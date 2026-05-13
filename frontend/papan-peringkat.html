@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
@@ -12,7 +12,9 @@
     <script src="fft-language-switcher.js" defer></script>
     <script src="site-nav-fix.js" defer></script>
     <script src="page-content.js" defer></script>
-  </head>
+      <link rel="stylesheet" href="ranking-board.css" />
+    <script src="ranking-board.js" defer></script>
+</head>
 
   <body>
     <div class="reading-progress" id="readingProgress" style="width: 0%;"></div>
@@ -141,13 +143,52 @@
               <h2 data-page-id="Papan Peringkat" data-page-en="Ranking Board">Papan Peringkat</h2>
               <p data-page-id="Data ranking akan diproses dari backend dan ditampilkan dalam format Top 10 secara default." data-page-en="Ranking data will be processed from the backend and displayed in Top 10 format by default.">Data ranking akan diproses dari backend dan ditampilkan dalam format Top 10 secara default.</p>
             </div>
-              <div class="maintenance-box">
-                <strong data-page-id="Konten Sedang Maintenance" data-page-en="Content Under Maintenance">Konten Sedang Maintenance</strong>
-                <p data-page-id="Konten halaman ini sedang disiapkan dan akan dikelola melalui backend. Informasi akan ditampilkan setelah data resmi fakultas tersedia." data-page-en="This page content is being prepared and will be managed through the backend. Information will be displayed after official faculty data is available.">
-                  Konten halaman ini sedang disiapkan dan akan dikelola melalui backend. Informasi akan ditampilkan setelah data resmi fakultas tersedia.
+                                          <div class="ranking-board" data-ranking-root>
+                <div class="ranking-filter-panel">
+                  <div class="ranking-filter-group">
+                    <p data-label-id="KATEGORI" data-label-en="CATEGORY">KATEGORI</p>
+                    <div class="ranking-tabs">
+                      <button type="button" class="is-active" data-ranking-category="gpa" data-label-id="GPA" data-label-en="GPA" aria-pressed="true">GPA</button>
+                      <button type="button" data-ranking-category="gpa-semester-1" data-label-id="GPA Semester 1" data-label-en="GPA Semester 1" aria-pressed="false">GPA Semester 1</button>
+                      <button type="button" data-ranking-category="gpa-semester-2" data-label-id="GPA Semester 2" data-label-en="GPA Semester 2" aria-pressed="false">GPA Semester 2</button>
+                    </div>
+                  </div>
+
+                  <div class="ranking-filter-group">
+                    <p data-label-id="TAHUN AKADEMIK" data-label-en="ACADEMIC YEAR">TAHUN AKADEMIK</p>
+                    <select class="ranking-year-select" data-ranking-year aria-label="Pilih Tahun Akademik">
+                      <option value="2025-2026">2025-2026</option>
+                    </select>
+                  </div>
+
+                  <div class="ranking-filter-group">
+                    <p data-label-id="DOWNLOAD" data-label-en="DOWNLOAD">DOWNLOAD</p>
+                    <div class="ranking-download-controls">
+                      <select class="ranking-format-select" data-ranking-format aria-label="Pilih Format Download">
+                        <option value="pdf">PDF</option>
+                        <option value="png">PNG</option>
+                        <option value="jpg">JPG</option>
+                        <option value="jpeg">JPEG</option>
+                      </select>
+                      <button type="button" class="ranking-download-button" data-ranking-download data-label-id="Download Papan" data-label-en="Download Board">Download Papan</button>
+                    </div>
+                  </div>
+                </div>
+
+                <p class="ranking-active-label" id="rankingActiveLabel">Filter aktif: GPA | Tahun Akademik 2025-2026</p>
+                <p class="ranking-model-note" id="rankingModelNote">
+                  Ranking akademik dihitung berdasarkan GPA pada kategori yang dipilih. Jika dua mahasiswa memiliki nilai yang sama, mereka dapat tampil dalam peringkat yang sama pada satu baris.
+                </p>
+
+                <div class="ranking-loading" id="rankingLoading">Memuat data peringkat...</div>
+                <div class="ranking-error" id="rankingError" hidden></div>
+                <div class="ranking-board-list" id="rankingBoard" aria-live="polite"></div>
+
+                <p class="ranking-note" data-page-id="Data final nantinya dikelola dari backend. Board ini disiapkan untuk GPA, GPA Semester 1, dan GPA Semester 2 berdasarkan tahun akademik yang dipilih." data-page-en="Final data will later be managed from the backend. This board is prepared for GPA, GPA Semester 1, and GPA Semester 2 based on the selected academic year.">
+                  Data final nantinya dikelola dari backend. Board ini disiapkan untuk GPA, GPA Semester 1, dan GPA Semester 2 berdasarkan tahun akademik yang dipilih.
                 </p>
               </div>
-          </article>
+</article>
         </div>
       </section>
     </main>
