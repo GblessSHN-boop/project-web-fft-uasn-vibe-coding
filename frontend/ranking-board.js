@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const errorBox = document.getElementById("rankingError");
   const activeLabel = document.getElementById("rankingActiveLabel");
   const modelNote = document.getElementById("rankingModelNote");
-  const categoryButtons = Array.from(root.querySelectorAll("[data-ranking-category]"));
   const yearSelect = root.querySelector("[data-ranking-year]");
   const formatSelect = root.querySelector("[data-ranking-format]");
   const downloadButton = root.querySelector("[data-ranking-download]");
@@ -40,14 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function setActive(buttons, current) {
-    buttons.forEach(function (btn) {
-      const active = btn === current;
-      btn.classList.toggle("is-active", active);
-      btn.setAttribute("aria-pressed", active ? "true" : "false");
-    });
-  }
-
   function namesText(item) {
     if (Array.isArray(item.names) && item.names.length) {
       return item.names.join(" / ");
@@ -56,8 +47,8 @@ document.addEventListener("DOMContentLoaded", function () {
     return item.name || item.name_en || "NAMA LENGKAP";
   }
 
-  function displayName(item, isTop) {
-    const text = namesText(item);
+  function cleanName(item, isTop) {
+    const text = namesText(item).trim();
 
     if (!text || /kosong|not published|belum diterbitkan/i.test(text)) {
       return isTop ? "NAMA" : "NAMA LENGKAP";
@@ -86,9 +77,8 @@ document.addEventListener("DOMContentLoaded", function () {
     while (rows.length < 8) {
       rows.push({
         rank: rows.length + 1,
-        names: ["NAMA LENGKAP"],
-        name: "NAMA LENGKAP",
-        gpa: "0.00"
+        name: rows.length === 0 ? "NAMA" : "NAMA LENGKAP",
+        names: [rows.length === 0 ? "NAMA" : "NAMA LENGKAP"]
       });
     }
 
@@ -99,16 +89,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const items = normalizeRows(byCategory(category));
     const top = items[0];
 
-    const rows = items.slice(1).map(function (item) {
+    const rows = items.slice(1).map(function (item, index) {
+      const name = cleanName(item, false);
+      const isTie = name.includes(" / ");
+
       return `
         <article class="ranking-row">
-          <div class="ranking-position">${item.rank || "-"}</div>
+          <div class="ranking-position">${item.rank || index + 2}</div>
           <div class="ranking-name">
-            <h3 title="${displayName(item, false)}">${displayName(item, false)}</h3>
-          </div>
-          <div class="ranking-row-gpa">
-            <strong>${item.gpa || "0.00"}</strong>
-            <span>GPA</span>
+            <h3 class="${isTie ? "is-tie" : ""}" title="${name}">${name}</h3>
           </div>
         </article>
       `;
@@ -119,10 +108,16 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="ranking-column-title">${title}</div>
 
         <div class="ranking-top-card">
-          <div class="ranking-top-rank">#1</div>
+          <div class="ranking-top-rank">
+            <div class="ranking-top-rank-number">#1</div>
+            <div class="ranking-achievement-badge">
+              <img src="assets/top-leader/top-leader-title.png" alt="">
+              <span>Hall of Achievement FFT UASN</span>
+            </div>
+          </div>
 
           <div class="ranking-top-info">
-            <h4>${displayName(top, true)}</h4>
+            <h4>${cleanName(top, true)}</h4>
             <div class="ranking-top-line"></div>
             <div class="ranking-top-subname">NAMA LENGKAP</div>
           </div>
@@ -154,15 +149,17 @@ document.addEventListener("DOMContentLoaded", function () {
     board.innerHTML = `
       <div class="ranking-export-shell">
         <section class="ranking-poster" id="rankingExportPoster">
-          <header class="ranking-export-header">
-            <img class="ranking-poster-logo" src="uasnlogo.png" alt="UASN">
+          <header class="ranking-title-header">
+            <img class="ranking-corner-logo" src="uasnlogo.png" alt="UASN">
 
-            <div class="ranking-export-title">
-              <img class="ranking-title-image" src="assets/top-leader/top-leader-title.png" alt="Papan Peringkat Fakultas Filsafat Teologi">
-              <div class="ranking-export-year">${year}</div>
+            <div class="ranking-title-center">
+              <img class="ranking-title-image" src="assets/top-leader/top-leader-title.png" alt="Papan Peringkat Fakultas Filsafat Teologi" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+              <div class="ranking-title-fallback">Papan Peringkat Fakultas Filsafat Teologi</div>
+              <div class="ranking-year">${year}</div>
+              <p class="ranking-subtitle">Universitas Advent Surya Nusantara</p>
             </div>
 
-            <img class="ranking-poster-logo" src="fftkb.png" alt="FFT">
+            <img class="ranking-corner-logo" src="fftkb.png" alt="FFT">
           </header>
 
           <div class="ranking-dual-board">
@@ -197,27 +194,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function absoluteImageSources(target) {
-    target.querySelectorAll("img").forEach(function (img) {
+  async function inlineImages(target) {
+    const images = Array.from(target.querySelectorAll("img"));
+
+    await Promise.all(images.map(async function (img) {
       const src = img.getAttribute("src");
       if (!src) return;
 
       try {
-        img.setAttribute("src", new URL(src, window.location.href).href);
-      } catch (error) {}
-    });
-  }
+        const absolute = new URL(src, window.location.href).href;
+        const response = await fetch(absolute, { cache: "force-cache" });
+        const blob = await response.blob();
 
-  function waitForImages(target) {
-    const images = Array.from(target.querySelectorAll("img"));
+        const dataUrl = await new Promise(function (resolve) {
+          const reader = new FileReader();
+          reader.onloadend = function () {
+            resolve(reader.result);
+          };
+          reader.readAsDataURL(blob);
+        });
 
-    return Promise.all(images.map(function (img) {
-      if (img.complete) return Promise.resolve();
-
-      return new Promise(function (resolve) {
-        img.onload = resolve;
-        img.onerror = resolve;
-      });
+        img.setAttribute("src", dataUrl);
+      } catch (error) {
+        try {
+          img.setAttribute("src", new URL(src, window.location.href).href);
+        } catch (innerError) {}
+      }
     }));
   }
 
@@ -225,17 +227,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const target = document.getElementById("rankingExportPoster");
     if (!target) throw new Error("Poster tidak ditemukan.");
 
-    await waitForImages(target);
-
     const clone = target.cloneNode(true);
-    clone.classList.add("is-export-mode");
-    absoluteImageSources(clone);
+    await inlineImages(clone);
 
     const rect = target.getBoundingClientRect();
     const scale = 2;
     const width = Math.ceil(rect.width);
-    const headerEstimate = 105;
-    const height = Math.ceil(target.scrollHeight + headerEstimate);
+    const height = Math.ceil(target.scrollHeight);
 
     const styles = Array.from(document.styleSheets).map(function (sheet) {
       try {
@@ -254,8 +252,7 @@ document.addEventListener("DOMContentLoaded", function () {
             * { box-sizing: border-box; }
             body { margin: 0; background: #ffffff; }
             ${styles}
-            .ranking-poster { width: ${width}px !important; min-width: ${width}px !important; box-shadow: none !important; }
-            .ranking-export-header { display: grid !important; }
+            .ranking-poster { width: ${width}px !important; min-width: ${width}px !important; box-shadow: none !important; margin: 0 !important; }
           </style>
         </head>
         <body>${clone.outerHTML}</body>
@@ -274,7 +271,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const url = URL.createObjectURL(blob);
 
     const img = new Image();
-    img.crossOrigin = "anonymous";
 
     await new Promise(function (resolve, reject) {
       img.onload = resolve;
@@ -325,8 +321,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const imgWidth = pageWidth;
     const imgHeight = Math.round((canvas.height / canvas.width) * imgWidth);
     const y = Math.max(0, pageHeight - imgHeight);
+    const content = `q\n${imgWidth} 0 0 ${imgHeight} 0 ${y} cm\n/Im0 Do\nQ\n`;
 
-    const objects = [];
+    const objects = [
+      "<< /Type /Catalog /Pages 2 0 R >>",
+      "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+      `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>`,
+      `<< /Type /XObject /Subtype /Image /Width ${canvas.width} /Height ${canvas.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${imgBytes.length} >>\nstream\n`,
+      `<< /Length ${content.length} >>\nstream\n${content}endstream`
+    ];
+
     const encoder = new TextEncoder();
     const chunks = [];
     let offset = 0;
@@ -341,12 +345,6 @@ document.addEventListener("DOMContentLoaded", function () {
       chunks.push(bytes);
       offset += bytes.length;
     }
-
-    objects.push("<< /Type /Catalog /Pages 2 0 R >>");
-    objects.push("<< /Type /Pages /Kids [3 0 R] /Count 1 >>");
-    objects.push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>`);
-    objects.push(`<< /Type /XObject /Subtype /Image /Width ${canvas.width} /Height ${canvas.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${imgBytes.length} >>\nstream\n`);
-    objects.push(`<< /Length 64 >>\nstream\nq\n${imgWidth} 0 0 ${imgHeight} 0 ${y} cm\n/Im0 Do\nQ\nendstream`);
 
     pushText("%PDF-1.4\n");
     const xref = [0];
@@ -408,13 +406,6 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error(error);
     }
   }
-
-  categoryButtons.forEach(function (button) {
-    button.addEventListener("click", function () {
-      setActive(categoryButtons, button);
-      render();
-    });
-  });
 
   if (yearSelect) {
     yearSelect.addEventListener("change", render);

@@ -1,491 +1,224 @@
 {
   "status": "success",
   "source": "published-json",
-  "default_category": "gpa",
   "default_year": "2025-2026",
-  "categories": [
-    {
-      "key": "gpa",
-      "id": "GPA",
-      "en": "GPA",
-      "description_id": "Peringkat berdasarkan GPA kumulatif atau rata-rata akademik utama.",
-      "description_en": "Ranking based on cumulative GPA or main academic average."
-    },
-    {
-      "key": "gpa-semester-1",
-      "id": "GPA Semester 1",
-      "en": "GPA Semester 1",
-      "description_id": "Peringkat berdasarkan GPA semester 1.",
-      "description_en": "Ranking based on semester 1 GPA."
-    },
-    {
-      "key": "gpa-semester-2",
-      "id": "GPA Semester 2",
-      "en": "GPA Semester 2",
-      "description_id": "Peringkat berdasarkan GPA semester 2.",
-      "description_en": "Ranking based on semester 2 GPA."
-    }
-  ],
   "academic_years": [
     "2025-2026"
   ],
   "ranking_model": {
-    "id": "Ranking akademik dihitung berdasarkan GPA pada kategori yang dipilih. Jika dua mahasiswa memiliki nilai yang sama, mereka dapat tampil dalam peringkat yang sama pada satu baris.",
-    "en": "Academic ranking is calculated based on GPA in the selected category. If two students have the same value, they can appear in the same rank on one row."
+    "id": "Papan peringkat ini menampilkan ranking GPA Semester 1 dan GPA Semester 2 berdasarkan tahun akademik yang dipilih.",
+    "en": "This ranking board displays GPA Semester 1 and GPA Semester 2 rankings based on the selected academic year."
   },
   "data": [
     {
       "rank": 1,
+      "name": "NAMA",
+      "name_en": "NAMA",
       "names": [
-        "Nama Lengkap Kosong 01"
+        "NAMA"
       ],
-      "name": "Nama Lengkap Kosong 01",
-      "name_en": "Nama Lengkap Kosong 01",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-1",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "stay",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 2,
+      "name": "NAMA LENGKAP",
+      "name_en": "NAMA LENGKAP",
       "names": [
-        "Nama Lengkap Kosong 02",
-        "Nama Lengkap Kosong 03"
+        "NAMA LENGKAP"
       ],
-      "name": "Nama Lengkap Kosong 02 / Nama Lengkap Kosong 03",
-      "name_en": "Nama Lengkap Kosong 02 / Nama Lengkap Kosong 03",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-1",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "up",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 3,
+      "name": "NAMA LENGKAP / NAMA LENGKAP",
+      "name_en": "NAMA LENGKAP / NAMA LENGKAP",
       "names": [
-        "Nama Lengkap Kosong 04"
+        "NAMA LENGKAP",
+        "NAMA LENGKAP"
       ],
-      "name": "Nama Lengkap Kosong 04",
-      "name_en": "Nama Lengkap Kosong 04",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-1",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "down",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 4,
+      "name": "NAMA LENGKAP",
+      "name_en": "NAMA LENGKAP",
       "names": [
-        "Nama Lengkap Kosong 05"
+        "NAMA LENGKAP"
       ],
-      "name": "Nama Lengkap Kosong 05",
-      "name_en": "Nama Lengkap Kosong 05",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-1",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "stay",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 5,
+      "name": "NAMA LENGKAP",
+      "name_en": "NAMA LENGKAP",
       "names": [
-        "Nama Lengkap Kosong 06"
+        "NAMA LENGKAP"
       ],
-      "name": "Nama Lengkap Kosong 06",
-      "name_en": "Nama Lengkap Kosong 06",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-1",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "up",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 6,
+      "name": "NAMA LENGKAP",
+      "name_en": "NAMA LENGKAP",
       "names": [
-        "Nama Lengkap Kosong 07"
+        "NAMA LENGKAP"
       ],
-      "name": "Nama Lengkap Kosong 07",
-      "name_en": "Nama Lengkap Kosong 07",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-1",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "down",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 7,
+      "name": "NAMA LENGKAP",
+      "name_en": "NAMA LENGKAP",
       "names": [
-        "Nama Lengkap Kosong 08"
+        "NAMA LENGKAP"
       ],
-      "name": "Nama Lengkap Kosong 08",
-      "name_en": "Nama Lengkap Kosong 08",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-1",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "stay",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 8,
+      "name": "NAMA LENGKAP",
+      "name_en": "NAMA LENGKAP",
       "names": [
-        "Nama Lengkap Kosong 09"
+        "NAMA LENGKAP"
       ],
-      "name": "Nama Lengkap Kosong 09",
-      "name_en": "Nama Lengkap Kosong 09",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-1",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "up",
-      "change": 0
-    },
-    {
-      "rank": 9,
-      "names": [
-        "Nama Lengkap Kosong 10"
-      ],
-      "name": "Nama Lengkap Kosong 10",
-      "name_en": "Nama Lengkap Kosong 10",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa",
-      "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "down",
-      "change": 0
-    },
-    {
-      "rank": 10,
-      "names": [
-        "Nama Lengkap Kosong 11"
-      ],
-      "name": "Nama Lengkap Kosong 11",
-      "name_en": "Nama Lengkap Kosong 11",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa",
-      "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "stay",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 1,
+      "name": "NAMA",
+      "name_en": "NAMA",
       "names": [
-        "Nama Lengkap Kosong 01"
+        "NAMA"
       ],
-      "name": "Nama Lengkap Kosong 01",
-      "name_en": "Nama Lengkap Kosong 01",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-1",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-2",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "stay",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 2,
+      "name": "NAMA LENGKAP",
+      "name_en": "NAMA LENGKAP",
       "names": [
-        "Nama Lengkap Kosong 02",
-        "Nama Lengkap Kosong 03"
+        "NAMA LENGKAP"
       ],
-      "name": "Nama Lengkap Kosong 02 / Nama Lengkap Kosong 03",
-      "name_en": "Nama Lengkap Kosong 02 / Nama Lengkap Kosong 03",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-1",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-2",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "up",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 3,
+      "name": "NAMA LENGKAP",
+      "name_en": "NAMA LENGKAP",
       "names": [
-        "Nama Lengkap Kosong 04"
+        "NAMA LENGKAP"
       ],
-      "name": "Nama Lengkap Kosong 04",
-      "name_en": "Nama Lengkap Kosong 04",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-1",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-2",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "down",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 4,
+      "name": "NAMA LENGKAP / NAMA LENGKAP",
+      "name_en": "NAMA LENGKAP / NAMA LENGKAP",
       "names": [
-        "Nama Lengkap Kosong 05"
+        "NAMA LENGKAP",
+        "NAMA LENGKAP"
       ],
-      "name": "Nama Lengkap Kosong 05",
-      "name_en": "Nama Lengkap Kosong 05",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-1",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-2",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "stay",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 5,
+      "name": "NAMA LENGKAP",
+      "name_en": "NAMA LENGKAP",
       "names": [
-        "Nama Lengkap Kosong 06"
+        "NAMA LENGKAP"
       ],
-      "name": "Nama Lengkap Kosong 06",
-      "name_en": "Nama Lengkap Kosong 06",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-1",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-2",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "up",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 6,
+      "name": "NAMA LENGKAP",
+      "name_en": "NAMA LENGKAP",
       "names": [
-        "Nama Lengkap Kosong 07"
+        "NAMA LENGKAP"
       ],
-      "name": "Nama Lengkap Kosong 07",
-      "name_en": "Nama Lengkap Kosong 07",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-1",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-2",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "down",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 7,
+      "name": "NAMA LENGKAP",
+      "name_en": "NAMA LENGKAP",
       "names": [
-        "Nama Lengkap Kosong 08"
+        "NAMA LENGKAP"
       ],
-      "name": "Nama Lengkap Kosong 08",
-      "name_en": "Nama Lengkap Kosong 08",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-1",
+      "program": "",
+      "program_en": "",
+      "category": "gpa-semester-2",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "stay",
-      "change": 0
+      "gpa": "0.00"
     },
     {
       "rank": 8,
+      "name": "NAMA LENGKAP",
+      "name_en": "NAMA LENGKAP",
       "names": [
-        "Nama Lengkap Kosong 09"
+        "NAMA LENGKAP"
       ],
-      "name": "Nama Lengkap Kosong 09",
-      "name_en": "Nama Lengkap Kosong 09",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-1",
-      "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "up",
-      "change": 0
-    },
-    {
-      "rank": 9,
-      "names": [
-        "Nama Lengkap Kosong 10"
-      ],
-      "name": "Nama Lengkap Kosong 10",
-      "name_en": "Nama Lengkap Kosong 10",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-1",
-      "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "down",
-      "change": 0
-    },
-    {
-      "rank": 10,
-      "names": [
-        "Nama Lengkap Kosong 11"
-      ],
-      "name": "Nama Lengkap Kosong 11",
-      "name_en": "Nama Lengkap Kosong 11",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-1",
-      "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "stay",
-      "change": 0
-    },
-    {
-      "rank": 1,
-      "names": [
-        "Nama Lengkap Kosong 01"
-      ],
-      "name": "Nama Lengkap Kosong 01",
-      "name_en": "Nama Lengkap Kosong 01",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
+      "program": "",
+      "program_en": "",
       "category": "gpa-semester-2",
       "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "stay",
-      "change": 0
-    },
-    {
-      "rank": 2,
-      "names": [
-        "Nama Lengkap Kosong 02"
-      ],
-      "name": "Nama Lengkap Kosong 02",
-      "name_en": "Nama Lengkap Kosong 02",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-2",
-      "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "up",
-      "change": 0
-    },
-    {
-      "rank": 3,
-      "names": [
-        "Nama Lengkap Kosong 03",
-        "Nama Lengkap Kosong 04"
-      ],
-      "name": "Nama Lengkap Kosong 03 / Nama Lengkap Kosong 04",
-      "name_en": "Nama Lengkap Kosong 03 / Nama Lengkap Kosong 04",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-2",
-      "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "down",
-      "change": 0
-    },
-    {
-      "rank": 4,
-      "names": [
-        "Nama Lengkap Kosong 05"
-      ],
-      "name": "Nama Lengkap Kosong 05",
-      "name_en": "Nama Lengkap Kosong 05",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-2",
-      "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "stay",
-      "change": 0
-    },
-    {
-      "rank": 5,
-      "names": [
-        "Nama Lengkap Kosong 06"
-      ],
-      "name": "Nama Lengkap Kosong 06",
-      "name_en": "Nama Lengkap Kosong 06",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-2",
-      "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "up",
-      "change": 0
-    },
-    {
-      "rank": 6,
-      "names": [
-        "Nama Lengkap Kosong 07"
-      ],
-      "name": "Nama Lengkap Kosong 07",
-      "name_en": "Nama Lengkap Kosong 07",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-2",
-      "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "down",
-      "change": 0
-    },
-    {
-      "rank": 7,
-      "names": [
-        "Nama Lengkap Kosong 08"
-      ],
-      "name": "Nama Lengkap Kosong 08",
-      "name_en": "Nama Lengkap Kosong 08",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-2",
-      "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "stay",
-      "change": 0
-    },
-    {
-      "rank": 8,
-      "names": [
-        "Nama Lengkap Kosong 09"
-      ],
-      "name": "Nama Lengkap Kosong 09",
-      "name_en": "Nama Lengkap Kosong 09",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-2",
-      "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "up",
-      "change": 0
-    },
-    {
-      "rank": 9,
-      "names": [
-        "Nama Lengkap Kosong 10"
-      ],
-      "name": "Nama Lengkap Kosong 10",
-      "name_en": "Nama Lengkap Kosong 10",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-2",
-      "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "down",
-      "change": 0
-    },
-    {
-      "rank": 10,
-      "names": [
-        "Nama Lengkap Kosong 11"
-      ],
-      "name": "Nama Lengkap Kosong 11",
-      "name_en": "Nama Lengkap Kosong 11",
-      "program": "Hall of Achievement FFT UASN",
-      "program_en": "Hall of Achievement FFT UASN",
-      "category": "gpa-semester-2",
-      "academic_year": "2025-2026",
-      "gpa": "0.00",
-      "trend": "stay",
-      "change": 0
+      "gpa": "0.00"
     }
   ]
 }
