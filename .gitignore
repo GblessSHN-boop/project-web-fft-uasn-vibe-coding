@@ -80,3 +80,12 @@ backend/templates/New folder/
 .local-backups/
 backup-*/
 
+# Local virtual environments
+frontend/node_modules/
+# Local backups and generated archives
+*.bak
+*.tmp
+# Local database backup exports
+database/backups/*.sql
+backup_*.sql
+# OS and editor files
