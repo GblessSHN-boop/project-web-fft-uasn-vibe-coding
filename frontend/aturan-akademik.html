@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
@@ -125,32 +125,87 @@
       </div>
     </header>
 
-    <main class="page-content">
-      <section class="page-content-hero">
-        <div class="page-content-shell">
-          <p class="page-content-kicker" data-page-id="MAHASISWA" data-page-en="STUDENTS">MAHASISWA</p>
-          <h1 data-page-id="Aturan Akademik Mahasiswa" data-page-en="Student Academic Rules">Aturan Akademik Mahasiswa</h1>
-          <p class="page-content-lead" data-page-id="Halaman ini disiapkan untuk menampilkan aturan akademik, pedoman studi, dan ketentuan mahasiswa." data-page-en="This page is prepared to display academic rules, study guidelines, and student regulations.">Halaman ini disiapkan untuk menampilkan aturan akademik, pedoman studi, dan ketentuan mahasiswa.</p>
-        </div>
-      </section>
-
-      <section class="page-content-body">
-        <div class="page-content-shell page-content-grid">
-<article class="page-content-panel">
-            <div class="page-content-panel-header">
-              <h2 data-page-id="Aturan Akademik" data-page-en="Academic Rules">Aturan Akademik</h2>
-              <p data-page-id="Dokumen dan informasi aturan akademik akan ditampilkan setelah konten resmi tersedia." data-page-en="Academic rule documents and information will be displayed after official content is available.">Dokumen dan informasi aturan akademik akan ditampilkan setelah konten resmi tersedia.</p>
-            </div>
-              <div class="maintenance-box">
-                <strong data-page-id="Konten Sedang Maintenance" data-page-en="Content Under Maintenance">Konten Sedang Maintenance</strong>
-                <p data-page-id="Konten halaman ini sedang disiapkan dan akan dikelola melalui backend. Informasi akan ditampilkan setelah data resmi fakultas tersedia." data-page-en="This page content is being prepared and will be managed through the backend. Information will be displayed after official faculty data is available.">
-                  Konten halaman ini sedang disiapkan dan akan dikelola melalui backend. Informasi akan ditampilkan setelah data resmi fakultas tersedia.
-                </p>
+    <main class="page-content academic-rules-page" data-rules-root>
+            <section class="academic-rules-hero">
+              <div class="academic-rules-kicker">
+                <span></span>
+                <strong data-page-id="MAHASISWA" data-page-en="STUDENTS">MAHASISWA</strong>
               </div>
-          </article>
-        </div>
-      </section>
-    </main>
+
+              <div class="academic-rules-hero-grid">
+                <div>
+                  <h1 data-page-id="Aturan Akademik Mahasiswa" data-page-en="Student Academic Rules">Aturan Akademik Mahasiswa</h1>
+                  <p data-page-id="Halaman ini disiapkan sebagai pusat informasi aturan akademik, pedoman studi, dan ketentuan mahasiswa Fakultas Filsafat Teologi."
+                     data-page-en="This page is prepared as an information center for academic rules, study guidelines, and student regulations of the Faculty of Philosophy and Theology.">
+                    Halaman ini disiapkan sebagai pusat informasi aturan akademik, pedoman studi, dan ketentuan mahasiswa Fakultas Filsafat Teologi.
+                  </p>
+                </div>
+
+                <aside class="academic-rules-hero-card">
+                  <p data-page-id="STATUS DOKUMEN" data-page-en="DOCUMENT STATUS">STATUS DOKUMEN</p>
+                  <strong data-page-id="Maintenance" data-page-en="Maintenance">Maintenance</strong>
+                  <span data-page-id="Data final nantinya dapat dikelola melalui backend agar admin dapat memperbarui aturan sesuai keputusan akademik fakultas."
+                        data-page-en="Final data can later be managed through the backend so administrators can update rules according to faculty academic decisions.">
+                    Data final nantinya dapat dikelola melalui backend agar admin dapat memperbarui aturan sesuai keputusan akademik fakultas.
+                  </span>
+                </aside>
+              </div>
+            </section>
+
+            <section class="academic-rules-workspace" aria-labelledby="rulesTitle">
+              <div class="academic-rules-head">
+                <div>
+                  <p data-page-id="PEDOMAN AKADEMIK" data-page-en="ACADEMIC GUIDELINES">PEDOMAN AKADEMIK</p>
+                  <h2 id="rulesTitle" data-page-id="Daftar Aturan" data-page-en="Rules Directory">Daftar Aturan</h2>
+                </div>
+
+                <label class="academic-rules-search">
+                  <span data-page-id="Cari Aturan" data-page-en="Search Rules">Cari Aturan</span>
+                  <input type="search"
+                         data-rules-search
+                         data-placeholder-id="Cari KRS, ujian, kehadiran, nilai..."
+                         data-placeholder-en="Search study plan, exams, attendance, grades..."
+                         placeholder="Cari KRS, ujian, kehadiran, nilai...">
+                </label>
+              </div>
+
+              <div class="academic-rules-tabs" role="tablist" aria-label="Academic rule categories">
+                <button type="button" class="is-active" data-rules-category="all" data-page-id="Semua" data-page-en="All">Semua</button>
+                <button type="button" data-rules-category="studi" data-page-id="Studi" data-page-en="Study">Studi</button>
+                <button type="button" data-rules-category="evaluasi" data-page-id="Evaluasi" data-page-en="Evaluation">Evaluasi</button>
+                <button type="button" data-rules-category="administrasi" data-page-id="Administrasi" data-page-en="Administration">Administrasi</button>
+                <button type="button" data-rules-category="etik" data-page-id="Etika Akademik" data-page-en="Academic Ethics">Etika Akademik</button>
+              </div>
+
+              <div class="academic-rules-summary">
+                <article>
+                  <span data-page-id="Kategori Aktif" data-page-en="Active Category">Kategori Aktif</span>
+                  <strong data-rules-stat-category>Semua</strong>
+                </article>
+                <article>
+                  <span data-page-id="Jumlah Aturan" data-page-en="Total Rules">Jumlah Aturan</span>
+                  <strong data-rules-stat-count>0</strong>
+                </article>
+                <article>
+                  <span data-page-id="Status Konten" data-page-en="Content Status">Status Konten</span>
+                  <strong data-rules-stat-status>Maintenance</strong>
+                </article>
+              </div>
+
+              <div class="academic-rules-layout">
+                <aside class="academic-rules-info">
+                  <p data-page-id="FUNGSI HALAMAN" data-page-en="PAGE FUNCTION">FUNGSI HALAMAN</p>
+                  <h3 data-page-id="Pedoman untuk Konsistensi Akademik" data-page-en="Guidelines for Academic Consistency">Pedoman untuk Konsistensi Akademik</h3>
+                  <p data-page-id="Aturan akademik membantu mahasiswa memahami batas, prosedur, dan konsekuensi akademik. Dengan struktur ini, informasi dapat disajikan secara konsisten dan mudah diperbarui."
+                     data-page-en="Academic rules help students understand academic boundaries, procedures, and consequences. With this structure, information can be presented consistently and updated easily.">
+                    Aturan akademik membantu mahasiswa memahami batas, prosedur, dan konsekuensi akademik. Dengan struktur ini, informasi dapat disajikan secara konsisten dan mudah diperbarui.
+                  </p>
+                </aside>
+
+                <section class="academic-rules-list" data-rules-list aria-live="polite"></section>
+              </div>
+            </section>
+          </main>
 
 <footer id="kontak" class="fft-footer" aria-labelledby="footerTitle">
       <canvas
