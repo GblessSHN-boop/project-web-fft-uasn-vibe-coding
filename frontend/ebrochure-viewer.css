@@ -1,0 +1,612 @@
+/* E-Brochure viewer, clean split version */
+
+#ebrochureViewerModal,
+#fftBrochureProLite,
+#fftBrochureFlipViewer {
+  display: none !important;
+}
+
+.fft-viewer-lock {
+  overflow: hidden !important;
+}
+
+.fft-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 34px 94px 104px;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+}
+
+.fft-viewer.is-open {
+  display: flex;
+}
+
+.fft-viewer__shade {
+  position: absolute;
+  inset: 0;
+  background: rgba(36, 36, 40, 0.78);
+  backdrop-filter: blur(7px);
+}
+
+.fft-viewer__stage {
+  position: relative;
+  z-index: 2;
+  width: min(1120px, calc(100vw - 190px));
+  aspect-ratio: 420 / 297;
+  max-height: calc(100vh - 170px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1600px;
+}
+
+.fft-viewer__book {
+  --zoom: 1;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #ffffff;
+  box-shadow: 0 34px 70px rgba(0, 0, 0, 0.30);
+  transform: scale(var(--zoom));
+  transform-origin: center center;
+  transition: transform 180ms ease;
+}
+
+.fft-viewer__page {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.fft-viewer__page--left {
+  border-right: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+.fft-viewer__page--left::after,
+.fft-viewer__page--right::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 24px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.fft-viewer__page--left::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.12), transparent);
+}
+
+.fft-viewer__page--right::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.10), transparent);
+}
+
+.fft-viewer-cover {
+  position: relative;
+  height: 100%;
+  padding: clamp(36px, 4vw, 56px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #ffffff;
+  background: linear-gradient(135deg, #821010 0%, #5b1115 52%, #171821 100%);
+}
+
+.fft-viewer-cover::before {
+  content: "";
+  position: absolute;
+  inset: clamp(24px, 2.5vw, 34px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.fft-viewer-cover::after {
+  content: "";
+  position: absolute;
+  right: -74px;
+  bottom: -74px;
+  width: 220px;
+  height: 220px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.fft-viewer-cover span {
+  position: absolute;
+  top: clamp(42px, 4vw, 60px);
+  left: clamp(46px, 4vw, 70px);
+  right: clamp(46px, 4vw, 70px);
+  height: 5px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.fft-viewer-cover strong {
+  position: relative;
+  z-index: 1;
+  color: #ffffff;
+  font-size: clamp(56px, 5vw, 80px);
+  font-weight: 950;
+  line-height: 0.92;
+  letter-spacing: -0.065em;
+}
+
+.fft-viewer-cover h2 {
+  position: relative;
+  z-index: 1;
+  max-width: 380px;
+  margin: 26px 0 16px;
+  color: #ffffff;
+  font-size: clamp(30px, 3vw, 46px);
+  font-weight: 950;
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+}
+
+.fft-viewer-cover p {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.45;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.fft-viewer-paper {
+  height: 100%;
+  padding: clamp(34px, 4vw, 58px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #ffffff;
+}
+
+.fft-viewer-kicker {
+  width: fit-content;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 13px;
+  border: 1px solid rgba(100, 11, 11, 0.14);
+  color: #640b0b;
+  font-size: 11px;
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.fft-viewer-paper h2 {
+  margin: 24px 0 18px;
+  color: #171821;
+  font-size: clamp(32px, 3vw, 48px);
+  font-weight: 950;
+  line-height: 1.04;
+  letter-spacing: -0.055em;
+}
+
+.fft-viewer-paper p,
+.fft-viewer-list {
+  margin: 0;
+  color: #666a75;
+  font-size: clamp(15px, 1.15vw, 17px);
+  line-height: 1.72;
+}
+
+.fft-viewer-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.fft-viewer-facts div {
+  min-height: 82px;
+  padding: 14px 13px;
+  border: 1px solid rgba(100, 11, 11, 0.12);
+  background: #ffffff;
+}
+
+.fft-viewer-facts small {
+  display: block;
+  margin-bottom: 9px;
+  color: #777b84;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.fft-viewer-facts b {
+  color: #640b0b;
+  font-size: 13px;
+  font-weight: 950;
+  line-height: 1.32;
+}
+
+.fft-viewer-note {
+  margin-top: 28px;
+  padding: 18px;
+  border-left: 5px solid #640b0b;
+  background: rgba(100, 11, 11, 0.055);
+}
+
+.fft-viewer-note b {
+  display: block;
+  margin-bottom: 6px;
+  color: #171821;
+  font-size: 15px;
+  font-weight: 950;
+}
+
+.fft-viewer-note span {
+  color: #666a75;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.fft-viewer-list {
+  padding-left: 20px;
+}
+
+.fft-viewer-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.fft-viewer-actions a {
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #640b0b;
+  background: #640b0b;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 950;
+  text-decoration: none;
+}
+
+.fft-viewer-actions a:nth-child(2) {
+  background: #ffffff;
+  color: #640b0b;
+}
+
+.fft-viewer__close {
+  position: fixed;
+  top: 28px;
+  right: 34px;
+  z-index: 10;
+  width: 56px;
+  height: 56px;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 58px;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.fft-viewer__nav {
+  position: fixed;
+  top: 50%;
+  z-index: 10;
+  width: 54px;
+  height: 78px;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 78px;
+  font-weight: 200;
+  line-height: 1;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.fft-viewer__nav--prev {
+  left: 26px;
+}
+
+.fft-viewer__nav--next {
+  right: 26px;
+}
+
+.fft-viewer__nav:disabled {
+  opacity: 0.22;
+  cursor: not-allowed;
+}
+
+.fft-viewer-toolbar {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: 12;
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 1px solid rgba(20, 20, 24, 0.10);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24);
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+
+.fft-viewer-toolbar__page {
+  width: 104px;
+  min-width: 104px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid rgba(20, 20, 24, 0.10);
+  color: #4f545f;
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.fft-viewer-toolbar button {
+  height: 46px;
+  margin: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #5c606a;
+  font-weight: 950;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.fft-viewer-toolbar__text {
+  width: 116px;
+  min-width: 116px;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+.fft-viewer-toolbar__square {
+  width: 50px;
+  min-width: 50px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+
+.fft-viewer-toolbar button:hover,
+.fft-viewer-toolbar button.is-active,
+.fft-viewer.is-focus .fft-viewer-toolbar [data-viewer-focus] {
+  background: #640b0b;
+  color: #ffffff;
+}
+
+.fft-viewer-toolbar button.is-disabled {
+  opacity: 0.46;
+  cursor: not-allowed;
+}
+
+.fft-viewer-toolbar button.is-disabled:hover {
+  background: transparent;
+  color: #5c606a;
+}
+
+.fft-viewer-toolbar__icon {
+  width: 25px;
+  height: 25px;
+  display: block;
+  object-fit: contain;
+  filter: grayscale(1) brightness(0.45);
+  opacity: 0.92;
+  pointer-events: none;
+  transition: transform 180ms ease, filter 180ms ease, opacity 180ms ease;
+}
+
+.fft-viewer-toolbar button:hover .fft-viewer-toolbar__icon,
+.fft-viewer-toolbar button.is-active .fft-viewer-toolbar__icon {
+  filter: brightness(0) invert(1);
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.fft-viewer-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 104px;
+  z-index: 14;
+  max-width: min(520px, calc(100vw - 40px));
+  padding: 14px 18px;
+  background: #171821;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  opacity: 0;
+  transform: translate(-50%, 12px);
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.fft-viewer-toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.fft-viewer.is-focus .fft-viewer__shade {
+  background: rgba(14, 14, 18, 0.88);
+  backdrop-filter: blur(10px);
+}
+
+.fft-viewer.is-focus .fft-viewer__stage {
+  width: min(1220px, calc(100vw - 160px));
+  max-height: calc(100vh - 155px);
+}
+
+.fft-viewer__book.is-turn-next .fft-viewer__page--right {
+  animation: fftViewerTurnNext 520ms cubic-bezier(.2,.76,.2,1) both;
+  transform-origin: left center;
+  z-index: 7;
+}
+
+.fft-viewer__book.is-turn-prev .fft-viewer__page--left {
+  animation: fftViewerTurnPrev 520ms cubic-bezier(.2,.76,.2,1) both;
+  transform-origin: right center;
+  z-index: 7;
+}
+
+@keyframes fftViewerTurnNext {
+  0% {
+    transform: perspective(1400px) rotateY(0deg);
+    filter: brightness(1);
+  }
+
+  42% {
+    transform: perspective(1400px) rotateY(-9deg) translateX(-7px);
+    filter: brightness(0.93);
+    box-shadow: -28px 0 46px rgba(0, 0, 0, 0.18);
+  }
+
+  100% {
+    transform: perspective(1400px) rotateY(0deg);
+    filter: brightness(1);
+  }
+}
+
+@keyframes fftViewerTurnPrev {
+  0% {
+    transform: perspective(1400px) rotateY(0deg);
+    filter: brightness(1);
+  }
+
+  42% {
+    transform: perspective(1400px) rotateY(9deg) translateX(7px);
+    filter: brightness(0.93);
+    box-shadow: 28px 0 46px rgba(0, 0, 0, 0.18);
+  }
+
+  100% {
+    transform: perspective(1400px) rotateY(0deg);
+    filter: brightness(1);
+  }
+}
+
+/* Card preview button consistency */
+.ebrochure-card {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+}
+
+.ebrochure-card__body {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  min-height: 360px !important;
+}
+
+.ebrochure-card__footer {
+  width: 100% !important;
+  margin-top: auto !important;
+  padding-top: 24px !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 14px !important;
+}
+
+.ebrochure-card__meta {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+}
+
+.ebrochure-card-preview {
+  width: 100% !important;
+  min-height: 52px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid #640b0b !important;
+  background: #640b0b !important;
+  color: #ffffff !important;
+  font-family: "Inter", Arial, Helvetica, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+}
+
+.ebrochure-cover-actions,
+.ebrochure-card-actions,
+.ebrochure-action,
+.ebrochure-lottie,
+.ebrochure-action__fallback,
+.ebrochure-like-icon {
+  display: none !important;
+}
+
+@media (max-width: 980px) {
+  .fft-viewer {
+    padding: 58px 18px 92px;
+  }
+
+  .fft-viewer__stage {
+    width: min(560px, calc(100vw - 36px));
+    height: calc(100vh - 170px);
+    aspect-ratio: auto;
+  }
+
+  .fft-viewer__book {
+    display: block;
+    overflow-y: auto;
+    aspect-ratio: auto;
+  }
+
+  .fft-viewer__page {
+    min-height: 560px;
+    height: auto;
+  }
+
+  .fft-viewer__nav {
+    display: none;
+  }
+
+  .fft-viewer-toolbar {
+    width: calc(100vw - 28px);
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .fft-viewer-paper,
+  .fft-viewer-cover {
+    padding: 32px 24px;
+  }
+
+  .fft-viewer-facts,
+  .fft-viewer-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .fft-viewer-paper h2 {
+    font-size: 34px;
+  }
+}
