@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
@@ -125,32 +125,94 @@
       </div>
     </header>
 
-    <main class="page-content">
-      <section class="page-content-hero">
-        <div class="page-content-shell">
-          <p class="page-content-kicker" data-page-id="MAHASISWA" data-page-en="STUDENTS">MAHASISWA</p>
-          <h1 data-page-id="Testimoni Mahasiswa" data-page-en="Student Testimonials">Testimoni Mahasiswa</h1>
-          <p class="page-content-lead" data-page-id="Halaman ini disiapkan untuk menampilkan pengalaman, kesan, dan cerita mahasiswa FFT." data-page-en="This page is prepared to display FFT students' experiences, impressions, and stories.">Halaman ini disiapkan untuk menampilkan pengalaman, kesan, dan cerita mahasiswa FFT.</p>
-        </div>
-      </section>
-
-      <section class="page-content-body">
-        <div class="page-content-shell page-content-grid">
-<article class="page-content-panel">
-            <div class="page-content-panel-header">
-              <h2 data-page-id="Testimoni" data-page-en="Testimonials">Testimoni</h2>
-              <p data-page-id="Konten testimoni akan dikelola melalui backend setelah data resmi tersedia." data-page-en="Testimonial content will be managed through the backend after official data is available.">Konten testimoni akan dikelola melalui backend setelah data resmi tersedia.</p>
-            </div>
-              <div class="maintenance-box">
-                <strong data-page-id="Konten Sedang Maintenance" data-page-en="Content Under Maintenance">Konten Sedang Maintenance</strong>
-                <p data-page-id="Konten halaman ini sedang disiapkan dan akan dikelola melalui backend. Informasi akan ditampilkan setelah data resmi fakultas tersedia." data-page-en="This page content is being prepared and will be managed through the backend. Information will be displayed after official faculty data is available.">
-                  Konten halaman ini sedang disiapkan dan akan dikelola melalui backend. Informasi akan ditampilkan setelah data resmi fakultas tersedia.
-                </p>
+    <main class="page-content testimonial-page" data-testimonial-root>
+            <section class="testimonial-hero">
+              <div class="testimonial-kicker">
+                <span></span>
+                <strong data-page-id="MAHASISWA" data-page-en="STUDENTS">MAHASISWA</strong>
               </div>
-          </article>
-        </div>
-      </section>
-    </main>
+
+              <div class="testimonial-hero-grid">
+                <div>
+                  <h1 data-page-id="Testimoni Mahasiswa dan Alumni" data-page-en="Student and Alumni Testimonials">
+                    Testimoni Mahasiswa dan Alumni
+                  </h1>
+                  <p data-page-id="Halaman ini disiapkan untuk menampilkan pengalaman mahasiswa, alumni, dan pemangku kepentingan tentang proses belajar, pembinaan karakter, dan kehidupan akademik di Fakultas Filsafat Teologi."
+                     data-page-en="This page is prepared to present the experiences of students, alumni, and stakeholders regarding learning, character formation, and academic life at the Faculty of Philosophy and Theology.">
+                    Halaman ini disiapkan untuk menampilkan pengalaman mahasiswa, alumni, dan pemangku kepentingan tentang proses belajar, pembinaan karakter, dan kehidupan akademik di Fakultas Filsafat Teologi.
+                  </p>
+                </div>
+
+                <aside class="testimonial-hero-card">
+                  <p data-page-id="STATUS KONTEN" data-page-en="CONTENT STATUS">STATUS KONTEN</p>
+                  <strong data-page-id="Maintenance" data-page-en="Maintenance">Maintenance</strong>
+                  <span data-page-id="Data testimoni final nantinya dapat dikelola melalui backend agar admin dapat menambah, mengubah, dan memilih testimoni unggulan."
+                        data-page-en="Final testimonial data can later be managed through the backend so administrators can add, edit, and select featured testimonials.">
+                    Data testimoni final nantinya dapat dikelola melalui backend agar admin dapat menambah, mengubah, dan memilih testimoni unggulan.
+                  </span>
+                </aside>
+              </div>
+            </section>
+
+            <section class="testimonial-workspace" aria-labelledby="testimonialTitle">
+              <div class="testimonial-head">
+                <div>
+                  <p data-page-id="SUARA FFT" data-page-en="FFT VOICES">SUARA FFT</p>
+                  <h2 id="testimonialTitle" data-page-id="Cerita dan Pengalaman" data-page-en="Stories and Experiences">
+                    Cerita dan Pengalaman
+                  </h2>
+                </div>
+
+                <label class="testimonial-search">
+                  <span data-page-id="Cari Testimoni" data-page-en="Search Testimonials">Cari Testimoni</span>
+                  <input type="search"
+                         data-testimonial-search
+                         data-placeholder-id="Cari mahasiswa, alumni, pelayanan..."
+                         data-placeholder-en="Search students, alumni, service..."
+                         placeholder="Cari mahasiswa, alumni, pelayanan...">
+                </label>
+              </div>
+
+              <div class="testimonial-tabs" role="tablist" aria-label="Testimonial categories">
+                <button type="button" class="is-active" data-testimonial-category="all" data-page-id="Semua" data-page-en="All">Semua</button>
+                <button type="button" data-testimonial-category="mahasiswa" data-page-id="Mahasiswa" data-page-en="Students">Mahasiswa</button>
+                <button type="button" data-testimonial-category="alumni" data-page-id="Alumni" data-page-en="Alumni">Alumni</button>
+                <button type="button" data-testimonial-category="orang-tua" data-page-id="Orang Tua" data-page-en="Parents">Orang Tua</button>
+              </div>
+
+              <div class="testimonial-stats">
+                <article>
+                  <span data-page-id="Kategori Aktif" data-page-en="Active Category">Kategori Aktif</span>
+                  <strong data-testimonial-stat-category>Semua</strong>
+                </article>
+                <article>
+                  <span data-page-id="Jumlah Testimoni" data-page-en="Total Testimonials">Jumlah Testimoni</span>
+                  <strong data-testimonial-stat-count>0</strong>
+                </article>
+                <article>
+                  <span data-page-id="Status Data" data-page-en="Data Status">Status Data</span>
+                  <strong data-testimonial-stat-status>Maintenance</strong>
+                </article>
+              </div>
+
+              <section class="testimonial-featured" aria-labelledby="featuredTestimonialTitle">
+                <div class="testimonial-featured-mark">“</div>
+                <div>
+                  <p data-page-id="TESTIMONI UNGGULAN" data-page-en="FEATURED TESTIMONIAL">TESTIMONI UNGGULAN</p>
+                  <h3 id="featuredTestimonialTitle" data-featured-title>Konten Sedang Maintenance</h3>
+                  <blockquote data-featured-quote>
+                    Data testimoni akan ditampilkan setelah tersedia dari backend.
+                  </blockquote>
+                  <div class="testimonial-featured-meta">
+                    <strong data-featured-name>FFT UASN</strong>
+                    <span data-featured-role>Faculty Testimonial</span>
+                  </div>
+                </div>
+              </section>
+
+              <section class="testimonial-grid" data-testimonial-list aria-live="polite"></section>
+            </section>
+          </main>
 
 <footer id="kontak" class="fft-footer" aria-labelledby="footerTitle">
       <canvas

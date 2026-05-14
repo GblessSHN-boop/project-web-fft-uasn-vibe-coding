@@ -663,3 +663,241 @@ document.addEventListener("DOMContentLoaded", function () {
   window.renderAcademicRules = renderRules;
 })();
 // FFT ACADEMIC RULES PAGE END
+
+// FFT TESTIMONIAL PAGE START
+(function () {
+  const testimonialData = [
+    {
+      category: "mahasiswa",
+      nameId: "Mahasiswa FFT",
+      nameEn: "FFT Student",
+      roleId: "Mahasiswa Aktif",
+      roleEn: "Active Student",
+      titleId: "Konten Sedang Maintenance",
+      titleEn: "Content Under Maintenance",
+      quoteId: "Testimoni mahasiswa akan ditampilkan setelah data resmi tersedia dari backend.",
+      quoteEn: "Student testimonials will be displayed once official data is available from the backend."
+    },
+    {
+      category: "alumni",
+      nameId: "Alumni FFT",
+      nameEn: "FFT Alumni",
+      roleId: "Alumni",
+      roleEn: "Alumni",
+      titleId: "Konten Sedang Maintenance",
+      titleEn: "Content Under Maintenance",
+      quoteId: "Cerita alumni tentang studi, pelayanan, dan pengembangan karakter akan ditampilkan di bagian ini.",
+      quoteEn: "Alumni stories about study, service, and character development will be displayed in this section."
+    },
+    {
+      category: "orang-tua",
+      nameId: "Orang Tua Mahasiswa",
+      nameEn: "Student Parent",
+      roleId: "Orang Tua",
+      roleEn: "Parent",
+      titleId: "Konten Sedang Maintenance",
+      titleEn: "Content Under Maintenance",
+      quoteId: "Pandangan orang tua tentang pembinaan mahasiswa akan ditampilkan setelah data tersedia.",
+      quoteEn: "Parent perspectives on student formation will be displayed once data is available."
+    },
+    {
+      category: "mahasiswa",
+      nameId: "Mahasiswa Teologi",
+      nameEn: "Theology Student",
+      roleId: "Mahasiswa",
+      roleEn: "Student",
+      titleId: "Konten Sedang Maintenance",
+      titleEn: "Content Under Maintenance",
+      quoteId: "Data testimoni ini disiapkan sebagai placeholder sampai sistem backend mengelola konten final.",
+      quoteEn: "This testimonial data is prepared as a placeholder until the backend system manages the final content."
+    },
+    {
+      category: "alumni",
+      nameId: "Lulusan FFT",
+      nameEn: "FFT Graduate",
+      roleId: "Lulusan",
+      roleEn: "Graduate",
+      titleId: "Konten Sedang Maintenance",
+      titleEn: "Content Under Maintenance",
+      quoteId: "Testimoni lulusan akan membantu calon mahasiswa memahami dampak pendidikan dan pelayanan.",
+      quoteEn: "Graduate testimonials will help prospective students understand the impact of education and service."
+    },
+    {
+      category: "mahasiswa",
+      nameId: "Mahasiswa Pelayanan",
+      nameEn: "Service Student",
+      roleId: "Mahasiswa",
+      roleEn: "Student",
+      titleId: "Konten Sedang Maintenance",
+      titleEn: "Content Under Maintenance",
+      quoteId: "Bagian ini akan memuat pengalaman mahasiswa dalam pelayanan kampus dan pembentukan spiritual.",
+      quoteEn: "This section will contain student experiences in campus service and spiritual formation."
+    }
+  ];
+
+  function getTestimonialLang() {
+    const keys = ["fft-language", "siteLanguage", "fftLang", "fft_language", "selectedLanguage", "language"];
+
+    for (const key of keys) {
+      const value = (localStorage.getItem(key) || "").toLowerCase();
+      if (value === "en" || value.startsWith("en")) return "en";
+      if (value === "id" || value.startsWith("id")) return "id";
+    }
+
+    const activeButton = document.querySelector(".fft-floating-language-btn.is-active, .fft-floating-language-btn[aria-pressed='true']");
+    if (activeButton) {
+      const value = (
+        activeButton.dataset.fftLang ||
+        activeButton.dataset.lang ||
+        activeButton.textContent ||
+        ""
+      ).trim().toLowerCase();
+
+      if (value === "en" || value.startsWith("en")) return "en";
+      if (value === "id" || value.startsWith("id")) return "id";
+    }
+
+    return (document.documentElement.lang || "").toLowerCase().startsWith("en") ? "en" : "id";
+  }
+
+  function text(item, key) {
+    const lang = getTestimonialLang();
+    return lang === "en" ? item[key + "En"] : item[key + "Id"];
+  }
+
+  function activeCategory() {
+    const active = document.querySelector("[data-testimonial-category].is-active");
+    return active ? active.getAttribute("data-testimonial-category") : "all";
+  }
+
+  function categoryLabel(category) {
+    const lang = getTestimonialLang();
+    const map = {
+      all: { id: "Semua", en: "All" },
+      mahasiswa: { id: "Mahasiswa", en: "Students" },
+      alumni: { id: "Alumni", en: "Alumni" },
+      "orang-tua": { id: "Orang Tua", en: "Parents" }
+    };
+
+    return lang === "en" ? map[category].en : map[category].id;
+  }
+
+  function initials(name) {
+    return name
+      .split(" ")
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(function (word) { return word[0]; })
+      .join("")
+      .toUpperCase();
+  }
+
+  function renderTestimonials() {
+    const root = document.querySelector("[data-testimonial-root]");
+    if (!root) return;
+
+    const lang = getTestimonialLang();
+    const category = activeCategory();
+    const query = (root.querySelector("[data-testimonial-search]")?.value || "").trim().toLowerCase();
+
+    let rows = testimonialData.filter(function (item) {
+      return category === "all" || item.category === category;
+    });
+
+    if (query) {
+      rows = rows.filter(function (item) {
+        return [
+          item.nameId,
+          item.nameEn,
+          item.roleId,
+          item.roleEn,
+          item.titleId,
+          item.titleEn,
+          item.quoteId,
+          item.quoteEn
+        ].join(" ").toLowerCase().includes(query);
+      });
+    }
+
+    const statCategory = root.querySelector("[data-testimonial-stat-category]");
+    const statCount = root.querySelector("[data-testimonial-stat-count]");
+    const statStatus = root.querySelector("[data-testimonial-stat-status]");
+
+    if (statCategory) statCategory.textContent = categoryLabel(category);
+    if (statCount) statCount.textContent = rows.length;
+    if (statStatus) statStatus.textContent = "Maintenance";
+
+    const featured = rows[0] || testimonialData[0];
+
+    const featuredTitle = root.querySelector("[data-featured-title]");
+    const featuredQuote = root.querySelector("[data-featured-quote]");
+    const featuredName = root.querySelector("[data-featured-name]");
+    const featuredRole = root.querySelector("[data-featured-role]");
+
+    if (featuredTitle) featuredTitle.textContent = text(featured, "title");
+    if (featuredQuote) featuredQuote.textContent = text(featured, "quote");
+    if (featuredName) featuredName.textContent = text(featured, "name");
+    if (featuredRole) featuredRole.textContent = text(featured, "role");
+
+    const list = root.querySelector("[data-testimonial-list]");
+    if (!list) return;
+
+    if (!rows.length) {
+      list.innerHTML = `<div class="testimonial-empty">${lang === "en" ? "No testimonial matches the current filter." : "Tidak ada testimoni yang cocok dengan filter saat ini."}</div>`;
+      return;
+    }
+
+    list.innerHTML = rows.map(function (item) {
+      const name = text(item, "name");
+
+      return `
+        <article class="testimonial-card">
+          <div class="testimonial-card-top">
+            <div class="testimonial-avatar">${initials(name)}</div>
+            <div>
+              <h3>${name}</h3>
+              <span>${text(item, "role")}</span>
+            </div>
+          </div>
+          <blockquote>${text(item, "quote")}</blockquote>
+        </article>
+      `;
+    }).join("");
+
+    if (typeof window.applyFFTPageLanguage === "function") {
+      window.applyFFTPageLanguage();
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const root = document.querySelector("[data-testimonial-root]");
+    if (!root) return;
+
+    root.querySelectorAll("[data-testimonial-category]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        root.querySelectorAll("[data-testimonial-category]").forEach(function (item) {
+          item.classList.toggle("is-active", item === button);
+        });
+
+        renderTestimonials();
+      });
+    });
+
+    root.querySelector("[data-testimonial-search]")?.addEventListener("input", renderTestimonials);
+
+    document.querySelectorAll(".fft-floating-language-btn, [data-fft-lang], [data-lang]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        setTimeout(renderTestimonials, 0);
+        setTimeout(renderTestimonials, 80);
+        setTimeout(renderTestimonials, 180);
+      });
+    });
+
+    renderTestimonials();
+  });
+
+  window.addEventListener("fft-language-change", renderTestimonials);
+  window.addEventListener("storage", renderTestimonials);
+  window.renderTestimonialsPage = renderTestimonials;
+})();
+// FFT TESTIMONIAL PAGE END
