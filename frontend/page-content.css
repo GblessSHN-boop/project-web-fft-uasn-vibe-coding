@@ -3111,3 +3111,315 @@
   }
 }
 /* FFT CONTACT COPY POLISH END */
+
+/* FFT OFFLINE SIMULATION START */
+.offline-simulation-page {
+  background: linear-gradient(180deg, #ffffff 0%, #fbf7f6 100%);
+}
+
+.offline-hero {
+  padding: clamp(58px, 7vw, 104px) clamp(24px, 5vw, 72px);
+  border-bottom: 1px solid rgba(100, 11, 11, 0.12);
+}
+
+.offline-hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.75fr);
+  gap: clamp(34px, 5vw, 82px);
+  align-items: end;
+}
+
+.offline-eyebrow,
+.offline-section-head p {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.offline-eyebrow span,
+.offline-section-head p::before {
+  content: "";
+  width: 58px;
+  height: 4px;
+  background: #640b0b;
+  display: block;
+  flex: 0 0 auto;
+}
+
+.offline-eyebrow strong,
+.offline-section-head p,
+.offline-hero__card p,
+.offline-info-panel p {
+  margin: 0;
+  color: #640b0b;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.offline-hero h1 {
+  margin: 24px 0 0;
+  max-width: 980px;
+  color: #19191f;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: clamp(52px, 6.5vw, 104px);
+  font-weight: 900;
+  line-height: 0.94;
+  letter-spacing: -0.07em;
+}
+
+.offline-hero__copy > p {
+  margin: 28px 0 0;
+  max-width: 850px;
+  color: rgba(32, 32, 38, 0.72);
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: clamp(17px, 1.35vw, 21px);
+  line-height: 1.75;
+}
+
+.offline-hero__actions,
+.offline-info-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.offline-hero__actions a,
+.offline-info-actions a {
+  min-height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 22px;
+  border: 1px solid #640b0b;
+  background: #640b0b;
+  color: #ffffff;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-weight: 900;
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.offline-hero__actions a:nth-child(2),
+.offline-info-actions a:nth-child(2) {
+  background: #ffffff;
+  color: #640b0b;
+}
+
+.offline-hero__actions a:hover,
+.offline-info-actions a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgba(67, 8, 8, 0.13);
+}
+
+.offline-hero__card,
+.offline-step-card,
+.offline-checklist,
+.offline-info-panel {
+  border: 1px solid rgba(100, 11, 11, 0.12);
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(67, 8, 8, 0.08);
+}
+
+.offline-hero__card {
+  padding: clamp(28px, 3vw, 38px);
+  border-left: 6px solid #640b0b;
+}
+
+.offline-hero__card h2,
+.offline-info-panel h3 {
+  margin: 16px 0 0;
+  color: #19191f;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: clamp(32px, 3.2vw, 48px);
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+}
+
+.offline-hero__card span,
+.offline-info-panel span {
+  display: block;
+  margin-top: 14px;
+  color: rgba(32, 32, 38, 0.68);
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.offline-flow {
+  padding: clamp(48px, 6vw, 86px) clamp(24px, 5vw, 72px);
+}
+
+.offline-section-head {
+  max-width: 900px;
+  margin-bottom: 34px;
+}
+
+.offline-section-head h2 {
+  margin: 18px 0 0;
+  color: #19191f;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: clamp(42px, 5vw, 78px);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+}
+
+.offline-section-head > span {
+  display: block;
+  margin-top: 16px;
+  color: rgba(32, 32, 38, 0.68);
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.offline-step-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.offline-step-card {
+  position: relative;
+  min-height: 260px;
+  padding: 28px;
+  overflow: hidden;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.offline-step-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 70px rgba(67, 8, 8, 0.12);
+}
+
+.offline-step-card::after {
+  content: "";
+  position: absolute;
+  right: -42px;
+  bottom: -42px;
+  width: 130px;
+  height: 130px;
+  border-radius: 999px;
+  background: rgba(100, 11, 11, 0.06);
+}
+
+.offline-step-card span {
+  display: inline-flex;
+  width: 54px;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+  background: #640b0b;
+  color: #ffffff;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-weight: 900;
+}
+
+.offline-step-card h3 {
+  margin: 22px 0 0;
+  color: #19191f;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 27px;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+
+.offline-step-card p {
+  margin: 14px 0 0;
+  color: rgba(32, 32, 38, 0.68);
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.offline-support {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+  gap: 28px;
+  padding: 0 clamp(24px, 5vw, 72px) clamp(58px, 7vw, 104px);
+}
+
+.offline-checklist,
+.offline-info-panel {
+  padding: clamp(28px, 4vw, 46px);
+}
+
+.offline-section-head--compact {
+  margin-bottom: 24px;
+}
+
+.offline-section-head--compact h2 {
+  font-size: clamp(34px, 4vw, 58px);
+}
+
+.offline-checklist ul {
+  display: grid;
+  gap: 14px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.offline-checklist li {
+  position: relative;
+  padding: 18px 18px 18px 54px;
+  border: 1px solid rgba(100, 11, 11, 0.1);
+  background: #ffffff;
+  color: #19191f;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.offline-checklist li::before {
+  content: "✓";
+  position: absolute;
+  left: 20px;
+  top: 18px;
+  color: #640b0b;
+  font-weight: 900;
+}
+
+.offline-info-panel {
+  background: #080808;
+  border-color: #080808;
+}
+
+.offline-info-panel p,
+.offline-info-panel h3 {
+  color: #ffffff;
+}
+
+.offline-info-panel span {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (max-width: 1120px) {
+  .offline-hero__inner,
+  .offline-support {
+    grid-template-columns: 1fr;
+  }
+
+  .offline-step-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .offline-hero h1 {
+    font-size: clamp(42px, 13vw, 68px);
+  }
+
+  .offline-step-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .offline-hero__actions a,
+  .offline-info-actions a {
+    width: 100%;
+  }
+}
+/* FFT OFFLINE SIMULATION END */

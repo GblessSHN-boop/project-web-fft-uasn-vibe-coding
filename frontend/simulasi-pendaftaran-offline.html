@@ -95,7 +95,6 @@
                 <ul class="dropdown-menu">
                   <li><a href="alur-pendaftaran.html" data-i18n="nav_admission_flow" data-page-id="Alur Pendaftaran" data-page-en="Admission Flow">Alur Pendaftaran</a></li>
                   <li><a href="simulasi-pendaftaran-offline.html" data-i18n="nav_offline_simulation" data-page-id="Simulasi Offline" data-page-en="Offline Simulation">Simulasi Offline</a></li>
-                  <li><a href="persyaratan.html" data-i18n="nav_requirements" data-page-id="Persyaratan" data-page-en="Requirements">Persyaratan</a></li>
                   <li><a href="e-brochure.html" data-i18n="nav_ebrochure" data-page-id="E-Brochure" data-page-en="E-Brochure">E-Brochure</a></li>
                 </ul>
               </li>
@@ -124,68 +123,143 @@
         </div>
       </div>
     </header>
-    <main class="registration-page">
-<section class="registration-hero">
-  <div class="registration-hero-inner">
-    <div class="registration-hero-copy">
-      <div class="registration-kicker">
-        <span></span>
-        <strong data-page-id="PENDAFTARAN" data-page-en="ADMISSION">PENDAFTARAN</strong>
+    <main class="offline-simulation-page">
+  <section class="offline-hero">
+    <div class="offline-hero__inner">
+      <div class="offline-hero__copy">
+        <div class="offline-eyebrow">
+          <span></span>
+          <strong data-page-id="PENDAFTARAN" data-page-en="ADMISSION">PENDAFTARAN</strong>
+        </div>
+
+        <h1 data-page-id="Simulasi Pendaftaran Offline" data-page-en="Offline Admission Simulation">
+          Simulasi Pendaftaran Offline
+        </h1>
+
+        <p data-page-id="Panduan ini membantu calon mahasiswa memahami proses pendaftaran secara langsung di kampus, mulai dari konsultasi awal sampai arahan tahap berikutnya."
+           data-page-en="This guide helps prospective students understand the on-campus admission process, from initial consultation to the next-stage instructions.">
+          Panduan ini membantu calon mahasiswa memahami proses pendaftaran secara langsung di kampus, mulai dari konsultasi awal sampai arahan tahap berikutnya.
+        </p>
+
+        <div class="offline-hero__actions">
+          <a href="#offlineFlow" data-page-id="Lihat Alur Simulasi" data-page-en="View Simulation Flow">Lihat Alur Simulasi</a>
+          <a href="kontak.html" data-page-id="Hubungi Fakultas" data-page-en="Contact Faculty">Hubungi Fakultas</a>
+        </div>
       </div>
 
-      <h1 data-page-id="Simulasi Pendaftaran Offline" data-page-en="Offline Admission Simulation">Simulasi Pendaftaran Offline</h1>
+      <aside class="offline-hero__card">
+        <p data-page-id="TUJUAN HALAMAN" data-page-en="PAGE PURPOSE">TUJUAN HALAMAN</p>
+        <h2 data-page-id="Persiapan Kunjungan Kampus" data-page-en="Campus Visit Preparation">
+          Persiapan Kunjungan Kampus
+        </h2>
+        <span data-page-id="Calon mahasiswa dapat melihat gambaran proses sebelum datang ke kampus agar komunikasi dengan petugas pendaftaran lebih terarah."
+              data-page-en="Prospective students can review the process before coming to campus so communication with admission staff is more focused.">
+          Calon mahasiswa dapat melihat gambaran proses sebelum datang ke kampus agar komunikasi dengan petugas pendaftaran lebih terarah.
+        </span>
+      </aside>
+    </div>
+  </section>
 
-      <p data-page-id="Panduan simulasi pendaftaran secara langsung bagi calon mahasiswa yang membutuhkan arahan administratif di kampus." data-page-en="A direct admission simulation guide for prospective students who need administrative guidance on campus.">
-        Panduan simulasi pendaftaran secara langsung bagi calon mahasiswa yang membutuhkan arahan administratif di kampus.
-      </p>
+  <section class="offline-flow" id="offlineFlow">
+    <div class="offline-section-head">
+      <p data-page-id="ALUR SIMULASI" data-page-en="SIMULATION FLOW">ALUR SIMULASI</p>
+      <h2 data-page-id="Tahapan Pendaftaran Langsung" data-page-en="On-site Admission Steps">
+        Tahapan Pendaftaran Langsung
+      </h2>
+      <span data-page-id="Alur ini disusun agar calon mahasiswa memahami urutan layanan ketika melakukan konsultasi atau simulasi pendaftaran secara offline."
+            data-page-en="This flow is structured so prospective students understand the service sequence when doing an offline admission consultation or simulation.">
+        Alur ini disusun agar calon mahasiswa memahami urutan layanan ketika melakukan konsultasi atau simulasi pendaftaran secara offline.
+      </span>
     </div>
 
-    <aside class="registration-status-panel">
-      <p data-page-id="STATUS HALAMAN" data-page-en="PAGE STATUS">STATUS HALAMAN</p>
-      <h2 data-page-id="Konten Sedang Maintenance" data-page-en="Content Under Maintenance">Konten Sedang Maintenance</h2>
-      <span data-page-id="Struktur halaman sudah disiapkan. Data resmi nantinya dapat dikelola melalui backend."
-            data-page-en="The page structure has been prepared. Official data can later be managed through the backend.">
-        Struktur halaman sudah disiapkan. Data resmi nantinya dapat dikelola melalui backend.
+    <div class="offline-step-grid">
+      <article class="offline-step-card">
+        <span>01</span>
+        <h3 data-page-id="Datang ke Area Pendaftaran" data-page-en="Arrive at the Admission Area">Datang ke Area Pendaftaran</h3>
+        <p data-page-id="Calon mahasiswa datang ke bagian pendaftaran atau titik layanan yang telah diarahkan oleh pihak kampus."
+           data-page-en="Prospective students arrive at the admission section or service point directed by the campus.">
+          Calon mahasiswa datang ke bagian pendaftaran atau titik layanan yang telah diarahkan oleh pihak kampus.
+        </p>
+      </article>
+
+      <article class="offline-step-card">
+        <span>02</span>
+        <h3 data-page-id="Konsultasi Awal" data-page-en="Initial Consultation">Konsultasi Awal</h3>
+        <p data-page-id="Petugas membantu menjelaskan program studi, persyaratan umum, serta alur administrasi yang perlu dipahami."
+           data-page-en="Staff help explain the study program, general requirements, and administrative flow that needs to be understood.">
+          Petugas membantu menjelaskan program studi, persyaratan umum, serta alur administrasi yang perlu dipahami.
+        </p>
+      </article>
+
+      <article class="offline-step-card">
+        <span>03</span>
+        <h3 data-page-id="Pemeriksaan Dokumen" data-page-en="Document Review">Pemeriksaan Dokumen</h3>
+        <p data-page-id="Dokumen awal diperiksa agar calon mahasiswa mengetahui data apa yang sudah siap dan apa yang masih perlu dilengkapi."
+           data-page-en="Initial documents are reviewed so prospective students know what data is ready and what still needs completion.">
+          Dokumen awal diperiksa agar calon mahasiswa mengetahui data apa yang sudah siap dan apa yang masih perlu dilengkapi.
+        </p>
+      </article>
+
+      <article class="offline-step-card">
+        <span>04</span>
+        <h3 data-page-id="Simulasi Pengisian Data" data-page-en="Data Entry Simulation">Simulasi Pengisian Data</h3>
+        <p data-page-id="Calon mahasiswa diberi gambaran pengisian data pendaftaran agar tidak keliru saat proses resmi dilakukan."
+           data-page-en="Prospective students receive a preview of admission data entry to avoid mistakes during the official process.">
+          Calon mahasiswa diberi gambaran pengisian data pendaftaran agar tidak keliru saat proses resmi dilakukan.
+        </p>
+      </article>
+
+      <article class="offline-step-card">
+        <span>05</span>
+        <h3 data-page-id="Arahan Tahap Berikutnya" data-page-en="Next-stage Direction">Arahan Tahap Berikutnya</h3>
+        <p data-page-id="Petugas menyampaikan langkah lanjutan, termasuk dokumen tambahan, jadwal, dan kanal komunikasi yang dapat digunakan."
+           data-page-en="Staff provide the next steps, including additional documents, schedule, and communication channels that can be used.">
+          Petugas menyampaikan langkah lanjutan, termasuk dokumen tambahan, jadwal, dan kanal komunikasi yang dapat digunakan.
+        </p>
+      </article>
+
+      <article class="offline-step-card">
+        <span>06</span>
+        <h3 data-page-id="Konfirmasi Kontak" data-page-en="Contact Confirmation">Konfirmasi Kontak</h3>
+        <p data-page-id="Calon mahasiswa memastikan nomor WhatsApp atau email aktif agar pihak fakultas dapat memberi informasi lanjutan."
+           data-page-en="Prospective students confirm an active WhatsApp number or email so the faculty can provide follow-up information.">
+          Calon mahasiswa memastikan nomor WhatsApp atau email aktif agar pihak fakultas dapat memberi informasi lanjutan.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="offline-support">
+    <div class="offline-checklist">
+      <div class="offline-section-head offline-section-head--compact">
+        <p data-page-id="CHECKLIST CEPAT" data-page-en="QUICK CHECKLIST">CHECKLIST CEPAT</p>
+        <h2 data-page-id="Sebelum Datang ke Kampus" data-page-en="Before Coming to Campus">Sebelum Datang ke Kampus</h2>
+      </div>
+
+      <ul>
+        <li data-page-id="Siapkan identitas diri calon mahasiswa." data-page-en="Prepare the prospective student's identity document.">Siapkan identitas diri calon mahasiswa.</li>
+        <li data-page-id="Bawa ijazah atau surat keterangan lulus jika sudah tersedia." data-page-en="Bring a diploma or graduation certificate if available.">Bawa ijazah atau surat keterangan lulus jika sudah tersedia.</li>
+        <li data-page-id="Siapkan nomor WhatsApp aktif untuk komunikasi lanjutan." data-page-en="Prepare an active WhatsApp number for follow-up communication.">Siapkan nomor WhatsApp aktif untuk komunikasi lanjutan.</li>
+        <li data-page-id="Catat pertanyaan tentang program studi, biaya, atau jadwal pendaftaran." data-page-en="Write down questions about the study program, fees, or admission schedule.">Catat pertanyaan tentang program studi, biaya, atau jadwal pendaftaran.</li>
+      </ul>
+    </div>
+
+    <aside class="offline-info-panel">
+      <p data-page-id="CATATAN LAYANAN" data-page-en="SERVICE NOTE">CATATAN LAYANAN</p>
+      <h3 data-page-id="Simulasi Bukan Pendaftaran Final" data-page-en="Simulation Is Not Final Registration">
+        Simulasi Bukan Pendaftaran Final
+      </h3>
+      <span data-page-id="Halaman ini berfungsi sebagai panduan awal. Pendaftaran final tetap mengikuti arahan resmi dari fakultas dan sistem backend yang akan disiapkan."
+            data-page-en="This page serves as an initial guide. Final registration still follows official faculty instructions and the backend system that will be prepared.">
+        Halaman ini berfungsi sebagai panduan awal. Pendaftaran final tetap mengikuti arahan resmi dari fakultas dan sistem backend yang akan disiapkan.
       </span>
+
+      <div class="offline-info-actions">
+        <a href="alur-pendaftaran.html" data-page-id="Lihat Alur Pendaftaran" data-page-en="View Admission Flow">Lihat Alur Pendaftaran</a>
+        <a href="kontak.html" data-page-id="Tanya Fakultas" data-page-en="Ask Faculty">Tanya Fakultas</a>
+      </div>
     </aside>
-  </div>
-</section>
-<section class="registration-section offline-section">
-  <div class="registration-section-head">
-    <p data-page-id="SIMULASI OFFLINE" data-page-en="OFFLINE SIMULATION">SIMULASI OFFLINE</p>
-    <h2 data-page-id="Panduan Pendaftaran Secara Langsung" data-page-en="Direct Admission Guidance">
-      Panduan Pendaftaran Secara Langsung
-    </h2>
-  </div>
-
-  <div class="offline-layout">
-    <div class="offline-highlight">
-      <strong data-page-id="Datang ke Kampus" data-page-en="Visit the Campus">Datang ke Kampus</strong>
-      <span data-page-id="Layanan ini membantu calon mahasiswa memahami proses pendaftaran tanpa harus menebak alur administrasi."
-            data-page-en="This service helps prospective students understand the admission process without guessing the administrative flow.">
-        Layanan ini membantu calon mahasiswa memahami proses pendaftaran tanpa harus menebak alur administrasi.
-      </span>
-    </div>
-
-    <div class="offline-card-grid">
-      <article class="offline-card">
-          <div class="offline-icon">OFF</div>
-          <h3 data-page-id="Konsultasi Awal" data-page-en="Initial Consultation">Konsultasi Awal</h3>
-          <p data-page-id="Calon mahasiswa dapat datang langsung untuk memperoleh penjelasan awal dari petugas pendaftaran." data-page-en="Prospective students may visit directly to receive initial guidance from admission staff.">Calon mahasiswa dapat datang langsung untuk memperoleh penjelasan awal dari petugas pendaftaran.</p>
-        </article>
-<article class="offline-card">
-          <div class="offline-icon">OFF</div>
-          <h3 data-page-id="Simulasi Pengisian Data" data-page-en="Data Entry Simulation">Simulasi Pengisian Data</h3>
-          <p data-page-id="Petugas membantu menjelaskan bagian data yang perlu dipahami sebelum formulir resmi diisi." data-page-en="Staff explain the data sections that must be understood before the official form is completed.">Petugas membantu menjelaskan bagian data yang perlu dipahami sebelum formulir resmi diisi.</p>
-        </article>
-<article class="offline-card">
-          <div class="offline-icon">OFF</div>
-          <h3 data-page-id="Arahan Dokumen" data-page-en="Document Guidance">Arahan Dokumen</h3>
-          <p data-page-id="Calon mahasiswa menerima arahan mengenai dokumen yang perlu disiapkan." data-page-en="Prospective students receive guidance on documents that need to be prepared.">Calon mahasiswa menerima arahan mengenai dokumen yang perlu disiapkan.</p>
-        </article>
-    </div>
-  </div>
-</section>
+  </section>
 </main>
 
     <footer id="kontak" class="fft-footer" aria-labelledby="footerTitle">
@@ -435,6 +509,7 @@
 
   
 </html>
+
 
 
 
