@@ -3654,3 +3654,26 @@
   }
 }
 /* FFT OFFLINE CHECKPOINT WATERMARK END */
+
+/* FFT OFFLINE STEP BUTTON ALIGN START */
+.offline-step-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.offline-step-card p {
+  margin-bottom: 0;
+}
+
+.offline-step-complete {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.offline-step-card .offline-step-complete {
+  position: relative;
+  left: 0;
+  bottom: 0;
+}
+/* FFT OFFLINE STEP BUTTON ALIGN END */
