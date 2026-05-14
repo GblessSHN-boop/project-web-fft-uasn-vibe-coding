@@ -4572,3 +4572,37 @@ body.ebrochure-modal-open {
   }
 }
 /* FFT EBROCHURE LIBRARY END */
+
+/* FFT EBROCHURE CARD BADGE ALIGN START */
+.ebrochure-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.ebrochure-card__cover {
+  flex: 0 0 auto;
+}
+
+.ebrochure-card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 300px;
+}
+
+.ebrochure-card__body span {
+  margin-bottom: 0;
+}
+
+.ebrochure-card__body div {
+  margin-top: auto;
+  align-self: flex-start;
+  padding-top: 22px;
+}
+
+.ebrochure-grid {
+  align-items: stretch;
+}
+/* FFT EBROCHURE CARD BADGE ALIGN END */
