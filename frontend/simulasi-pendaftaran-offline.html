@@ -172,59 +172,225 @@
       </span>
     </div>
 
+    
+<div class="offline-checkpoint" id="offlineCheckpoint">
+  <div class="offline-checkpoint__header">
+    <div>
+      <p data-page-id="CHECKPOINT SIMULASI" data-page-en="SIMULATION CHECKPOINT">CHECKPOINT SIMULASI</p>
+      <h3 data-page-id="Ikuti Progres Pendaftaran" data-page-en="Track the Admission Progress">
+        Ikuti Progres Pendaftaran
+      </h3>
+      <span data-page-id="Tandai setiap langkah yang sudah dipahami agar simulasi pendaftaran terasa lebih terarah."
+            data-page-en="Mark each step you understand so the admission simulation feels more guided.">
+        Tandai setiap langkah yang sudah dipahami agar simulasi pendaftaran terasa lebih terarah.
+      </span>
+    </div>
+
+    <strong>
+      <span id="offlineCheckpointCount">0</span>
+      <small>/ 6</small>
+    </strong>
+  </div>
+
+  <div class="offline-checkpoint__bar" aria-hidden="true">
+    <span id="offlineCheckpointBar"></span>
+  </div>
+
+  <div class="offline-checkpoint__items">
+    
+        <button type="button"
+                class="offline-checkpoint__item"
+                data-step-target="1"
+                data-page-id="01. Datang ke Area Pendaftaran"
+                data-page-en="01. Arrive at the Admission Area">
+          <span>01</span>
+          <strong>Datang ke Area Pendaftaran</strong>
+        </button>
+
+        <button type="button"
+                class="offline-checkpoint__item"
+                data-step-target="2"
+                data-page-id="02. Konsultasi Awal"
+                data-page-en="02. Initial Consultation">
+          <span>02</span>
+          <strong>Konsultasi Awal</strong>
+        </button>
+
+        <button type="button"
+                class="offline-checkpoint__item"
+                data-step-target="3"
+                data-page-id="03. Pemeriksaan Dokumen"
+                data-page-en="03. Document Review">
+          <span>03</span>
+          <strong>Pemeriksaan Dokumen</strong>
+        </button>
+
+        <button type="button"
+                class="offline-checkpoint__item"
+                data-step-target="4"
+                data-page-id="04. Simulasi Pengisian Data"
+                data-page-en="04. Data Entry Simulation">
+          <span>04</span>
+          <strong>Simulasi Pengisian Data</strong>
+        </button>
+
+        <button type="button"
+                class="offline-checkpoint__item"
+                data-step-target="5"
+                data-page-id="05. Arahan Tahap Berikutnya"
+                data-page-en="05. Next-stage Direction">
+          <span>05</span>
+          <strong>Arahan Tahap Berikutnya</strong>
+        </button>
+
+        <button type="button"
+                class="offline-checkpoint__item"
+                data-step-target="6"
+                data-page-id="06. Konfirmasi Kontak"
+                data-page-en="06. Contact Confirmation">
+          <span>06</span>
+          <strong>Konfirmasi Kontak</strong>
+        </button>
+  </div>
+</div>
+
     <div class="offline-step-grid">
-      <article class="offline-step-card">
+      <article class="offline-step-card" data-checkpoint-step="1">
         <span>01</span>
         <h3 data-page-id="Datang ke Area Pendaftaran" data-page-en="Arrive at the Admission Area">Datang ke Area Pendaftaran</h3>
         <p data-page-id="Calon mahasiswa datang ke bagian pendaftaran atau titik layanan yang telah diarahkan oleh pihak kampus."
            data-page-en="Prospective students arrive at the admission section or service point directed by the campus.">
           Calon mahasiswa datang ke bagian pendaftaran atau titik layanan yang telah diarahkan oleh pihak kampus.
         </p>
+      
+        <button type="button"
+                class="offline-step-complete"
+                data-step-complete="1"
+                data-page-id="Tandai selesai"
+                data-page-en="Mark complete">
+          Tandai selesai
+        </button>
+
+        <img class="offline-step-watermark"
+             src="fftkb.png"
+             alt=""
+             aria-hidden="true"
+             loading="lazy" />
       </article>
 
-      <article class="offline-step-card">
+      <article class="offline-step-card" data-checkpoint-step="2">
         <span>02</span>
         <h3 data-page-id="Konsultasi Awal" data-page-en="Initial Consultation">Konsultasi Awal</h3>
         <p data-page-id="Petugas membantu menjelaskan program studi, persyaratan umum, serta alur administrasi yang perlu dipahami."
            data-page-en="Staff help explain the study program, general requirements, and administrative flow that needs to be understood.">
           Petugas membantu menjelaskan program studi, persyaratan umum, serta alur administrasi yang perlu dipahami.
         </p>
+      
+        <button type="button"
+                class="offline-step-complete"
+                data-step-complete="2"
+                data-page-id="Tandai selesai"
+                data-page-en="Mark complete">
+          Tandai selesai
+        </button>
+
+        <img class="offline-step-watermark"
+             src="fftkb.png"
+             alt=""
+             aria-hidden="true"
+             loading="lazy" />
       </article>
 
-      <article class="offline-step-card">
+      <article class="offline-step-card" data-checkpoint-step="3">
         <span>03</span>
         <h3 data-page-id="Pemeriksaan Dokumen" data-page-en="Document Review">Pemeriksaan Dokumen</h3>
         <p data-page-id="Dokumen awal diperiksa agar calon mahasiswa mengetahui data apa yang sudah siap dan apa yang masih perlu dilengkapi."
            data-page-en="Initial documents are reviewed so prospective students know what data is ready and what still needs completion.">
           Dokumen awal diperiksa agar calon mahasiswa mengetahui data apa yang sudah siap dan apa yang masih perlu dilengkapi.
         </p>
+      
+        <button type="button"
+                class="offline-step-complete"
+                data-step-complete="3"
+                data-page-id="Tandai selesai"
+                data-page-en="Mark complete">
+          Tandai selesai
+        </button>
+
+        <img class="offline-step-watermark"
+             src="fftkb.png"
+             alt=""
+             aria-hidden="true"
+             loading="lazy" />
       </article>
 
-      <article class="offline-step-card">
+      <article class="offline-step-card" data-checkpoint-step="4">
         <span>04</span>
         <h3 data-page-id="Simulasi Pengisian Data" data-page-en="Data Entry Simulation">Simulasi Pengisian Data</h3>
         <p data-page-id="Calon mahasiswa diberi gambaran pengisian data pendaftaran agar tidak keliru saat proses resmi dilakukan."
            data-page-en="Prospective students receive a preview of admission data entry to avoid mistakes during the official process.">
           Calon mahasiswa diberi gambaran pengisian data pendaftaran agar tidak keliru saat proses resmi dilakukan.
         </p>
+      
+        <button type="button"
+                class="offline-step-complete"
+                data-step-complete="4"
+                data-page-id="Tandai selesai"
+                data-page-en="Mark complete">
+          Tandai selesai
+        </button>
+
+        <img class="offline-step-watermark"
+             src="fftkb.png"
+             alt=""
+             aria-hidden="true"
+             loading="lazy" />
       </article>
 
-      <article class="offline-step-card">
+      <article class="offline-step-card" data-checkpoint-step="5">
         <span>05</span>
         <h3 data-page-id="Arahan Tahap Berikutnya" data-page-en="Next-stage Direction">Arahan Tahap Berikutnya</h3>
         <p data-page-id="Petugas menyampaikan langkah lanjutan, termasuk dokumen tambahan, jadwal, dan kanal komunikasi yang dapat digunakan."
            data-page-en="Staff provide the next steps, including additional documents, schedule, and communication channels that can be used.">
           Petugas menyampaikan langkah lanjutan, termasuk dokumen tambahan, jadwal, dan kanal komunikasi yang dapat digunakan.
         </p>
+      
+        <button type="button"
+                class="offline-step-complete"
+                data-step-complete="5"
+                data-page-id="Tandai selesai"
+                data-page-en="Mark complete">
+          Tandai selesai
+        </button>
+
+        <img class="offline-step-watermark"
+             src="fftkb.png"
+             alt=""
+             aria-hidden="true"
+             loading="lazy" />
       </article>
 
-      <article class="offline-step-card">
+      <article class="offline-step-card" data-checkpoint-step="6">
         <span>06</span>
         <h3 data-page-id="Konfirmasi Kontak" data-page-en="Contact Confirmation">Konfirmasi Kontak</h3>
         <p data-page-id="Calon mahasiswa memastikan nomor WhatsApp atau email aktif agar pihak fakultas dapat memberi informasi lanjutan."
            data-page-en="Prospective students confirm an active WhatsApp number or email so the faculty can provide follow-up information.">
           Calon mahasiswa memastikan nomor WhatsApp atau email aktif agar pihak fakultas dapat memberi informasi lanjutan.
         </p>
+      
+        <button type="button"
+                class="offline-step-complete"
+                data-step-complete="6"
+                data-page-id="Tandai selesai"
+                data-page-en="Mark complete">
+          Tandai selesai
+        </button>
+
+        <img class="offline-step-watermark"
+             src="fftkb.png"
+             alt=""
+             aria-hidden="true"
+             loading="lazy" />
       </article>
     </div>
   </section>
@@ -505,6 +671,97 @@
     <button type="button" class="fft-floating-language-btn is-active" data-fft-lang="id" aria-pressed="true">ID</button>
   </div>
     <script src="page-content.js" defer></script>
+<script id="offline-checkpoint-script">
+document.addEventListener("DOMContentLoaded", function () {
+  var storageKey = "fft_offline_simulation_checkpoint_v1";
+  var cards = Array.prototype.slice.call(document.querySelectorAll("[data-checkpoint-step]"));
+  var buttons = Array.prototype.slice.call(document.querySelectorAll("[data-step-complete]"));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll("[data-step-target]"));
+  var countEl = document.getElementById("offlineCheckpointCount");
+  var barEl = document.getElementById("offlineCheckpointBar");
+  var total = cards.length;
+
+  function getLang() {
+    return (document.documentElement.getAttribute("lang") || "id").toLowerCase();
+  }
+
+  function readState() {
+    try {
+      return JSON.parse(localStorage.getItem(storageKey) || "[]");
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function saveState(done) {
+    localStorage.setItem(storageKey, JSON.stringify(done));
+  }
+
+  function label(done) {
+    var lang = getLang();
+    if (done) return lang === "en" ? "Completed" : "Selesai";
+    return lang === "en" ? "Mark complete" : "Tandai selesai";
+  }
+
+  function update() {
+    var done = readState();
+
+    cards.forEach(function (card) {
+      var step = card.getAttribute("data-checkpoint-step");
+      card.classList.toggle("is-completed", done.indexOf(step) !== -1);
+    });
+
+    buttons.forEach(function (button) {
+      var step = button.getAttribute("data-step-complete");
+      var isDone = done.indexOf(step) !== -1;
+      button.classList.toggle("is-completed", isDone);
+      button.textContent = label(isDone);
+    });
+
+    navItems.forEach(function (item) {
+      var step = item.getAttribute("data-step-target");
+      item.classList.toggle("is-completed", done.indexOf(step) !== -1);
+    });
+
+    if (countEl) countEl.textContent = done.length;
+    if (barEl) barEl.style.width = total ? ((done.length / total) * 100) + "%" : "0%";
+  }
+
+  buttons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      var step = button.getAttribute("data-step-complete");
+      var done = readState();
+      var index = done.indexOf(step);
+
+      if (index === -1) {
+        done.push(step);
+      } else {
+        done.splice(index, 1);
+      }
+
+      done.sort(function (a, b) { return Number(a) - Number(b); });
+      saveState(done);
+      update();
+    });
+  });
+
+  navItems.forEach(function (item) {
+    item.addEventListener("click", function () {
+      var step = item.getAttribute("data-step-target");
+      var target = document.querySelector('[data-checkpoint-step="' + step + '"]');
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    });
+  });
+
+  document.addEventListener("click", function () {
+    window.setTimeout(update, 60);
+  });
+
+  update();
+});
+</script>
 </body>
 
   
