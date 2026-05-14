@@ -676,7 +676,9 @@ document.addEventListener("DOMContentLoaded", function () {
       titleId: "Konten Sedang Maintenance",
       titleEn: "Content Under Maintenance",
       quoteId: "Testimoni mahasiswa akan ditampilkan setelah data resmi tersedia dari backend.",
-      quoteEn: "Student testimonials will be displayed once official data is available from the backend."
+      quoteEn: "Student testimonials will be displayed once official data is available from the backend.",
+      rating: 5,
+      photo: ""
     },
     {
       category: "alumni",
@@ -687,7 +689,9 @@ document.addEventListener("DOMContentLoaded", function () {
       titleId: "Konten Sedang Maintenance",
       titleEn: "Content Under Maintenance",
       quoteId: "Cerita alumni tentang studi, pelayanan, dan pengembangan karakter akan ditampilkan di bagian ini.",
-      quoteEn: "Alumni stories about study, service, and character development will be displayed in this section."
+      quoteEn: "Alumni stories about study, service, and character development will be displayed in this section.",
+      rating: 5,
+      photo: ""
     },
     {
       category: "orang-tua",
@@ -698,7 +702,9 @@ document.addEventListener("DOMContentLoaded", function () {
       titleId: "Konten Sedang Maintenance",
       titleEn: "Content Under Maintenance",
       quoteId: "Pandangan orang tua tentang pembinaan mahasiswa akan ditampilkan setelah data tersedia.",
-      quoteEn: "Parent perspectives on student formation will be displayed once data is available."
+      quoteEn: "Parent perspectives on student formation will be displayed once data is available.",
+      rating: 5,
+      photo: ""
     },
     {
       category: "mahasiswa",
@@ -709,7 +715,9 @@ document.addEventListener("DOMContentLoaded", function () {
       titleId: "Konten Sedang Maintenance",
       titleEn: "Content Under Maintenance",
       quoteId: "Data testimoni ini disiapkan sebagai placeholder sampai sistem backend mengelola konten final.",
-      quoteEn: "This testimonial data is prepared as a placeholder until the backend system manages the final content."
+      quoteEn: "This testimonial data is prepared as a placeholder until the backend system manages the final content.",
+      rating: 5,
+      photo: ""
     },
     {
       category: "alumni",
@@ -720,7 +728,9 @@ document.addEventListener("DOMContentLoaded", function () {
       titleId: "Konten Sedang Maintenance",
       titleEn: "Content Under Maintenance",
       quoteId: "Testimoni lulusan akan membantu calon mahasiswa memahami dampak pendidikan dan pelayanan.",
-      quoteEn: "Graduate testimonials will help prospective students understand the impact of education and service."
+      quoteEn: "Graduate testimonials will help prospective students understand the impact of education and service.",
+      rating: 5,
+      photo: ""
     },
     {
       category: "mahasiswa",
@@ -731,9 +741,13 @@ document.addEventListener("DOMContentLoaded", function () {
       titleId: "Konten Sedang Maintenance",
       titleEn: "Content Under Maintenance",
       quoteId: "Bagian ini akan memuat pengalaman mahasiswa dalam pelayanan kampus dan pembentukan spiritual.",
-      quoteEn: "This section will contain student experiences in campus service and spiritual formation."
+      quoteEn: "This section will contain student experiences in campus service and spiritual formation.",
+      rating: 5,
+      photo: ""
     }
   ];
+
+  let testimonialObserver = null;
 
   function getTestimonialLang() {
     const keys = ["fft-language", "siteLanguage", "fftLang", "fft_language", "selectedLanguage", "language"];
@@ -790,6 +804,40 @@ document.addEventListener("DOMContentLoaded", function () {
       .map(function (word) { return word[0]; })
       .join("")
       .toUpperCase();
+  }
+
+  function renderStars(value) {
+    const total = Number(value) || 5;
+    return "★".repeat(Math.max(1, Math.min(5, total)));
+  }
+
+  function observeCards() {
+    const cards = document.querySelectorAll("[data-testimonial-card]");
+
+    if (testimonialObserver) {
+      testimonialObserver.disconnect();
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      cards.forEach(function (card) {
+        card.classList.add("is-visible");
+      });
+      return;
+    }
+
+    testimonialObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          testimonialObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.16 });
+
+    cards.forEach(function (card, index) {
+      card.style.transitionDelay = Math.min(index * 70, 280) + "ms";
+      testimonialObserver.observe(card);
+    });
   }
 
   function renderTestimonials() {
@@ -849,20 +897,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
     list.innerHTML = rows.map(function (item) {
       const name = text(item, "name");
+      const role = text(item, "role");
+      const quote = text(item, "quote");
+      const photo = item.photo || "";
+      const alt = lang === "en" ? "Photo of " + name : "Foto " + name;
 
       return `
-        <article class="testimonial-card">
-          <div class="testimonial-card-top">
-            <div class="testimonial-avatar">${initials(name)}</div>
-            <div>
-              <h3>${name}</h3>
-              <span>${text(item, "role")}</span>
+        <article class="testimonial-card" data-testimonial-card>
+          <div class="testimonial-card-image">
+            ${
+              photo
+                ? `<img src="${photo}" alt="${alt}">`
+                : `<div class="testimonial-photo-placeholder">${lang === "en" ? "Photo" : "Foto"}</div>`
+            }
+          </div>
+
+          <div class="testimonial-card-content">
+            <div class="testimonial-rating" aria-hidden="true">${renderStars(item.rating)}</div>
+            <blockquote>${quote}</blockquote>
+
+            <div class="testimonial-card-author">
+              <div class="testimonial-author-mini">${initials(name)}</div>
+              <div>
+                <h3>${name}</h3>
+                <span>${role}</span>
+              </div>
             </div>
           </div>
-          <blockquote>${text(item, "quote")}</blockquote>
         </article>
       `;
     }).join("");
+
+    observeCards();
 
     if (typeof window.applyFFTPageLanguage === "function") {
       window.applyFFTPageLanguage();
