@@ -9,7 +9,7 @@
 
 <body class="fft-admin-body">
   <div class="fft-loader" data-loader>
-    <div class="fft-loader__content">
+    <div class="fft-loader__box">
       <img class="fft-loader__logo" src="images/logo-fft.png" alt="Logo FFT">
       <h1 class="fft-loader__title">Panel Administrasi FFT</h1>
       <p class="fft-loader__subtitle">Universitas Advent Surya Nusantara</p>
@@ -17,113 +17,127 @@
     </div>
   </div>
 
-  <div class="fft-layout">
+  <div class="fft-app">
     <aside class="fft-sidebar">
       <div class="fft-brand">
         <img class="fft-brand__logo" src="images/logo-fft.png" alt="Logo FFT">
         <div>
-          <h1 class="fft-brand__name">FFT Admin</h1>
-          <p class="fft-brand__institution">Universitas Advent Surya Nusantara</p>
+          <h1 class="fft-brand__title">FFT Admin</h1>
+          <p class="fft-brand__subtitle">Universitas Advent Surya Nusantara</p>
         </div>
       </div>
 
-      <nav class="fft-nav" aria-label="Navigasi modul admin">
-        <button class="is-active" type="button" data-sidebar-filter="all">Semua Modul</button>
-        <button type="button" data-sidebar-filter="dashboard">Dashboard Inti</button>
-        <button type="button" data-sidebar-filter="content">Konten dan Publikasi</button>
-        <button type="button" data-sidebar-filter="academic">Akademik</button>
-        <button type="button" data-sidebar-filter="admission">Pendaftaran</button>
-        <button type="button" data-sidebar-filter="frontend">Frontend Website</button>
-        <button type="button" data-sidebar-filter="media">Media dan Dokumen</button>
-        <button type="button" data-sidebar-filter="security">Keamanan dan Akses</button>
-        <button type="button" data-sidebar-filter="system">Sistem</button>
+      <p class="fft-nav-label">Navigasi Utama</p>
+      <nav class="fft-nav" aria-label="Navigasi utama">
+        <button class="is-active" type="button" data-nav="dashboard">Dashboard</button>
+        <button type="button" data-nav="content">Konten Website</button>
+        <button type="button" data-nav="academic">Akademik dan Fakultas</button>
+        <button type="button" data-nav="admission">Pendaftaran Mahasiswa</button>
+        <button type="button" data-nav="frontend">Tampilan Frontend</button>
+        <button type="button" data-nav="media">Media dan Dokumen</button>
+        <button type="button" data-nav="security">Keamanan Admin</button>
+        <button type="button" data-nav="system">Pengaturan Sistem</button>
+      </nav>
+
+      <p class="fft-nav-label">Akses</p>
+      <nav class="fft-nav" aria-label="Akses cepat">
+        <a href="/frontend/pages/indexfft.html">Lihat Website</a>
+        <a href="/admin/logout">Keluar</a>
       </nav>
     </aside>
 
-    <main class="fft-main">
-      <section class="fft-hero">
-        <div>
-          <p class="fft-kicker">Panel Administrasi</p>
-          <h1 class="fft-title">Pusat Kendali Administrasi FFT</h1>
-          <p class="fft-hero__text">
-            Sistem pengelolaan dan pengawasan website resmi Fakultas Filsafat Teologi
-            Universitas Advent Surya Nusantara.
-          </p>
+    <section class="fft-content">
+      <header class="fft-topbar">
+        <div class="fft-search-wrap">
+          <input class="fft-search" type="search" data-search placeholder="Cari fitur, contoh: berita, dosen, banner, e-brochure">
+          <div class="fft-search-results" data-search-results></div>
         </div>
 
-        <div class="fft-hero__actions">
-          <a class="fft-button fft-button--light" href="/admin/berita/list">Kelola Berita</a>
-          <a class="fft-button fft-button--outline" href="/admin/dosen">Data Dosen</a>
-          <a class="fft-button fft-button--outline" href="/admin/choose">Admin Lama</a>
-        </div>
-      </section>
+        <a class="fft-button fft-button--light" href="/frontend/pages/indexfft.html">Lihat Website</a>
+        <a class="fft-button fft-button--maroon" href="/admin/berita/list">Tambah Berita</a>
+      </header>
 
-      <section class="fft-stats" aria-label="Statistik dashboard">
-        <article class="fft-stat">
-          <p class="fft-stat__label">Total Fitur</p>
-          <p class="fft-stat__value" data-stat="total">0</p>
-        </article>
+      <main class="fft-page">
+        <section class="fft-view is-active" data-view="dashboard">
+          <section class="fft-hero">
+            <div>
+              <p class="fft-kicker">Panel Administrasi</p>
+              <h1 class="fft-title">Pusat Kendali Administrasi FFT</h1>
+              <p class="fft-hero-text">
+                Dashboard ini disusun berdasarkan pekerjaan admin, bukan berdasarkan istilah teknis.
+                Pilih aksi cepat atau masuk ke modul kerja yang ingin dikelola.
+              </p>
+            </div>
 
-        <article class="fft-stat">
-          <p class="fft-stat__label">Siap atau Ada</p>
-          <p class="fft-stat__value" data-stat="ready">0</p>
-        </article>
+            <div class="fft-hero-actions">
+              <a class="fft-button fft-button--light" href="/admin/berita/list">Kelola Berita</a>
+              <a class="fft-button" href="/admin/dosen">Data Dosen</a>
+              <a class="fft-button" href="/admin/banner-informasi">Banner Utama</a>
+            </div>
+          </section>
 
-        <article class="fft-stat">
-          <p class="fft-stat__label">Konsep Baru</p>
-          <p class="fft-stat__value" data-stat="concept">0</p>
-        </article>
+          <section class="fft-stats" aria-label="Ringkasan sistem">
+            <article class="fft-stat">
+              <p class="fft-stat__label">Total Fitur</p>
+              <p class="fft-stat__value" data-stat="total">0</p>
+            </article>
 
-        <article class="fft-stat">
-          <p class="fft-stat__label">Route Terhubung</p>
-          <p class="fft-stat__value" data-stat="route">0</p>
-        </article>
-      </section>
+            <article class="fft-stat">
+              <p class="fft-stat__label">Siap atau Ada</p>
+              <p class="fft-stat__value" data-stat="ready">0</p>
+            </article>
 
-      <section class="fft-toolbar" aria-label="Kontrol pencarian fitur">
-        <input class="fft-search" type="search" data-search placeholder="Cari fitur admin, contoh: berita, dosen, keamanan, e-brochure">
+            <article class="fft-stat">
+              <p class="fft-stat__label">Konsep Baru</p>
+              <p class="fft-stat__value" data-stat="concept">0</p>
+            </article>
 
-        <div class="fft-filter">
-          <button class="is-active" type="button" data-filter="all">Semua</button>
-          <button type="button" data-filter="content">Konten</button>
-          <button type="button" data-filter="academic">Akademik</button>
-          <button type="button" data-filter="admission">Pendaftaran</button>
-          <button type="button" data-filter="security">Keamanan</button>
-          <button type="button" data-filter="system">Sistem</button>
-        </div>
-      </section>
+            <article class="fft-stat">
+              <p class="fft-stat__label">Route Terhubung</p>
+              <p class="fft-stat__value" data-stat="route">0</p>
+            </article>
+          </section>
 
-      <section class="fft-section">
-        <div class="fft-section__head">
-          <div>
-            <p class="fft-section__kicker">Rancangan Modul</p>
-            <h2 class="fft-section__title">30 Fitur Dashboard Admin</h2>
-          </div>
+          <section class="fft-section">
+            <div class="fft-section-head">
+              <div>
+                <p class="fft-section-kicker">Aksi Cepat</p>
+                <h2 class="fft-section-title">Pekerjaan yang paling sering dilakukan</h2>
+              </div>
+              <p class="fft-section-note">
+                Admin dapat langsung memilih pekerjaan tanpa mencari menu teknis.
+              </p>
+            </div>
 
-          <p class="fft-section__note">
-            Fitur disusun berdasarkan modul kerja agar admin lebih mudah memahami fungsi,
-            prioritas, dan arah integrasi backend.
-          </p>
-        </div>
+            <div class="fft-quick-grid" data-quick-actions></div>
+          </section>
 
-        <div class="fft-empty" data-empty hidden>
-          <h2>Fitur tidak ditemukan</h2>
-          <p>Ubah kata kunci pencarian atau pilih modul lain.</p>
-        </div>
+          <section class="fft-section">
+            <div class="fft-section-head">
+              <div>
+                <p class="fft-section-kicker">Modul Kerja</p>
+                <h2 class="fft-section-title">Kelola website berdasarkan kebutuhan</h2>
+              </div>
+              <p class="fft-section-note">
+                Setiap modul berisi fitur yang saling berkaitan, lengkap dengan panduan singkat.
+              </p>
+            </div>
 
-        <div class="fft-module-grid" data-module-grid></div>
-      </section>
-    </main>
+            <div class="fft-module-grid" data-module-cards></div>
+          </section>
+        </section>
+
+        <div data-dynamic-views></div>
+      </main>
+    </section>
   </div>
 
   <div class="fft-modal" data-modal>
     <div class="fft-modal__card">
       <div class="fft-modal__header">
-        <h2 class="fft-modal__title" data-modal-title>Detail Fitur</h2>
+        <h2 class="fft-modal__title" data-modal-title>Detail</h2>
       </div>
-
       <div class="fft-modal__body" data-modal-body></div>
-
       <div class="fft-modal__footer" data-modal-footer>
         <button class="fft-button" type="button" data-close-modal>Tutup</button>
       </div>
