@@ -1,0 +1,112 @@
+﻿<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Preview Admin Dashboard Web FFT UASN</title>
+  <link rel="stylesheet" href="css/admin-dashboard.css">
+</head>
+
+<body class="fft-admin-body">
+  <div class="fft-admin-loader" data-admin-loader>
+    <div class="fft-admin-loader__panel">
+      <img class="fft-admin-loader__logo" data-admin-loader-logo src="images/logo-fft.png" alt="Logo FFT">
+      <h1 class="fft-admin-loader__title">Admin Dashboard</h1>
+      <p class="fft-admin-loader__subtitle">Web FFT UASN</p>
+    </div>
+  </div>
+
+  <div class="fft-admin-layout">
+    <aside class="fft-admin-sidebar">
+      <div class="fft-admin-brand">
+        <img class="fft-admin-brand__logo" src="images/logo-fft.png" alt="Logo FFT">
+        <div>
+          <h2 class="fft-admin-brand__title">FFT Admin</h2>
+          <p class="fft-admin-brand__text">UASN</p>
+        </div>
+      </div>
+
+      <nav class="fft-admin-nav" aria-label="Navigasi admin">
+        <a class="fft-admin-nav__link is-active" data-admin-nav-link href="#">Dashboard</a>
+        <a class="fft-admin-nav__link" data-admin-nav-link href="#">Data Dekan</a>
+        <a class="fft-admin-nav__link" data-admin-nav-link href="#">Data Dosen</a>
+        <a class="fft-admin-nav__link" data-admin-nav-link href="#">Berita dan Banner</a>
+        <a class="fft-admin-nav__link" data-admin-nav-link href="#">E-Brochure</a>
+        <a class="fft-admin-nav__link" data-admin-nav-link href="#">Papan Peringkat</a>
+        <a class="fft-admin-nav__link" data-admin-nav-link href="#">Testimoni</a>
+        <a class="fft-admin-nav__link" data-admin-nav-link href="#">Keluar</a>
+      </nav>
+    </aside>
+
+    <main class="fft-admin-main">
+      <header class="fft-admin-topbar">
+        <div>
+          <p class="fft-admin-page-kicker">Dashboard Admin</p>
+          <h1 class="fft-admin-page-title">Web FFT UASN</h1>
+        </div>
+
+        <a class="fft-admin-button fft-admin-button--accent" href="#">Tambah Konten</a>
+      </header>
+
+      <section class="fft-admin-grid">
+        <article class="fft-admin-card">
+          <p class="fft-admin-card__label">Berita Publish</p>
+          <h2 class="fft-admin-card__value">12</h2>
+        </article>
+
+        <article class="fft-admin-card">
+          <p class="fft-admin-card__label">Data Dosen</p>
+          <h2 class="fft-admin-card__value">8</h2>
+        </article>
+
+        <article class="fft-admin-card">
+          <p class="fft-admin-card__label">Banner Aktif</p>
+          <h2 class="fft-admin-card__value">3</h2>
+        </article>
+
+        <article class="fft-admin-card fft-admin-card--wide">
+          <p class="fft-admin-card__label">Aktivitas Terbaru</p>
+          <div class="fft-admin-table-wrap">
+            <table class="fft-admin-table">
+              <thead>
+                <tr>
+                  <th>Modul</th>
+                  <th>Status</th>
+                  <th>Catatan</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-admin-search-row>
+                  <td>Berita</td>
+                  <td>Publish</td>
+                  <td>Berita terbaru berhasil dikirim ke frontend.</td>
+                </tr>
+                <tr data-admin-search-row>
+                  <td>Dosen</td>
+                  <td>Draft</td>
+                  <td>Data dosen menunggu validasi admin.</td>
+                </tr>
+                <tr data-admin-search-row>
+                  <td>E-Brochure</td>
+                  <td>Siap</td>
+                  <td>Viewer frontend sudah tersedia.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="fft-admin-card fft-admin-card--full">
+          <p class="fft-admin-card__label">Catatan Sistem</p>
+          <p>
+            Ini adalah halaman preview static untuk melihat desain admin dashboard sebelum disambungkan ke Flask route.
+            Setelah desain disetujui, template ini akan dihubungkan ke route admin yang sebenarnya.
+          </p>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/admin-dashboard.js"></script>
+</body>
+</html>
