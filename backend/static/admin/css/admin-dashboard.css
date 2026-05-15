@@ -1246,3 +1246,299 @@ body.fft-admin-body {
     justify-content: start;
   }
 }
+
+/* === SIDEBAR REFINEMENT: FORMAL ADMIN NAVIGATION === */
+
+.fft-sidebar {
+  width: var(--sidebar);
+  padding: 26px 24px 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0)),
+    linear-gradient(180deg, #111113 0%, #050506 100%);
+  border-right: 3px solid var(--maroon);
+  animation: sidebarEnter 260ms ease both;
+}
+
+.fft-brand {
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 15px;
+  align-items: center;
+  padding-bottom: 22px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.fft-brand__logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  background: transparent;
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.24));
+}
+
+.fft-brand__title {
+  margin: 0;
+  color: #ffffff;
+  font-size: 25px;
+  font-weight: 720;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+
+.fft-brand__subtitle {
+  max-width: 190px;
+  margin: 7px 0 0;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.38;
+  letter-spacing: -0.01em;
+}
+
+.fft-nav-label {
+  margin: 20px 0 9px;
+  color: rgba(255, 255, 255, 0.43);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.fft-nav {
+  display: grid;
+  gap: 4px;
+}
+
+.fft-nav button,
+.fft-nav a {
+  min-height: 45px;
+  padding: 0 15px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 15px;
+  font-weight: 610;
+  line-height: 1.15;
+  letter-spacing: -0.012em;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.fft-nav button:not(.is-active):hover,
+.fft-nav a:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(255, 255, 255, 0.06);
+  transform: translateX(2px);
+}
+
+.fft-nav button.is-active {
+  color: #ffffff;
+  background: var(--maroon);
+  border-color: rgba(255, 255, 255, 0.13);
+  box-shadow:
+    inset 3px 0 0 rgba(255, 255, 255, 0.36),
+    0 10px 22px rgba(113, 13, 18, 0.22);
+}
+
+.fft-nav button.is-active:hover {
+  background: var(--maroon);
+  transform: none;
+}
+
+.fft-sidebar .fft-nav a[href="/frontend/pages/indexfft.html"] {
+  margin-top: 2px;
+  border-color: rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.fft-sidebar .fft-nav a[href="/admin/logout"] {
+  color: rgba(255, 255, 255, 0.86);
+  border-color: rgba(113, 13, 18, 0.48);
+  background: rgba(113, 13, 18, 0.18);
+}
+
+.fft-sidebar .fft-nav a[href="/admin/logout"]:hover {
+  background: var(--maroon);
+  border-color: var(--maroon);
+  color: #ffffff;
+}
+
+@keyframes sidebarEnter {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 1180px) {
+  .fft-sidebar {
+    width: 100%;
+    height: auto;
+  }
+
+  .fft-brand {
+    max-width: 520px;
+  }
+
+  .fft-brand__subtitle {
+    max-width: none;
+  }
+}
+
+@media (max-width: 740px) {
+  .fft-sidebar {
+    padding: 22px;
+  }
+
+  .fft-brand {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 13px;
+  }
+
+  .fft-brand__logo {
+    width: 56px;
+    height: 56px;
+  }
+
+  .fft-brand__title {
+    font-size: 22px;
+  }
+
+  .fft-nav button,
+  .fft-nav a {
+    min-height: 43px;
+    font-size: 14px;
+  }
+}
+
+/* === SIDEBAR COMPACT FIX: FIT NORMAL ZOOM === */
+
+:root {
+  --sidebar: 244px;
+}
+
+.fft-sidebar {
+  padding: 18px 18px 16px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+}
+
+.fft-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.fft-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.fft-brand {
+  grid-template-columns: 50px minmax(0, 1fr);
+  gap: 12px;
+  padding-bottom: 16px;
+  margin-bottom: 15px;
+}
+
+.fft-brand__logo {
+  width: 50px;
+  height: 50px;
+}
+
+.fft-brand__title {
+  font-size: 22px;
+  line-height: 1.05;
+}
+
+.fft-brand__subtitle {
+  max-width: 165px;
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 1.32;
+}
+
+.fft-nav-label {
+  margin: 15px 0 7px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.fft-nav {
+  gap: 2px;
+}
+
+.fft-nav button,
+.fft-nav a {
+  min-height: 38px;
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 620;
+}
+
+.fft-nav button.is-active {
+  box-shadow:
+    inset 3px 0 0 rgba(255, 255, 255, 0.34),
+    0 8px 18px rgba(113, 13, 18, 0.18);
+}
+
+.fft-sidebar .fft-nav a[href="/frontend/pages/indexfft.html"],
+.fft-sidebar .fft-nav a[href="/admin/logout"] {
+  min-height: 39px;
+}
+
+@media (max-height: 760px) {
+  .fft-sidebar {
+    padding-top: 15px;
+    padding-bottom: 14px;
+  }
+
+  .fft-brand {
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 10px;
+    padding-bottom: 13px;
+    margin-bottom: 12px;
+  }
+
+  .fft-brand__logo {
+    width: 46px;
+    height: 46px;
+  }
+
+  .fft-brand__title {
+    font-size: 20px;
+  }
+
+  .fft-brand__subtitle {
+    font-size: 11px;
+    line-height: 1.28;
+  }
+
+  .fft-nav-label {
+    margin: 12px 0 6px;
+  }
+
+  .fft-nav button,
+  .fft-nav a {
+    min-height: 35px;
+    font-size: 12.5px;
+  }
+}
+
+@media (max-width: 1180px) {
+  :root {
+    --sidebar: 100%;
+  }
+
+  .fft-sidebar {
+    width: 100%;
+  }
+}
