@@ -144,6 +144,31 @@
     </div>
   </div>
 
+
+  <!-- FFT LOADER FAILSAFE START -->
+  <script>
+    (function () {
+      function hideAdminLoader() {
+        var loader = document.querySelector("[data-loader]");
+        if (!loader) return;
+
+        loader.classList.add("is-hidden");
+        loader.setAttribute("aria-hidden", "true");
+
+        window.setTimeout(function () {
+          loader.style.display = "none";
+        }, 500);
+      }
+
+      window.addEventListener("load", function () {
+        window.setTimeout(hideAdminLoader, 900);
+      });
+
+      window.setTimeout(hideAdminLoader, 2600);
+    })();
+  </script>
+  <!-- FFT LOADER FAILSAFE END -->
+
   <script src="js/admin-dashboard.js"></script>
 </body>
 </html>

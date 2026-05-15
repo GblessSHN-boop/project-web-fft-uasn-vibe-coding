@@ -900,3 +900,349 @@ body.fft-admin-body {
     margin-top: 10px;
   }
 }
+
+/* === UI UX REFINEMENT: CLEAN CARD, BETTER SYMMETRY, MICRO ANIMATION === */
+
+.fft-quick__code,
+.fft-module-card__code,
+.fft-feature__code,
+.fft-search-code {
+  display: none !important;
+}
+
+.fft-quick-grid {
+  align-items: stretch;
+}
+
+.fft-quick {
+  position: relative;
+  min-height: 132px;
+  padding: 22px 22px 20px;
+  display: flex;
+  align-items: flex-start;
+  border-radius: 3px;
+  overflow: hidden;
+  transform: translateY(0);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.fft-quick::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--maroon);
+  opacity: 0.95;
+}
+
+.fft-quick:hover {
+  transform: translateY(-3px);
+  border-color: rgba(113, 13, 18, 0.42);
+  box-shadow: 0 18px 38px rgba(17, 17, 19, 0.12);
+  background: #fffdfc;
+}
+
+.fft-quick__body {
+  width: 100%;
+}
+
+.fft-quick__title {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 720;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.fft-quick__text {
+  margin: 0;
+  max-width: 30ch;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.58;
+}
+
+.fft-module-card {
+  position: relative;
+  min-height: 218px;
+  padding: 23px 22px 21px;
+  border-radius: 3px;
+  overflow: hidden;
+  transform: translateY(0);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.fft-module-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--maroon);
+}
+
+.fft-module-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(113, 13, 18, 0.42);
+  box-shadow: 0 18px 38px rgba(17, 17, 19, 0.12);
+  background: #fffdfc;
+}
+
+.fft-module-card__top {
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.fft-module-card__count {
+  padding: 5px 8px;
+  border: 1px solid #e7ded8;
+  background: #faf6f3;
+  color: var(--maroon);
+  font-size: 10px;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+}
+
+.fft-module-card__title {
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 740;
+  line-height: 1.28;
+  letter-spacing: -0.018em;
+}
+
+.fft-module-card__text {
+  max-width: 46ch;
+  font-size: 14px;
+  line-height: 1.62;
+}
+
+.fft-feature {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 18px 20px;
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.fft-feature:hover {
+  background: #fbf6f5;
+}
+
+.fft-feature__content {
+  min-width: 0;
+}
+
+.fft-feature__title {
+  margin: 0 0 6px;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 720;
+  line-height: 1.32;
+  letter-spacing: -0.01em;
+}
+
+.fft-feature__desc {
+  max-width: 66ch;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.54;
+}
+
+.fft-feature__actions {
+  justify-content: flex-end;
+  white-space: nowrap;
+}
+
+.fft-badge {
+  border-radius: 3px;
+}
+
+.fft-mini-btn,
+.fft-button {
+  border-radius: 3px;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease,
+    color 160ms ease;
+}
+
+.fft-mini-btn:hover,
+.fft-button:hover {
+  transform: translateY(-1px);
+}
+
+.fft-search-item {
+  grid-template-columns: minmax(0, 1fr);
+  padding: 14px 16px;
+  transition: background-color 150ms ease;
+}
+
+.fft-search-item--empty {
+  cursor: default;
+}
+
+.fft-search-title {
+  font-weight: 720;
+  line-height: 1.28;
+}
+
+.fft-search-module {
+  line-height: 1.42;
+}
+
+.fft-view.is-active {
+  animation: viewEnter 220ms ease both;
+}
+
+@keyframes viewEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 740px) {
+  .fft-feature {
+    grid-template-columns: 1fr;
+  }
+
+  .fft-feature__actions {
+    justify-content: flex-start;
+    white-space: normal;
+  }
+
+  .fft-quick,
+  .fft-module-card {
+    min-height: auto;
+  }
+}
+
+/* FFT LOADER FAILSAFE START */
+.fft-loader.is-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.fft-loader[aria-hidden="true"] {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+/* FFT LOADER FAILSAFE END */
+
+/* === FINAL UX CLEANUP: REMOVE DUPLICATE ACTIONS AND ALIGN FEATURE ROWS === */
+
+.fft-module-card__actions {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.fft-module-card__actions .fft-button {
+  min-width: 142px;
+}
+
+.fft-feature {
+  grid-template-columns: minmax(0, 1fr) 214px;
+  gap: 24px;
+  align-items: center;
+  min-height: 96px;
+}
+
+.fft-feature__actions {
+  display: grid;
+  grid-template-columns: 92px 108px;
+  gap: 10px;
+  align-items: center;
+  justify-content: end;
+  white-space: nowrap;
+}
+
+.fft-badge,
+.fft-mini-btn,
+.fft-state-note {
+  width: 100%;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 780;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.fft-badge {
+  padding: 0;
+}
+
+.fft-mini-btn {
+  padding: 0;
+}
+
+.fft-state-note {
+  border: 1px solid #ded6d1;
+  background: #f5f1ee;
+  color: #777;
+}
+
+.fft-feature__title {
+  margin-bottom: 7px;
+}
+
+.fft-feature__desc {
+  max-width: 72ch;
+}
+
+.fft-feature:hover .fft-feature__title {
+  color: var(--maroon);
+}
+
+.fft-panel-head {
+  padding: 22px 24px;
+}
+
+.fft-feature {
+  padding: 18px 24px;
+}
+
+.fft-help-list {
+  padding: 22px 26px 24px 42px;
+}
+
+@media (max-width: 820px) {
+  .fft-feature {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .fft-feature__actions {
+    grid-template-columns: 92px 108px;
+    justify-content: start;
+  }
+}
