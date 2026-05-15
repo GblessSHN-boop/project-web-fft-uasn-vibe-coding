@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder frontend berisi semua file tampilan website yang dilihat pengunjung, seperti halaman HTML, CSS, JavaScript, gambar, ikon, video, dan dokumen.
+
+FOLDER INFORMATION, EN
+======================================================================
+The frontend folder contains all website display files seen by visitors, such as HTML pages, CSS, JavaScript, images, icons, videos, and documents.

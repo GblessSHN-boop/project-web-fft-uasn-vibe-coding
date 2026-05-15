@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder ini berisi CSS untuk halaman admin.
+
+FOLDER INFORMATION, EN
+======================================================================
+This folder contains CSS for admin pages.

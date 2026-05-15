@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder templates berisi template HTML backend, terutama halaman admin.
+
+FOLDER INFORMATION, EN
+======================================================================
+The templates folder contains backend HTML templates, mainly admin pages.

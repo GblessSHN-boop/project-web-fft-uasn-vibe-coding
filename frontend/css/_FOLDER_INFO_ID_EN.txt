@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder CSS berisi file styling website. File di sini mengatur warna, ukuran, layout, animasi, responsive design, kartu konten, navbar, dan tampilan halaman.
+
+FOLDER INFORMATION, EN
+======================================================================
+The CSS folder contains website styling files. These files control colors, sizes, layout, animation, responsive design, content cards, navbar, and page appearance.

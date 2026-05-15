@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder controllers disiapkan untuk logika penghubung antara route, service, model, dan tampilan.
+
+FOLDER INFORMATION, EN
+======================================================================
+The controllers folder is prepared for logic that connects routes, services, models, and views.

@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder videos menyimpan video yang dipakai di halaman frontend.
+
+FOLDER INFORMATION, EN
+======================================================================
+The videos folder stores videos used in frontend pages.

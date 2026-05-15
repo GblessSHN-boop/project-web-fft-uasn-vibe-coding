@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder backup database disiapkan untuk menyimpan cadangan database.
+
+FOLDER INFORMATION, EN
+======================================================================
+The database backup folder is prepared for database backup files.

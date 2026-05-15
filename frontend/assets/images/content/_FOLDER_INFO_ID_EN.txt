@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder content disiapkan untuk gambar konten halaman, seperti gambar berita, banner informasi, dokumentasi kegiatan, dan visual pendukung artikel.
+
+FOLDER INFORMATION, EN
+======================================================================
+The content folder is prepared for page content images, such as news images, information banners, activity documentation, and article visuals.

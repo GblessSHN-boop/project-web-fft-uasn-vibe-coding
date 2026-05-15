@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder models disiapkan untuk struktur data dan akses database.
+
+FOLDER INFORMATION, EN
+======================================================================
+The models folder is prepared for data structures and database access.

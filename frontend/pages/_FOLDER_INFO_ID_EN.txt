@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder pages berisi halaman HTML utama website, misalnya beranda, kontak, e-brochure, kurikulum, kalender akademik, dan halaman informasi lainnya.
+
+FOLDER INFORMATION, EN
+======================================================================
+The pages folder contains the main HTML pages, such as homepage, contact, e-brochure, curriculum, academic calendar, and other information pages.

@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder database berisi file database, rancangan schema, migrasi, seed data, dan backup database.
+
+FOLDER INFORMATION, EN
+======================================================================
+The database folder contains database files, schema design, migrations, seed data, and database backups.

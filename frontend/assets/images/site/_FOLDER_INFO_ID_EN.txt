@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder site menyimpan gambar dasar website seperti logo, favicon, ilustrasi umum, dan gambar yang dipakai lintas halaman.
+
+FOLDER INFORMATION, EN
+======================================================================
+The site folder stores basic website images such as logos, favicon, general illustrations, and images used across multiple pages.

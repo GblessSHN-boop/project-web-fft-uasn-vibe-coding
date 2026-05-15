@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder assets menyimpan aset publik frontend, seperti gambar, ikon, file brosur, video, dokumen, dan media pendukung desain.
+
+FOLDER INFORMATION, EN
+======================================================================
+The assets folder stores public frontend assets, such as images, icons, brochure files, videos, documents, and supporting design media.

@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder JS berisi file JavaScript frontend. File di sini mengatur interaksi website, navigasi, pergantian bahasa, e-brochure viewer, scroll to top, dan konten dinamis.
+
+FOLDER INFORMATION, EN
+======================================================================
+The JS folder contains frontend JavaScript files. These files control website interaction, navigation, language switching, e-brochure viewer, scroll to top, and dynamic content.

@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder services disiapkan untuk logika bisnis, seperti autentikasi, konten, berita, dosen, dan upload.
+
+FOLDER INFORMATION, EN
+======================================================================
+The services folder is prepared for business logic, such as authentication, content, news, lecturers, and uploads.

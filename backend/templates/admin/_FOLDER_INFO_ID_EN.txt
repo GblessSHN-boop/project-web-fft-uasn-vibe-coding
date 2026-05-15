@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder admin berisi halaman HTML untuk dashboard dan manajemen konten admin.
+
+FOLDER INFORMATION, EN
+======================================================================
+The admin folder contains HTML pages for admin dashboard and content management.

@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder scripts berisi script bantuan untuk maintenance, cleanup, migrasi, atau proses otomatis lain.
+
+FOLDER INFORMATION, EN
+======================================================================
+The scripts folder contains helper scripts for maintenance, cleanup, migration, or other automated processes.

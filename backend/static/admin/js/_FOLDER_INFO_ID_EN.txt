@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder ini berisi JavaScript untuk halaman admin.
+
+FOLDER INFORMATION, EN
+======================================================================
+This folder contains JavaScript for admin pages.

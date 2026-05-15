@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder lecturers disiapkan untuk foto dosen, pimpinan fakultas, staf akademik, dan profil pengajar.
+
+FOLDER INFORMATION, EN
+======================================================================
+The lecturers folder is prepared for lecturer photos, faculty leaders, academic staff, and teaching profile images.

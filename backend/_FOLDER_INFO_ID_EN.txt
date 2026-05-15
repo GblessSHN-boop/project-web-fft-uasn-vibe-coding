@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder backend berisi aplikasi server, file Python, template admin, file static admin, upload backend, dan data yang dipakai sistem server.
+
+FOLDER INFORMATION, EN
+======================================================================
+The backend folder contains the server application, Python files, admin templates, admin static files, backend uploads, and server-side data.

@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder utils disiapkan untuk fungsi bantuan yang dipakai berulang, seperti validasi file, response, dan helper keamanan.
+
+FOLDER INFORMATION, EN
+======================================================================
+The utils folder is prepared for reusable helper functions, such as file validation, response helpers, and security helpers.

@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder migrations disiapkan untuk perubahan struktur database secara bertahap.
+
+FOLDER INFORMATION, EN
+======================================================================
+The migrations folder is prepared for step-by-step database structure changes.

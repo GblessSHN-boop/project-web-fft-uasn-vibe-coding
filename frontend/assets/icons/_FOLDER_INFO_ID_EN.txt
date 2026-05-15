@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder icons menyimpan ikon umum website, termasuk ikon sosial media, kontak, navigasi, dan elemen antarmuka.
+
+FOLDER INFORMATION, EN
+======================================================================
+The icons folder stores general website icons, including social media, contact, navigation, and interface icons.

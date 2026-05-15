@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder static backend berisi CSS, JS, file upload, dan file published yang digunakan oleh halaman admin atau backend.
+
+FOLDER INFORMATION, EN
+======================================================================
+The backend static folder contains CSS, JS, uploaded files, and published files used by admin pages or backend.

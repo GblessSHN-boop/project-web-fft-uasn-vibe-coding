@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder admin static berisi aset khusus tampilan admin.
+
+FOLDER INFORMATION, EN
+======================================================================
+The admin static folder contains assets specifically used by the admin interface.

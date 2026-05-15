@@ -1,0 +1,15 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder induk project. Folder ini berisi seluruh bagian penting website FFT UASN, yaitu frontend, backend, database, dokumentasi, file public, dan script bantuan. Folder ini menjadi pusat project yang harus dibuka pertama kali ketika mengelola website.
+
+FOLDER INFORMATION, EN
+======================================================================
+Main project folder. This folder contains all important parts of the FFT UASN website, including frontend, backend, database, documentation, public files, and helper scripts. This is the main folder to open when maintaining the website.
+
+HAK CIPTA, ID
+======================================================================
+Copyright © 2026 Fakultas Filsafat Teologi, Universitas Advent Surya Nusantara. Dikembangkan oleh Gland Jermano Blessed Siahaan. Seluruh hak cipta dilindungi. Penggunaan, penyalinan, publikasi ulang, atau distribusi ulang kode dan aset project ini harus memperoleh izin tertulis dari pemilik project.
+
+COPYRIGHT, EN
+======================================================================
+Copyright © 2026 Faculty of Philosophy and Theology, Universitas Advent Surya Nusantara. Developed by Gland Jermano Blessed Siahaan. All rights reserved. Any use, copying, republication, or redistribution of this project code and assets requires written permission from the project owner.

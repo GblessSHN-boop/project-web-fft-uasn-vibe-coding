@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder routes disiapkan untuk memisahkan endpoint backend agar app.py tidak terlalu panjang.
+
+FOLDER INFORMATION, EN
+======================================================================
+The routes folder is prepared to separate backend endpoints so app.py does not become too large.

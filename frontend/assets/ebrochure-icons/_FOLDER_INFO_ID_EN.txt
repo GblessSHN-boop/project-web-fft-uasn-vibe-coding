@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder ebrochure-icons menyimpan ikon khusus fitur E-Brochure, seperti share, like, download, dan ikon viewer lainnya.
+
+FOLDER INFORMATION, EN
+======================================================================
+The ebrochure-icons folder stores icons specifically used by the E-Brochure feature, such as share, like, download, and viewer icons.

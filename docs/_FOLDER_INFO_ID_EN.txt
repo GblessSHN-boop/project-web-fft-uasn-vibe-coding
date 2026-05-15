@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder docs berisi dokumentasi project, desain database, dokumentasi API, dan panduan instalasi.
+
+FOLDER INFORMATION, EN
+======================================================================
+The docs folder contains project documentation, database design, API documentation, and installation guides.

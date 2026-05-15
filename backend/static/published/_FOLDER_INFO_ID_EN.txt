@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder published menyimpan file data atau konten yang sudah dipublikasikan oleh backend.
+
+FOLDER INFORMATION, EN
+======================================================================
+The published folder stores data files or content already published by the backend.

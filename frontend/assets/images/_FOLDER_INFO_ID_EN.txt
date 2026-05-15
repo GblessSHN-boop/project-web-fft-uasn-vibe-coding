@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder images menyimpan semua gambar website. Gambar dipisahkan berdasarkan fungsi agar mudah dicari dan tidak tercampur.
+
+FOLDER INFORMATION, EN
+======================================================================
+The images folder stores all website images. Images are separated by function so they are easier to find and maintain.

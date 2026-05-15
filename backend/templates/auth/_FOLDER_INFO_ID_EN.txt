@@ -1,0 +1,7 @@
+INFORMASI FOLDER, ID
+======================================================================
+Folder auth disiapkan untuk halaman login, logout, dan autentikasi admin.
+
+FOLDER INFORMATION, EN
+======================================================================
+The auth folder is prepared for login, logout, and admin authentication pages.

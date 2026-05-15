@@ -1,0 +1,1719 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Detail Berita - Universitas Advent Surya Nusantara</title>
+    <meta
+      name="description"
+      content="Detail berita resmi Universitas Advent Surya Nusantara." />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Universitas Advent Surya Nusantara" />
+
+    <meta property="og:title" content="Detail Berita - Universitas Advent Surya Nusantara" />
+    <meta
+      property="og:description"
+      content="Informasi resmi Universitas Advent Surya Nusantara." />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Universitas Advent Surya Nusantara" />
+    <meta property="og:image" content="" id="ogImageDynamic" />
+
+    <link rel="canonical" href="" id="canonicalLink" />
+    <link rel="icon" href="../assets/images/site/fftkb.png" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/style.css" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet" />
+
+    <script src="../js/script.js" defer></script>
+
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet" />
+    <script src="../js/script.js" defer></script>
+
+    <style>
+      :root {
+        --uasn-red: #5f0e0e;
+        --uasn-red-dark: #3d0909;
+        --uasn-black: #101010;
+        --uasn-text: #242428;
+        --uasn-muted: #686870;
+        --uasn-soft: #f7f5f2;
+        --uasn-line: rgba(16, 16, 16, 0.12);
+        --uasn-white: #ffffff;
+        --uasn-main-font: "Inter", Arial, Helvetica, sans-serif;
+        --uasn-body-font: "Open Sans", Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: #ffffff;
+        color: var(--uasn-text);
+        font-family: var(--uasn-main-font);
+      }
+
+      .reading-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99999;
+        width: 0%;
+        height: 3px;
+        background: var(--uasn-red);
+        transition: width 0.08s linear;
+      }
+
+      .news-page {
+        background:
+          linear-gradient(180deg, #ffffff 0%, #ffffff 55%, #f8f6f3 100%);
+      }
+
+      .news-top {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        background:
+          linear-gradient(135deg, rgba(95, 14, 14, 0.98), rgba(24, 12, 12, 0.98)),
+          var(--uasn-red);
+        color: #ffffff;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .news-top::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background:
+          radial-gradient(circle at 18% 20%, rgba(255, 255, 255, 0.08), transparent 28%),
+          radial-gradient(circle at 78% 26%, rgba(255, 255, 255, 0.06), transparent 26%);
+        opacity: 0.95;
+      }
+
+      .news-top-inner {
+        width: min(1180px, calc(100% - 48px));
+        margin: 0 auto;
+        padding: clamp(46px, 6vw, 82px) 0;
+      }
+
+      .news-kicker {
+        margin: 0 0 14px;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      .news-heading {
+        max-width: 900px;
+        margin: 0;
+        color: #ffffff;
+        font-size: clamp(38px, 5.8vw, 76px);
+        line-height: 0.98;
+        font-weight: 900;
+        letter-spacing: -0.055em;
+      }
+
+      .news-intro {
+        max-width: 780px;
+        margin: 18px 0 0;
+        color: rgba(255, 255, 255, 0.82);
+        font-family: var(--uasn-body-font);
+        font-size: clamp(15px, 1.2vw, 18px);
+        line-height: 1.85;
+      }
+
+      .news-main {
+        width: min(1180px, calc(100% - 48px));
+        margin: 0 auto;
+        padding: 28px 0 86px;
+      }
+
+      .breadcrumb {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 22px;
+        color: var(--uasn-muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .breadcrumb a {
+        color: var(--uasn-red);
+        text-decoration: none;
+      }
+
+      .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+
+      .article {
+        background: #ffffff;
+        border: 1px solid var(--uasn-line);
+        border-top: 6px solid var(--uasn-red);
+        box-shadow: 0 26px 80px rgba(16, 16, 16, 0.08);
+        overflow: hidden;
+      }
+
+      .article-cover {
+        width: 100%;
+        background: #eeeeee;
+        border-bottom: 1px solid var(--uasn-line);
+      }
+
+      .article-cover img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 8.7;
+        object-fit: cover;
+      }
+
+      .article-inner {
+        padding: clamp(28px, 4.5vw, 58px);
+      }
+
+      .article-header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 40px;
+        align-items: start;
+      }
+
+      .article-labels {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .article-label {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        padding: 0 12px;
+        border: 1px solid rgba(95, 14, 14, 0.22);
+        background: #ffffff;
+        color: var(--uasn-red);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+      }
+
+      .article-label.solid {
+        background: var(--uasn-red);
+        color: #ffffff;
+      }
+
+      .article-title {
+        max-width: 900px;
+        margin: 0;
+        color: var(--uasn-black);
+        font-size: clamp(34px, 5vw, 66px);
+        line-height: 1.02;
+        font-weight: 900;
+        letter-spacing: -0.055em;
+      }
+
+      .article-subtitle {
+        max-width: 850px;
+        margin: 18px 0 0;
+        color: var(--uasn-muted);
+        font-family: var(--uasn-body-font);
+        font-size: clamp(15px, 1.22vw, 18px);
+        line-height: 1.85;
+      }
+
+      .article-info-panel {
+        border-left: 4px solid var(--uasn-red);
+        padding-left: 18px;
+      }
+
+      .article-info-title {
+        margin: 0 0 14px;
+        color: var(--uasn-black);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .article-meta {
+        display: grid;
+        gap: 14px;
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        color: #3d3d42;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.55;
+      }
+
+      .meta-item svg {
+        width: 16px;
+        height: 16px;
+        margin-top: 2px;
+        fill: var(--uasn-red);
+        flex: 0 0 16px;
+      }
+
+      .article-summary {
+        max-width: 940px;
+        margin-top: 42px;
+        padding: 22px 24px;
+        background:
+          linear-gradient(90deg, rgba(95, 14, 14, 0.075), transparent 70%),
+          #faf8f6;
+        border-left: 5px solid var(--uasn-red);
+      }
+
+      .article-summary h2 {
+        margin: 0 0 8px;
+        color: var(--uasn-red);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .article-summary p {
+        margin: 0;
+        color: #46464c;
+        font-family: var(--uasn-body-font);
+        font-size: 15px;
+        line-height: 1.85;
+      }
+
+      .article-body {
+        max-width: 900px;
+        margin-top: 36px;
+        color: #1f1f24;
+        font-family: var(--uasn-body-font);
+        font-size: 17px;
+        line-height: 2.05;
+        white-space: pre-line;
+      }
+
+      .article-official-note {
+        max-width: 900px;
+        margin-top: 40px;
+        padding: 20px 22px;
+        background: #ffffff;
+        border: 1px solid var(--uasn-line);
+        border-left: 5px solid var(--uasn-red);
+      }
+
+      .article-official-note h2 {
+        margin: 0 0 8px;
+        color: var(--uasn-black);
+        font-size: 15px;
+        font-weight: 900;
+        letter-spacing: -0.01em;
+      }
+
+      .article-official-note p {
+        margin: 0;
+        color: var(--uasn-muted);
+        font-family: var(--uasn-body-font);
+        font-size: 14px;
+        line-height: 1.75;
+      }
+
+      .article-note {
+        max-width: 900px;
+        margin-top: 28px;
+        padding-top: 22px;
+        border-top: 1px solid var(--uasn-line);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        color: var(--uasn-muted);
+        font-family: var(--uasn-body-font);
+        font-size: 13px;
+        line-height: 1.7;
+      }
+
+      .article-note a {
+        color: var(--uasn-red);
+        font-family: var(--uasn-main-font);
+        font-size: 13px;
+        font-weight: 900;
+        text-decoration: none;
+        border-bottom: 2px solid rgba(95, 14, 14, 0.24);
+      }
+
+      .article-note a:hover {
+        border-bottom-color: var(--uasn-red);
+      }
+
+      .article-action-panel {
+        margin-top: 34px;
+        padding-top: 24px;
+        border-top: 1px solid var(--uasn-line);
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .article-action-text h2 {
+        margin: 0;
+        color: var(--uasn-black);
+        font-size: 19px;
+        line-height: 1.3;
+        font-weight: 900;
+        letter-spacing: -0.025em;
+      }
+
+      .article-action-text p {
+        max-width: 620px;
+        margin: 7px 0 0;
+        color: var(--uasn-muted);
+        font-family: var(--uasn-body-font);
+        font-size: 14px;
+        line-height: 1.75;
+      }
+
+      .article-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      .article-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-height: 44px;
+        padding: 0 15px;
+        border: 1px solid var(--uasn-line);
+        background: #ffffff;
+        color: var(--uasn-black);
+        font-family: var(--uasn-main-font);
+        font-size: 13px;
+        font-weight: 900;
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease,
+          border-color 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .article-btn svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+      }
+
+      .article-btn:hover {
+        background: var(--uasn-red);
+        border-color: var(--uasn-red);
+        color: #ffffff;
+        transform: translateY(-1px);
+      }
+
+      .article-btn.primary {
+        background: var(--uasn-black);
+        border-color: var(--uasn-black);
+        color: #ffffff;
+      }
+
+      .related {
+        margin-top: 42px;
+        padding-top: 34px;
+        border-top: 1px solid var(--uasn-line);
+      }
+
+      .related-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .related-head h2 {
+        margin: 0;
+        color: var(--uasn-black);
+        font-size: clamp(24px, 3vw, 34px);
+        font-weight: 900;
+        letter-spacing: -0.035em;
+      }
+
+      .related-head a {
+        color: var(--uasn-red);
+        font-size: 13px;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .related-list {
+        display: grid;
+        border-top: 1px solid var(--uasn-line);
+      }
+
+      .related-item {
+        display: grid;
+        grid-template-columns: 136px minmax(0, 1fr);
+        gap: 18px;
+        padding: 18px 0;
+        border-bottom: 1px solid var(--uasn-line);
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .related-item img {
+        display: block;
+        width: 136px;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        background: #eeeeee;
+      }
+
+      .related-item small {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--uasn-red);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .related-item h3 {
+        margin: 0;
+        color: var(--uasn-black);
+        font-size: 17px;
+        line-height: 1.45;
+        font-weight: 900;
+      }
+
+      .related-item p {
+        margin: 8px 0 0;
+        color: var(--uasn-muted);
+        font-family: var(--uasn-body-font);
+        font-size: 14px;
+        line-height: 1.6;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .related-item:hover h3 {
+        color: var(--uasn-red);
+      }
+
+      .news-empty {
+        padding: 44px 22px;
+        border: 1px solid var(--uasn-line);
+        background: #ffffff;
+        color: var(--uasn-muted);
+        text-align: center;
+        font-family: var(--uasn-body-font);
+        font-size: 15px;
+        line-height: 1.75;
+      }
+
+      .copy-toast {
+        position: fixed;
+        left: 50%;
+        bottom: 28px;
+        transform: translateX(-50%) translateY(14px);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 99999;
+        min-height: 42px;
+        padding: 0 18px;
+        background: var(--uasn-black);
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 900;
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .copy-toast.active {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      @media (max-width: 980px) {
+        .article-header {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+
+        .article-info-panel {
+          border-left: 0;
+          border-top: 4px solid var(--uasn-red);
+          padding-left: 0;
+          padding-top: 16px;
+        }
+
+        .article-action-panel {
+          grid-template-columns: 1fr;
+        }
+
+        .article-actions {
+          justify-content: flex-start;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .news-top-inner,
+        .news-main {
+          width: min(100% - 30px, 1180px);
+        }
+
+        .news-top-inner {
+          padding: 34px 0 42px;
+        }
+
+        .news-heading {
+          font-size: 36px;
+          line-height: 1.05;
+        }
+
+        .news-intro {
+          font-size: 15px;
+          line-height: 1.75;
+        }
+
+        .article-cover img {
+          aspect-ratio: 16 / 10.5;
+        }
+
+        .article-inner {
+          padding: 24px 18px 30px;
+        }
+
+        .article-title {
+          font-size: 31px;
+          line-height: 1.12;
+          letter-spacing: -0.04em;
+        }
+
+        .article-subtitle,
+        .article-body {
+          font-size: 15px;
+          line-height: 1.85;
+        }
+
+        .article-actions {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+
+        .article-btn {
+          width: 100%;
+        }
+
+        .article-meta {
+          display: grid;
+          gap: 12px;
+        }
+
+        .article-note a {
+          width: 100%;
+        }
+
+        .related-head {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .related-item {
+          grid-template-columns: 1fr;
+        }
+
+        .related-item img {
+          width: 100%;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+
+      @media print {
+        .site-header,
+        .fft-footer,
+        .article-actions,
+        .article-action-panel,
+        .related,
+        .reading-progress,
+        .copy-toast {
+          display: none !important;
+        }
+
+        body,
+        .news-page {
+          background: #ffffff !important;
+        }
+
+        .news-top {
+          background: #ffffff !important;
+          color: #000000 !important;
+        }
+
+        .news-heading,
+        .news-kicker,
+        .news-intro {
+          color: #000000 !important;
+        }
+
+        .news-main,
+        .news-top-inner {
+          width: 100%;
+          padding: 0;
+        }
+
+        .article {
+          border: 0;
+          box-shadow: none;
+        }
+
+        .article-inner {
+          padding: 24px 0;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../css/fft-scroll-top.css" />
+</head>
+
+  <body>
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <header class="site-header" id="siteHeader">
+      <div class="topbar">
+        <div class="topbar_left">
+          <a
+            href="https://suryanusantara.ac.id/"
+            target="_blank"
+            rel="noopener noreferrer">
+            <img class="topbar-logo-img" src="../assets/images/site/uasnlogo.png" alt="Logo UASN" />
+            <span data-i18n="top_website">Website UASN</span>
+          </a>
+
+          <a href="indexfft.html" class="topbar-quick-link">
+            <span data-i18n="top_quick_access">Akses Cepat</span>
+          </a>
+        </div>
+
+        <div class="topbar_right">
+          <div class="language-switcher" aria-label="Pilih bahasa">
+            <button class="lang-btn active" type="button" data-lang="id">ID</button>
+            <span class="lang-separator">|</span>
+            <button class="lang-btn" type="button" data-lang="en">EN</button>
+          </div>
+
+          <a href="#" class="daftar-btn" data-i18n="top_apply">
+            DAFTAR SEKARANG
+          </a>
+        </div>
+      </div>
+
+      <div class="container">
+        <a href="indexfft.html" class="brand-wrapper" style="text-decoration: none">
+          <div class="logo">
+            <img src="../assets/images/site/fftkb.png" alt="Logo Fakultas Filsafat Teologi" />
+          </div>
+
+          <div class="branding">
+            <h1 data-i18n="brand_faculty">FAKULTAS FILSAFAT TEOLOGI</h1>
+            <p class="brand-universitas" data-i18n="brand_university">
+              UNIVERSITAS ADVENT SURYA NUSANTARA
+            </p>
+          </div>
+        </a>
+
+        <div>
+          <button class="menu-toggle" type="button" aria-label="Buka menu">
+            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M4 7h16v2H4V7Zm0 4h16v2H4v-2Zm0 4h16v2H4v-2Z" />
+            </svg>
+          </button>
+
+                    <nav class="sidebar-nav" aria-label="Navigasi utama">
+            <ul class="nav-root">
+              <li class="nav-item">
+                <a href="indexfft.html#program-studi" data-i18n="nav_program">Program Studi</a>
+              </li>
+
+              <li class="nav-item nav-dropdown">
+                <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+                  <span data-i18n="nav_about">Tentang FFT</span>
+                  <span class="nav-chevron" aria-hidden="true">▾</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="indexfft.html#latar-belakang" data-i18n="nav_background">Latar Belakang</a></li>
+                  <li><a href="indexfft.html#visi-misi" data-i18n="nav_vision">Visi &amp; Misi</a></li>
+                  <li><a href="indexfft.html#organisasi" data-i18n="nav_organization">Organisasi</a></li>
+                  <li><a href="indexfft.html#why-choose" data-i18n="nav_why_choose">Why Choose FFT</a></li>
+                  <li><a href="pimpinan-dosen.html" data-i18n="nav_leaders">Pimpinan &amp; Dosen</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item nav-dropdown">
+                <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+                  <span data-i18n="nav_academic">Akademik</span>
+                  <span class="nav-chevron" aria-hidden="true">▾</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="quick-facts.html#quick-facts" data-i18n="nav_quick_facts">Quick Facts</a></li>
+                  <li><a href="quick-facts.html#prestasi" data-i18n="nav_student_achievement">Prestasi Mahasiswa</a></li>
+                  <li><a href="quick-facts.html#top-leader" data-i18n="nav_top_leader">Top Leader Mahasiswa</a></li>
+                  <li><a href="quick-facts.html#lulusan" data-i18n="nav_graduates">Lulusan FFT</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item nav-dropdown">
+                <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+                  <span data-i18n="nav_admission">Pendaftaran</span>
+                  <span class="nav-chevron" aria-hidden="true">▾</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="pendaftaran.html#alur" data-i18n="nav_admission_flow">Alur Pendaftaran</a></li>
+                  <li><a href="pendaftaran.html#offline" data-i18n="nav_offline_simulation">Simulasi Offline</a></li>
+                  <li><a href="pendaftaran.html#persyaratan" data-i18n="nav_requirements">Persyaratan</a></li>
+                  <li><a href="e-brochure.html" data-i18n="nav_brochure">E-Brochure</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item nav-dropdown">
+                <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+                  <span data-i18n="nav_students">Mahasiswa</span>
+                  <span class="nav-chevron" aria-hidden="true">▾</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="indexfft.html#testimoni" data-i18n="nav_testimonials">Testimoni</a></li>
+                  <li><a href="quick-facts.html#top-leader" data-i18n="nav_top_leader_short">Top Leader</a></li>
+                  <li><a href="quick-facts.html#prestasi" data-i18n="nav_student_achievement">Prestasi Mahasiswa</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item">
+                <a href="indexfft.html#berita" data-i18n="nav_news">Berita</a>
+              </li>
+
+              <li class="nav-item">
+                <a href="#kontak" data-i18n="nav_contact">Kontak</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main class="news-page">
+      <section class="news-top">
+        <div class="news-top-inner">
+          <p class="news-kicker" data-detail-i18n="hero_kicker">
+            Berita Universitas
+          </p>
+          <h1 class="news-heading" data-detail-i18n="hero_title">
+            Detail Berita
+          </h1>
+          <p class="news-intro" data-detail-i18n="hero_desc">
+            Informasi resmi Universitas Advent Surya Nusantara.
+          </p>
+        </div>
+      </section>
+
+      <section class="news-main">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="indexfft.html">UASN</a>
+          <span>/</span>
+          <a href="indexfft.html#berita" data-detail-i18n="breadcrumb_news">Berita</a>
+          <span>/</span>
+          <span data-detail-i18n="breadcrumb_detail">Detail</span>
+        </nav>
+
+        <div id="detailContainer">
+          <div class="news-empty" data-detail-i18n="loading">Memuat berita...</div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="kontak" class="fft-footer" aria-labelledby="footerTitle">
+        <canvas
+          id="footerOrbitCanvas"
+          class="footer-orbit-canvas"
+          aria-hidden="true">
+        </canvas>
+
+        <div class="fft-footer-top">
+          <div class="fft-footer-inner">
+            <!-- FOOTER BRAND -->
+            <section class="fft-footer-brand" aria-labelledby="footerTitle">
+              <img
+                src="../assets/images/site/fftkb.png"
+                alt="Logo Fakultas Filsafat Teologi"
+                data-i18n-alt="footer_logo_alt" />
+
+              <div class="fft-footer-brand-text">
+                <h3 id="footerTitle" data-i18n="footer_brand_title">
+                  FAKULTAS FILSAFAT TEOLOGI
+                </h3>
+
+                <p data-i18n="footer_brand_university">
+                  UNIVERSITAS ADVENT SURYA NUSANTARA
+                </p>
+
+                <span data-i18n="footer_brand_desc">
+                  Fakultas yang berkomitmen pada pengembangan karakter, pelayanan,
+                  dan keunggulan akademik berdasarkan nilai-nilai Kristiani.
+                </span>
+              </div>
+            </section>
+
+            <!-- FOOTER ACADEMIC -->
+            <nav class="fft-footer-column" aria-labelledby="footerAcademicTitle">
+              <h4 id="footerAcademicTitle" data-i18n="footer_academic">
+                Akademik
+              </h4>
+
+              <a
+                href="https://suryanusantara.ac.id/fekon"
+                target="_blank"
+                rel="noopener noreferrer">
+                <span data-i18n="footer_academic_economics">
+                  Fakultas Ekonomi
+                </span>
+              </a>
+
+              <a
+                href="https://suryanusantara.ac.id/fakes"
+                target="_blank"
+                rel="noopener noreferrer">
+                <span data-i18n="footer_academic_health">
+                  Fakultas Kesehatan
+                </span>
+              </a>
+
+              <a
+                href="https://suryanusantara.ac.id/fasilkom"
+                target="_blank"
+                rel="noopener noreferrer">
+                <span data-i18n="footer_academic_information_system">
+                  Fakultas Sistem Informasi &amp; Ilmu Komputer
+                </span>
+              </a>
+            </nav>
+
+            <!-- FOOTER CONTACT -->
+            <section class="fft-footer-column" aria-labelledby="footerContactTitle">
+              <h4 id="footerContactTitle" data-i18n="footer_contact_title">
+                Kontak Fakultas
+              </h4>
+
+              <address class="footer-address">
+                <p data-i18n="footer_contact_faculty">
+                  Fakultas Filsafat Teologi
+                </p>
+
+                <p data-i18n="footer_contact_university">
+                  Universitas Advent Surya Nusantara
+                </p>
+
+                <p data-i18n="footer_address_1">
+                  Jl. Rakutta Sembiring No. 01
+                </p>
+
+                <p data-i18n="footer_address_2">
+                  Siantar Martoba, Pematangsiantar
+                </p>
+
+                <p data-i18n="footer_email">
+                  Email: fft@uasn.ac.id
+                </p>
+              </address>
+
+              <div class="footer-contact-actions" aria-label="Aksi kontak fakultas">
+                <a
+                  href="https://wa.me/6282273345200"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="footer-contact-btn">
+                  <span class="footer-contact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M12.04 2a9.86 9.86 0 0 0-8.56 14.75L2 22l5.38-1.42A9.94 9.94 0 1 0 12.04 2Zm0 1.8a8.14 8.14 0 1 1 0 16.28 8.2 8.2 0 0 1-4.16-1.14l-.3-.18-3.2.84.86-3.1-.2-.32A8.08 8.08 0 0 1 12.04 3.8Zm-3.3 4.28c-.18 0-.46.06-.7.34-.24.28-.92.9-.92 2.18 0 1.28.94 2.52 1.08 2.7.14.18 1.82 2.9 4.5 3.94 2.22.88 2.68.7 3.16.66.48-.04 1.56-.64 1.78-1.26.22-.62.22-1.14.16-1.26-.08-.12-.26-.18-.54-.32-.28-.14-1.56-.78-1.8-.86-.24-.1-.42-.14-.6.14-.18.28-.7.86-.86 1.04-.16.18-.32.2-.6.06-.28-.14-1.16-.42-2.2-1.36-.82-.72-1.38-1.62-1.54-1.9-.16-.28-.02-.42.12-.56.12-.12.28-.32.42-.48.14-.16.18-.28.28-.46.1-.18.04-.34-.02-.48-.06-.14-.6-1.44-.82-1.98-.22-.52-.44-.44-.6-.44h-.5Z"></path>
+                    </svg>
+                  </span>
+                  <span data-i18n="footer_wa_dean">WhatsApp Dekan</span>
+                </a>
+
+                <a
+                  href="https://wa.me/6282129500506"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="footer-contact-btn">
+                  <span class="footer-contact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M12.04 2a9.86 9.86 0 0 0-8.56 14.75L2 22l5.38-1.42A9.94 9.94 0 1 0 12.04 2Zm0 1.8a8.14 8.14 0 1 1 0 16.28 8.2 8.2 0 0 1-4.16-1.14l-.3-.18-3.2.84.86-3.1-.2-.32A8.08 8.08 0 0 1 12.04 3.8Zm-3.3 4.28c-.18 0-.46.06-.7.34-.24.28-.92.9-.92 2.18 0 1.28.94 2.52 1.08 2.7.14.18 1.82 2.9 4.5 3.94 2.22.88 2.68.7 3.16.66.48-.04 1.56-.64 1.78-1.26.22-.62.22-1.14.16-1.26-.08-.12-.26-.18-.54-.32-.28-.14-1.56-.78-1.8-.86-.24-.1-.42-.14-.6.14-.18.28-.7.86-.86 1.04-.16.18-.32.2-.6.06-.28-.14-1.16-.42-2.2-1.36-.82-.72-1.38-1.62-1.54-1.9-.16-.28-.02-.42.12-.56.12-.12.28-.32.42-.48.14-.16.18-.28.28-.46.1-.18.04-.34-.02-.48-.06-.14-.6-1.44-.82-1.98-.22-.52-.44-.44-.6-.44h-.5Z"></path>
+                    </svg>
+                  </span>
+                  <span data-i18n="footer_wa_secretary">WhatsApp Sekretaris</span>
+                </a>
+
+                <a
+                  href="mailto:fft@uasn.ac.id"
+                  class="footer-contact-btn">
+                  <span class="footer-contact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4.5 5h15A2.5 2.5 0 0 1 22 7.5v9A2.5 2.5 0 0 1 19.5 19h-15A2.5 2.5 0 0 1 2 16.5v-9A2.5 2.5 0 0 1 4.5 5Zm0 2A.5.5 0 0 0 4 7.5v.32l8 5.02 8-5.02V7.5a.5.5 0 0 0-.5-.5h-15ZM20 10.18l-7.47 4.68a1 1 0 0 1-1.06 0L4 10.18v6.32a.5.5 0 0 0 .5.5h15a.5.5 0 0 0 .5-.5v-6.32Z"></path>
+                    </svg>
+                  </span>
+                  <span data-i18n="footer_email_button">Email Fakultas</span>
+                </a>
+
+                <a
+                  href="https://www.instagram.com/himafftuasn01?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="footer-contact-btn">
+                  <span class="footer-contact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.8A3.95 3.95 0 0 0 3.8 7.75v8.5a3.95 3.95 0 0 0 3.95 3.95h8.5a3.95 3.95 0 0 0 3.95-3.95v-8.5a3.95 3.95 0 0 0-3.95-3.95h-8.5Zm8.95 1.35a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.8A3.2 3.2 0 1 0 12 15.2 3.2 3.2 0 0 0 12 8.8Z"></path>
+                    </svg>
+                  </span>
+                  <span data-i18n="footer_instagram">Instagram Fakultas</span>
+                </a>
+              </div>
+            </section>
+
+            <!-- FOOTER MAP -->
+            <section class="fft-footer-column fft-footer-map" aria-labelledby="footerMapTitle">
+              <h4 id="footerMapTitle" data-i18n="footer_map">
+                Lokasi Kampus
+              </h4>
+
+              <div class="fft-map-wrap">
+                <iframe
+                  src="https://www.google.com/maps?q=Jl.%20Rakutta%20Sembiring%20No.%2001,%20Siantar%20Martoba,%20Pematangsiantar&output=embed"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  allowfullscreen
+                  title="Peta Lokasi Universitas Advent Surya Nusantara">
+                </iframe>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="fft-subfooter">
+          <div class="fft-subfooter-inner">
+            <div class="subfooter-left">
+              <p class="subfooter-copy" data-i18n="footer_copy">
+                © 2026 Fakultas Filsafat Teologi - Universitas Advent Surya Nusantara.
+                Seluruh hak cipta dilindungi.
+              </p>
+
+              <p class="dev-text">
+                <span data-i18n="footer_dev_text">
+                  Website ini dikembangkan oleh mahasiswa Fakultas Sistem Informasi
+                  &amp; Ilmu Komputer Universitas Advent Surya Nusantara:
+                </span>
+                <strong>Gland Siahaan</strong>
+              </p>
+            </div>
+
+            <div class="subfooter-right" aria-label="Media sosial pengembang">
+              <a
+                href="https://www.instagram.com/glandsiahaan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                target="_blank"
+                rel="noopener noreferrer"
+                class="subfooter-icon ig"
+                aria-label="Instagram Gland Siahaan">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.8A3.95 3.95 0 0 0 3.8 7.75v8.5a3.95 3.95 0 0 0 3.95 3.95h8.5a3.95 3.95 0 0 0 3.95-3.95v-8.5a3.95 3.95 0 0 0-3.95-3.95h-8.5Zm8.95 1.35a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.8A3.2 3.2 0 1 0 12 15.2 3.2 3.2 0 0 0 12 8.8Z"></path>
+                </svg>
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/glandsiahaan/?lipi=urn%3Ali%3Apage%3Ad_flagship3_feed%3B%2BLGmqJ%2FqQWyGBJBrltf4AQ%3D%3D"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="subfooter-icon linkedin"
+                aria-label="LinkedIn Gland Siahaan">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A1.97 1.97 0 1 0 5.3 6.94 1.97 1.97 0 0 0 5.25 3ZM20.44 12.74c0-3.44-1.84-5.04-4.3-5.04-1.98 0-2.87 1.09-3.37 1.86V8.5H9.39c.05.7 0 11.5 0 11.5h3.38v-6.42c0-.34.02-.68.13-.92.27-.68.89-1.38 1.92-1.38 1.35 0 1.89 1.03 1.89 2.53V20h3.38v-7.26Z"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+    </footer>
+
+    <div class="popup-daftar" id="popupDaftar">
+      <div class="popup-content">
+        <p class="popup-eyebrow">FFT UASN</p>
+
+        <h2 data-i18n="popup_title">AYO GABUNG BERSAMA KAMI</h2>
+
+        <div class="popup-action-list">
+          <a
+            href="https://wa.me/6282273345200"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="popup-btn">
+            <span class="popup-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M6.62 10.79c1.44 2.83 3.76 5.15 6.59 6.59l2.2-2.2c.31-.31.77-.41 1.17-.27 1.29.43 2.67.66 4.08.66.63 0 1.14.51 1.14 1.14v3.49c0 .63-.51 1.14-1.14 1.14C10.24 21.84 2.16 13.76 2.16 3.34c0-.63.51-1.14 1.14-1.14h3.5c.63 0 1.14.51 1.14 1.14 0 1.41.23 2.79.66 4.08.13.4.04.86-.27 1.17l-2.21 2.2Z" />
+              </svg>
+            </span>
+            <span data-i18n="popup_dean">DEKAN</span>
+          </a>
+
+          <a
+            href="https://wa.me/6282129500506"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="popup-btn">
+            <span class="popup-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Zm-3 10H7v-2h10v2Zm0-3H7V7h10v2Z" />
+              </svg>
+            </span>
+            <span data-i18n="popup_secretary">SEKRETARIS</span>
+          </a>
+        </div>
+
+        <button class="popup-close" id="closePopup" data-i18n="popup_close">
+          Tutup
+        </button>
+      </div>
+    </div>
+
+    <div class="copy-toast" id="copyToast">Link berhasil disalin.</div>
+
+    <script>
+      const detailTranslations = {
+        id: {
+          hero_kicker: "Berita Universitas",
+          hero_title: "Detail Berita",
+          hero_desc: "Informasi resmi Universitas Advent Surya Nusantara untuk mahasiswa, calon mahasiswa, alumni, dosen, dan masyarakat UASN.",
+          breadcrumb_news: "Berita",
+          breadcrumb_detail: "Detail",
+          loading: "Memuat berita...",
+          not_found_id: "ID berita tidak ditemukan.",
+          not_found_news: "Berita tidak ditemukan atau belum tersedia.",
+          failed_load: "Gagal memuat detail berita.",
+          back_news: "Kembali ke Berita",
+          news_label: "Berita UASN",
+          new_label: "Baru",
+          released: "Rilis",
+          code: "Kode",
+          reading_time: "Waktu baca",
+          minute: "menit",
+          article_info: "Informasi Artikel",
+          summary_title: "Ringkasan",
+          official_title: "Informasi resmi universitas",
+          official_desc: "Berita ini diterbitkan sebagai informasi umum Universitas Advent Surya Nusantara. Gunakan kanal resmi kampus untuk konfirmasi lebih lanjut jika diperlukan.",
+          copyright: "Berita ini merupakan konten resmi dan dilindungi hak cipta.",
+          terms: "Ketentuan & Pengaduan",
+          action_title: "Bagikan informasi ini",
+          action_desc: "Gunakan tombol berikut setelah membaca berita untuk kembali ke daftar berita, menyalin tautan, membagikan artikel, atau mencetak halaman.",
+          copy_link: "Salin Link",
+          share_wa: "Bagikan",
+          print: "Cetak",
+          related_news: "Berita Terkait",
+          see_all: "Lihat semua berita",
+          link_copied: "Link berhasil disalin."
+        },
+        en: {
+          hero_kicker: "University News",
+          hero_title: "News Detail",
+          hero_desc: "Official information from Universitas Advent Surya Nusantara for students, prospective students, alumni, lecturers, and the public.",
+          breadcrumb_news: "News",
+          breadcrumb_detail: "Detail",
+          loading: "Loading news...",
+          not_found_id: "News ID was not found.",
+          not_found_news: "News article was not found or is not available yet.",
+          failed_load: "Failed to load news detail.",
+          back_news: "Back to News",
+          news_label: "UASN News",
+          new_label: "New",
+          released: "Published",
+          code: "Code",
+          reading_time: "Reading time",
+          minute: "min read",
+          article_info: "Article Information",
+          summary_title: "Summary",
+          official_title: "Official university information",
+          official_desc: "This news is published as general information from Universitas Advent Surya Nusantara. Use official campus channels for further confirmation when needed.",
+          copyright: "This official news content is protected by copyright.",
+          terms: "Terms & Report",
+          action_title: "Share this information",
+          action_desc: "Use the buttons below after reading the news to return to the news list, copy the link, share the article, or print this page.",
+          copy_link: "Copy Link",
+          share_wa: "Share",
+          print: "Print",
+          related_news: "Related News",
+          see_all: "View all news",
+          link_copied: "Link copied."
+        }
+      };
+
+      function getCurrentLanguage() {
+        return localStorage.getItem("fftLanguage") || "id";
+      }
+
+      function setCurrentLanguage(lang) {
+        localStorage.setItem("fftLanguage", lang);
+
+        document.querySelectorAll(".lang-btn").forEach((button) => {
+          button.classList.toggle("active", button.dataset.lang === lang);
+        });
+
+        applyDetailLanguage();
+        renderArticleFromCache();
+      }
+
+      function t(key) {
+        const lang = getCurrentLanguage();
+        return detailTranslations[lang]?.[key] || detailTranslations.id[key] || key;
+      }
+
+      function applyDetailLanguage() {
+        document.documentElement.lang = getCurrentLanguage();
+
+        document.querySelectorAll("[data-detail-i18n]").forEach((element) => {
+          const key = element.dataset.detailI18n;
+          element.textContent = t(key);
+        });
+      }
+
+      document.querySelectorAll(".lang-btn").forEach((button) => {
+        button.addEventListener("click", function () {
+          setCurrentLanguage(button.dataset.lang || "id");
+        });
+      });
+
+      window.addEventListener("scroll", updateReadingProgress, { passive: true });
+
+      function updateReadingProgress() {
+        const progress = document.getElementById("readingProgress");
+        if (!progress) return;
+
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+
+        const width = height > 0 ? (scrollTop / height) * 100 : 0;
+        progress.style.width = `${Math.min(100, Math.max(0, width))}%`;
+      }
+
+      let currentPayloadCache = null;
+      let currentArticleCache = null;
+
+      (async function () {
+        applyDetailLanguage();
+        syncLangButton();
+
+        const canonicalLink = document.getElementById("canonicalLink");
+        if (canonicalLink) {
+          canonicalLink.href = window.location.href;
+        }
+
+        const API_BASE = "http://127.0.0.1:5000";
+        const STATIC_BASE = `${API_BASE}/static/`;
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+        const container = document.getElementById("detailContainer");
+
+        if (!id || !container) {
+          container.innerHTML = `<div class="news-empty">${t("not_found_id")}</div>`;
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE}/api/berita`, {
+            method: "GET",
+            cache: "no-store"
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+
+          const payload = await response.json();
+          const allNews = normalizeNewsList(payload);
+
+          const article = allNews.find((item) => String(item.id) === String(id));
+
+          if (!article) {
+            container.innerHTML = `<div class="news-empty">${t("not_found_news")}</div>`;
+            return;
+          }
+
+          currentPayloadCache = payload;
+          currentArticleCache = article;
+
+          await fetch(`${API_BASE}/api/track-click`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ articleId: article.id })
+          }).catch(() => {});
+
+          renderArticle(payload, article, API_BASE, STATIC_BASE);
+        } catch (error) {
+          console.error("Gagal memuat detail berita:", error);
+          container.innerHTML = `<div class="news-empty">${t("failed_load")}</div>`;
+        }
+      })();
+
+      function syncLangButton() {
+        const lang = getCurrentLanguage();
+
+        document.querySelectorAll(".lang-btn").forEach((button) => {
+          button.classList.toggle("active", button.dataset.lang === lang);
+        });
+      }
+
+      function normalizeNewsList(payload) {
+        const rawItems = [
+          ...(Array.isArray(payload?.trending) ? payload.trending : []),
+          ...(Array.isArray(payload?.umum) ? payload.umum : [])
+        ];
+
+        const map = new Map();
+
+        rawItems.forEach((item) => {
+          if (!item || item.id === undefined || item.id === null) return;
+          map.set(String(item.id), item);
+        });
+
+        return Array.from(map.values());
+      }
+
+      function renderArticleFromCache() {
+        if (!currentPayloadCache || !currentArticleCache) return;
+
+        renderArticle(
+          currentPayloadCache,
+          currentArticleCache,
+          "http://127.0.0.1:5000",
+          "http://127.0.0.1:5000/static/"
+        );
+      }
+
+      function renderArticle(payload, article, API_BASE, STATIC_BASE) {
+        const container = document.getElementById("detailContainer");
+        if (!container) return;
+
+        const allNews = normalizeNewsList(payload);
+
+        const imageUrl = article.gambar_detail
+          ? STATIC_BASE + article.gambar_detail
+          : article.thumbnail
+            ? STATIC_BASE + article.thumbnail
+            : "berita/news-empty.png";
+
+        const relatedArticles = allNews
+          .filter((item) => String(item.id) !== String(article.id))
+          .slice(0, 3);
+
+        const readingMinutes = estimateReadingTime(article.isi || "");
+        const publishValue =
+          article.published_at || article.tayang_pada || article.created_at;
+
+        container.innerHTML = `
+          <article class="article">
+            <div class="article-cover">
+              <img
+                src="${imageUrl}"
+                alt="${escapeHtml(article.judul || "Berita Universitas Advent Surya Nusantara")}"
+                loading="eager" />
+            </div>
+
+            <div class="article-inner">
+              <div class="article-header">
+                <div>
+                  <div class="article-labels">
+                    <span class="article-label">${t("news_label")}</span>
+                    ${
+                      article.is_new
+                        ? `<span class="article-label solid">${t("new_label")}</span>`
+                        : ""
+                    }
+                  </div>
+
+                  <h1 class="article-title">
+                    ${escapeHtml(article.judul || "Tanpa Judul")}
+                  </h1>
+
+                  <p class="article-subtitle">
+                    ${escapeHtml(article.subjudul || "-")}
+                  </p>
+                </div>
+
+                <aside class="article-info-panel" aria-label="${t("article_info")}">
+                  <p class="article-info-title">${t("article_info")}</p>
+
+                  <div class="article-meta">
+                    <span class="meta-item">${calendarIcon()} ${t("released")}: ${formatTanggal(publishValue)}</span>
+                    <span class="meta-item">${codeIcon()} ${t("code")}: ${escapeHtml(article.kode_berita || "-")}</span>
+                    <span class="meta-item">${clockIcon()} ${t("reading_time")}: ${readingMinutes} ${t("minute")}</span>
+                  </div>
+                </aside>
+              </div>
+
+              <section class="article-summary">
+                <h2>${t("summary_title")}</h2>
+                <p>${escapeHtml(article.subjudul || "-")}</p>
+              </section>
+
+              <div class="article-body">
+                ${escapeHtml(article.isi || "")}
+              </div>
+
+              <section class="article-official-note">
+                <h2>${t("official_title")}</h2>
+                <p>${t("official_desc")}</p>
+              </section>
+
+              <div class="article-note">
+                <span>${t("copyright")}</span>
+                <a href="berita-ketentuan.html">${t("terms")}</a>
+              </div>
+
+              <section class="article-action-panel" aria-label="${t("action_title")}">
+                <div class="article-action-text">
+                  <h2>${t("action_title")}</h2>
+                  <p>${t("action_desc")}</p>
+                </div>
+
+                <div class="article-actions">
+                  <a href="indexfft.html#berita" class="article-btn primary">
+                    ${arrowLeftIcon()} ${t("back_news")}
+                  </a>
+
+                  <button class="article-btn" type="button" id="copyNewsLink">
+                    ${copyIcon()} ${t("copy_link")}
+                  </button>
+
+                  <a
+                    class="article-btn"
+                    href="${buildWhatsappShareUrl(article.judul || "Berita UASN")}"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    ${shareIcon()} ${t("share_wa")}
+                  </a>
+
+                  <button class="article-btn" type="button" id="printNews">
+                    ${printIcon()} ${t("print")}
+                  </button>
+                </div>
+              </section>
+            </div>
+          </article>
+
+          ${
+            relatedArticles.length
+              ? `
+                <section class="related">
+                  <div class="related-head">
+                    <h2>${t("related_news")}</h2>
+                    <a href="indexfft.html#berita">${t("see_all")}</a>
+                  </div>
+
+                  <div class="related-list">
+                    ${relatedArticles
+                      .map((item) => {
+                        const relatedImage = item.thumbnail
+                          ? STATIC_BASE + item.thumbnail
+                          : "berita/news-empty.png";
+
+                        return `
+                          <a class="related-item" href="berita-detail.html?id=${encodeURIComponent(item.id)}">
+                            <img
+                              src="${relatedImage}"
+                              alt="${escapeHtml(item.judul || "Berita Universitas Advent Surya Nusantara")}"
+                              loading="lazy" />
+
+                            <div>
+                              <small>${formatTanggal(item.published_at || item.tayang_pada || item.created_at)}</small>
+                              <h3>${escapeHtml(item.judul || "Tanpa Judul")}</h3>
+                              <p>${escapeHtml(item.subjudul || "")}</p>
+                            </div>
+                          </a>
+                        `;
+                      })
+                      .join("")}
+                  </div>
+                </section>
+              `
+              : ""
+          }
+        `;
+
+        updateSeo(article, imageUrl, publishValue);
+        attachArticleButtons();
+      }
+
+      function attachArticleButtons() {
+        const copyButton = document.getElementById("copyNewsLink");
+        if (copyButton) {
+          copyButton.addEventListener("click", copyCurrentLink);
+        }
+
+        const printButton = document.getElementById("printNews");
+        if (printButton) {
+          printButton.addEventListener("click", function () {
+            window.print();
+          });
+        }
+      }
+
+      function updateSeo(article, imageUrl, publishValue) {
+        const title = article.judul || "Detail Berita UASN";
+        const description =
+          article.subjudul ||
+          "Informasi resmi Universitas Advent Surya Nusantara.";
+
+        document.title = `${title} - Universitas Advent Surya Nusantara`;
+
+        setMeta("description", description);
+        setOg("og:title", title);
+        setOg("og:description", description);
+        setOg("og:image", imageUrl);
+
+        const ogImageDynamic = document.getElementById("ogImageDynamic");
+        if (ogImageDynamic) {
+          ogImageDynamic.setAttribute("content", imageUrl);
+        }
+
+        const canonicalLink = document.getElementById("canonicalLink");
+        if (canonicalLink) {
+          canonicalLink.href = window.location.href;
+        }
+
+        const oldSchema = document.getElementById("articleSchema");
+        if (oldSchema) oldSchema.remove();
+
+        const schema = document.createElement("script");
+        schema.type = "application/ld+json";
+        schema.id = "articleSchema";
+        schema.textContent = JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "NewsArticle",
+          headline: title,
+          description: description,
+          image: imageUrl,
+          datePublished: publishValue || new Date().toISOString(),
+          dateModified: publishValue || new Date().toISOString(),
+          author: {
+            "@type": "Organization",
+            name: "Universitas Advent Surya Nusantara"
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Universitas Advent Surya Nusantara",
+            logo: {
+              "@type": "ImageObject",
+              url: new URL("uasnlogo.png", window.location.href).href
+            }
+          },
+          mainEntityOfPage: window.location.href
+        });
+
+        document.head.appendChild(schema);
+      }
+
+      function setMeta(name, content) {
+        let meta = document.querySelector(`meta[name="${name}"]`);
+        if (!meta) {
+          meta = document.createElement("meta");
+          meta.setAttribute("name", name);
+          document.head.appendChild(meta);
+        }
+        meta.setAttribute("content", content);
+      }
+
+      function setOg(property, content) {
+        let meta = document.querySelector(`meta[property="${property}"]`);
+        if (!meta) {
+          meta = document.createElement("meta");
+          meta.setAttribute("property", property);
+          document.head.appendChild(meta);
+        }
+        meta.setAttribute("content", content);
+      }
+
+      function estimateReadingTime(text) {
+        const words = String(text || "")
+          .trim()
+          .split(/\s+/)
+          .filter(Boolean).length;
+
+        return Math.max(1, Math.ceil(words / 200));
+      }
+
+      function buildWhatsappShareUrl(title) {
+        const message = `${title} - ${window.location.href}`;
+        return `https://wa.me/?text=${encodeURIComponent(message)}`;
+      }
+
+      async function copyCurrentLink() {
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          showToast(t("link_copied"));
+        } catch (error) {
+          const input = document.createElement("input");
+          input.value = window.location.href;
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand("copy");
+          input.remove();
+          showToast(t("link_copied"));
+        }
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById("copyToast");
+        if (!toast) return;
+
+        toast.textContent = message;
+        toast.classList.add("active");
+
+        setTimeout(() => {
+          toast.classList.remove("active");
+        }, 1800);
+      }
+
+      function formatTanggal(value) {
+        if (!value) return "-";
+
+        const safeValue =
+          typeof value === "string" && value.includes(" ")
+            ? value.replace(" ", "T")
+            : value;
+
+        const date = new Date(safeValue);
+        if (Number.isNaN(date.getTime())) return String(value);
+
+        const locale = getCurrentLanguage() === "en" ? "en-US" : "id-ID";
+
+        return new Intl.DateTimeFormat(locale, {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        }).format(date);
+      }
+
+      function escapeHtml(text) {
+        return String(text || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function calendarIcon() {
+        return `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 2h2v2h6V2h2v2h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3V2Zm13 8H4v10h16V10ZM4 8h16V6H4v2Z" />
+          </svg>
+        `;
+      }
+
+      function codeIcon() {
+        return `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8.7 16.6 4.1 12l4.6-4.6L7.3 6 1.3 12l6 6 1.4-1.4Zm6.6 0 4.6-4.6-4.6-4.6L16.7 6l6 6-6 6-1.4-1.4ZM13.1 4l-4 16h1.8l4-16h-1.8Z" />
+          </svg>
+        `;
+      }
+
+      function clockIcon() {
+        return `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2a10 10 0 1 0 .01 20.01A10 10 0 0 0 12 2Zm1 10.2 4 2.4-1 1.64-5-3V6h2v6.2Z" />
+          </svg>
+        `;
+      }
+
+      function arrowLeftIcon() {
+        return `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.42-1.41L7.83 13H20v-2Z" />
+          </svg>
+        `;
+      }
+
+      function copyIcon() {
+        return `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H8V7h11v14Z" />
+          </svg>
+        `;
+      }
+
+      function shareIcon() {
+        return `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 0 0 0-1.39l7.05-4.11A2.99 2.99 0 1 0 15 5c0 .23.03.45.08.66L8.03 9.77a3 3 0 1 0 0 4.46l7.12 4.18c-.05.19-.07.39-.07.59a2.92 2.92 0 1 0 2.92-2.92Z" />
+          </svg>
+        `;
+      }
+
+      function printIcon() {
+        return `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M19 8H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3ZM8 19v-5h8v5H8Zm11-5h-1v-2H6v2H5v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3ZM18 3H6v4h12V3Z" />
+          </svg>
+        `;
+      }
+    </script>
+    <script src="../js/fft-scroll-top.js" defer></script>
+</body>
+</html>
+
