@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Preview Admin Dashboard Web FFT UASN</title>
+  <title>Admin Dashboard Web FFT UASN</title>
   <link rel="stylesheet" href="css/admin-dashboard.css">
 </head>
 
@@ -16,95 +16,105 @@
     </div>
   </div>
 
-  <div class="fft-admin-layout">
-    <aside class="fft-admin-sidebar">
-      <div class="fft-admin-brand">
-        <img class="fft-admin-brand__logo" src="images/logo-fft.png" alt="Logo FFT">
+  <div class="fft-shell">
+    <aside class="fft-sidebar">
+      <div class="fft-brand">
+        <img src="images/logo-fft.png" alt="Logo FFT">
         <div>
-          <h2 class="fft-admin-brand__title">FFT Admin</h2>
-          <p class="fft-admin-brand__text">UASN</p>
+          <h1>FFT Admin</h1>
+          <p>UASN</p>
         </div>
       </div>
 
-      <nav class="fft-admin-nav" aria-label="Navigasi admin">
-        <a class="fft-admin-nav__link is-active" data-admin-nav-link href="#">Dashboard</a>
-        <a class="fft-admin-nav__link" data-admin-nav-link href="#">Data Dekan</a>
-        <a class="fft-admin-nav__link" data-admin-nav-link href="#">Data Dosen</a>
-        <a class="fft-admin-nav__link" data-admin-nav-link href="#">Berita dan Banner</a>
-        <a class="fft-admin-nav__link" data-admin-nav-link href="#">E-Brochure</a>
-        <a class="fft-admin-nav__link" data-admin-nav-link href="#">Papan Peringkat</a>
-        <a class="fft-admin-nav__link" data-admin-nav-link href="#">Testimoni</a>
-        <a class="fft-admin-nav__link" data-admin-nav-link href="#">Keluar</a>
+      <nav class="fft-nav" aria-label="Navigasi dashboard">
+        <button class="is-active" type="button" data-sidebar-filter="all">Semua Fitur</button>
+        <button type="button" data-sidebar-filter="dashboard">Dashboard</button>
+        <button type="button" data-sidebar-filter="content">Konten</button>
+        <button type="button" data-sidebar-filter="academic">Akademik</button>
+        <button type="button" data-sidebar-filter="admission">Pendaftaran</button>
+        <button type="button" data-sidebar-filter="frontend">Frontend</button>
+        <button type="button" data-sidebar-filter="media">Media</button>
+        <button type="button" data-sidebar-filter="security">Keamanan</button>
+        <button type="button" data-sidebar-filter="system">Sistem</button>
       </nav>
     </aside>
 
-    <main class="fft-admin-main">
-      <header class="fft-admin-topbar">
-        <div>
-          <p class="fft-admin-page-kicker">Dashboard Admin</p>
-          <h1 class="fft-admin-page-title">Web FFT UASN</h1>
+    <main class="fft-main">
+      <section class="fft-hero">
+        <p class="fft-kicker">Dashboard Admin</p>
+        <h1 class="fft-title">Pusat Kendali Web FFT UASN</h1>
+        <p>
+          Dashboard ini dirancang sebagai pusat pengelolaan konten, akademik, penerimaan,
+          media, keamanan, dan publikasi website Fakultas Filsafat Teologi UASN.
+        </p>
+      </section>
+
+      <section class="fft-grid" aria-label="Statistik dashboard">
+        <article class="fft-stat">
+          <span>Total Fitur</span>
+          <strong data-stat="totalFeatures">0</strong>
+        </article>
+
+        <article class="fft-stat">
+          <span>Siap atau Ada</span>
+          <strong data-stat="readyFeatures">0</strong>
+        </article>
+
+        <article class="fft-stat">
+          <span>Konsep Baru</span>
+          <strong data-stat="conceptFeatures">0</strong>
+        </article>
+
+        <article class="fft-stat">
+          <span>Route Terhubung</span>
+          <strong data-stat="connectedFeatures">0</strong>
+        </article>
+      </section>
+
+      <section class="fft-toolbar" aria-label="Kontrol fitur">
+        <input class="fft-search" type="search" data-feature-search placeholder="Cari fitur admin, contoh: berita, dosen, keamanan, e-brochure...">
+
+        <div class="fft-filter">
+          <button class="is-active" type="button" data-filter="all">Semua</button>
+          <button type="button" data-filter="content">Konten</button>
+          <button type="button" data-filter="academic">Akademik</button>
+          <button type="button" data-filter="admission">Pendaftaran</button>
+          <button type="button" data-filter="security">Keamanan</button>
+          <button type="button" data-filter="system">Sistem</button>
+        </div>
+      </section>
+
+      <section class="fft-grid">
+        <h2 class="fft-section-title">30 Fitur Dashboard Admin</h2>
+
+        <div class="fft-panel" data-empty-state hidden>
+          <h2>Fitur tidak ditemukan</h2>
+          <p>Ubah kata kunci pencarian atau pilih kategori lain.</p>
         </div>
 
-        <a class="fft-admin-button fft-admin-button--accent" href="#">Tambah Konten</a>
-      </header>
+        <div class="fft-grid" data-feature-grid style="grid-column: 1 / -1;"></div>
 
-      <section class="fft-admin-grid">
-        <article class="fft-admin-card">
-          <p class="fft-admin-card__label">Berita Publish</p>
-          <h2 class="fft-admin-card__value">12</h2>
-        </article>
-
-        <article class="fft-admin-card">
-          <p class="fft-admin-card__label">Data Dosen</p>
-          <h2 class="fft-admin-card__value">8</h2>
-        </article>
-
-        <article class="fft-admin-card">
-          <p class="fft-admin-card__label">Banner Aktif</p>
-          <h2 class="fft-admin-card__value">3</h2>
-        </article>
-
-        <article class="fft-admin-card fft-admin-card--wide">
-          <p class="fft-admin-card__label">Aktivitas Terbaru</p>
-          <div class="fft-admin-table-wrap">
-            <table class="fft-admin-table">
-              <thead>
-                <tr>
-                  <th>Modul</th>
-                  <th>Status</th>
-                  <th>Catatan</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr data-admin-search-row>
-                  <td>Berita</td>
-                  <td>Publish</td>
-                  <td>Berita terbaru berhasil dikirim ke frontend.</td>
-                </tr>
-                <tr data-admin-search-row>
-                  <td>Dosen</td>
-                  <td>Draft</td>
-                  <td>Data dosen menunggu validasi admin.</td>
-                </tr>
-                <tr data-admin-search-row>
-                  <td>E-Brochure</td>
-                  <td>Siap</td>
-                  <td>Viewer frontend sudah tersedia.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </article>
-
-        <article class="fft-admin-card fft-admin-card--full">
-          <p class="fft-admin-card__label">Catatan Sistem</p>
+        <article class="fft-panel">
+          <h2>Catatan Integrasi</h2>
           <p>
-            Ini adalah halaman preview static untuk melihat desain admin dashboard sebelum disambungkan ke Flask route.
-            Setelah desain disetujui, template ini akan dihubungkan ke route admin yang sebenarnya.
+            Ini masih preview desain dan konsep fitur. Fitur yang sudah memiliki route dapat langsung dibuka.
+            Fitur berstatus konsep akan disambungkan ke backend secara bertahap setelah struktur database dan route final disiapkan.
           </p>
         </article>
       </section>
     </main>
+  </div>
+
+  <div class="fft-modal" data-modal>
+    <div class="fft-modal__card">
+      <div class="fft-modal__header">
+        <h2 data-modal-title>Detail Fitur</h2>
+      </div>
+      <div class="fft-modal__body" data-modal-body></div>
+      <div class="fft-modal__footer" data-modal-footer>
+        <button class="fft-btn" type="button" data-modal-close>Tutup</button>
+      </div>
+    </div>
   </div>
 
   <script src="js/admin-dashboard.js"></script>
