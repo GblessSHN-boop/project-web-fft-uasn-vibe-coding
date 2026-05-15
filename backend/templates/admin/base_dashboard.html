@@ -1,0 +1,57 @@
+﻿<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Admin Dashboard Web FFT UASN{% endblock %}</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-dashboard.css') }}">
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body class="fft-admin-body">
+  <div class="fft-admin-loader" data-admin-loader>
+    <div class="fft-admin-loader__panel">
+      <img
+        class="fft-admin-loader__logo"
+        data-admin-loader-logo
+        src="{{ url_for('static', filename='admin/images/logo-fft.png') }}"
+        alt="Logo FFT"
+      >
+      <h1 class="fft-admin-loader__title">Admin Dashboard</h1>
+      <p class="fft-admin-loader__subtitle">Web FFT UASN</p>
+    </div>
+  </div>
+
+  <div class="fft-admin-layout">
+    <aside class="fft-admin-sidebar">
+      <div class="fft-admin-brand">
+        <img
+          class="fft-admin-brand__logo"
+          src="{{ url_for('static', filename='admin/images/logo-fft.png') }}"
+          alt="Logo FFT"
+        >
+        <div>
+          <h2 class="fft-admin-brand__title">FFT Admin</h2>
+          <p class="fft-admin-brand__text">UASN</p>
+        </div>
+      </div>
+
+      <nav class="fft-admin-nav" aria-label="Navigasi admin">
+        <a class="fft-admin-nav__link" data-admin-nav-link href="/admin/choose">Dashboard</a>
+        <a class="fft-admin-nav__link" data-admin-nav-link href="/admin/dekan">Data Dekan</a>
+        <a class="fft-admin-nav__link" data-admin-nav-link href="/admin/dosen">Data Dosen</a>
+        <a class="fft-admin-nav__link" data-admin-nav-link href="/admin/berita">Berita dan Banner</a>
+        <a class="fft-admin-nav__link" data-admin-nav-link href="/admin/logout">Keluar</a>
+      </nav>
+    </aside>
+
+    <main class="fft-admin-main">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='admin/js/admin-dashboard.js') }}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
