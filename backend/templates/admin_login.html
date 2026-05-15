@@ -1,31 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Login</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FFT UASN Content Center | Login Admin</title>
+  <meta name="description" content="Halaman login internal FFT UASN Content Center untuk mengelola konten, media, berita, banner, dosen, dan data website Fakultas Filsafat Teologi UASN.">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="application-name" content="FFT UASN Content Center">
+  <meta name="theme-color" content="#8b0f17">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-auth.css') }}">
 </head>
-<body>
-  <div class="admin-page">
-    <div class="admin-header">
-      <h1>DASHBOARD ADMIN</h1>
-      <p>FAKULTAS FILSAFAT TEOLOGI</p>
-    </div>
 
-    <div class="admin-card small-card">
-      <h2>FFT DEV</h2>
-
-      {% if error %}
-        <p class="error-text">{{ error }}</p>
-      {% endif %}
-
-      <form method="POST" class="admin-form">
-        <input type="email" name="email" placeholder="Email" required />
-        <input type="password" name="password" placeholder="Password" required />
-        <button type="submit">MASUK</button>
-      </form>
+<body class="fft-auth-body">
+  <div class="fft-auth-loader" data-auth-loader>
+    <div class="fft-auth-loader__panel">
+      <img class="fft-auth-loader__logo" src="{{ url_for('static', filename='admin/images/logo-fft.png') }}" alt="Logo FFT">
+      <p class="fft-auth-loader__kicker">FFT UASN</p>
+      <h1 class="fft-auth-loader__title">Content Center</h1>
     </div>
   </div>
+
+  <main class="fft-auth-page">
+    <section class="fft-auth-frame">
+      <aside class="fft-auth-side">
+        <div class="fft-auth-brand">
+          <img class="fft-auth-brand__logo" src="{{ url_for('static', filename='admin/images/logo-fft.png') }}" alt="Logo FFT">
+          <div>
+            <p class="fft-auth-label">Panel Internal</p>
+            <h1>FFT UASN</h1>
+            <span>Universitas Advent Surya Nusantara</span>
+          </div>
+        </div>
+
+        <div class="fft-auth-side__body">
+          <p class="fft-auth-label">Content Center</p>
+          <h2>Kelola konten dan media website dari satu tempat.</h2>
+          <p>
+            Sistem internal untuk mengelola berita, banner, dosen, dekan, dokumen,
+            dan komponen frontend website FFT UASN.
+          </p>
+        </div>
+
+        <div class="fft-auth-security">
+          <strong>Akses terbatas</strong>
+          <span>Gunakan akun admin resmi. Keluar dari sistem setelah selesai bekerja.</span>
+        </div>
+      </aside>
+
+      <section class="fft-auth-main" aria-label="Form login admin">
+        <div class="fft-auth-card">
+          <div class="fft-auth-card__head">
+            <p class="fft-auth-label fft-auth-label--maroon">Login Admin</p>
+            <h2>Masuk ke Content Center</h2>
+            <p>Gunakan kredensial admin untuk melanjutkan ke panel pengelolaan website.</p>
+          </div>
+
+          {% if error %}
+          <div class="fft-auth-alert" role="alert">
+            {{ error }}
+          </div>
+          {% endif %}
+
+          <form class="fft-auth-form" method="POST" action="{{ url_for('admin_login') }}">
+            <label class="fft-auth-field">
+              <span>Email Admin</span>
+              <input
+                type="email"
+                name="email"
+                placeholder="admin@fft.dev"
+                autocomplete="username"
+                required
+              >
+            </label>
+
+            <label class="fft-auth-field">
+              <span>Password</span>
+              <input
+                type="password"
+                name="password"
+                placeholder="Masukkan password"
+                autocomplete="current-password"
+                required
+              >
+            </label>
+
+            <button class="fft-auth-submit" type="submit">Masuk</button>
+          </form>
+
+          <div class="fft-auth-footer">
+            <a href="/frontend/pages/indexfft.html">Kembali ke Website</a>
+            <span>FFT UASN Content Center</span>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='admin/js/admin-auth.js') }}"></script>
 </body>
 </html>

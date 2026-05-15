@@ -1,35 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Warning</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FFT UASN Content Center | Peringatan Admin</title>
+  <meta name="description" content="Peringatan akses internal sebelum masuk ke FFT UASN Content Center.">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="application-name" content="FFT UASN Content Center">
+  <meta name="theme-color" content="#8b0f17">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-auth.css') }}">
 </head>
-<body>
-  <div class="admin-page">
-    <div class="admin-header">
-      <h1>DASHBOARD ADMIN</h1>
-      <p>FAKULTAS FILSAFAT TEOLOGI</p>
-    </div>
 
-    <div class="admin-card warning-card">
-      <h2>FFT DEV</h2>
-      <h3>⚠ PERINGATAN PENTING</h3>
-
-      <div class="warning-text">
-        <p>Seluruh pengguna diwajibkan untuk menjaga integritas informasi pada website resmi Fakultas Filsafat Teologi UASN.</p>
-        <ul>
-          <li>Pemantauan real-time. Setiap aktivitas di dalam sistem dapat terekam.</li>
-          <li>Dilarang mengubah data tanpa izin resmi dari pihak fakultas.</li>
-          <li>Seluruh konten dilindungi sesuai ketentuan yang berlaku.</li>
-        </ul>
-      </div>
-
-      <div class="button-row right">
-        <a href="{{ url_for('admin_choose') }}" class="btn green">LANJUT...</a>
-      </div>
+<body class="fft-auth-body">
+  <div class="fft-auth-loader" data-auth-loader>
+    <div class="fft-auth-loader__panel">
+      <img class="fft-auth-loader__logo" src="{{ url_for('static', filename='admin/images/logo-fft.png') }}" alt="Logo FFT">
+      <p class="fft-auth-loader__kicker">Verifikasi Akses</p>
+      <h1 class="fft-auth-loader__title">Content Center</h1>
     </div>
   </div>
+
+  <main class="fft-warning-page">
+    <section class="fft-warning-card">
+      <div class="fft-warning-header">
+        <img class="fft-warning-logo" src="{{ url_for('static', filename='admin/images/logo-fft.png') }}" alt="Logo FFT">
+        <div>
+          <p class="fft-auth-label fft-auth-label--maroon">Peringatan Penting</p>
+          <h1>Akses Admin Bersifat Terbatas</h1>
+          <p>Anda akan masuk ke FFT UASN Content Center.</p>
+        </div>
+      </div>
+
+      <div class="fft-warning-body">
+        <p>
+          Semua perubahan pada konten, media, berita, banner, data dosen, dan informasi website
+          dapat memengaruhi tampilan publik. Pastikan setiap data sudah benar sebelum disimpan atau dipublikasikan.
+        </p>
+
+        <div class="fft-warning-grid">
+          <article>
+            <span>01</span>
+            <h2>Periksa data</h2>
+            <p>Cek kembali isi konten, gambar, dan dokumen sebelum publish.</p>
+          </article>
+
+          <article>
+            <span>02</span>
+            <h2>Jaga akses</h2>
+            <p>Jangan membagikan akun admin kepada pihak yang tidak berwenang.</p>
+          </article>
+
+          <article>
+            <span>03</span>
+            <h2>Keluar aman</h2>
+            <p>Gunakan tombol keluar setelah selesai mengelola website.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="fft-warning-actions">
+        <a class="fft-warning-btn fft-warning-btn--primary" href="{{ url_for('admin_choose') }}">
+          Lanjut ke Dashboard
+        </a>
+        <a class="fft-warning-btn fft-warning-btn--secondary" href="{{ url_for('admin_logout') }}">
+          Keluar
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='admin/js/admin-auth.js') }}"></script>
 </body>
 </html>
