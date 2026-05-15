@@ -1,41 +1,92 @@
 ﻿(function () {
   "use strict";
 
-  const features = [
-    ["OV", "dashboard", "Ringkasan Dashboard", "Pusat informasi cepat untuk melihat status berita, dosen, banner, ranking, testimoni, dan konten penting.", "Siap", "/admin/choose"],
-    ["QA", "dashboard", "Quick Action Center", "Akses cepat untuk tambah berita, upload banner, tambah dosen, update e-brochure, dan publish konten.", "Konsep", null],
-    ["PF", "security", "Profil Admin", "Mengelola nama admin, email, foto, preferensi dashboard, dan riwayat aktivitas pribadi.", "Konsep", null],
-    ["AU", "security", "Autentikasi Admin", "Login, logout, validasi session, dan proteksi halaman admin agar hanya pengguna sah yang bisa masuk.", "Fondasi", "/admin/login"],
-    ["RL", "security", "Role dan Permission", "Mengatur hak akses Super Admin, Editor Berita, Operator Dosen, dan Viewer agar pengelolaan lebih aman.", "Konsep", null],
-    ["DK", "content", "Data Dekan", "Mengelola profil dekan, foto formal, foto frontend, jabatan, biodata, dan status publish.", "Ada", "/admin/dekan"],
-    ["DS", "content", "Data Dosen", "Mengelola profil dosen, foto, thumbnail, bidang keahlian, biodata, dan urutan tampil di frontend.", "Ada", "/admin/dosen"],
-    ["BR", "content", "Kelola Berita", "CRUD berita, thumbnail, gambar detail, tag New, draft, publish, dan sinkronisasi ke frontend.", "Ada", "/admin/berita/list"],
-    ["BI", "content", "Banner Informasi", "Mengelola banner informasi utama, media video atau gambar, status aktif, urutan tampil, dan jadwal publikasi.", "Ada", "/admin/banner-informasi"],
-    ["EB", "content", "E-Brochure Manager", "Upload file brosur, cover, metadata, tombol download, share, dan viewer e-brochure frontend.", "Konsep", null],
-    ["KR", "academic", "Kurikulum", "Mengelola struktur kurikulum, daftar mata kuliah, semester, SKS, dan catatan akademik.", "Konsep", null],
-    ["KA", "academic", "Kalender Akademik", "Mengatur agenda akademik, tanggal penting, masa pendaftaran, ujian, dan kegiatan fakultas.", "Konsep", null],
-    ["AA", "academic", "Aturan Akademik", "Mengelola peraturan akademik, pedoman mahasiswa, tata tertib, dan dokumen resmi.", "Konsep", null],
-    ["AP", "admission", "Alur Pendaftaran", "Mengelola tahapan pendaftaran, persyaratan, jadwal, dan informasi kontak penerimaan.", "Konsep", null],
-    ["PR", "admission", "Persyaratan Masuk", "Mengelola dokumen syarat masuk, biaya, berkas, dan informasi calon mahasiswa.", "Konsep", null],
-    ["SP", "admission", "Simulasi Pendaftaran", "Mengatur simulasi alur pendaftaran offline, estimasi kebutuhan dokumen, dan informasi langkah calon mahasiswa.", "Konsep", null],
-    ["QF", "frontend", "Quick Facts", "Mengelola angka statistik fakultas seperti jumlah mahasiswa, alumni, dosen, program, dan data penting lain.", "Konsep", null],
-    ["RK", "frontend", "Papan Peringkat", "Mengelola ranking akademik semester, foto mahasiswa, GPA, tahun akademik, dan mode poster.", "Konsep", null],
-    ["TS", "frontend", "Testimoni", "Mengelola testimoni mahasiswa, alumni, foto, kutipan, status tampil, dan urutan carousel.", "Konsep", null],
-    ["KT", "frontend", "Kontak Fakultas", "Mengelola alamat, email, nomor telepon, WhatsApp, peta, dan jam layanan.", "Konsep", null],
-    ["GL", "media", "Galeri Kegiatan", "Mengelola foto kegiatan, organisasi, dosen, mahasiswa, dan dokumentasi fakultas.", "Konsep", null],
-    ["OR", "media", "Organisasi Mahasiswa", "Mengelola konten HIMA FFT, logo organisasi, deskripsi, kegiatan, dan struktur organisasi.", "Konsep", null],
-    ["MM", "media", "Media Library", "Pusat file untuk gambar, video, dokumen, ikon, brosur, dan validasi ukuran file.", "Konsep", null],
-    ["PV", "workflow", "Preview dan Publish", "Menyediakan alur draft, preview, validasi, publish, unpublish, dan rollback konten.", "Konsep", null],
-    ["LG", "workflow", "Bahasa ID dan EN", "Mengelola konten bilingual agar semua halaman bisa tampil dalam Bahasa Indonesia dan English.", "Konsep", null],
-    ["SC", "workflow", "Scroll Top dan UI Feature", "Mengontrol fitur frontend seperti scroll top, language switcher, popup, dan komponen UI lintas halaman.", "Konsep", null],
-    ["AN", "analytics", "Analytics Konten", "Melihat jumlah klik, halaman populer, berita paling sering dibuka, dan performa konten.", "Fondasi", "/api/get-click-analytics"],
-    ["AL", "security", "Audit Log", "Mencatat aktivitas admin seperti login, tambah, edit, hapus, publish, dan upload file.", "Konsep", null],
-    ["BK", "system", "Backup dan Restore", "Membuat backup database, restore data, dan arsip konten sebelum perubahan besar.", "Konsep", null],
-    ["ST", "system", "Pengaturan Website", "Mengelola identitas website, SEO dasar, mode maintenance, metadata, dan konfigurasi umum.", "Konsep", null]
+  const modules = [
+    {
+      key: "dashboard",
+      title: "Dashboard Inti",
+      features: [
+        ["OV", "Ringkasan Statistik Sistem", "Melihat total konten, status publish, modul aktif, dan kondisi sistem secara cepat.", "Siap", "/admin/choose"],
+        ["AC", "Aktivitas Terbaru", "Membaca riwayat aktivitas admin, perubahan konten, dan proses publish terakhir.", "Konsep", null],
+        ["NT", "Notifikasi dan Alert", "Menampilkan konten yang menunggu review, file bermasalah, dan data yang belum lengkap.", "Konsep", null],
+        ["QS", "Pencarian Cepat", "Mencari fitur dashboard, data konten, dosen, berita, atau pengaturan dari satu tempat.", "Siap", null]
+      ]
+    },
+    {
+      key: "content",
+      title: "Konten dan Publikasi",
+      features: [
+        ["BR", "Kelola Berita", "Tambah, edit, hapus, draft, publish, thumbnail, tag New, dan sinkronisasi berita ke frontend.", "Ada", "/admin/berita/list"],
+        ["BI", "Kelola Banner Utama", "Mengatur banner informasi berupa gambar atau video, status aktif, urutan, dan jadwal tampil.", "Ada", "/admin/banner-informasi"],
+        ["KB", "Kategori Berita", "Mengelompokkan berita berdasarkan kategori agar arsip dan pencarian lebih terstruktur.", "Konsep", null],
+        ["TG", "Tag Berita", "Mengatur label berita seperti New, Akademik, Pengumuman, Kegiatan, dan Pendaftaran.", "Konsep", null],
+        ["HS", "Halaman Statis", "Mengelola konten halaman tetap seperti tentang fakultas, visi misi, dan informasi umum.", "Konsep", null],
+        ["PG", "Pengumuman Penting", "Menerbitkan pengumuman singkat yang perlu tampil cepat pada halaman utama.", "Konsep", null]
+      ]
+    },
+    {
+      key: "academic",
+      title: "Akademik",
+      features: [
+        ["DK", "Data Dekan", "Mengelola identitas dekan, foto formal, foto frontend, jabatan, dan biodata.", "Ada", "/admin/dekan"],
+        ["DS", "Data Dosen", "Mengelola profil dosen, foto, thumbnail, bidang keahlian, status, dan urutan tampil.", "Ada", "/admin/dosen"],
+        ["KR", "Kurikulum", "Mengatur daftar mata kuliah, semester, SKS, dan struktur kurikulum program studi.", "Konsep", null],
+        ["KA", "Kalender Akademik", "Mengelola tanggal penting, kegiatan akademik, ujian, dan periode administrasi.", "Konsep", null],
+        ["AA", "Aturan Akademik", "Mengelola pedoman akademik, tata tertib, dan dokumen aturan fakultas.", "Konsep", null]
+      ]
+    },
+    {
+      key: "admission",
+      title: "Pendaftaran",
+      features: [
+        ["AP", "Alur Pendaftaran", "Mengelola tahapan pendaftaran calon mahasiswa dari informasi awal sampai registrasi.", "Konsep", null],
+        ["PR", "Persyaratan Masuk", "Mengatur syarat dokumen, biaya, ketentuan, dan informasi penerimaan mahasiswa baru.", "Konsep", null],
+        ["SP", "Simulasi Pendaftaran", "Menyediakan simulasi alur pendaftaran offline agar calon mahasiswa memahami prosesnya.", "Konsep", null],
+        ["FQ", "FAQ Pendaftaran", "Mengelola pertanyaan umum tentang biaya, dokumen, jadwal, dan kontak penerimaan.", "Konsep", null]
+      ]
+    },
+    {
+      key: "frontend",
+      title: "Frontend Website",
+      features: [
+        ["QF", "Quick Facts", "Mengatur statistik singkat fakultas seperti dosen, mahasiswa, alumni, program, dan capaian.", "Konsep", null],
+        ["RK", "Papan Peringkat", "Mengelola ranking GPA semester, foto mahasiswa, tahun akademik, dan mode poster.", "Konsep", null],
+        ["TS", "Testimoni", "Mengelola testimoni mahasiswa dan alumni, foto, kutipan, status, dan urutan tampil.", "Konsep", null],
+        ["KT", "Kontak Resmi", "Mengelola alamat, email, telepon, WhatsApp, maps, dan jam layanan fakultas.", "Konsep", null],
+        ["NV", "Menu Navigasi", "Mengelola struktur menu frontend agar dropdown dan link halaman tetap konsisten.", "Konsep", null]
+      ]
+    },
+    {
+      key: "media",
+      title: "Media dan Dokumen",
+      features: [
+        ["ML", "Media Library", "Pusat pengelolaan gambar, video, dokumen, ikon, dan validasi ukuran file.", "Konsep", null],
+        ["EB", "E-Brochure", "Mengelola file brosur, cover, metadata, preview viewer, tombol download, dan share.", "Konsep", null],
+        ["DP", "Dokumen Publik", "Mengelola dokumen resmi seperti kalender, persyaratan, aturan, dan file informasi.", "Konsep", null],
+        ["GL", "Galeri Kegiatan", "Mengelola foto kegiatan, organisasi, dosen, mahasiswa, dan dokumentasi fakultas.", "Konsep", null]
+      ]
+    },
+    {
+      key: "security",
+      title: "Keamanan dan Akses",
+      features: [
+        ["AU", "Autentikasi Admin", "Login, logout, validasi session, dan proteksi halaman admin.", "Fondasi", "/admin/login"],
+        ["RL", "Role dan Permission", "Mengatur hak akses Super Admin, Editor, Operator, dan Viewer.", "Konsep", null],
+        ["AL", "Audit Log", "Mencatat login, tambah, edit, hapus, publish, upload, dan perubahan penting.", "Konsep", null]
+      ]
+    },
+    {
+      key: "system",
+      title: "Sistem",
+      features: [
+        ["BK", "Backup dan Restore", "Menyiapkan backup database, restore data, dan arsip sebelum perubahan besar.", "Konsep", null],
+        ["ST", "Pengaturan Website", "Mengelola identitas website, SEO dasar, mode maintenance, dan konfigurasi umum.", "Konsep", null]
+      ]
+    }
   ];
 
   const state = {
-    category: "all",
+    filter: "all",
     query: ""
   };
 
@@ -47,107 +98,166 @@
     return Array.from(document.querySelectorAll(selector));
   }
 
-  function hideLoader() {
-    const loader = qs("[data-admin-loader]");
-    if (!loader) return;
+  function allFeatures() {
+    return modules.flatMap(function (module) {
+      return module.features.map(function (feature) {
+        return {
+          moduleKey: module.key,
+          moduleTitle: module.title,
+          code: feature[0],
+          title: feature[1],
+          description: feature[2],
+          status: feature[3],
+          route: feature[4]
+        };
+      });
+    });
+  }
 
-    window.setTimeout(function () {
-      loader.classList.add("is-hidden");
-    }, 1700);
+  function getFilteredModules() {
+    const query = state.query.toLowerCase();
+
+    return modules.map(function (module) {
+      const filtered = module.features.filter(function (feature) {
+        const text = [
+          module.title,
+          feature[0],
+          feature[1],
+          feature[2],
+          feature[3]
+        ].join(" ").toLowerCase();
+
+        const filterMatch = state.filter === "all" || module.key === state.filter;
+        const queryMatch = !query || text.includes(query);
+
+        return filterMatch && queryMatch;
+      });
+
+      return {
+        key: module.key,
+        title: module.title,
+        features: filtered
+      };
+    }).filter(function (module) {
+      return module.features.length > 0;
+    });
   }
 
   function setStats() {
-    const total = features.length;
+    const features = allFeatures();
     const ready = features.filter(function (item) {
-      return ["Ada", "Siap", "Fondasi"].includes(item[4]);
+      return ["Ada", "Siap", "Fondasi"].includes(item.status);
     }).length;
     const concept = features.filter(function (item) {
-      return item[4] === "Konsep";
+      return item.status === "Konsep";
     }).length;
     const connected = features.filter(function (item) {
-      return Boolean(item[5]);
+      return Boolean(item.route);
     }).length;
 
-    const map = {
-      totalFeatures: total,
-      readyFeatures: ready,
-      conceptFeatures: concept,
-      connectedFeatures: connected
+    const data = {
+      total: features.length,
+      ready: ready,
+      concept: concept,
+      route: connected
     };
 
-    Object.keys(map).forEach(function (key) {
-      const target = qs("[data-stat='" + key + "']");
-      if (target) target.textContent = map[key];
+    Object.keys(data).forEach(function (key) {
+      const el = qs("[data-stat='" + key + "']");
+      if (el) el.textContent = data[key];
     });
   }
 
-  function filteredFeatures() {
-    return features.filter(function (item) {
-      const categoryMatch = state.category === "all" || item[1] === state.category;
-      const text = item.join(" ").toLowerCase();
-      const queryMatch = !state.query || text.includes(state.query);
-      return categoryMatch && queryMatch;
-    });
-  }
+  function renderModules() {
+    const target = qs("[data-module-grid]");
+    const empty = qs("[data-empty]");
+    if (!target) return;
 
-  function renderFeatures() {
-    const grid = qs("[data-feature-grid]");
-    const empty = qs("[data-empty-state]");
-    if (!grid) return;
+    const filtered = getFilteredModules();
 
-    const data = filteredFeatures();
+    target.innerHTML = filtered.map(function (module) {
+      const rows = module.features.map(function (feature) {
+        const route = feature[4];
+        const primary = route
+          ? '<a class="fft-link" href="' + route + '">Buka</a>'
+          : '<button class="fft-detail" type="button" data-detail="' + feature[0] + '">Detail</button>';
 
-    grid.innerHTML = data.map(function (item, index) {
-      const route = item[5];
-      const routeButton = route
-        ? '<a href="' + route + '">Buka</a>'
-        : '<button type="button" data-feature-detail="' + item[0] + '">Detail</button>';
+        return [
+          '<article class="fft-feature">',
+          '  <div class="fft-feature__code">' + feature[0] + '</div>',
+          '  <div>',
+          '    <h3 class="fft-feature__title">' + feature[1] + '</h3>',
+          '    <p class="fft-feature__desc">' + feature[2] + '</p>',
+          '  </div>',
+          '  <div class="fft-feature__meta">',
+          '    <span class="fft-badge">' + feature[3] + '</span>',
+          '    ' + primary,
+          '    <button class="fft-detail" type="button" data-detail="' + feature[0] + '">Konsep</button>',
+          '  </div>',
+          '</article>'
+        ].join("");
+      }).join("");
 
       return [
-        '<article class="fft-feature" data-card="' + item[0] + '" style="animation-delay:' + (index * 20) + 'ms">',
-        '  <div class="fft-feature__top">',
-        '    <span class="fft-feature__code">' + item[0] + '</span>',
-        '    <span class="fft-feature__status">' + item[4] + '</span>',
+        '<section class="fft-module" data-module="' + module.key + '">',
+        '  <header class="fft-module__header">',
+        '    <h2 class="fft-module__title">' + module.title + '</h2>',
+        '    <span class="fft-module__count">' + module.features.length + ' fitur</span>',
+        '  </header>',
+        '  <div class="fft-feature-list">',
+        rows,
         '  </div>',
-        '  <h3>' + item[2] + '</h3>',
-        '  <p>' + item[3] + '</p>',
-        '  <div class="fft-feature__actions">',
-        '    ' + routeButton,
-        '    <button type="button" data-feature-detail="' + item[0] + '">Lihat Konsep</button>',
-        '  </div>',
-        '</article>'
+        '</section>'
       ].join("");
     }).join("");
 
-    if (empty) {
-      empty.hidden = data.length > 0;
-    }
+    if (empty) empty.hidden = filtered.length > 0;
 
-    bindFeatureDetailButtons();
+    bindDetailButtons();
+  }
+
+  function setActiveFilter(value) {
+    state.filter = value;
+
+    qsa("[data-filter]").forEach(function (button) {
+      button.classList.toggle("is-active", button.getAttribute("data-filter") === value);
+    });
+
+    qsa("[data-sidebar-filter]").forEach(function (button) {
+      button.classList.toggle("is-active", button.getAttribute("data-sidebar-filter") === value);
+    });
+
+    renderModules();
   }
 
   function bindFilters() {
     qsa("[data-filter]").forEach(function (button) {
       button.addEventListener("click", function () {
-        state.category = button.getAttribute("data-filter") || "all";
+        setActiveFilter(button.getAttribute("data-filter") || "all");
+      });
+    });
 
-        qsa("[data-filter]").forEach(function (item) {
-          item.classList.remove("is-active");
-        });
-
-        button.classList.add("is-active");
-        renderFeatures();
+    qsa("[data-sidebar-filter]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        setActiveFilter(button.getAttribute("data-sidebar-filter") || "all");
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
     });
   }
 
   function bindSearch() {
-    const search = qs("[data-feature-search]");
+    const search = qs("[data-search]");
     if (!search) return;
 
     search.addEventListener("input", function () {
-      state.query = search.value.trim().toLowerCase();
-      renderFeatures();
+      state.query = search.value.trim();
+      renderModules();
+    });
+  }
+
+  function findFeature(code) {
+    return allFeatures().find(function (feature) {
+      return feature.code === code;
     });
   }
 
@@ -156,42 +266,40 @@
     const title = qs("[data-modal-title]");
     const body = qs("[data-modal-body]");
     const footer = qs("[data-modal-footer]");
-    const feature = features.find(function (item) {
-      return item[0] === code;
-    });
+    const feature = findFeature(code);
 
     if (!modal || !feature) return;
 
-    title.textContent = feature[2];
+    title.textContent = feature.title;
 
     body.innerHTML = [
-      '<p>' + feature[3] + '</p>',
-      '<ul class="fft-modal__list">',
-      '<li>Kategori: ' + feature[1] + '</li>',
-      '<li>Status: ' + feature[4] + '</li>',
-      '<li>Prioritas: disiapkan untuk integrasi backend bertahap.</li>',
-      '<li>Tujuan: mempermudah admin mengelola konten tanpa membuka file coding manual.</li>',
+      '<p>' + feature.description + '</p>',
+      '<ul>',
+      '<li>Modul: ' + feature.moduleTitle + '</li>',
+      '<li>Status: ' + feature.status + '</li>',
+      '<li>Tujuan: mempermudah admin mengelola website tanpa mengubah file coding manual.</li>',
+      '<li>Integrasi: disambungkan bertahap ke database PostgreSQL dan route Flask.</li>',
       '</ul>'
     ].join("");
 
-    footer.innerHTML = feature[5]
-      ? '<a class="fft-btn" href="' + feature[5] + '">Buka Route Admin</a><button class="fft-btn" type="button" data-modal-close>Tutup</button>'
-      : '<button class="fft-btn" type="button" data-modal-close>Tutup</button>';
+    footer.innerHTML = feature.route
+      ? '<a class="fft-button" href="' + feature.route + '">Buka Route</a><button class="fft-button" type="button" data-close-modal>Tutup</button>'
+      : '<button class="fft-button" type="button" data-close-modal>Tutup</button>';
 
     modal.classList.add("is-open");
     bindCloseModal();
   }
 
-  function bindFeatureDetailButtons() {
-    qsa("[data-feature-detail]").forEach(function (button) {
+  function bindDetailButtons() {
+    qsa("[data-detail]").forEach(function (button) {
       button.addEventListener("click", function () {
-        openModal(button.getAttribute("data-feature-detail"));
+        openModal(button.getAttribute("data-detail"));
       });
     });
   }
 
   function bindCloseModal() {
-    qsa("[data-modal-close]").forEach(function (button) {
+    qsa("[data-close-modal]").forEach(function (button) {
       button.addEventListener("click", function () {
         const modal = qs("[data-modal]");
         if (modal) modal.classList.remove("is-open");
@@ -199,37 +307,31 @@
     });
   }
 
-  function bindSidebar() {
-    qsa("[data-sidebar-filter]").forEach(function (button) {
-      button.addEventListener("click", function () {
-        const category = button.getAttribute("data-sidebar-filter") || "all";
-        const filterButton = qs("[data-filter='" + category + "']");
-
-        qsa("[data-sidebar-filter]").forEach(function (item) {
-          item.classList.remove("is-active");
-        });
-
-        button.classList.add("is-active");
-
-        if (filterButton) {
-          filterButton.click();
-        } else {
-          state.category = category;
-          renderFeatures();
-        }
-
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
+  function bindEscape() {
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        const modal = qs("[data-modal]");
+        if (modal) modal.classList.remove("is-open");
+      }
     });
+  }
+
+  function hideLoader() {
+    const loader = qs("[data-loader]");
+    if (!loader) return;
+
+    window.setTimeout(function () {
+      loader.classList.add("is-hidden");
+    }, 1800);
   }
 
   function init() {
     setStats();
+    renderModules();
     bindFilters();
     bindSearch();
-    bindSidebar();
     bindCloseModal();
-    renderFeatures();
+    bindEscape();
     hideLoader();
   }
 
