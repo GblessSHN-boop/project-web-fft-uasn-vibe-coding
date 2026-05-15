@@ -542,3 +542,60 @@ body {
     width: 100%;
   }
 }
+
+/* === AUTH FAVICON AND BRAND LINK REFINEMENT === */
+
+.fft-auth-brand--link {
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.fft-auth-brand--link:hover {
+  opacity: 0.92;
+}
+
+.fft-auth-brand--link:hover .fft-auth-brand__logo {
+  transform: translateY(-1px);
+}
+
+.fft-auth-brand--link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.72);
+  outline-offset: 6px;
+}
+
+.fft-auth-brand__logo {
+  transition: transform 160ms ease;
+}
+
+.fft-warning-logo-link {
+  width: 76px;
+  height: 76px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+.fft-warning-logo-link:hover .fft-warning-logo {
+  transform: translateY(-1px);
+}
+
+.fft-warning-logo-link:focus-visible {
+  outline: 2px solid rgba(139, 15, 23, 0.42);
+  outline-offset: 5px;
+}
+
+.fft-warning-logo {
+  transition: transform 160ms ease;
+}
+
+@media (max-width: 560px) {
+  .fft-warning-logo-link {
+    width: 56px;
+    height: 56px;
+  }
+}

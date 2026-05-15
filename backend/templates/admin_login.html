@@ -9,6 +9,9 @@
   <meta name="application-name" content="FFT UASN Content Center">
   <meta name="theme-color" content="#8b0f17">
 
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
+
   <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-auth.css') }}">
 </head>
 
@@ -24,14 +27,14 @@
   <main class="fft-auth-page">
     <section class="fft-auth-frame">
       <aside class="fft-auth-side">
-        <div class="fft-auth-brand">
+        <a class="fft-auth-brand fft-auth-brand--link" href="/frontend/pages/indexfft.html" aria-label="Buka website FFT UASN">
           <img class="fft-auth-brand__logo" src="{{ url_for('static', filename='admin/images/logo-fft.png') }}" alt="Logo FFT">
           <div>
             <p class="fft-auth-label">Panel Internal</p>
             <h1>FFT UASN</h1>
             <span>Universitas Advent Surya Nusantara</span>
           </div>
-        </div>
+        </a>
 
         <div class="fft-auth-side__body">
           <p class="fft-auth-label">Content Center</p>

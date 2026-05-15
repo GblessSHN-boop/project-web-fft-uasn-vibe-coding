@@ -1,3 +1,4 @@
+from pathlib import Path
 from urllib.parse import quote_plus, urlparse
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
@@ -26,6 +27,7 @@ from flask import (
     flash,
     send_file,
     jsonify,
+    send_from_directory,
 )
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -3026,6 +3028,25 @@ def api_papan_peringkat():
         mimetype="application/json"
     )
 # FFT RANKING API END
+
+
+# FFT FRONTEND STATIC SERVING START
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
+
+
+@app.route("/frontend/<path:filename>")
+def fft_frontend_file(filename):
+    """
+    Melayani file frontend dari Flask agar link dari admin ke website publik tidak 404.
+    Contoh:
+    /frontend/pages/indexfft.html
+    /frontend/css/style.css
+    /frontend/js/script.js
+    /frontend/assets/images/...
+    """
+    return send_from_directory(FRONTEND_DIR, filename)
+# FFT FRONTEND STATIC SERVING END
+
 
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False)

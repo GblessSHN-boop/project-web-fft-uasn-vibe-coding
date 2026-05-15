@@ -9,6 +9,9 @@
   <meta name="application-name" content="FFT UASN Content Center">
   <meta name="theme-color" content="#8b0f17">
 
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
+
   <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-auth.css') }}">
 </head>
 
@@ -24,7 +27,9 @@
   <main class="fft-warning-page">
     <section class="fft-warning-card">
       <div class="fft-warning-header">
-        <img class="fft-warning-logo" src="{{ url_for('static', filename='admin/images/logo-fft.png') }}" alt="Logo FFT">
+        <a class="fft-warning-logo-link" href="/frontend/pages/indexfft.html" aria-label="Buka website FFT UASN">
+          <img class="fft-warning-logo" src="{{ url_for('static', filename='admin/images/logo-fft.png') }}" alt="Logo FFT">
+        </a>
         <div>
           <p class="fft-auth-label fft-auth-label--maroon">Peringatan Penting</p>
           <h1>Akses Admin Bersifat Terbatas</h1>
