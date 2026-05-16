@@ -1,0 +1,516 @@
+:root {
+  --fft-bg: #f5f0ec;
+  --fft-paper: #ffffff;
+  --fft-soft: #fbfaf9;
+  --fft-ink: #171719;
+  --fft-muted: #70757d;
+  --fft-line: #ded8d3;
+  --fft-maroon: #8b0f17;
+  --fft-maroon-dark: #4e090e;
+  --fft-black: #0a0a0c;
+  --fft-radius: 3px;
+  --fft-shadow: 0 18px 44px rgba(17, 17, 19, 0.10);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--fft-bg);
+}
+
+body.fft-admin-module-body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 84% 10%, rgba(139, 15, 23, 0.09), transparent 32%),
+    linear-gradient(180deg, #fbf9f7 0%, var(--fft-bg) 100%);
+  color: var(--fft-ink);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.fft-admin-app {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 244px minmax(0, 1fr);
+}
+
+.fft-admin-rail {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 18px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: linear-gradient(180deg, #111113 0%, #050506 100%);
+  border-right: 3px solid var(--fft-maroon);
+  color: #ffffff;
+}
+
+.fft-admin-brand {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.13);
+  color: inherit;
+  text-decoration: none;
+}
+
+.fft-admin-brand img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.fft-admin-brand strong {
+  display: block;
+  font-size: 20px;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.fft-admin-brand small {
+  display: block;
+  margin-top: 4px;
+  color: rgba(255,255,255,0.68);
+  font-size: 12px;
+}
+
+.fft-admin-menu {
+  display: grid;
+  align-content: start;
+  gap: 3px;
+  padding-top: 18px;
+}
+
+.fft-admin-menu a,
+.fft-admin-rail-footer a {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: var(--fft-radius);
+  color: rgba(255,255,255,0.82);
+  font-size: 13px;
+  font-weight: 680;
+  text-decoration: none;
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.fft-admin-menu a:hover,
+.fft-admin-rail-footer a:hover {
+  background: rgba(255,255,255,0.055);
+  color: #ffffff;
+  transform: translateX(2px);
+}
+
+.fft-admin-menu a.is-active {
+  background: var(--fft-maroon);
+  color: #ffffff;
+  box-shadow: inset 3px 0 0 rgba(255,255,255,0.34);
+}
+
+.fft-admin-rail-footer {
+  display: grid;
+  gap: 5px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.13);
+}
+
+.fft-admin-work {
+  min-width: 0;
+  padding: 30px 34px 48px;
+}
+
+.fft-page-hero,
+.fft-card,
+.fft-status-card,
+.fft-alert {
+  border: 1px solid var(--fft-line);
+  border-radius: var(--fft-radius);
+  background: var(--fft-paper);
+  box-shadow: var(--fft-shadow);
+}
+
+.fft-page-hero {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: end;
+  padding: 30px 34px;
+  margin-bottom: 18px;
+}
+
+.fft-page-hero::before,
+.fft-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--fft-maroon);
+}
+
+.fft-page-hero h1 {
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(34px, 5vw, 58px);
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+}
+
+.fft-page-hero p {
+  max-width: 760px;
+  margin: 14px 0 0;
+  color: var(--fft-muted);
+  font-size: 15px;
+  line-height: 1.62;
+}
+
+.fft-kicker {
+  margin: 0 0 9px;
+  color: var(--fft-maroon);
+  font-size: 11px;
+  font-weight: 820;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.fft-hero-actions,
+.fft-form-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.fft-btn {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  border-radius: var(--fft-radius);
+  border: 1px solid var(--fft-black);
+  background: var(--fft-black);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 780;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.fft-btn:hover {
+  transform: translateY(-1px);
+  background: var(--fft-maroon);
+  border-color: var(--fft-maroon);
+  box-shadow: 0 12px 24px rgba(139, 15, 23, 0.20);
+}
+
+.fft-btn-primary {
+  background: var(--fft-maroon);
+  border-color: var(--fft-maroon);
+}
+
+.fft-btn-light {
+  background: #ffffff;
+  color: var(--fft-ink);
+  border-color: var(--fft-line);
+}
+
+.fft-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.fft-alert-stack {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.fft-alert {
+  padding: 14px 16px;
+  color: var(--fft-maroon);
+  background: rgba(139, 15, 23, 0.065);
+  font-size: 14px;
+  font-weight: 680;
+}
+
+.fft-status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.fft-status-card {
+  padding: 18px 20px;
+}
+
+.fft-status-card span {
+  display: block;
+  color: var(--fft-muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.fft-status-card strong {
+  display: block;
+  margin-top: 10px;
+  color: var(--fft-maroon);
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.fft-status-card p {
+  margin: 10px 0 0;
+  color: var(--fft-muted);
+  font-size: 13px;
+  line-height: 1.48;
+}
+
+.fft-module-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.fft-card {
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+}
+
+.fft-card-head {
+  margin-bottom: 18px;
+}
+
+.fft-card-head h2 {
+  margin: 0;
+  font-size: 25px;
+  line-height: 1.14;
+  letter-spacing: -0.032em;
+}
+
+.fft-card-head p {
+  margin: 9px 0 0;
+  color: var(--fft-muted);
+  font-size: 14px;
+  line-height: 1.58;
+}
+
+.fft-banner-preview {
+  display: grid;
+  place-items: center;
+  min-height: 310px;
+  border: 1px solid var(--fft-line);
+  background: var(--fft-soft);
+  overflow: hidden;
+}
+
+.fft-banner-preview img,
+.fft-banner-preview video {
+  display: block;
+  width: 100%;
+  max-height: 430px;
+  object-fit: contain;
+  background: #000;
+}
+
+.fft-empty-state {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  padding: 28px;
+  text-align: center;
+  color: var(--fft-muted);
+}
+
+.fft-empty-state strong {
+  color: var(--fft-ink);
+  font-size: 19px;
+}
+
+.fft-meta-list {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 0;
+}
+
+.fft-meta-list div {
+  display: grid;
+  grid-template-columns: 145px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--fft-line);
+}
+
+.fft-meta-list dt {
+  color: var(--fft-muted);
+  font-size: 11px;
+  font-weight: 820;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.fft-meta-list dd {
+  margin: 0;
+  min-width: 0;
+  color: var(--fft-ink);
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.fft-meta-list a {
+  color: var(--fft-maroon);
+  font-weight: 700;
+}
+
+.fft-form {
+  display: grid;
+  gap: 16px;
+}
+
+.fft-field,
+.fft-upload-box {
+  display: grid;
+  gap: 8px;
+}
+
+.fft-field span,
+.fft-upload-box span {
+  color: #333438;
+  font-size: 12px;
+  font-weight: 790;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fft-field input,
+.fft-field select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 13px;
+  border: 1px solid #d9d2cc;
+  border-radius: var(--fft-radius);
+  background: #ffffff;
+  color: var(--fft-ink);
+  font: inherit;
+  outline: none;
+}
+
+.fft-field input:focus,
+.fft-field select:focus {
+  border-color: var(--fft-maroon);
+  box-shadow: 0 0 0 3px rgba(139, 15, 23, 0.11);
+}
+
+.fft-upload-box {
+  padding: 18px;
+  border: 1px dashed rgba(139, 15, 23, 0.42);
+  background: #fffdfc;
+}
+
+.fft-upload-box input {
+  width: 100%;
+}
+
+.fft-upload-box strong {
+  color: var(--fft-ink);
+  font-size: 14px;
+}
+
+.fft-upload-box small,
+.fft-form-note {
+  color: var(--fft-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.fft-form-note {
+  padding: 13px 14px;
+  border-left: 3px solid var(--fft-maroon);
+  background: rgba(139, 15, 23, 0.055);
+}
+
+.fft-publish-box {
+  margin-top: 18px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  border: 1px solid var(--fft-line);
+  background: var(--fft-soft);
+}
+
+.fft-publish-box h3 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.fft-publish-box p {
+  margin: 7px 0 0;
+  color: var(--fft-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (max-width: 1080px) {
+  .fft-admin-app {
+    grid-template-columns: 1fr;
+  }
+
+  .fft-admin-rail {
+    position: relative;
+    height: auto;
+  }
+
+  .fft-admin-work {
+    padding: 24px 22px 40px;
+  }
+
+  .fft-module-grid,
+  .fft-page-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .fft-hero-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 760px) {
+  .fft-status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fft-module-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fft-publish-box {
+    grid-template-columns: 1fr;
+  }
+
+  .fft-meta-list div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
