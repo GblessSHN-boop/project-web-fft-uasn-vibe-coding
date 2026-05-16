@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="id">
 <head>
   <meta charset="utf-8">
@@ -8,11 +8,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="application-name" content="FFT UASN Content Center">
   <meta name="theme-color" content="#8b0f17">
-
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
-  <link rel="apple-touch-icon" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
-
-  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-auth.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-auth.css') }}">
 </head>
 
 <body class="fft-auth-body">
@@ -27,7 +23,7 @@
   <main class="fft-warning-page">
     <section class="fft-warning-card">
       <div class="fft-warning-header">
-        <a class="fft-warning-logo-link" href="/frontend/pages/indexfft.html" aria-label="Buka website FFT UASN">
+        <a class="fft-warning-logo-link" href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}" aria-label="Buka website FFT UASN">
           <img class="fft-warning-logo" src="{{ url_for('static', filename='admin/images/logo-fft.png') }}" alt="Logo FFT">
         </a>
         <div>
@@ -78,3 +74,4 @@
   <script src="{{ url_for('static', filename='admin/js/admin-auth.js') }}"></script>
 </body>
 </html>
+

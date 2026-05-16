@@ -8,11 +8,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="application-name" content="FFT UASN Content Center">
   <meta name="theme-color" content="#8b0f17">
-
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
-  <link rel="apple-touch-icon" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
-
-  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-auth.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-auth.css') }}">
 </head>
 
 <body class="fft-auth-body">
@@ -27,7 +23,7 @@
   <main class="fft-auth-page">
     <section class="fft-auth-frame">
       <aside class="fft-auth-side">
-        <a class="fft-auth-brand fft-auth-brand--link" href="/frontend/pages/indexfft.html" aria-label="Buka website FFT UASN">
+        <a class="fft-auth-brand fft-auth-brand--link" href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}" aria-label="Buka website FFT UASN">
           <img class="fft-auth-brand__logo" src="{{ url_for('static', filename='admin/images/logo-fft.png') }}" alt="Logo FFT">
           <div>
             <p class="fft-auth-label">Panel Internal</p>
@@ -92,7 +88,7 @@
           </form>
 
           <div class="fft-auth-footer">
-            <a href="/frontend/pages/indexfft.html">Kembali ke Website</a>
+            <a href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}">Kembali ke Website</a>
             <span>FFT UASN Content Center</span>
           </div>
         </div>
