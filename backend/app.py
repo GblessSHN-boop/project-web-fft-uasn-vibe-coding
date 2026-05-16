@@ -1,3 +1,8 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from pathlib import Path
 from urllib.parse import quote_plus, urlparse
 from urllib.request import Request, urlopen
@@ -9,13 +14,11 @@ import base64
 import binascii
 import io
 import json
-import os
 import shutil
 import uuid
 import re
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
-from dotenv import load_dotenv
 
 from flask import (
     Flask,
@@ -119,6 +122,12 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
     f"postgresql+psycopg2://{DB_USER}:{quote_plus(DB_PASSWORD)}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# Database configuration from environment.
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+    "DATABASE_URL",
+    app.config.get("SQLALCHEMY_DATABASE_URI", "sqlite:///fftuasn_local.db"),
+)
 
 db = SQLAlchemy(app)
 
