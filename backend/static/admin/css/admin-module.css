@@ -944,3 +944,89 @@ body.fft-admin-module-body {
 }
 
 /* BANNER STOCK RATIO 3150x900 END */
+
+/* BANNER STOCK MANUAL CROP START */
+
+.fft-stock-upload-preview__frame {
+  position: relative;
+}
+
+.fft-stock-upload-preview__frame.is-crop-mode {
+  cursor: grab;
+}
+
+.fft-stock-upload-preview__frame.is-crop-mode:active {
+  cursor: grabbing;
+}
+
+.fft-stock-upload-preview__frame.is-crop-mode img {
+  position: absolute;
+  max-width: none;
+  max-height: none;
+  object-fit: initial;
+  user-select: none;
+  -webkit-user-drag: none;
+  touch-action: none;
+}
+
+.fft-banner-crop-tools {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid var(--fft-line);
+  background: #fff;
+}
+
+.fft-banner-crop-tools[hidden] {
+  display: none !important;
+}
+
+.fft-banner-crop-toggle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--fft-ink);
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.fft-banner-crop-toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--fft-maroon);
+}
+
+.fft-banner-crop-control {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.fft-banner-crop-control span {
+  color: var(--fft-muted);
+  font-size: 12px;
+  font-weight: 820;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.fft-banner-crop-control input[type="range"] {
+  width: 100%;
+  accent-color: var(--fft-maroon);
+}
+
+.fft-banner-crop-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.fft-banner-crop-tools small {
+  display: block;
+  margin-top: 10px;
+  color: var(--fft-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* BANNER STOCK MANUAL CROP END */
