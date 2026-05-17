@@ -49,13 +49,13 @@
           <p class="fft-kicker">Tampilan Frontend</p>
           <h1>Kelola Banner Utama</h1>
           <p>
-            Atur media banner yang tampil di halaman depan website. Alurnya sederhana:
-            upload media, simpan perubahan, lalu publish ke website.
+            Banner utama adalah media informasi yang tampil di halaman depan website. Alurnya dibuat jelas: simpan sebagai draft, periksa lewat preview, lalu publish jika sudah siap.
           </p>
         </div>
 
         <div class="fft-hero-actions">
           <a class="fft-btn fft-btn-light" href="{{ url_for('admin_choose') }}">Dashboard</a>
+          <a class="fft-btn fft-btn-light" href="{{ url_for('admin_banner_informasi_preview') }}">Preview Draft</a>
           <a class="fft-btn fft-btn-dark" href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}">Lihat Website</a>
         </div>
       </section>
@@ -79,8 +79,8 @@
 
         <article class="fft-status-card">
           <span>Kondisi Perubahan</span>
-          <strong>{{ 'Perlu Publish' if needs_publish else 'Tersinkron' }}</strong>
-          <p>{{ 'Ada perubahan yang belum dikirim ke website.' if needs_publish else 'Data admin dan frontend sudah sama.' }}</p>
+          <strong>{{ 'Draft Belum Tayang' if needs_publish else 'Sudah Sinkron' }}</strong>
+          <p>{{ 'Draft sudah tersimpan, tetapi belum tampil di website.' if needs_publish else 'Banner admin dan website sudah sama.' }}</p>
         </article>
 
         <article class="fft-status-card">
@@ -94,8 +94,8 @@
         <article class="fft-card fft-preview-card">
           <div class="fft-card-head">
             <p class="fft-kicker">Preview</p>
-            <h2>Media Banner Saat Ini</h2>
-            <p>Ini adalah media yang tersimpan di database admin.</p>
+            <h2>Draft Banner Saat Ini</h2>
+            <p>Ini adalah banner yang sedang tersimpan di admin. Draft ini belum tentu sama dengan banner yang tampil di website.</p>
           </div>
 
           <div class="fft-banner-preview">
@@ -138,7 +138,7 @@
         <article class="fft-card">
           <div class="fft-card-head">
             <p class="fft-kicker">Form Banner</p>
-            <h2>Update Media Banner</h2>
+            <h2>Perbarui Draft Banner</h2>
             <p>
               Pilih tipe media, upload file baru jika diperlukan, isi target link,
               lalu simpan perubahan.
@@ -147,7 +147,7 @@
 
           <form class="fft-form" method="POST" action="{{ url_for('admin_banner_informasi_save') }}" enctype="multipart/form-data">
             <label class="fft-field">
-              <span>Tipe Media</span>
+              <span>Jenis Banner</span>
               <select name="media_type" data-banner-type>
                 <option value="image" {{ 'selected' if media_type == 'image' else '' }}>Gambar</option>
                 <option value="video" {{ 'selected' if media_type == 'video' else '' }}>Video</option>
@@ -155,7 +155,7 @@
             </label>
 
             <label class="fft-field">
-              <span>Target URL</span>
+              <span>Link Tujuan Banner</span>
               <input
                 type="url"
                 name="target_url"
@@ -166,7 +166,7 @@
             </label>
 
             <label class="fft-upload-box">
-              <span>Upload Media Baru</span>
+              <span>Pilih Gambar atau Video</span>
               <input type="file" name="media_file" accept="image/*,video/mp4,video/webm,video/quicktime" data-banner-file>
               <strong data-banner-file-name>Belum ada file dipilih</strong>
               <small>
@@ -175,11 +175,12 @@
             </label>
 
             <div class="fft-form-note">
-              Jika mengganti dari gambar ke video atau sebaliknya, upload file baru wajib dilakukan.
+              Draft yang disimpan belum tampil di website. Gunakan Preview Draft untuk memeriksa hasilnya, lalu Publish ke Website jika sudah benar.
             </div>
 
             <div class="fft-form-actions">
-              <button class="fft-btn fft-btn-primary" type="submit">Simpan Perubahan</button>
+              <button class="fft-btn fft-btn-primary" type="submit">Simpan Draft Banner</button>
+              <a class="fft-btn fft-btn-light" href="{{ url_for('admin_banner_informasi_preview') }}">Preview Draft</a>
               <a class="fft-btn fft-btn-light" href="{{ url_for('admin_banner_informasi') }}">Reset</a>
             </div>
           </form>
@@ -187,8 +188,8 @@
           <form class="fft-publish-box" method="POST" action="{{ url_for('admin_banner_informasi_publish') }}" data-publish-form>
             <div>
               <p class="fft-kicker">Publish</p>
-              <h3>Kirim Banner ke Website</h3>
-              <p>Gunakan tombol ini setelah media dan target link sudah benar.</p>
+              <h3>Publish Draft ke Website</h3>
+              <p>Gunakan tombol ini hanya setelah draft banner sudah diperiksa melalui preview.</p>
             </div>
 
             <button class="fft-btn fft-btn-dark" type="submit" {{ 'disabled' if not media_path else '' }}>

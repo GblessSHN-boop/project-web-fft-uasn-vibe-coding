@@ -236,6 +236,16 @@ class Berita(db.Model):
     # jadwal tayang
     tayang_pada = db.Column(db.DateTime, nullable=True)
 
+    # Publishing management status.
+    # draft      = tersimpan di admin, belum tampil frontend
+    # scheduled  = dijadwalkan, belum tampil frontend
+    # published  = sudah tampil frontend
+    # archived   = disembunyikan dari frontend
+    # failed     = gagal publish otomatis
+    publish_status = db.Column(db.String(30), nullable=False, default="draft")
+    scheduled_at = db.Column(db.DateTime, nullable=True)
+    last_previewed_at = db.Column(db.DateTime, nullable=True)
+
     updated_at = db.Column(
         db.DateTime,
         default=datetime.utcnow,
@@ -288,6 +298,16 @@ class BannerInformasi(db.Model):
     is_published = db.Column(db.Boolean, nullable=False, default=False)
     needs_publish = db.Column(db.Boolean, nullable=False, default=True)
     published_at = db.Column(db.DateTime, nullable=True)
+
+    # Publishing management.
+    # draft      = tersimpan sebagai draft, belum tampil di website
+    # scheduled  = dijadwalkan, belum tampil di website
+    # published  = sudah tampil di website
+    # archived   = disembunyikan dari website
+    # failed     = gagal publish otomatis
+    publish_status = db.Column(db.String(30), nullable=False, default="draft")
+    scheduled_at = db.Column(db.DateTime, nullable=True)
+    last_previewed_at = db.Column(db.DateTime, nullable=True)
 
     updated_at = db.Column(
         db.DateTime,
@@ -763,6 +783,71 @@ def migrate_existing_berita_files():
 
     if changed:
         db.session.commit()
+
+
+
+# === PUBLISHING STATUS FOUNDATION START ===
+
+PUBLISH_STATUS_DRAFT = "draft"
+PUBLISH_STATUS_SCHEDULED = "scheduled"
+PUBLISH_STATUS_PUBLISHED = "published"
+PUBLISH_STATUS_ARCHIVED = "archived"
+PUBLISH_STATUS_FAILED = "failed"
+
+PUBLISH_STATUS_SET = {
+    PUBLISH_STATUS_DRAFT,
+    PUBLISH_STATUS_SCHEDULED,
+    PUBLISH_STATUS_PUBLISHED,
+    PUBLISH_STATUS_ARCHIVED,
+    PUBLISH_STATUS_FAILED,
+}
+
+
+def normalize_publish_status(value, fallback=PUBLISH_STATUS_DRAFT):
+    raw = (value or "").strip().lower()
+    return raw if raw in PUBLISH_STATUS_SET else fallback
+
+
+def infer_publish_status(is_published=False, needs_publish=True, scheduled_at=None, published_at=None):
+    if scheduled_at and not published_at:
+        return PUBLISH_STATUS_SCHEDULED
+
+    if is_published and not needs_publish:
+        return PUBLISH_STATUS_PUBLISHED
+
+    return PUBLISH_STATUS_DRAFT
+
+
+def mark_content_as_draft(item):
+    item.publish_status = PUBLISH_STATUS_DRAFT
+    item.is_published = False
+    item.needs_publish = True
+    item.scheduled_at = None
+    item.published_at = None
+
+
+def mark_content_as_scheduled(item, scheduled_at):
+    item.publish_status = PUBLISH_STATUS_SCHEDULED
+    item.is_published = False
+    item.needs_publish = True
+    item.scheduled_at = scheduled_at
+    item.published_at = None
+
+
+def mark_content_as_published(item, published_at=None):
+    now = published_at or datetime.utcnow()
+    item.publish_status = PUBLISH_STATUS_PUBLISHED
+    item.is_published = True
+    item.needs_publish = False
+    item.scheduled_at = None
+    item.published_at = now
+
+
+def mark_content_previewed(item):
+    item.last_previewed_at = datetime.utcnow()
+
+
+# === PUBLISHING STATUS FOUNDATION END ===
 
 
 def normalize_status(value):
@@ -1795,7 +1880,77 @@ def sync_site_setting_schema():
         db.create_all()
 
 
+
+# === PUBLISHING STATUS MIGRATION START ===
+
+def ensure_publishing_status_columns():
+    inspector = inspect(db.engine)
+
+    table_configs = {
+        "berita": {
+            "publish_status_default": "draft",
+        },
+        "banner_informasi": {
+            "publish_status_default": "draft",
+        },
+    }
+
+    for table_name, config in table_configs.items():
+        try:
+            columns = {column["name"] for column in inspector.get_columns(table_name)}
+        except Exception:
+            continue
+
+        statements = []
+
+        if "publish_status" not in columns:
+            statements.append(
+                text(
+                    f"ALTER TABLE {table_name} "
+                    "ADD COLUMN publish_status VARCHAR(30) NOT NULL DEFAULT 'draft'"
+                )
+            )
+
+        if "scheduled_at" not in columns:
+            statements.append(
+                text(f"ALTER TABLE {table_name} ADD COLUMN scheduled_at TIMESTAMP NULL")
+            )
+
+        if "last_previewed_at" not in columns:
+            statements.append(
+                text(f"ALTER TABLE {table_name} ADD COLUMN last_previewed_at TIMESTAMP NULL")
+            )
+
+        for statement in statements:
+            db.session.execute(statement)
+
+        if statements:
+            db.session.commit()
+
+        # Sinkronkan data lama ke status baru.
+        db.session.execute(
+            text(
+                f"""
+                UPDATE {table_name}
+                SET publish_status =
+                    CASE
+                        WHEN is_published = TRUE AND needs_publish = FALSE THEN 'published'
+                        ELSE 'draft'
+                    END
+                WHERE publish_status IS NULL
+                   OR publish_status = ''
+                   OR publish_status NOT IN ('draft', 'scheduled', 'published', 'archived', 'failed')
+                """
+            )
+        )
+        db.session.commit()
+
+
+# === PUBLISHING STATUS MIGRATION END ===
+
+
 def init_default_data():
+    ensure_publishing_status_columns()
     db.create_all()
     ensure_upload_root()
     ensure_dekan_upload_folder()
@@ -1958,6 +2113,10 @@ def admin_banner_informasi_save():
     banner.sort_order = 1
     banner.updated_at = datetime.utcnow()
     banner.needs_publish = True
+    banner.is_published = False
+    banner.published_at = None
+    banner.publish_status = PUBLISH_STATUS_DRAFT
+    banner.scheduled_at = None
 
     if saved_media_path:
         banner.media_file = saved_media_path
@@ -1968,7 +2127,7 @@ def admin_banner_informasi_save():
         delete_banner_file(old_media_path)
 
     flash(
-        "Draft banner berhasil disimpan. Lanjutkan dengan Publish / Update Frontend.",
+        "Draft banner berhasil disimpan. Preview draft terlebih dahulu, lalu publish jika sudah siap.",
         "success",
     )
     return redirect(url_for("admin_banner_informasi"))
@@ -1993,14 +2152,29 @@ def admin_banner_informasi_publish():
     banner.is_published = True
     banner.is_active = True
     banner.needs_publish = False
+    banner.publish_status = PUBLISH_STATUS_PUBLISHED
+    banner.scheduled_at = None
     banner.published_at = datetime.utcnow()
 
     db.session.commit()
     publish_banner_snapshot(banner)
 
-    flash("Banner berhasil dipublish ke frontend.", "success")
+    flash("Banner berhasil dipublish ke website.", "success")
     return redirect(url_for("admin_banner_informasi"))
 
+
+
+@app.route("/admin/banner-informasi/preview")
+def admin_banner_informasi_preview():
+    if not session.get("logged_in") and not session.get("is_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    banner = BannerInformasi.query.first()
+
+    if banner:
+        banner.last_previewed_at = datetime.utcnow()
+        db.session.commit()
+    return render_template("admin_banner_preview.html", banner=banner)
 
 @app.route("/api/banner-informasi")
 def api_banner_informasi():

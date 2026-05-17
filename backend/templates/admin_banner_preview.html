@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Preview Draft Banner | FFT UASN Content Center</title>
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#8b0f17">
+
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-module.css') }}">
+</head>
+
+<body class="fft-admin-module-body">
+  {% set media_path = banner.media_file if banner and banner.media_file else '' %}
+  {% set media_type = banner.media_type if banner and banner.media_type else 'image' %}
+  {% set media_url = url_for('static', filename=media_path) if media_path else '' %}
+
+  <div class="fft-admin-app">
+    <aside class="fft-admin-rail">
+      <a class="fft-admin-brand" href="{{ url_for('admin_choose') }}">
+        <img src="{{ url_for('static', filename='admin/images/logo-fft.png') }}" alt="Logo FFT">
+        <span>
+          <strong>Panel FFT</strong>
+          <small>Content Center</small>
+        </span>
+      </a>
+
+      <nav class="fft-admin-menu" aria-label="Navigasi admin">
+        <a href="{{ url_for('admin_choose') }}">Dashboard</a>
+        <a href="{{ url_for('admin_berita_list') }}">Berita</a>
+        <a class="is-active" href="{{ url_for('admin_banner_informasi') }}">Banner Utama</a>
+        <a href="{{ url_for('admin_dekan') }}">Dekan</a>
+        <a href="{{ url_for('admin_dosen_list') }}">Dosen</a>
+      </nav>
+
+      <div class="fft-admin-rail-footer">
+        <a href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}">Lihat Website</a>
+        <a href="{{ url_for('admin_logout') }}">Keluar</a>
+      </div>
+    </aside>
+
+    <main class="fft-admin-work">
+      <section class="fft-page-hero">
+        <div>
+          <p class="fft-kicker">Preview Draft</p>
+          <h1>Preview Banner Sebelum Publish</h1>
+          <p>
+            Halaman ini menampilkan draft banner dengan ukuran tampilan frontend.
+            Website publik belum berubah sebelum tombol Publish ke Website ditekan.
+          </p>
+        </div>
+
+        <div class="fft-hero-actions">
+          <a class="fft-btn fft-btn-light" href="{{ url_for('admin_banner_informasi') }}">Kembali Edit</a>
+          <a class="fft-btn fft-btn-dark" href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}">Lihat Website</a>
+        </div>
+      </section>
+
+      <section class="fft-preview-layout">
+        <article class="fft-card">
+          <div class="fft-card-head">
+            <p class="fft-kicker">Desktop Preview</p>
+            <h2>Tampilan Banner Desktop</h2>
+            <p>Preview memakai rasio banner frontend saat ini, yaitu 3150 × 900.</p>
+          </div>
+
+          <div class="fft-public-banner-preview">
+            <div class="fft-public-banner-preview__label">UNIVERSITAS ADVENT SURYA NUSANTARA</div>
+
+            {% if media_url %}
+              <a class="fft-public-banner-preview__media" href="{{ banner.target_url if banner and banner.target_url else '#' }}" target="_blank" rel="noopener">
+                {% if media_type == 'video' %}
+                  <video src="{{ media_url }}" controls muted playsinline></video>
+                {% else %}
+                  <img src="{{ media_url }}" alt="Preview draft banner FFT UASN">
+                {% endif %}
+              </a>
+            {% else %}
+              <div class="fft-public-banner-preview__empty">
+                Belum ada media banner.
+              </div>
+            {% endif %}
+          </div>
+        </article>
+
+        <article class="fft-card">
+          <div class="fft-card-head">
+            <p class="fft-kicker">Mobile Preview</p>
+            <h2>Tampilan Banner Mobile</h2>
+            <p>Preview ini membantu mengecek apakah objek penting masih terlihat pada layar kecil.</p>
+          </div>
+
+          <div class="fft-public-banner-preview fft-public-banner-preview--mobile">
+            <div class="fft-public-banner-preview__label">UNIVERSITAS ADVENT SURYA NUSANTARA</div>
+
+            {% if media_url %}
+              <a class="fft-public-banner-preview__media" href="{{ banner.target_url if banner and banner.target_url else '#' }}" target="_blank" rel="noopener">
+                {% if media_type == 'video' %}
+                  <video src="{{ media_url }}" controls muted playsinline></video>
+                {% else %}
+                  <img src="{{ media_url }}" alt="Preview mobile draft banner FFT UASN">
+                {% endif %}
+              </a>
+            {% else %}
+              <div class="fft-public-banner-preview__empty">
+                Belum ada media banner.
+              </div>
+            {% endif %}
+          </div>
+        </article>
+      </section>
+
+      <section class="fft-card fft-preview-decision">
+        <div>
+          <p class="fft-kicker">Keputusan</p>
+          <h2>Draft Sudah Benar?</h2>
+          <p>
+            Jika tampilan desktop dan mobile sudah aman, kembali ke halaman edit lalu publish ke website.
+            Jika belum rapi, perbaiki draft banner terlebih dahulu.
+          </p>
+        </div>
+
+        <div class="fft-hero-actions">
+          <a class="fft-btn fft-btn-light" href="{{ url_for('admin_banner_informasi') }}">Edit Draft</a>
+          <form method="POST" action="{{ url_for('admin_banner_informasi_publish') }}">
+            <button class="fft-btn fft-btn-primary" type="submit" {{ 'disabled' if not media_path else '' }}>Publish ke Website</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
