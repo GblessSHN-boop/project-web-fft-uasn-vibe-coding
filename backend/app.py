@@ -2049,17 +2049,237 @@ def admin_berita_choose():
 
 
 
+
+class BannerStock(db.Model):
+    __tablename__ = "banner_stock"
+
+    id = db.Column(db.Integer, primary_key=True)
+    media_type = db.Column(db.String(20), nullable=False, default="image")
+    media_file = db.Column(db.String(255), nullable=False)
+    target_url = db.Column(db.String(500), nullable=True)
+    note = db.Column(db.String(255), nullable=True)
+    status = db.Column(db.String(30), nullable=False, default="stock")
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow,
+    )
+    last_previewed_at = db.Column(db.DateTime, nullable=True)
+    activated_at = db.Column(db.DateTime, nullable=True)
+
+
+
+def save_banner_stock_media_file(file_storage, media_type):
+    if not file_storage or not file_storage.filename:
+        return False, "", "File media wajib dipilih."
+
+    if not is_allowed_banner_media_file(file_storage.filename, media_type):
+        if media_type == "image":
+            return False, "", "Format gambar harus JPG, JPEG, PNG, WEBP, atau GIF."
+        return False, "", "Format video harus MP4, WEBM, atau MOV."
+
+    stock_folder = os.path.join(BANNER_UPLOAD_FOLDER, "stock")
+    os.makedirs(stock_folder, exist_ok=True)
+
+    original_filename = secure_filename(file_storage.filename)
+    extension = os.path.splitext(original_filename)[1].lower()
+    stored_name = f"stock_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex[:10]}{extension}"
+
+    absolute_path = os.path.join(stock_folder, stored_name)
+    file_storage.save(absolute_path)
+
+    return True, f"uploads/banner_informasi/stock/{stored_name}", ""
+
+
+def copy_banner_stock_to_active_media(stock_media_path):
+    if not stock_media_path:
+        return False, "", "Media stok tidak ditemukan."
+
+    source_path = os.path.join(BASE_DIR, "static", stock_media_path)
+
+    if not os.path.exists(source_path):
+        return False, "", "File media stok tidak ditemukan di storage."
+
+    extension = os.path.splitext(source_path)[1].lower()
+    active_folder = os.path.join(BANNER_UPLOAD_FOLDER, "single")
+    os.makedirs(active_folder, exist_ok=True)
+
+    clear_old_banner_media_files(active_folder)
+
+    active_name = f"media{extension}"
+    destination_path = os.path.join(active_folder, active_name)
+
+    shutil.copy2(source_path, destination_path)
+
+    return True, f"uploads/banner_informasi/single/{active_name}", ""
+
+
+
+
+def publish_banner_informasi_snapshot():
+    """Tulis ulang snapshot banner aktif yang dibaca frontend."""
+    banner = BannerInformasi.query.first()
+
+    published_dir = os.path.join(BASE_DIR, "static", "published")
+    os.makedirs(published_dir, exist_ok=True)
+
+    published_path = os.path.join(published_dir, "banner_informasi.json")
+
+    if not banner or not banner.media_file:
+        payload = {
+            "published": False,
+            "published_at": None,
+            "data": None,
+        }
+    else:
+        published_at = banner.published_at or datetime.utcnow()
+        updated_at = banner.updated_at or published_at
+
+        payload = {
+            "published": True,
+            "published_at": published_at.isoformat(),
+            "data": {
+                "media_type": banner.media_type or "image",
+                "media_file": banner.media_file,
+                "target_url": banner.target_url or "",
+                "published_at": published_at.isoformat(),
+                "updated_at": updated_at.isoformat(),
+            },
+        }
+
+    with open(published_path, "w", encoding="utf-8") as file:
+        json.dump(payload, file, ensure_ascii=False, indent=2)
+
+    return payload
+
+
 @app.route("/admin/banner/stock")
 def admin_banner_stock():
     if not session.get("logged_in") and not session.get("is_logged_in"):
         return redirect(url_for("admin_login"))
 
     active_banner = BannerInformasi.query.first()
+    stocks = BannerStock.query.order_by(BannerStock.updated_at.desc()).all()
 
     return render_template(
         "admin_banner_stock.html",
         active_banner=active_banner,
+        stocks=stocks,
     )
+
+
+@app.route("/admin/banner/stock/save", methods=["POST"])
+def admin_banner_stock_save():
+    if not session.get("logged_in") and not session.get("is_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    media_type = request.form.get("media_type", "image").strip().lower()
+    target_url = request.form.get("target_url", "").strip()
+    note = request.form.get("note", "").strip()
+    media_file = request.files.get("media_file")
+
+    if media_type not in {"image", "video"}:
+        flash("Jenis banner tidak valid.", "danger")
+        return redirect(url_for("admin_banner_stock"))
+
+    url_ok, url_message = validate_target_url(target_url)
+    if not url_ok:
+        flash(url_message, "danger")
+        return redirect(url_for("admin_banner_stock"))
+
+    save_ok, saved_media_path, save_message = save_banner_stock_media_file(media_file, media_type)
+    if not save_ok:
+        flash(save_message, "danger")
+        return redirect(url_for("admin_banner_stock"))
+
+    stock = BannerStock(
+        media_type=media_type,
+        media_file=saved_media_path,
+        target_url=target_url,
+        note=note,
+        status="stock",
+    )
+
+    db.session.add(stock)
+    db.session.commit()
+
+    flash("Banner berhasil disimpan ke stok.", "success")
+    return redirect(url_for("admin_banner_stock"))
+
+
+@app.route("/admin/banner/stock/<int:stock_id>/preview")
+def admin_banner_stock_preview(stock_id):
+    if not session.get("logged_in") and not session.get("is_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    stock = BannerStock.query.get_or_404(stock_id)
+    stock.last_previewed_at = datetime.utcnow()
+    db.session.commit()
+
+    return render_template("admin_banner_stock_preview.html", stock=stock)
+
+
+@app.route("/admin/banner/stock/<int:stock_id>/activate", methods=["POST"])
+def admin_banner_stock_activate(stock_id):
+    if not session.get("logged_in") and not session.get("is_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    stock = BannerStock.query.get_or_404(stock_id)
+
+    active_banner = BannerInformasi.query.first()
+    if not active_banner:
+        active_banner = BannerInformasi()
+        db.session.add(active_banner)
+
+    copied_ok, active_media_path, copy_message = copy_banner_stock_to_active_media(stock.media_file)
+    if not copied_ok:
+        flash(copy_message, "danger")
+        return redirect(url_for("admin_banner_stock"))
+
+    active_banner.media_type = stock.media_type
+    active_banner.media_file = active_media_path
+    active_banner.target_url = stock.target_url
+    active_banner.updated_at = datetime.utcnow()
+    active_banner.is_published = True
+    active_banner.needs_publish = False
+    active_banner.publish_status = PUBLISH_STATUS_PUBLISHED
+    active_banner.scheduled_at = None
+    active_banner.published_at = datetime.utcnow()
+
+    stock.status = "used"
+    stock.activated_at = datetime.utcnow()
+
+    db.session.commit()
+    publish_banner_informasi_snapshot()
+
+    flash("Stok banner berhasil dijadikan banner yang tampil di website.", "success")
+    return redirect(url_for("admin_banner_stock"))
+
+
+@app.route("/admin/banner/stock/<int:stock_id>/delete", methods=["POST"])
+def admin_banner_stock_delete(stock_id):
+    if not session.get("logged_in") and not session.get("is_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    stock = BannerStock.query.get_or_404(stock_id)
+
+    try:
+        if stock.media_file:
+            file_path = os.path.join(BASE_DIR, "static", stock.media_file)
+            if os.path.exists(file_path):
+                os.remove(file_path)
+    except Exception:
+        pass
+
+    db.session.delete(stock)
+    db.session.commit()
+
+    flash("Stok banner berhasil dihapus.", "success")
+    return redirect(url_for("admin_banner_stock"))
+
+
 
 @app.route("/admin/banner-informasi")
 def admin_banner_informasi():

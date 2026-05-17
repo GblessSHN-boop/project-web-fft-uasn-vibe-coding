@@ -767,3 +767,74 @@ body.fft-admin-module-body {
 }
 
 /* BANNER DRAFT UI CLEANUP END */
+
+/* BANNER STOCK START */
+
+.fft-stock-list {
+  display: grid;
+  gap: 12px;
+}
+
+.fft-stock-item {
+  display: grid;
+  grid-template-columns: 135px minmax(0, 1fr);
+  gap: 13px;
+  padding: 14px;
+  border: 1px solid var(--fft-line);
+  background: var(--fft-soft);
+}
+
+.fft-stock-thumb {
+  width: 135px;
+  aspect-ratio: 16 / 9;
+  background: #0a0a0c;
+  overflow: hidden;
+  border: 1px solid var(--fft-line);
+}
+
+.fft-stock-thumb img,
+.fft-stock-thumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fft-stock-info strong {
+  display: block;
+  color: var(--fft-ink);
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.fft-stock-info small {
+  display: block;
+  margin-top: 5px;
+  color: var(--fft-muted);
+  font-size: 12px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.fft-stock-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.fft-stock-actions form,
+.fft-hero-actions form {
+  margin: 0;
+}
+
+@media (max-width: 980px) {
+  .fft-stock-item {
+    grid-template-columns: 1fr;
+  }
+
+  .fft-stock-thumb {
+    width: 100%;
+  }
+}
+
+/* BANNER STOCK END */
