@@ -85,10 +85,10 @@
             <p>Stok banner belum tampil di website sampai dipilih sebagai banner aktif.</p>
           </div>
 
-          <form class="fft-form" method="POST" action="{{ url_for('admin_banner_stock_save') }}" enctype="multipart/form-data">
+          <form class="fft-form fft-stock-upload-form" method="POST" action="{{ url_for('admin_banner_stock_save') }}" enctype="multipart/form-data" data-banner-stock-form>
             <label class="fft-field">
               <span>Jenis Banner</span>
-              <select name="media_type">
+              <select name="media_type" data-banner-media-type>
                 <option value="image">Gambar</option>
                 <option value="video">Video</option>
               </select>
@@ -101,9 +101,24 @@
 
             <label class="fft-upload-box">
               <span>Media Banner</span>
-              <input type="file" name="media_file" accept="image/*,video/mp4,video/webm,video/quicktime" required>
-              <small>File disimpan ke stok dulu, belum langsung tampil di website.</small>
+              <input type="file" name="media_file" accept="image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif" required data-banner-media-file>
+              <small data-banner-file-help>Pilih gambar JPG, PNG, WEBP, atau GIF. File disimpan ke stok dulu, belum langsung tampil di website.</small>
             </label>
+
+            <div class="fft-stock-upload-preview" data-banner-upload-preview hidden>
+              <div class="fft-card-head fft-card-head--compact">
+                <p class="fft-kicker">Preview Sementara</p>
+                <h3>Cek Media Sebelum Disimpan</h3>
+                <p>Preview ini mengikuti rasio banner frontend 3150 x 900 px. Gunakan ini untuk mengecek posisi media sebelum masuk ke stok banner.</p>
+              </div>
+
+              <div class="fft-stock-upload-preview__frame" data-banner-preview-frame aria-label="Preview rasio banner 3150 x 900 piksel">
+                <span data-banner-preview-empty>Belum ada media dipilih.</span>
+              </div>
+
+              <small class="fft-stock-upload-preview__rule">Rules banner: 3150 x 900 px · rasio 3.5:1</small>
+              <small class="fft-stock-upload-preview__note" data-banner-preview-note></small>
+            </div>
 
             <label class="fft-field">
               <span>Catatan Admin</span>
@@ -164,5 +179,6 @@
       </section>
     </main>
   </div>
+  <script src="{{ url_for('static', filename='admin/js/admin-banner.js') }}"></script>
 </body>
 </html>
