@@ -2283,119 +2283,28 @@ def admin_banner_stock_delete(stock_id):
 
 @app.route("/admin/banner-informasi")
 def admin_banner_informasi():
-    if not is_logged_in():
+    if not session.get("logged_in") and not session.get("is_logged_in"):
         return redirect(url_for("admin_login"))
 
-    banner = get_or_create_banner_single()
-    return render_template(
-        "admin_banner_informasi.html",
-        banner=banner,
-        banner_crop_width=BANNER_CROP_WIDTH,
-        banner_crop_height=BANNER_CROP_HEIGHT,
-        banner_max_file_size_mb=BANNER_MAX_FILE_SIZE_MB,
-    )
+    return redirect(url_for("admin_banner_stock"))
 
 
 @app.route("/admin/banner-informasi/save", methods=["POST"])
 def admin_banner_informasi_save():
-    if not is_logged_in():
+    if not session.get("logged_in") and not session.get("is_logged_in"):
         return redirect(url_for("admin_login"))
 
-    banner = get_or_create_banner_single()
-
-    media_type = request.form.get("media_type", "image").strip().lower()
-    target_url = request.form.get("target_url", "").strip()
-    media_crop_data = request.form.get("media_crop_data", "").strip()
-    media_file = request.files.get("media_file")
-
-    if media_type not in {"image", "video"}:
-        flash("Tipe media banner tidak valid.", "danger")
-        return redirect(url_for("admin_banner_informasi"))
-
-    if (
-        banner.media_type
-        and banner.media_type != media_type
-        and (not media_file or not media_file.filename)
-    ):
-        flash("Saat mengganti tipe media, upload file baru yang sesuai.", "danger")
-        return redirect(url_for("admin_banner_informasi"))
-
-    url_ok, url_message = validate_target_url(target_url)
-    if not url_ok:
-        flash(url_message, "danger")
-        return redirect(url_for("admin_banner_informasi"))
-
-    save_ok, saved_media_path, save_message = save_banner_media_file(
-        media_file,
-        media_type,
-        media_crop_data,
-    )
-    if not save_ok:
-        flash(save_message, "danger")
-        return redirect(url_for("admin_banner_informasi"))
-
-    if not saved_media_path and not banner.media_file:
-        flash("Media banner wajib diupload.", "danger")
-        return redirect(url_for("admin_banner_informasi"))
-
-    old_media_path = banner.media_file
-
-    banner.judul_internal = "Banner Utama"
-    banner.media_type = media_type
-    banner.target_url = target_url
-    banner.poster_file = None
-    banner.sort_order = 1
-    banner.updated_at = datetime.utcnow()
-    banner.needs_publish = True
-    banner.is_published = False
-    banner.published_at = None
-    banner.publish_status = PUBLISH_STATUS_DRAFT
-    banner.scheduled_at = None
-
-    if saved_media_path:
-        banner.media_file = saved_media_path
-
-    db.session.commit()
-
-    if saved_media_path and old_media_path and old_media_path != saved_media_path:
-        delete_banner_file(old_media_path)
-
-    flash(
-        "Draft banner berhasil disimpan. Preview draft terlebih dahulu, lalu publish jika sudah siap.",
-        "success",
-    )
-    return redirect(url_for("admin_banner_informasi"))
+    flash("Halaman banner lama sudah diganti. Gunakan Stok Banner untuk mengelola banner.", "info")
+    return redirect(url_for("admin_banner_stock"))
 
 
 @app.route("/admin/banner-informasi/publish", methods=["POST"])
 def admin_banner_informasi_publish():
-    if not is_logged_in():
+    if not session.get("logged_in") and not session.get("is_logged_in"):
         return redirect(url_for("admin_login"))
 
-    banner = get_or_create_banner_single()
-
-    if not banner.media_file:
-        flash("Upload media banner terlebih dahulu sebelum publish.", "danger")
-        return redirect(url_for("admin_banner_informasi"))
-
-    url_ok, url_message = validate_target_url(banner.target_url or "")
-    if not url_ok:
-        flash(url_message, "danger")
-        return redirect(url_for("admin_banner_informasi"))
-
-    banner.is_published = True
-    banner.is_active = True
-    banner.needs_publish = False
-    banner.publish_status = PUBLISH_STATUS_PUBLISHED
-    banner.scheduled_at = None
-    banner.published_at = datetime.utcnow()
-
-    db.session.commit()
-    publish_banner_snapshot(banner)
-
-    flash("Banner berhasil dipublish ke website.", "success")
-    return redirect(url_for("admin_banner_informasi"))
-
+    flash("Proses publish banner sekarang dilakukan dari tombol Jadikan Banner Tampil di Stok Banner.", "info")
+    return redirect(url_for("admin_banner_stock"))
 
 
 @app.route("/admin/banner-informasi/preview")
@@ -2403,12 +2312,8 @@ def admin_banner_informasi_preview():
     if not session.get("logged_in") and not session.get("is_logged_in"):
         return redirect(url_for("admin_login"))
 
-    banner = BannerInformasi.query.first()
+    return redirect(url_for("admin_banner_stock"))
 
-    if banner:
-        banner.last_previewed_at = datetime.utcnow()
-        db.session.commit()
-    return render_template("admin_banner_preview.html", banner=banner)
 
 @app.route("/api/banner-informasi")
 def api_banner_informasi():

@@ -24,12 +24,12 @@
       description: "Mengelola berita, banner utama, kategori, tag, halaman statis, dan pengumuman.",
       help: [
         "Gunakan Kelola Berita untuk menambah atau mengubah berita.",
-        "Gunakan Banner Utama untuk konten yang tampil besar di halaman depan.",
+        "Gunakan Stok Banner untuk konten yang tampil besar di halaman depan.",
         "Simpan sebagai draft jika konten belum siap dipublikasikan."
       ],
       features: [
         ["Kelola Berita", "Tambah, edit, hapus, draft, publish, thumbnail, dan tag berita.", "Ada", "/admin/berita/list"],
-        ["Banner Utama", "Mengelola banner informasi utama dalam bentuk gambar atau video.", "Ada", "/admin/banner-informasi"],
+        ["Stok Banner", "Mengelola banner informasi utama dalam bentuk gambar atau video.", "Ada", "/admin/banner/stock"],
         ["Kategori Berita", "Mengelompokkan berita agar arsip lebih rapi.", "Konsep", null],
         ["Tag Berita", "Mengatur label seperti New, Akademik, Pengumuman, dan Kegiatan.", "Konsep", null],
         ["Halaman Statis", "Mengelola halaman tetap seperti tentang fakultas dan visi misi.", "Konsep", null],
@@ -135,7 +135,7 @@
 
   const quickActions = [
     ["Tambah Berita", "Buat informasi baru untuk website.", "/admin/berita/list"],
-    ["Upload Banner", "Kelola banner utama halaman depan.", "/admin/banner-informasi"],
+    ["Stok Banner", "Kelola banner utama halaman depan.", "/admin/banner/stock"],
     ["Tambah Dosen", "Kelola profil dosen fakultas.", "/admin/dosen"],
     ["Data Dekan", "Perbarui data pimpinan fakultas.", "/admin/dekan"],
     ["E-Brochure", "Siapkan brosur digital.", "#"],
