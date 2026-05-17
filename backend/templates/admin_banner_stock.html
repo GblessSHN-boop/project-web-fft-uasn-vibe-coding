@@ -117,24 +117,8 @@
               </div>
 
               <small class="fft-stock-upload-preview__rule">Rules banner: 3150 x 900 px · rasio 3.5:1</small>
+              <button class="fft-btn fft-btn-light fft-stock-crop-open" type="button" data-banner-crop-open hidden>Atur Crop Manual</button>
 
-              <div class="fft-banner-crop-tools" data-banner-crop-tools hidden>
-                <label class="fft-banner-crop-toggle">
-                  <input type="checkbox" data-banner-crop-enabled checked>
-                  <span>Gunakan crop manual 3150 x 900</span>
-                </label>
-
-                <div class="fft-banner-crop-control">
-                  <span>Zoom gambar</span>
-                  <input type="range" min="1" max="3" step="0.01" value="1" data-banner-crop-zoom>
-                </div>
-
-                <div class="fft-banner-crop-actions">
-                  <button class="fft-btn fft-btn-light" type="button" data-banner-crop-reset>Reset Posisi</button>
-                </div>
-
-                <small>Geser gambar langsung di area preview. Saat disimpan, sistem membuat gambar final ukuran 3150 x 900 px.</small>
-              </div>
 
               <small class="fft-stock-upload-preview__note" data-banner-preview-note></small>
             </div>
@@ -198,6 +182,50 @@
       </section>
     </main>
   </div>
+
+  <div class="fft-crop-modal" data-banner-crop-modal hidden>
+    <div class="fft-crop-modal__backdrop" data-banner-crop-cancel></div>
+
+    <section class="fft-crop-dialog" role="dialog" aria-modal="true" aria-label="Crop banner 3150 x 900">
+      <header class="fft-crop-dialog__head">
+        <div>
+          <p class="fft-kicker">Crop Banner</p>
+          <h2>Atur Tampilan Gambar</h2>
+          <span>Frame final mengikuti ukuran frontend: 3150 x 900 px.</span>
+        </div>
+
+        <button class="fft-crop-close" type="button" data-banner-crop-cancel aria-label="Tutup crop">×</button>
+      </header>
+
+      <div class="fft-crop-dialog__body">
+        <div class="fft-crop-viewport" data-banner-crop-viewport>
+          <img alt="Gambar yang akan dicrop" data-banner-crop-image>
+          <div class="fft-crop-frame-label">3150 × 900</div>
+        </div>
+
+        <aside class="fft-crop-panel">
+          <div class="fft-crop-panel__block">
+            <strong>Crop Manual</strong>
+            <span>Geser gambar langsung di area crop. Gunakan zoom untuk memperbesar gambar.</span>
+          </div>
+
+          <label class="fft-crop-control">
+            <span>Zoom</span>
+            <input type="range" min="1" max="3" step="0.01" value="1" data-banner-crop-zoom>
+          </label>
+
+          <div class="fft-crop-actions">
+            <button class="fft-btn fft-btn-light" type="button" data-banner-crop-reset>Reset</button>
+            <button class="fft-btn fft-btn-light" type="button" data-banner-crop-cancel>Batal</button>
+            <button class="fft-btn fft-btn-primary" type="button" data-banner-crop-apply>Terapkan Crop</button>
+          </div>
+
+          <small>Setelah diterapkan, file yang disimpan ke stok adalah hasil crop ukuran 3150 x 900 px.</small>
+        </aside>
+      </div>
+    </section>
+  </div>
+
   <script src="{{ url_for('static', filename='admin/js/admin-banner.js') }}"></script>
 </body>
 </html>
