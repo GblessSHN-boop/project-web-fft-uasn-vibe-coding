@@ -1202,3 +1202,92 @@ body.fft-admin-module-body {
 }
 
 /* BANNER STOCK ACTIVE MANAGEMENT END */
+
+/* BANNER STOCK HISTORY ARCHIVE START */
+
+.fft-banner-stock-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 18px 0;
+}
+
+.fft-banner-stock-stats article {
+  padding: 18px 20px;
+  border: 1px solid var(--fft-line);
+  background: var(--fft-paper);
+  box-shadow: var(--fft-shadow);
+}
+
+.fft-banner-stock-stats span {
+  display: block;
+  color: var(--fft-muted);
+  font-size: 11px;
+  font-weight: 820;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.fft-banner-stock-stats strong {
+  display: block;
+  margin-top: 10px;
+  color: var(--fft-maroon);
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.fft-stock-info__top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fft-stock-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 9px;
+  border: 1px solid var(--fft-line);
+  background: #fff;
+  color: var(--fft-muted);
+  font-size: 10px;
+  font-weight: 820;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fft-stock-status--ready {
+  border-color: rgba(139, 15, 23, 0.28);
+  color: var(--fft-maroon);
+}
+
+.fft-stock-status--used {
+  background: #111113;
+  border-color: #111113;
+  color: #ffffff;
+}
+
+.fft-stock-status--archived {
+  background: #f1efed;
+  color: #5f6368;
+}
+
+.fft-stock-history-card,
+.fft-stock-archive-card {
+  margin-top: 18px;
+}
+
+.fft-stock-archive-card {
+  background: linear-gradient(180deg, #ffffff, #fbfaf9);
+}
+
+@media (max-width: 760px) {
+  .fft-banner-stock-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* BANNER STOCK HISTORY ARCHIVE END */

@@ -527,3 +527,41 @@
 })();
 // BANNER STOCK ACTIVE MANAGEMENT END
 
+// BANNER STOCK HISTORY ARCHIVE START
+(function () {
+  const archiveForms = document.querySelectorAll("[data-banner-archive-form]");
+  const restoreForms = document.querySelectorAll("[data-banner-restore-form]");
+  const permanentDeleteForms = document.querySelectorAll("[data-banner-permanent-delete-form]");
+
+  archiveForms.forEach((form) => {
+    form.addEventListener("submit", function (event) {
+      const ok = window.confirm("Arsipkan banner ini?\n\nBanner akan disimpan di Arsip dan tidak hilang permanen.");
+
+      if (!ok) {
+        event.preventDefault();
+      }
+    });
+  });
+
+  restoreForms.forEach((form) => {
+    form.addEventListener("submit", function (event) {
+      const ok = window.confirm("Pulihkan banner ini ke Stok Siap Pakai?");
+
+      if (!ok) {
+        event.preventDefault();
+      }
+    });
+  });
+
+  permanentDeleteForms.forEach((form) => {
+    form.addEventListener("submit", function (event) {
+      const ok = window.confirm("Hapus banner ini secara permanen?\n\nFile akan dihapus dan tidak bisa dipulihkan.");
+
+      if (!ok) {
+        event.preventDefault();
+      }
+    });
+  });
+})();
+// BANNER STOCK HISTORY ARCHIVE END
+

@@ -2222,12 +2222,32 @@ def admin_banner_stock():
         return redirect(url_for("admin_login"))
 
     active_banner = BannerInformasi.query.first()
-    stocks = BannerStock.query.order_by(BannerStock.updated_at.desc()).all()
+
+    stocks = BannerStock.query.filter(
+        BannerStock.status == "stock"
+    ).order_by(BannerStock.updated_at.desc()).all()
+
+    used_stocks = BannerStock.query.filter(
+        BannerStock.status == "used"
+    ).order_by(BannerStock.activated_at.desc().nullslast(), BannerStock.updated_at.desc()).all()
+
+    archived_stocks = BannerStock.query.filter(
+        BannerStock.status == "archived"
+    ).order_by(BannerStock.updated_at.desc()).all()
+
+    stats = {
+        "ready": len(stocks),
+        "used": len(used_stocks),
+        "archived": len(archived_stocks),
+    }
 
     return render_template(
         "admin_banner_stock.html",
         active_banner=active_banner,
         stocks=stocks,
+        used_stocks=used_stocks,
+        archived_stocks=archived_stocks,
+        stats=stats,
     )
 
 
@@ -2311,6 +2331,7 @@ def admin_banner_stock_activate(stock_id):
 
     stock.status = "used"
     stock.activated_at = datetime.utcnow()
+    stock.updated_at = datetime.utcnow()
 
     db.session.commit()
     publish_banner_informasi_snapshot()
@@ -2326,6 +2347,44 @@ def admin_banner_stock_delete(stock_id):
 
     stock = BannerStock.query.get_or_404(stock_id)
 
+    stock.status = "archived"
+    stock.updated_at = datetime.utcnow()
+
+    db.session.commit()
+
+    flash("Stok banner berhasil dipindahkan ke arsip.", "success")
+    return redirect(url_for("admin_banner_stock"))
+
+
+
+
+@app.route("/admin/banner/stock/<int:stock_id>/restore", methods=["POST"])
+def admin_banner_stock_restore(stock_id):
+    if not session.get("logged_in") and not session.get("is_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    stock = BannerStock.query.get_or_404(stock_id)
+
+    stock.status = "stock"
+    stock.updated_at = datetime.utcnow()
+
+    db.session.commit()
+
+    flash("Banner arsip berhasil dipulihkan ke stok.", "success")
+    return redirect(url_for("admin_banner_stock"))
+
+
+@app.route("/admin/banner/stock/<int:stock_id>/delete-permanent", methods=["POST"])
+def admin_banner_stock_delete_permanent(stock_id):
+    if not session.get("logged_in") and not session.get("is_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    stock = BannerStock.query.get_or_404(stock_id)
+
+    if stock.status != "archived":
+        flash("Banner harus diarsipkan terlebih dahulu sebelum dihapus permanen.", "warning")
+        return redirect(url_for("admin_banner_stock"))
+
     try:
         if stock.media_file:
             file_path = os.path.join(BASE_DIR, "static", stock.media_file)
@@ -2337,10 +2396,8 @@ def admin_banner_stock_delete(stock_id):
     db.session.delete(stock)
     db.session.commit()
 
-    flash("Stok banner berhasil dihapus.", "success")
+    flash("Banner arsip berhasil dihapus permanen.", "success")
     return redirect(url_for("admin_banner_stock"))
-
-
 
 @app.route("/admin/banner-informasi")
 def admin_banner_informasi():

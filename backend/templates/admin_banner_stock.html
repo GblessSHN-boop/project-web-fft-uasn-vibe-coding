@@ -14,6 +14,66 @@
   {% set active_media_path = active_banner.media_file if active_banner and active_banner.media_file and active_banner.is_published else '' %}
   {% set active_media_url = url_for('static', filename=active_media_path) if active_media_path else '' %}
 
+  {% macro stock_card(stock, mode) %}
+    {% set stock_url = url_for('static', filename=stock.media_file) %}
+
+    <article class="fft-stock-item">
+      <div class="fft-stock-thumb">
+        {% if stock.media_type == 'video' %}
+          <video src="{{ stock_url }}" muted playsinline></video>
+        {% else %}
+          <img src="{{ stock_url }}" alt="Stok banner">
+        {% endif %}
+      </div>
+
+      <div class="fft-stock-info">
+        <div class="fft-stock-info__top">
+          <strong>{{ stock.note if stock.note else 'Stok Banner' }}</strong>
+
+          {% if stock.status == 'used' %}
+            <span class="fft-stock-status fft-stock-status--used">Pernah Dipakai</span>
+          {% elif stock.status == 'archived' %}
+            <span class="fft-stock-status fft-stock-status--archived">Arsip</span>
+          {% else %}
+            <span class="fft-stock-status fft-stock-status--ready">Siap Dipakai</span>
+          {% endif %}
+        </div>
+
+        <small>{{ stock.media_type|upper }} · Ditambahkan {{ stock.created_at.strftime('%d %B %Y') if stock.created_at else '-' }}</small>
+
+        {% if stock.activated_at %}
+          <small>Terakhir dijadikan tampil: {{ stock.activated_at.strftime('%d %B %Y %H:%M') }}</small>
+        {% endif %}
+
+        <small>{{ stock.target_url }}</small>
+      </div>
+
+      <div class="fft-stock-actions">
+        <a class="fft-btn fft-btn-light" href="{{ url_for('admin_banner_stock_preview', stock_id=stock.id) }}">Preview</a>
+
+        {% if mode != 'archived' %}
+          <form method="POST" action="{{ url_for('admin_banner_stock_activate', stock_id=stock.id) }}" data-banner-activate-form>
+            <button class="fft-btn fft-btn-primary" type="submit">
+              {% if mode == 'used' %}Jadikan Tampil Lagi{% else %}Jadikan Tampil{% endif %}
+            </button>
+          </form>
+
+          <form method="POST" action="{{ url_for('admin_banner_stock_delete', stock_id=stock.id) }}" data-banner-archive-form>
+            <button class="fft-btn fft-btn-light" type="submit">Arsipkan</button>
+          </form>
+        {% else %}
+          <form method="POST" action="{{ url_for('admin_banner_stock_restore', stock_id=stock.id) }}" data-banner-restore-form>
+            <button class="fft-btn fft-btn-primary" type="submit">Pulihkan ke Stok</button>
+          </form>
+
+          <form method="POST" action="{{ url_for('admin_banner_stock_delete_permanent', stock_id=stock.id) }}" data-banner-permanent-delete-form>
+            <button class="fft-btn fft-btn-light" type="submit">Hapus Permanen</button>
+          </form>
+        {% endif %}
+      </div>
+    </article>
+  {% endmacro %}
+
   <div class="fft-admin-app">
     <aside class="fft-admin-rail">
       <a class="fft-admin-brand" href="{{ url_for('admin_choose') }}">
@@ -31,6 +91,11 @@
         <a href="{{ url_for('admin_dekan') }}">Dekan</a>
         <a href="{{ url_for('admin_dosen_list') }}">Dosen</a>
       </nav>
+
+      <div class="fft-admin-rail-footer">
+        <a href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}">Lihat Website</a>
+        <a href="{{ url_for('admin_logout') }}">Keluar</a>
+      </div>
     </aside>
 
     <main class="fft-admin-work">
@@ -51,6 +116,23 @@
           </section>
         {% endif %}
       {% endwith %}
+
+      <section class="fft-banner-stock-stats">
+        <article>
+          <span>Siap Dipakai</span>
+          <strong>{{ stats.ready if stats else stocks|length }}</strong>
+        </article>
+
+        <article>
+          <span>Pernah Dipakai</span>
+          <strong>{{ stats.used if stats else used_stocks|length }}</strong>
+        </article>
+
+        <article>
+          <span>Arsip</span>
+          <strong>{{ stats.archived if stats else archived_stocks|length }}</strong>
+        </article>
+      </section>
 
       <section class="fft-card">
         <div class="fft-card-head">
@@ -78,7 +160,6 @@
         {% endif %}
       </section>
 
-
       <section class="fft-card fft-active-banner-manager">
         <div class="fft-card-head">
           <p class="fft-kicker">Kelola Banner Aktif</p>
@@ -99,16 +180,16 @@
                 value="{{ active_banner.target_url if active_banner and active_banner.target_url else '' }}"
                 placeholder="https://contoh-link.com"
                 required
-                {{ 'disabled' if not active_banner or not active_banner.media_file else '' }}
+                {{ 'disabled' if not active_banner or not active_banner.media_file or not active_banner.is_published else '' }}
               >
             </label>
 
             <div class="fft-form-actions">
-              <button class="fft-btn fft-btn-primary" type="submit" {{ 'disabled' if not active_banner or not active_banner.media_file else '' }}>
+              <button class="fft-btn fft-btn-primary" type="submit" {{ 'disabled' if not active_banner or not active_banner.media_file or not active_banner.is_published else '' }}>
                 Simpan Link
               </button>
 
-              {% if active_banner and active_banner.target_url %}
+              {% if active_banner and active_banner.target_url and active_banner.is_published %}
                 <a class="fft-btn fft-btn-light" href="{{ active_banner.target_url }}" target="_blank" rel="noopener">
                   Cek Link
                 </a>
@@ -157,7 +238,7 @@
             <label class="fft-upload-box">
               <span>Media Banner</span>
               <input type="file" name="media_file" accept="image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif" required data-banner-media-file>
-              <small data-banner-file-help>Pilih gambar JPG, PNG, WEBP, atau GIF. File disimpan ke stok dulu, belum langsung tampil di website.</small>
+              <small data-banner-file-help>Pilih gambar JPG, PNG, WEBP, atau GIF. Setelah dipilih, popup crop manual akan terbuka.</small>
             </label>
 
             <div class="fft-stock-upload-preview" data-banner-upload-preview hidden>
@@ -173,8 +254,6 @@
 
               <small class="fft-stock-upload-preview__rule">Rules banner: 3150 x 900 px · rasio 3.5:1</small>
               <button class="fft-btn fft-btn-light fft-stock-crop-open" type="button" data-banner-crop-open hidden>Atur Crop Manual</button>
-
-
               <small class="fft-stock-upload-preview__note" data-banner-preview-note></small>
             </div>
 
@@ -198,34 +277,7 @@
 
           <div class="fft-stock-list">
             {% for stock in stocks %}
-              {% set stock_url = url_for('static', filename=stock.media_file) %}
-              <article class="fft-stock-item">
-                <div class="fft-stock-thumb">
-                  {% if stock.media_type == 'video' %}
-                    <video src="{{ stock_url }}" muted playsinline></video>
-                  {% else %}
-                    <img src="{{ stock_url }}" alt="Stok banner">
-                  {% endif %}
-                </div>
-
-                <div class="fft-stock-info">
-                  <strong>{{ stock.note if stock.note else 'Stok Banner' }}</strong>
-                  <small>{{ stock.media_type|upper }} · {{ stock.created_at.strftime('%d %B %Y') if stock.created_at else '-' }}</small>
-                  <small>{{ stock.target_url }}</small>
-                </div>
-
-                <div class="fft-stock-actions">
-                  <a class="fft-btn fft-btn-light" href="{{ url_for('admin_banner_stock_preview', stock_id=stock.id) }}">Preview</a>
-
-                  <form method="POST" action="{{ url_for('admin_banner_stock_activate', stock_id=stock.id) }}" data-banner-activate-form>
-                    <button class="fft-btn fft-btn-primary" type="submit">Jadikan Tampil</button>
-                  </form>
-
-                  <form method="POST" action="{{ url_for('admin_banner_stock_delete', stock_id=stock.id) }}" onsubmit="return confirm('Hapus stok banner ini?')">
-                    <button class="fft-btn fft-btn-light" type="submit">Hapus</button>
-                  </form>
-                </div>
-              </article>
+              {{ stock_card(stock, 'ready') }}
             {% else %}
               <div class="fft-empty-state">
                 <strong>Belum ada stok banner</strong>
@@ -234,6 +286,44 @@
             {% endfor %}
           </div>
         </article>
+      </section>
+
+      <section class="fft-card fft-stock-history-card">
+        <div class="fft-card-head">
+          <p class="fft-kicker">Riwayat</p>
+          <h2>Banner yang Pernah Dipakai</h2>
+          <p>Banner di bagian ini pernah dijadikan tampil. Banner lama bisa dipakai lagi tanpa upload ulang.</p>
+        </div>
+
+        <div class="fft-stock-list">
+          {% for stock in used_stocks %}
+            {{ stock_card(stock, 'used') }}
+          {% else %}
+            <div class="fft-empty-state">
+              <strong>Belum ada riwayat banner</strong>
+              <span>Riwayat akan muncul setelah stok banner pernah dijadikan tampil.</span>
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="fft-card fft-stock-archive-card">
+        <div class="fft-card-head">
+          <p class="fft-kicker">Arsip</p>
+          <h2>Arsip Banner</h2>
+          <p>Banner yang diarsipkan tidak muncul di stok siap pakai, tetapi masih bisa dipulihkan.</p>
+        </div>
+
+        <div class="fft-stock-list">
+          {% for stock in archived_stocks %}
+            {{ stock_card(stock, 'archived') }}
+          {% else %}
+            <div class="fft-empty-state">
+              <strong>Belum ada arsip banner</strong>
+              <span>Banner yang diarsipkan akan muncul di sini.</span>
+            </div>
+          {% endfor %}
+        </div>
       </section>
     </main>
   </div>
