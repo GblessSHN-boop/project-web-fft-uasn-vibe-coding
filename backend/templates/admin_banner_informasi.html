@@ -18,6 +18,8 @@
   {% set media_url = url_for('static', filename=media_path) if media_path else '' %}
   {% set is_published = banner.is_published if banner else false %}
   {% set needs_publish = banner.needs_publish if banner else true %}
+  {% set publish_status = banner.publish_status if banner and banner.publish_status else ('published' if is_published and not needs_publish else 'draft') %}
+  {% set last_previewed_at = banner.last_previewed_at if banner and banner.last_previewed_at else none %}
 
   <div class="fft-admin-app">
     <aside class="fft-admin-rail">
@@ -49,7 +51,7 @@
           <p class="fft-kicker">Tampilan Frontend</p>
           <h1>Kelola Banner Utama</h1>
           <p>
-            Banner utama adalah media informasi yang tampil di halaman depan website. Alurnya dibuat jelas: simpan sebagai draft, periksa lewat preview, lalu publish jika sudah siap.
+            Kelola banner utama dengan alur yang aman. Simpan perubahan sebagai draft terlebih dahulu, periksa hasilnya melalui preview, lalu publish jika sudah siap tampil di website.
           </p>
         </div>
 
@@ -57,6 +59,55 @@
           <a class="fft-btn fft-btn-light" href="{{ url_for('admin_choose') }}">Dashboard</a>
           <a class="fft-btn fft-btn-light" href="{{ url_for('admin_banner_informasi_preview') }}">Preview Draft</a>
           <a class="fft-btn fft-btn-dark" href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}">Lihat Website</a>
+        </div>
+      </section>
+
+
+      <section class="fft-draft-flow" aria-label="Alur kerja banner">
+        <article class="fft-draft-step {% if publish_status == 'draft' or needs_publish %}is-active{% endif %}">
+          <span>01</span>
+          <h2>Simpan Draft</h2>
+          <p>Perubahan disimpan di admin. Website publik belum berubah.</p>
+        </article>
+
+        <article class="fft-draft-step">
+          <span>02</span>
+          <h2>Preview Draft</h2>
+          <p>Periksa tampilan banner seperti di frontend sebelum publish.</p>
+        </article>
+
+        <article class="fft-draft-step {% if publish_status == 'published' and not needs_publish %}is-active{% endif %}">
+          <span>03</span>
+          <h2>Publish</h2>
+          <p>Banner baru tampil di website setelah tombol publish ditekan.</p>
+        </article>
+      </section>
+
+      <section class="fft-draft-status-strip">
+        <div>
+          <p class="fft-kicker">Status Draft</p>
+          <strong>
+            {% if publish_status == 'published' and not needs_publish %}
+              Sudah Tayang
+            {% elif publish_status == 'scheduled' %}
+              Terjadwal
+            {% else %}
+              Draft Belum Tayang
+            {% endif %}
+          </strong>
+          <span>
+            {% if needs_publish %}
+              Ada perubahan draft yang belum dipublish ke website.
+            {% else %}
+              Draft admin dan banner website sedang sinkron.
+            {% endif %}
+          </span>
+        </div>
+
+        <div>
+          <p class="fft-kicker">Preview Terakhir</p>
+          <strong>{{ last_previewed_at.strftime('%d %B %Y %H:%M') if last_previewed_at else 'Belum Pernah' }}</strong>
+          <span>Gunakan preview sebelum publish agar tampilan tidak salah.</span>
         </div>
       </section>
 
@@ -94,8 +145,8 @@
         <article class="fft-card fft-preview-card">
           <div class="fft-card-head">
             <p class="fft-kicker">Preview</p>
-            <h2>Draft Banner Saat Ini</h2>
-            <p>Ini adalah banner yang sedang tersimpan di admin. Draft ini belum tentu sama dengan banner yang tampil di website.</p>
+            <h2>Draft Banner yang Sedang Dikerjakan</h2>
+            <p>Bagian ini menampilkan draft terbaru di admin. Draft boleh berubah tanpa mengganggu banner yang sedang tayang di website.</p>
           </div>
 
           <div class="fft-banner-preview">
@@ -138,7 +189,7 @@
         <article class="fft-card">
           <div class="fft-card-head">
             <p class="fft-kicker">Form Banner</p>
-            <h2>Perbarui Draft Banner</h2>
+            <h2>Edit Draft Banner</h2>
             <p>
               Pilih tipe media, upload file baru jika diperlukan, isi target link,
               lalu simpan perubahan.
@@ -175,21 +226,21 @@
             </label>
 
             <div class="fft-form-note">
-              Draft yang disimpan belum tampil di website. Gunakan Preview Draft untuk memeriksa hasilnya, lalu Publish ke Website jika sudah benar.
+              Draft tidak langsung tampil di website. Gunakan Preview Draft untuk mengecek tampilan desktop dan mobile sebelum publish.
             </div>
 
             <div class="fft-form-actions">
               <button class="fft-btn fft-btn-primary" type="submit">Simpan Draft Banner</button>
               <a class="fft-btn fft-btn-light" href="{{ url_for('admin_banner_informasi_preview') }}">Preview Draft</a>
-              <a class="fft-btn fft-btn-light" href="{{ url_for('admin_banner_informasi') }}">Reset</a>
+              <a class="fft-btn fft-btn-light" href="{{ url_for('admin_banner_informasi') }}">Batalkan Perubahan Tampilan</a>
             </div>
           </form>
 
           <form class="fft-publish-box" method="POST" action="{{ url_for('admin_banner_informasi_publish') }}" data-publish-form>
             <div>
               <p class="fft-kicker">Publish</p>
-              <h3>Publish Draft ke Website</h3>
-              <p>Gunakan tombol ini hanya setelah draft banner sudah diperiksa melalui preview.</p>
+              <h3>Publish ke Website</h3>
+              <p>Klik publish hanya jika draft banner sudah diperiksa dan siap tampil di website publik.</p>
             </div>
 
             <button class="fft-btn fft-btn-dark" type="submit" {{ 'disabled' if not media_path else '' }}>

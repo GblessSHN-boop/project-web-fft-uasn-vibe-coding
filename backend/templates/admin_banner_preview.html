@@ -47,8 +47,7 @@
           <p class="fft-kicker">Preview Draft</p>
           <h1>Preview Banner Sebelum Publish</h1>
           <p>
-            Halaman ini menampilkan draft banner dengan ukuran tampilan frontend.
-            Website publik belum berubah sebelum tombol Publish ke Website ditekan.
+            Halaman ini menampilkan draft banner sebelum ditayangkan. Preview ini membantu admin memastikan tampilan desktop dan mobile sudah aman. Website publik belum berubah sebelum tombol Publish ke Website ditekan.
           </p>
         </div>
 
@@ -56,6 +55,27 @@
           <a class="fft-btn fft-btn-light" href="{{ url_for('admin_banner_informasi') }}">Kembali Edit</a>
           <a class="fft-btn fft-btn-dark" href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}">Lihat Website</a>
         </div>
+      </section>
+
+
+      <section class="fft-preview-help-grid">
+        <article>
+          <span>Draft</span>
+          <strong>Data yang sedang diperiksa</strong>
+          <p>Preview ini membaca draft dari database admin, bukan banner published lama.</p>
+        </article>
+
+        <article>
+          <span>Website Publik</span>
+          <strong>Belum berubah</strong>
+          <p>Pengunjung website tetap melihat banner lama sampai publish dilakukan.</p>
+        </article>
+
+        <article>
+          <span>Publish</span>
+          <strong>Tampilkan jika sudah aman</strong>
+          <p>Gunakan publish hanya setelah preview desktop dan mobile sudah benar.</p>
+        </article>
       </section>
 
       <section class="fft-preview-layout">
@@ -115,10 +135,9 @@
       <section class="fft-card fft-preview-decision">
         <div>
           <p class="fft-kicker">Keputusan</p>
-          <h2>Draft Sudah Benar?</h2>
+          <h2>Draft Sudah Siap Tayang?</h2>
           <p>
-            Jika tampilan desktop dan mobile sudah aman, kembali ke halaman edit lalu publish ke website.
-            Jika belum rapi, perbaiki draft banner terlebih dahulu.
+            Jika tampilan desktop dan mobile sudah sesuai, banner bisa dipublish ke website. Jika masih kurang rapi, kembali edit draft terlebih dahulu.
           </p>
         </div>
 
