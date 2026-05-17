@@ -1,785 +1,347 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ 'Edit Berita' if berita else 'Tambah Berita' }} - Admin FFT</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ 'Edit Berita' if berita else 'Tambah Berita' }} | FFT UASN Content Center</title>
+  <meta name="robots" content="noindex,nofollow,noarchive">
 
-  <style>
-    .berita-form-shell {
-      max-width: 1180px;
-      margin: 30px auto;
-      background: #f3f3f3;
-      border-radius: 22px;
-      padding: 24px;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
-    }
-
-    .berita-form-shell h2 {
-      margin: 0 0 20px 0;
-      font-size: 28px;
-      color: #111;
-    }
-
-    .berita-form-card {
-      background: #fff;
-      border-radius: 18px;
-      padding: 20px;
-    }
-
-    .berita-meta-box {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
-      padding: 16px;
-      background: #fafafa;
-      border: 1px solid #e5e5e5;
-      border-radius: 14px;
-    }
-
-    .berita-meta-item {
-      font-size: 13px;
-      color: #444;
-      line-height: 1.5;
-    }
-
-    .berita-meta-item strong {
-      color: #111;
-    }
-
-    .berita-form-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 22px;
-    }
-
-    .berita-form-group {
-      margin-bottom: 16px;
-    }
-
-    .berita-form-group label {
-      display: block;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: #111;
-    }
-
-    .berita-form-group input,
-    .berita-form-group textarea,
-    .berita-form-group select {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid #d8d8d8;
-      border-radius: 12px;
-      font-size: 14px;
-      box-sizing: border-box;
-    }
-
-    .berita-form-group textarea {
-      min-height: 300px;
-      resize: vertical;
-    }
-
-    .berita-preview-card {
-      border: 1px solid #e5e5e5;
-      border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 16px;
-      background: #fafafa;
-    }
-
-    .berita-preview-title {
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      color: #111;
-    }
-
-    .berita-preview-image {
-      width: 100%;
-      max-height: 220px;
-      object-fit: cover;
-      border-radius: 12px;
-      border: 1px solid #ddd;
-      display: block;
-      background: #f2f2f2;
-    }
-
-    .berita-preview-empty {
-      font-size: 13px;
-      color: #777;
-      padding: 12px;
-      background: #fff;
-      border: 1px dashed #ccc;
-      border-radius: 12px;
-    }
-
-    .berita-help {
-      font-size: 12px;
-      color: #666;
-      margin-top: 6px;
-      line-height: 1.7;
-    }
-
-    .berita-note {
-      margin-top: 12px;
-      font-size: 13px;
-      color: #666;
-      line-height: 1.7;
-    }
-
-    .berita-form-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
-
-    .berita-btn {
-      display: inline-block;
-      padding: 10px 18px;
-      border-radius: 999px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 14px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .berita-btn-green {
-      background: #b6ff00;
-      color: #111;
-    }
-
-    .berita-btn-dark {
-      background: #111;
-      color: #fff;
-    }
-
-    .flash-wrap {
-      margin-bottom: 16px;
-    }
-
-    .flash-item {
-      padding: 12px 14px;
-      border-radius: 12px;
-      margin-bottom: 10px;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .flash-success {
-      background: #e8ffd2;
-      color: #246400;
-    }
-
-    .flash-danger {
-      background: #ffe0e0;
-      color: #8a1111;
-    }
-
-    .berita-inline-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .berita-status-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .berita-preview-frontend {
-      background: #0d0d0d;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.08);
-      position: relative;
-    }
-
-    .berita-preview-frontend-image {
-      width: 100%;
-      aspect-ratio: {{ berita_thumb_crop_width }} / {{ berita_thumb_crop_height }};
-      object-fit: cover;
-      display: block;
-      background: #111;
-    }
-
-    .berita-preview-frontend-body {
-      padding: 12px 14px 14px;
-      color: #fff;
-    }
-
-    .berita-preview-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: #fff;
-      color: #111;
-      font-size: 10px;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .berita-preview-badge-new {
-      background: #b6ff00;
-    }
-
-    .berita-preview-frontend-title {
-      margin: 0;
-      font-size: 17px;
-      line-height: 1.4;
-      font-weight: 800;
-    }
-
-    .berita-preview-frontend-sub {
-      margin-top: 8px;
-      font-size: 12px;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.72);
-    }
-
-    .berita-preview-detail {
-      border: 1px solid #e5e5e5;
-      border-radius: 18px;
-      overflow: hidden;
-      background: #fff;
-    }
-
-    .berita-preview-detail-image {
-      width: 100%;
-      aspect-ratio: {{ berita_detail_crop_width }} / {{ berita_detail_crop_height }};
-      object-fit: cover;
-      display: block;
-      background: #f1f1f1;
-    }
-
-    .berita-preview-detail-body {
-      padding: 16px 16px 18px;
-    }
-
-    .berita-preview-detail-body h4 {
-      margin: 0 0 8px;
-      font-size: 20px;
-      line-height: 1.4;
-      color: #111;
-    }
-
-    .berita-preview-detail-body p {
-      margin: 0 0 10px;
-      font-size: 14px;
-      line-height: 1.8;
-      color: #444;
-    }
-
-    .berita-preview-detail-excerpt {
-      font-size: 13px !important;
-      color: #666 !important;
-    }
-
-    .crop-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: rgba(0,0,0,0.7);
-      padding: 30px 14px;
-      overflow: auto;
-    }
-
-    .crop-modal.is-open {
-      display: block;
-    }
-
-    .crop-modal-dialog {
-      width: min(960px, 96vw);
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 16px 42px rgba(0,0,0,0.22);
-    }
-
-    .crop-modal-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 18px;
-      background: #111;
-      color: #fff;
-    }
-
-    .crop-modal-head h3 {
-      margin: 0;
-      font-size: 18px;
-    }
-
-    .crop-close-btn {
-      width: 38px;
-      height: 38px;
-      border: none;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.12);
-      color: #fff;
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    .crop-modal-body {
-      padding: 16px;
-      background: #f6f6f6;
-    }
-
-    .crop-modal-image-wrap {
-      min-height: 420px;
-      border-radius: 14px;
-      overflow: hidden;
-      background: #fff;
-      border: 1px solid #ddd;
-    }
-
-    #cropModalImage {
-      display: block;
-      max-width: 100%;
-    }
-
-    .crop-modal-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-      padding: 16px 18px 18px;
-      background: #fff;
-    }
-
-    @media (max-width: 980px) {
-      .berita-form-grid,
-      .berita-meta-box,
-      .berita-inline-grid,
-      .berita-status-row {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-module.css') }}">
 </head>
-<body>
 
+<body class="fft-admin-module-body">
+  {% set is_edit = berita is defined and berita %}
+  {% set berita_id = berita.id if is_edit else '' %}
+  {% set kode_berita = berita.kode_berita if is_edit and berita.kode_berita else ('Baru' if not is_edit else '%05d'|format(berita.id)) %}
+  {% set current_group = berita.group_type if is_edit and berita.group_type else 'umum' %}
+  {% set thumb_path = berita.thumbnail if is_edit and berita.thumbnail else '' %}
+  {% set detail_path = berita.gambar_detail if is_edit and berita.gambar_detail else '' %}
+  {% set thumb_url = url_for('static', filename=thumb_path) if thumb_path else '' %}
+  {% set detail_url = url_for('static', filename=detail_path) if detail_path else '' %}
+  {% set is_live = berita.is_published if is_edit and berita.is_published else false %}
+  {% set needs_publish = berita.needs_publish if is_edit and berita.needs_publish else false %}
+  {% set status_label = 'Perlu Publish' if needs_publish else ('Sudah Rilis' if is_live else 'Draft') %}
+  {% set status_key = 'queue' if needs_publish else ('live' if is_live else 'draft') %}
+  {% set thumb_w = berita_thumb_crop_width|default(1450)|int %}
+  {% set thumb_h = berita_thumb_crop_height|default(1000)|int %}
+  {% set detail_w = berita_detail_crop_width|default(1600)|int %}
+  {% set detail_h = berita_detail_crop_height|default(900)|int %}
 
-  <div class="berita-form-shell">
-    <h2>{{ 'EDIT BERITA' if berita else 'TAMBAH BERITA BARU' }}</h2>
+  <div class="fft-admin-app">
+    <aside class="fft-admin-rail">
+      <a class="fft-admin-brand" href="{{ url_for('admin_choose') }}">
+        <img src="{{ url_for('static', filename='admin/images/logo-fft.png') }}" alt="Logo FFT">
+        <span>
+          <strong>Panel FFT</strong>
+          <small>Content Center</small>
+        </span>
+      </a>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div class="flash-wrap">
-          {% for category, message in messages %}
-            <div class="flash-item flash-{{ category if category in ['success', 'danger'] else 'success' }}">
-              {{ message }}
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
-    {% endwith %}
+      <nav class="fft-admin-menu">
+        <a href="{{ url_for('admin_choose') }}">Dashboard</a>
+        <a class="is-active" href="{{ url_for('admin_berita_list') }}">Berita</a>
+        <a href="{{ url_for('admin_banner_stock') }}">Stok Banner</a>
+        <a href="{{ url_for('admin_dekan') }}">Dekan</a>
+        <a href="{{ url_for('admin_dosen_list') }}">Dosen</a>
+      </nav>
 
-    <div class="berita-form-card">
-      {% if berita %}
-      <div class="berita-meta-box">
-        <div class="berita-meta-item"><strong>Kode Berita:</strong> {{ berita.kode_berita or '-' }}</div>
-        <div class="berita-meta-item"><strong>Tanggal Pembuatan:</strong> {{ berita.created_at or '-' }}</div>
-        <div class="berita-meta-item"><strong>View Count:</strong> {{ berita.click_count or 0 }}</div>
-        <div class="berita-meta-item"><strong>Slug:</strong> {{ berita.slug or '-' }}</div>
-        <div class="berita-meta-item"><strong>Jadwal Tayang:</strong> {{ berita.tayang_pada or '-' }}</div>
-        <div class="berita-meta-item"><strong>Tanggal Rilis Frontend:</strong> {{ berita.published_at or '-' }}</div>
+      <div class="fft-admin-rail-footer">
+        <a href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}">Lihat Website</a>
+        <a href="{{ url_for('admin_logout') }}">Keluar</a>
       </div>
-      {% endif %}
+    </aside>
 
-      <form id="beritaForm" action="{{ url_for('admin_berita_save') }}" method="post" enctype="multipart/form-data">
-        {% if berita %}
-          <input type="hidden" name="berita_id" value="{{ berita.id }}">
+    <main class="fft-admin-work fft-news-editor-page">
+      <section class="fft-news-editor-hero">
+        <div>
+          <p class="fft-kicker">Editor Berita</p>
+          <h1>{{ 'Edit Berita' if is_edit else 'Tambah Berita' }}</h1>
+          <p>
+            Isi berita, atur gambar, cek preview, lalu simpan. Setelah disimpan,
+            berita yang berubah akan masuk status perlu publish sebelum tampil di frontend.
+          </p>
+        </div>
+
+        <div class="fft-news-editor-hero__actions">
+          <a class="fft-btn fft-btn-light" href="{{ url_for('admin_berita_list') }}">Kembali</a>
+          <a class="fft-btn fft-btn-light" href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}#berita" target="_blank" rel="noopener">Lihat Website</a>
+        </div>
+      </section>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <section class="fft-alert-stack">
+            {% for category, message in messages %}
+              <div class="fft-alert fft-alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          </section>
         {% endif %}
+      {% endwith %}
 
-        <input type="hidden" id="thumbnail_crop_data" name="thumbnail_crop_data">
-        <input type="hidden" id="detail_crop_data" name="detail_crop_data">
+      <section class="fft-news-editor-status">
+        <article>
+          <span>Status</span>
+          <strong class="fft-news-editor-status__badge fft-news-editor-status__badge--{{ status_key }}">{{ status_label }}</strong>
+          <small>{{ 'Berita sudah tampil di frontend.' if is_live and not needs_publish else ('Ada perubahan yang belum dikirim ke frontend.' if needs_publish else 'Berita belum tampil di frontend.') }}</small>
+        </article>
 
-        <div class="berita-form-grid">
-          <div>
-            <div class="berita-form-group">
-              <label for="judul">Judul Berita</label>
+        <article>
+          <span>Kode Berita</span>
+          <strong>{{ kode_berita }}</strong>
+          <small>Kode dipakai untuk arsip dan detail berita.</small>
+        </article>
+
+        <article>
+          <span>Gambar</span>
+          <strong>{{ 'Lengkap' if thumb_path and detail_path else 'Belum Lengkap' }}</strong>
+          <small>Thumbnail dan gambar detail wajib ada.</small>
+        </article>
+      </section>
+
+      <form
+        id="newsEditorForm"
+        class="fft-news-editor-grid"
+        method="POST"
+        action="{{ url_for('admin_berita_save') }}"
+        enctype="multipart/form-data"
+        data-news-editor-form
+      >
+        <input type="hidden" name="berita_id" value="{{ berita_id }}">
+        <input type="hidden" name="thumbnail_crop_data" id="thumbnail_crop_data" data-news-crop-output="thumbnail">
+        <input type="hidden" name="detail_crop_data" id="detail_crop_data" data-news-crop-output="detail">
+
+        <section class="fft-news-editor-main">
+          <article class="fft-news-editor-card">
+            <div class="fft-news-editor-card__head">
+              <p class="fft-kicker">Isi Berita</p>
+              <h2>Informasi Utama</h2>
+              <p>Bagian ini yang akan dibaca pengunjung sebagai judul, ringkasan, dan isi berita.</p>
+            </div>
+
+            <label class="fft-news-editor-field">
+              <span>Judul Berita</span>
               <input
-                type="text"
                 id="judul"
                 name="judul"
-                placeholder="Masukkan judul berita"
-                value="{{ berita.judul if berita else '' }}"
-                required>
-            </div>
-
-            <div class="berita-form-group">
-              <label for="subjudul">Subjudul</label>
-              <input
                 type="text"
+                value="{{ berita.judul if is_edit and berita.judul else '' }}"
+                placeholder="Contoh: Kegiatan Fakultas Filsafat Teologi..."
+                maxlength="150"
+                required
+                data-news-title
+              >
+              <small data-news-title-count>0 / 150 karakter</small>
+            </label>
+
+            <label class="fft-news-editor-field">
+              <span>Ringkasan Berita</span>
+              <textarea
                 id="subjudul"
                 name="subjudul"
-                placeholder="Masukkan subjudul berita"
-                value="{{ berita.subjudul if berita else '' }}">
-            </div>
+                rows="4"
+                placeholder="Tulis ringkasan pendek yang mudah dipahami..."
+                maxlength="260"
+                required
+                data-news-summary
+              >{{ berita.subjudul if is_edit and berita.subjudul else '' }}</textarea>
+              <small data-news-summary-count>0 / 260 karakter</small>
+            </label>
 
-            <div class="berita-form-group">
-              <label for="isi">Isi Berita</label>
+            <label class="fft-news-editor-field">
+              <span>Isi Berita</span>
               <textarea
                 id="isi"
                 name="isi"
-                placeholder="Masukkan isi berita"
-                required>{{ berita.isi if berita else '' }}</textarea>
-            </div>
-          </div>
+                rows="12"
+                placeholder="Tulis isi berita lengkap di sini..."
+                required
+                data-news-content
+              >{{ berita.isi if is_edit and berita.isi else '' }}</textarea>
+              <small>Gunakan paragraf yang jelas. Hindari judul terlalu panjang.</small>
+            </label>
 
-          <div>
-            <div class="berita-inline-grid">
-              <div class="berita-preview-card">
-                <div class="berita-preview-title">Thumbnail Saat Ini</div>
-                {% if berita and berita.thumbnail %}
-                  <img
-                    src="{{ url_for('static', filename=berita.thumbnail) }}"
-                    alt="Thumbnail berita"
-                    class="berita-preview-image">
+            <label class="fft-news-editor-field">
+              <span>Kategori</span>
+              <select name="group_type" data-news-category>
+                {% for option in ['umum', 'akademik', 'kegiatan', 'pengumuman', 'prestasi'] %}
+                  <option value="{{ option }}" {{ 'selected' if current_group == option else '' }}>{{ option|upper }}</option>
+                {% endfor %}
+              </select>
+              <small>Kategori membantu admin mengelompokkan berita.</small>
+            </label>
+          </article>
+
+          <article class="fft-news-editor-card">
+            <div class="fft-news-editor-card__head">
+              <p class="fft-kicker">Gambar Berita</p>
+              <h2>Thumbnail dan Detail</h2>
+              <p>Upload gambar saja. Setelah pilih gambar, popup crop manual akan terbuka.</p>
+            </div>
+
+            <div class="fft-news-media-grid">
+              <label class="fft-news-media-uploader">
+                <span>Thumbnail Frontend</span>
+
+                <div class="fft-news-media-preview fft-news-media-preview--thumb" data-news-preview-box="thumbnail">
+                  {% if thumb_url %}
+                    <img src="{{ thumb_url }}" alt="Thumbnail berita" data-news-preview-img="thumbnail">
+                  {% else %}
+                    <strong>Belum ada thumbnail</strong>
+                  {% endif %}
+                </div>
+
+                <input
+                  id="thumbnail"
+                  name="thumbnail"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif"
+                  data-news-media-input="thumbnail"
+                  data-output-width="{{ thumb_w }}"
+                  data-output-height="{{ thumb_h }}"
+                  {{ '' if is_edit and thumb_path else 'required' }}
+                >
+
+                <small>Ukuran crop: {{ thumb_w }} × {{ thumb_h }} px.</small>
+              </label>
+
+              <label class="fft-news-media-uploader">
+                <span>Gambar Halaman Detail</span>
+
+                <div class="fft-news-media-preview fft-news-media-preview--detail" data-news-preview-box="detail">
+                  {% if detail_url %}
+                    <img src="{{ detail_url }}" alt="Gambar detail berita" data-news-preview-img="detail">
+                  {% else %}
+                    <strong>Belum ada gambar detail</strong>
+                  {% endif %}
+                </div>
+
+                <input
+                  id="gambar_detail"
+                  name="gambar_detail"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif"
+                  data-news-media-input="detail"
+                  data-output-width="{{ detail_w }}"
+                  data-output-height="{{ detail_h }}"
+                  {{ '' if is_edit and detail_path else 'required' }}
+                >
+
+                <small>Ukuran crop: {{ detail_w }} × {{ detail_h }} px.</small>
+              </label>
+            </div>
+          </article>
+        </section>
+
+        <aside class="fft-news-editor-side">
+          <section class="fft-news-editor-card fft-news-editor-preview-card">
+            <div class="fft-news-editor-card__head">
+              <p class="fft-kicker">Preview</p>
+              <h2>Tampilan Kartu Berita</h2>
+              <p>Preview ini membantu mengecek judul, ringkasan, dan thumbnail sebelum disimpan.</p>
+            </div>
+
+            <article class="fft-news-live-preview">
+              <div class="fft-news-live-preview__image" data-news-card-image>
+                {% if thumb_url %}
+                  <img src="{{ thumb_url }}" alt="Preview thumbnail">
                 {% else %}
-                  <div class="berita-preview-empty">Belum ada thumbnail tersimpan.</div>
+                  <span>Thumbnail</span>
                 {% endif %}
               </div>
 
-              <div class="berita-preview-card">
-                <div class="berita-preview-title">Gambar Detail Saat Ini</div>
-                {% if berita and berita.gambar_detail %}
-                  <img
-                    src="{{ url_for('static', filename=berita.gambar_detail) }}"
-                    alt="Gambar detail berita"
-                    class="berita-preview-image">
+              <div class="fft-news-live-preview__body">
+                <small data-news-preview-meta>KODE {{ kode_berita }} · {{ current_group|upper }}</small>
+                <h3 data-news-preview-title>{{ berita.judul if is_edit and berita.judul else 'Judul berita akan tampil di sini' }}</h3>
+                <p data-news-preview-summary>{{ berita.subjudul if is_edit and berita.subjudul else 'Ringkasan berita akan tampil di sini.' }}</p>
+              </div>
+            </article>
+          </section>
+
+          <section class="fft-news-editor-card fft-news-editor-detail-preview">
+            <div class="fft-news-editor-card__head">
+              <p class="fft-kicker">Detail</p>
+              <h2>Preview Halaman Detail</h2>
+            </div>
+
+            <div class="fft-news-detail-mini">
+              <div class="fft-news-detail-mini__image" data-news-detail-image>
+                {% if detail_url %}
+                  <img src="{{ detail_url }}" alt="Preview detail">
                 {% else %}
-                  <div class="berita-preview-empty">Belum ada gambar detail tersimpan.</div>
+                  <span>Gambar detail</span>
                 {% endif %}
               </div>
+              <h3 data-news-detail-title>{{ berita.judul if is_edit and berita.judul else 'Judul berita' }}</h3>
+              <p data-news-detail-content>{{ berita.isi if is_edit and berita.isi else 'Isi berita akan tampil di area ini.' }}</p>
             </div>
+          </section>
 
-            <div class="berita-form-group">
-              <label for="thumbnail">Upload Thumbnail Frontend</label>
-              <input
-                type="file"
-                id="thumbnail"
-                name="thumbnail"
-                accept=".png,.jpg,.jpeg,.webp"
-                {% if not berita %}required{% endif %}>
-              <div class="berita-help">
-                Setelah pilih image, sistem akan langsung membuka popup crop manual untuk thumbnail frontend.
-              </div>
-            </div>
+          <section class="fft-news-editor-actions">
+            <button class="fft-btn fft-btn-primary" type="submit">
+              Simpan Perubahan
+            </button>
 
-            <div class="berita-preview-card">
-              <div class="berita-preview-title">Preview Thumbnail Baru</div>
-              <img
-                id="thumbnailNewPreview"
-                class="berita-preview-image"
-                alt="Preview thumbnail baru"
-                style="display:none;">
-              <div id="thumbnailNewPreviewEmpty" class="berita-preview-empty">
-                Pilih thumbnail baru untuk crop dan melihat preview hasilnya.
-              </div>
-            </div>
+            <a class="fft-btn fft-btn-light" href="{{ url_for('admin_berita_list') }}">
+              Batal
+            </a>
 
-            <div class="berita-form-group">
-              <label for="gambar_detail">Upload Gambar Halaman Detail</label>
-              <input
-                type="file"
-                id="gambar_detail"
-                name="gambar_detail"
-                accept=".png,.jpg,.jpeg,.webp"
-                {% if not berita %}required{% endif %}>
-              <div class="berita-help">
-                Setelah pilih image, sistem akan langsung membuka popup crop manual untuk gambar halaman detail.
-              </div>
-            </div>
+            {% if is_edit %}
+              <form method="POST" action="{{ url_for('admin_berita_delete', berita_id=berita.id) }}" data-news-editor-delete-form>
+                <button class="fft-btn fft-btn-light" type="submit">Hapus Berita</button>
+              </form>
+            {% endif %}
 
-            <div class="berita-preview-card">
-              <div class="berita-preview-title">Preview Gambar Detail Baru</div>
-              <img
-                id="detailNewPreview"
-                class="berita-preview-image"
-                alt="Preview gambar detail baru"
-                style="display:none;">
-              <div id="detailNewPreviewEmpty" class="berita-preview-empty">
-                Pilih gambar detail baru untuk crop dan melihat preview hasilnya.
-              </div>
-            </div>
-
-            <div class="berita-preview-card">
-              <div class="berita-preview-title">Preview Frontend Card</div>
-              <div class="berita-preview-frontend">
-                <img
-                  id="frontendCardPreviewImage"
-                  class="berita-preview-frontend-image"
-                  alt="Preview frontend"
-                  {% if berita and berita.thumbnail %}
-                    src="{{ url_for('static', filename=berita.thumbnail) }}"
-                  {% else %}
-                    style="display:none;"
-                  {% endif %}>
-
-                <div
-                  id="frontendCardPreviewEmpty"
-                  class="berita-preview-empty"
-                  {% if berita and berita.thumbnail %}style="display:none;"{% endif %}>
-                  Thumbnail frontend belum tersedia.
-                </div>
-
-                <div class="berita-preview-frontend-body">
-                  <h4 id="frontendCardTitle" class="berita-preview-frontend-title">
-                    {{ berita.judul if berita and berita.judul else 'JUDUL BERITA' }}
-                  </h4>
-                  <div id="frontendCardSub" class="berita-preview-frontend-sub">
-                    {{ berita.subjudul if berita and berita.subjudul else 'Subjudul berita akan tampil di sini.' }}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="berita-preview-card">
-              <div class="berita-preview-title">Preview Halaman Detail Setelah Klik Berita</div>
-              <div class="berita-preview-detail">
-                <img
-                  id="detailPagePreviewImage"
-                  class="berita-preview-detail-image"
-                  alt="Preview detail page"
-                  {% if berita and berita.gambar_detail %}
-                    src="{{ url_for('static', filename=berita.gambar_detail) }}"
-                  {% else %}
-                    style="display:none;"
-                  {% endif %}>
-
-                <div
-                  id="detailPagePreviewEmpty"
-                  class="berita-preview-empty"
-                  {% if berita and berita.gambar_detail %}style="display:none;"{% endif %}>
-                  Gambar detail belum tersedia.
-                </div>
-
-                <div class="berita-preview-detail-body">
-                  <h4 id="detailPageTitle">{{ berita.judul if berita and berita.judul else 'Judul berita' }}</h4>
-                  <p id="detailPageSub">{{ berita.subjudul if berita and berita.subjudul else 'Subjudul berita akan tampil di sini.' }}</p>
-                  <p id="detailPageExcerpt" class="berita-preview-detail-excerpt">
-                    {{ berita.isi[:180] ~ '...' if berita and berita.isi else 'Ringkasan isi berita akan tampil di area ini setelah berita dibuka.' }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="berita-form-actions">
-          <button type="submit" class="berita-btn berita-btn-green">
-            {{ 'SIMPAN PERUBAHAN' if berita else 'SIMPAN BERITA' }}
-          </button>
-
-          <a href="{{ url_for('admin_berita_list') }}" class="berita-btn berita-btn-dark">
-            {{ 'KEMBALI KE DATA BERITA' if berita else 'BATAL' }}
-          </a>
-        </div>
-
-        
+            <small>
+              Setelah simpan, buka daftar berita lalu klik Publish Perubahan untuk mengirim perubahan ke frontend.
+            </small>
+          </section>
+        </aside>
       </form>
-    </div>
+    </main>
   </div>
 
-  <div id="cropModal" class="crop-modal">
-    <div class="crop-modal-dialog">
-      <div class="crop-modal-head">
-        <h3 id="cropModalTitle">Crop Image</h3>
-        <button type="button" id="cropCloseBtn" class="crop-close-btn">×</button>
-      </div>
+  <div class="fft-news-crop-modal" data-news-crop-modal hidden>
+    <div class="fft-news-crop-modal__backdrop" data-news-crop-cancel></div>
 
-      <div class="crop-modal-body">
-        <div class="crop-modal-image-wrap">
-          <img id="cropModalImage" alt="Crop image">
+    <section class="fft-news-crop-dialog" role="dialog" aria-modal="true" aria-label="Crop gambar berita">
+      <header class="fft-news-crop-dialog__head">
+        <div>
+          <p class="fft-kicker">Crop Manual</p>
+          <h2 data-news-crop-title>Atur Gambar</h2>
+          <span data-news-crop-rule>Geser dan zoom gambar sampai bagian penting masuk frame.</span>
         </div>
-      </div>
 
-      <div class="crop-modal-actions">
-        <button type="button" id="cropCancelBtn" class="berita-btn berita-btn-dark">Batal</button>
-        <button type="button" id="cropApplyBtn" class="berita-btn berita-btn-green">Gunakan Hasil Crop</button>
+        <button class="fft-news-crop-close" type="button" data-news-crop-cancel aria-label="Tutup">×</button>
+      </header>
+
+      <div class="fft-news-crop-dialog__body">
+        <div class="fft-news-crop-viewport" data-news-crop-viewport>
+          <img alt="Gambar yang dicrop" data-news-crop-image>
+          <div class="fft-news-crop-viewport__label" data-news-crop-size-label>Crop</div>
+        </div>
+
+        <aside class="fft-news-crop-panel">
+          <strong>Atur Crop</strong>
+          <p>Drag gambar untuk mengatur posisi. Gunakan zoom jika objek terlalu jauh.</p>
+
+          <label class="fft-news-crop-range">
+            <span>Zoom</span>
+            <input type="range" min="1" max="3" step="0.01" value="1" data-news-crop-zoom>
+          </label>
+
+          <div class="fft-news-crop-actions">
+            <button class="fft-btn fft-btn-light" type="button" data-news-crop-reset>Reset</button>
+            <button class="fft-btn fft-btn-light" type="button" data-news-crop-cancel>Batal</button>
+            <button class="fft-btn fft-btn-primary" type="button" data-news-crop-apply>Terapkan Crop</button>
+          </div>
+
+          <small>Crop disimpan sebagai data posisi. File final diproses oleh backend saat tombol Simpan Perubahan ditekan.</small>
+        </aside>
       </div>
-    </div>
+    </section>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"></script>
-  <script>
-    (() => {
-      const form = document.getElementById("beritaForm");
-
-      const judulInput = document.getElementById("judul");
-      const subjudulInput = document.getElementById("subjudul");
-      const isiInput = document.getElementById("isi");
-
-      const frontendCardTitle = document.getElementById("frontendCardTitle");
-      const frontendCardSub = document.getElementById("frontendCardSub");
-      const detailPageTitle = document.getElementById("detailPageTitle");
-      const detailPageSub = document.getElementById("detailPageSub");
-      const detailPageExcerpt = document.getElementById("detailPageExcerpt");
-
-      const cropModal = document.getElementById("cropModal");
-      const cropModalTitle = document.getElementById("cropModalTitle");
-      const cropModalImage = document.getElementById("cropModalImage");
-      const cropCloseBtn = document.getElementById("cropCloseBtn");
-      const cropCancelBtn = document.getElementById("cropCancelBtn");
-      const cropApplyBtn = document.getElementById("cropApplyBtn");
-
-      const targets = {
-        thumbnail: {
-          input: document.getElementById("thumbnail"),
-          hidden: document.getElementById("thumbnail_crop_data"),
-          modalTitle: "Crop Thumbnail Frontend",
-          width: {{ berita_thumb_crop_width|int }},
-          height: {{ berita_thumb_crop_height|int }},
-          previewMain: document.getElementById("frontendCardPreviewImage"),
-          previewMainEmpty: document.getElementById("frontendCardPreviewEmpty"),
-          previewNew: document.getElementById("thumbnailNewPreview"),
-          previewNewEmpty: document.getElementById("thumbnailNewPreviewEmpty"),
-        },
-        detail: {
-          input: document.getElementById("gambar_detail"),
-          hidden: document.getElementById("detail_crop_data"),
-          modalTitle: "Crop Gambar Halaman Detail",
-          width: {{ berita_detail_crop_width|int }},
-          height: {{ berita_detail_crop_height|int }},
-          previewMain: document.getElementById("detailPagePreviewImage"),
-          previewMainEmpty: document.getElementById("detailPagePreviewEmpty"),
-          previewNew: document.getElementById("detailNewPreview"),
-          previewNewEmpty: document.getElementById("detailNewPreviewEmpty"),
-        },
-      };
-
-      let cropper = null;
-      let activeTargetKey = null;
-
-      function syncTextPreviews() {
-        const judul = judulInput.value.trim() || "JUDUL BERITA";
-        const subjudul = subjudulInput.value.trim() || "Subjudul berita akan tampil di sini.";
-        const isi = isiInput.value.trim() || "Ringkasan isi berita akan tampil di area ini setelah berita dibuka.";
-
-        frontendCardTitle.textContent = judul;
-        frontendCardSub.textContent = subjudul;
-        detailPageTitle.textContent = judul;
-        detailPageSub.textContent = subjudul;
-        detailPageExcerpt.textContent = isi.length > 180 ? isi.slice(0, 180) + "..." : isi;
-
-      }
-
-      function destroyCropper() {
-        if (cropper) {
-          cropper.destroy();
-          cropper = null;
-        }
-      }
-
-      function closeCropModal() {
-        cropModal.classList.remove("is-open");
-        destroyCropper();
-        cropModalImage.removeAttribute("src");
-      }
-
-      function openCropModal(targetKey, file) {
-        const target = targets[targetKey];
-        activeTargetKey = targetKey;
-
-        cropModalTitle.textContent = target.modalTitle;
-        cropModal.classList.add("is-open");
-
-        const objectUrl = URL.createObjectURL(file);
-
-        cropModalImage.onload = function () {
-          destroyCropper();
-          cropper = new Cropper(cropModalImage, {
-            aspectRatio: target.width / target.height,
-            viewMode: 1,
-            dragMode: "move",
-            autoCropArea: 1,
-            responsive: true,
-            background: false,
-          });
-        };
-
-        cropModalImage.src = objectUrl;
-      }
-
-      Object.entries(targets).forEach(([key, config]) => {
-        config.input.addEventListener("change", function () {
-          const file = config.input.files[0];
-          config.hidden.value = "";
-
-          if (!file) {
-            return;
-          }
-
-          openCropModal(key, file);
-        });
-      });
-
-      cropApplyBtn.addEventListener("click", function () {
-        if (!cropper || !activeTargetKey) return;
-
-        const target = targets[activeTargetKey];
-        const dataUrl = cropper
-          .getCroppedCanvas({
-            width: target.width,
-            height: target.height,
-            imageSmoothingEnabled: true,
-            imageSmoothingQuality: "high",
-          })
-          .toDataURL("image/jpeg", 0.92);
-
-        target.hidden.value = dataUrl;
-        target.previewMain.src = dataUrl;
-        target.previewMain.style.display = "block";
-        target.previewMainEmpty.style.display = "none";
-
-        target.previewNew.src = dataUrl;
-        target.previewNew.style.display = "block";
-        target.previewNewEmpty.style.display = "none";
-
-        closeCropModal();
-      });
-
-      cropCloseBtn.addEventListener("click", closeCropModal);
-      cropCancelBtn.addEventListener("click", closeCropModal);
-      cropModal.addEventListener("click", function (event) {
-        if (event.target === cropModal) closeCropModal();
-      });
-
-      [judulInput, subjudulInput, isiInput].forEach((el) => {
-        el.addEventListener("input", syncTextPreviews);
-      });
-
-      form.addEventListener("submit", function (event) {
-          if (targets.thumbnail.input.files[0] && !targets.thumbnail.hidden.value) {
-            event.preventDefault();
-            alert("Thumbnail frontend wajib dicrop terlebih dahulu.");
-            return;
-          }
-
-          if (targets.detail.input.files[0] && !targets.detail.hidden.value) {
-            event.preventDefault();
-            alert("Gambar halaman detail wajib dicrop terlebih dahulu.");
-            return;
-          }
-        });
-
-        syncTextPreviews();
-        })();
-  </script>
+  <script src="{{ url_for('static', filename='admin/js/admin-news-editor.js') }}"></script>
 </body>
 </html>
