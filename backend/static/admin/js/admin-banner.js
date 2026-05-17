@@ -503,3 +503,27 @@
 })();
 // BANNER STOCK UPLOAD UX END
 
+// BANNER STOCK ACTIVE MANAGEMENT START
+(function () {
+  const activateForms = document.querySelectorAll("[data-banner-activate-form]");
+
+  activateForms.forEach((form) => {
+    if (form.dataset.confirmBound === "1") {
+      return;
+    }
+
+    form.dataset.confirmBound = "1";
+
+    form.addEventListener("submit", function (event) {
+      const ok = window.confirm(
+        "Jadikan stok banner ini sebagai banner yang tampil di website?\n\nBanner aktif sebelumnya akan diganti."
+      );
+
+      if (!ok) {
+        event.preventDefault();
+      }
+    });
+  });
+})();
+// BANNER STOCK ACTIVE MANAGEMENT END
+

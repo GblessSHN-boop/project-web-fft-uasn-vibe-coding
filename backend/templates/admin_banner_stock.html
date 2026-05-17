@@ -11,7 +11,7 @@
 </head>
 
 <body class="fft-admin-module-body">
-  {% set active_media_path = active_banner.media_file if active_banner and active_banner.media_file else '' %}
+  {% set active_media_path = active_banner.media_file if active_banner and active_banner.media_file and active_banner.is_published else '' %}
   {% set active_media_url = url_for('static', filename=active_media_path) if active_media_path else '' %}
 
   <div class="fft-admin-app">
@@ -28,7 +28,8 @@
         <a href="{{ url_for('admin_choose') }}">Dashboard</a>
         <a href="{{ url_for('admin_berita_list') }}">Berita</a>
         <a class="is-active" href="{{ url_for('admin_banner_stock') }}">Stok Banner</a>
-        <a href="{{ url_for('admin_banner_stock') }}">Stok Banner</a>
+        <a href="{{ url_for('admin_dekan') }}">Dekan</a>
+        <a href="{{ url_for('admin_dosen_list') }}">Dosen</a>
       </nav>
     </aside>
 
@@ -75,6 +76,60 @@
             <span>Tambahkan stok banner, lalu jadikan banner tampil.</span>
           </div>
         {% endif %}
+      </section>
+
+
+      <section class="fft-card fft-active-banner-manager">
+        <div class="fft-card-head">
+          <p class="fft-kicker">Kelola Banner Aktif</p>
+          <h2>Link dan Status Banner yang Sedang Tampil</h2>
+          <p>
+            Bagian ini hanya mengubah banner yang sudah tampil sekarang.
+            Untuk mengganti gambar atau video, gunakan stok banner di bawah.
+          </p>
+        </div>
+
+        <div class="fft-active-banner-manager__grid">
+          <form class="fft-form" method="POST" action="{{ url_for('admin_banner_active_link_update') }}">
+            <label class="fft-field">
+              <span>Link Tujuan Banner Aktif</span>
+              <input
+                type="url"
+                name="target_url"
+                value="{{ active_banner.target_url if active_banner and active_banner.target_url else '' }}"
+                placeholder="https://contoh-link.com"
+                required
+                {{ 'disabled' if not active_banner or not active_banner.media_file else '' }}
+              >
+            </label>
+
+            <div class="fft-form-actions">
+              <button class="fft-btn fft-btn-primary" type="submit" {{ 'disabled' if not active_banner or not active_banner.media_file else '' }}>
+                Simpan Link
+              </button>
+
+              {% if active_banner and active_banner.target_url %}
+                <a class="fft-btn fft-btn-light" href="{{ active_banner.target_url }}" target="_blank" rel="noopener">
+                  Cek Link
+                </a>
+              {% endif %}
+            </div>
+          </form>
+
+          <div class="fft-active-danger-box">
+            <strong>Sembunyikan Banner</strong>
+            <span>
+              Gunakan tombol ini kalau banner tidak ingin tampil dulu di website.
+              File banner tidak dihapus dan stok banner tetap aman.
+            </span>
+
+            <form method="POST" action="{{ url_for('admin_banner_active_hide') }}" onsubmit="return confirm('Sembunyikan banner dari website?')">
+              <button class="fft-btn fft-btn-light" type="submit" {{ 'disabled' if not active_banner or not active_banner.media_file or not active_banner.is_published else '' }}>
+                Sembunyikan Banner
+              </button>
+            </form>
+          </div>
+        </div>
       </section>
 
       <section class="fft-module-grid">
@@ -162,7 +217,7 @@
                 <div class="fft-stock-actions">
                   <a class="fft-btn fft-btn-light" href="{{ url_for('admin_banner_stock_preview', stock_id=stock.id) }}">Preview</a>
 
-                  <form method="POST" action="{{ url_for('admin_banner_stock_activate', stock_id=stock.id) }}">
+                  <form method="POST" action="{{ url_for('admin_banner_stock_activate', stock_id=stock.id) }}" data-banner-activate-form>
                     <button class="fft-btn fft-btn-primary" type="submit">Jadikan Tampil</button>
                   </form>
 

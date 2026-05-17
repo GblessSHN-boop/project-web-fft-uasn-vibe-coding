@@ -1150,3 +1150,55 @@ body.fft-admin-module-body {
 }
 
 /* BANNER STOCK CROP MODAL END */
+
+/* BANNER STOCK ACTIVE MANAGEMENT START */
+
+.fft-active-banner-manager {
+  margin-top: 18px;
+}
+
+.fft-active-banner-manager__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 18px;
+  align-items: start;
+}
+
+.fft-active-danger-box {
+  padding: 16px;
+  border: 1px solid rgba(139, 15, 23, 0.22);
+  background: rgba(139, 15, 23, 0.045);
+}
+
+.fft-active-danger-box strong {
+  display: block;
+  color: var(--fft-ink);
+  font-size: 17px;
+  line-height: 1.3;
+}
+
+.fft-active-danger-box span {
+  display: block;
+  margin-top: 8px;
+  color: var(--fft-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.fft-active-danger-box form {
+  margin-top: 14px;
+}
+
+.fft-btn[disabled],
+.fft-field input[disabled] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+@media (max-width: 980px) {
+  .fft-active-banner-manager__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* BANNER STOCK ACTIVE MANAGEMENT END */

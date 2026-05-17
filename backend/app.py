@@ -2127,7 +2127,7 @@ def publish_banner_informasi_snapshot():
 
     published_path = os.path.join(published_dir, "banner_informasi.json")
 
-    if not banner or not banner.media_file:
+    if not banner or not banner.media_file or not getattr(banner, "is_published", False):
         payload = {
             "published": False,
             "published_at": None,
@@ -2153,6 +2153,67 @@ def publish_banner_informasi_snapshot():
         json.dump(payload, file, ensure_ascii=False, indent=2)
 
     return payload
+
+
+
+
+@app.route("/admin/banner/active/link", methods=["POST"])
+def admin_banner_active_link_update():
+    if not session.get("logged_in") and not session.get("is_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    banner = BannerInformasi.query.first()
+    if not banner:
+        flash("Belum ada banner aktif yang bisa diubah link tujuannya.", "warning")
+        return redirect(url_for("admin_banner_stock"))
+
+    target_url = request.form.get("target_url", "").strip()
+
+    if not target_url:
+        flash("Link tujuan banner wajib diisi.", "danger")
+        return redirect(url_for("admin_banner_stock"))
+
+    url_ok, url_message = validate_target_url(target_url)
+    if not url_ok:
+        flash(url_message, "danger")
+        return redirect(url_for("admin_banner_stock"))
+
+    banner.target_url = target_url
+    banner.updated_at = datetime.utcnow()
+    banner.is_published = True
+    banner.needs_publish = False
+    banner.publish_status = PUBLISH_STATUS_PUBLISHED
+
+    if not banner.published_at:
+        banner.published_at = datetime.utcnow()
+
+    db.session.commit()
+    publish_banner_informasi_snapshot()
+
+    flash("Link tujuan banner aktif berhasil diperbarui.", "success")
+    return redirect(url_for("admin_banner_stock"))
+
+
+@app.route("/admin/banner/active/hide", methods=["POST"])
+def admin_banner_active_hide():
+    if not session.get("logged_in") and not session.get("is_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    banner = BannerInformasi.query.first()
+    if not banner:
+        flash("Belum ada banner aktif yang bisa disembunyikan.", "warning")
+        return redirect(url_for("admin_banner_stock"))
+
+    banner.is_published = False
+    banner.needs_publish = False
+    banner.publish_status = "archived"
+    banner.updated_at = datetime.utcnow()
+
+    db.session.commit()
+    publish_banner_informasi_snapshot()
+
+    flash("Banner aktif berhasil disembunyikan dari website.", "success")
+    return redirect(url_for("admin_banner_stock"))
 
 
 @app.route("/admin/banner/stock")
