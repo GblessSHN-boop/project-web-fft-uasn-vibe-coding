@@ -3056,100 +3056,341 @@ with app.app_context():
     init_default_data()
 
 
+# NEWS_PRO_WORKFLOW_HELPERS_START
+
+NEWS_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+
+def news_base_dir():
+    try:
+        return BASE_DIR
+    except NameError:
+        return os.path.dirname(os.path.abspath(__file__))
+
+
+def news_pick(obj, names, default=None):
+    for name in names:
+        if hasattr(obj, name):
+            value = getattr(obj, name)
+            if value is not None and value != "":
+                return value
+    return default
+
+
+def news_set_if_exists(obj, name, value):
+    if hasattr(obj, name):
+        setattr(obj, name, value)
+        return True
+    return False
+
+
+def news_code(item):
+    kode = news_pick(item, ["kode_berita", "kode"], None)
+    if kode:
+        return str(kode).zfill(5)
+    return f"{item.id:05d}"
+
+
+def news_normalize_media(value):
+    path = str(value or "").strip().replace("\\", "/")
+
+    if not path or path.lower() in {"none", "null"}:
+        return ""
+
+    if path.startswith("http://") or path.startswith("https://") or path.startswith("data:"):
+        return path
+
+    if path.startswith("/static/"):
+        path = path[len("/static/"):]
+
+    if path.startswith("backend/static/"):
+        path = path[len("backend/static/"):]
+
+    if path.startswith("static/"):
+        path = path[len("static/"):]
+
+    return path.lstrip("/")
+
+
+def news_static_exists(path):
+    path = news_normalize_media(path)
+
+    if not path or path.startswith("http") or path.startswith("data:"):
+        return False
+
+    return os.path.exists(os.path.join(news_base_dir(), "static", path))
+
+
+def news_scan_image(folder_rel, stems=None):
+    folder_rel = news_normalize_media(folder_rel)
+    folder_abs = os.path.join(news_base_dir(), "static", folder_rel)
+    stems = [str(stem).lower() for stem in (stems or [])]
+
+    if not os.path.isdir(folder_abs):
+        return ""
+
+    files = []
+
+    for name in sorted(os.listdir(folder_abs)):
+        abs_path = os.path.join(folder_abs, name)
+
+        if not os.path.isfile(abs_path):
+            continue
+
+        stem, ext = os.path.splitext(name)
+        ext = ext.lower()
+
+        if ext in NEWS_IMAGE_EXTENSIONS or not ext:
+            files.append((name, stem.lower()))
+
+    for wanted in stems:
+        for name, stem in files:
+            if stem == wanted:
+                return f"{folder_rel}/{name}".replace("\\", "/")
+
+    if files:
+        return f"{folder_rel}/{files[0][0]}".replace("\\", "/")
+
+    return ""
+
+
+def news_resolve_media(item, kind="thumbnail"):
+    code = news_code(item)
+    folder_rel = f"uploads/berita/{code}"
+
+    if kind == "detail":
+        fields = [
+            "gambar_detail",
+            "gambar",
+            "gambar_cover",
+            "gambar_utama",
+            "thumbnail",
+            "gambar_thumbnail",
+            "image",
+            "image_file",
+        ]
+        stems = ["detail", "gambar_detail", "cover", "thumbnail", "thumb"]
+    else:
+        fields = [
+            "thumbnail",
+            "gambar_thumbnail",
+            "gambar_cover",
+            "gambar_utama",
+            "gambar",
+            "gambar_detail",
+            "image",
+            "image_file",
+        ]
+        stems = ["thumbnail", "thumb", "detail", "gambar_detail", "cover"]
+
+    for field in fields:
+        value = news_pick(item, [field], "")
+        path = news_normalize_media(value)
+
+        if path and news_static_exists(path):
+            return path
+
+        if path and not os.path.splitext(path)[1]:
+            for ext in [".jpg", ".jpeg", ".png", ".webp", ".gif"]:
+                candidate = path + ext
+                if news_static_exists(candidate):
+                    return candidate
+
+    return news_scan_image(folder_rel, stems)
+
+
+def news_media_url(item, kind="thumbnail"):
+    path = news_resolve_media(item, kind)
+
+    if not path:
+        return ""
+
+    if path.startswith("http://") or path.startswith("https://") or path.startswith("data:"):
+        return path
+
+    return url_for("static", filename=path)
+
+
+def news_date_text(value):
+    if not value:
+        return "-"
+
+    if hasattr(value, "strftime"):
+        return value.strftime("%d %b %Y %H:%M")
+
+    return str(value)
+
+
+def news_sort_date(value):
+    if hasattr(value, "timestamp"):
+        return value.timestamp()
+    return 0
+
+
+def news_status_key(item):
+    publish_status = str(news_pick(item, ["publish_status", "status"], "") or "").strip().lower()
+    is_published = bool(news_pick(item, ["is_published"], False))
+
+    if publish_status in {"maintenance", "nonaktif", "inactive", "offline", "archived", "archive", "arsip"}:
+        return "inactive"
+
+    if is_published:
+        return "live"
+
+    return "stock"
+
+
+def news_status_label(item):
+    key = news_status_key(item)
+
+    if key == "live":
+        return "Tampil"
+    if key == "inactive":
+        return "Nonaktif"
+
+    return "Stok"
+
+
+def news_admin_card(item):
+    thumbnail = news_resolve_media(item, "thumbnail")
+    detail = news_resolve_media(item, "detail")
+    published_at = news_pick(item, ["published_at", "tayang_pada"], None)
+    created_at = news_pick(item, ["created_at", "tanggal_dibuat"], None)
+    click_count = int(news_pick(item, ["click_count", "views", "view_count"], 0) or 0)
+
+    return {
+        "id": item.id,
+        "kode_berita": news_code(item),
+        "judul": news_pick(item, ["judul", "title"], "Tanpa Judul"),
+        "subjudul": news_pick(item, ["subjudul", "ringkasan", "excerpt", "summary"], ""),
+        "isi": news_pick(item, ["isi", "content", "body"], ""),
+        "group_type": news_pick(item, ["group_type", "kategori", "category"], "umum"),
+        "thumbnail": thumbnail,
+        "thumbnail_url": url_for("static", filename=thumbnail) if thumbnail else "",
+        "detail": detail,
+        "detail_url": url_for("static", filename=detail) if detail else "",
+        "status_key": news_status_key(item),
+        "status_label": news_status_label(item),
+        "created_at": created_at,
+        "published_at": published_at,
+        "created_at_text": news_date_text(created_at),
+        "published_at_text": news_date_text(published_at),
+        "click_count": click_count,
+    }
+
+
+def news_to_api_item(item):
+    thumbnail = news_resolve_media(item, "thumbnail")
+    detail = news_resolve_media(item, "detail") or thumbnail
+    kode = news_code(item)
+
+    judul = news_pick(item, ["judul", "title"], "Tanpa Judul")
+    subjudul = news_pick(item, ["subjudul", "ringkasan", "excerpt", "summary"], "")
+    isi = news_pick(item, ["isi", "content", "body"], "")
+    kategori = news_pick(item, ["group_type", "kategori", "category"], "umum")
+    published_at = news_pick(item, ["published_at", "tayang_pada", "created_at"], None)
+    created_at = news_pick(item, ["created_at"], None)
+    updated_at = news_pick(item, ["updated_at"], created_at)
+    click_count = int(news_pick(item, ["click_count", "views", "view_count"], 0) or 0)
+
+    detail_url = f"berita-detail.html?id={item.id}&kode={kode}"
+
+    return {
+        "id": item.id,
+        "kode": kode,
+        "kode_berita": kode,
+        "code": kode,
+
+        "judul": judul,
+        "judul_id": judul,
+        "judul_en": judul,
+        "title": judul,
+        "title_id": judul,
+        "title_en": judul,
+
+        "subjudul": subjudul,
+        "ringkasan": subjudul,
+        "excerpt": subjudul,
+        "summary": subjudul,
+        "description": subjudul,
+
+        "isi": isi,
+        "content": isi,
+        "body": isi,
+
+        "group_type": kategori,
+        "kategori": kategori,
+        "category": kategori,
+
+        "thumbnail": thumbnail,
+        "gambar_thumbnail": thumbnail,
+        "gambar_detail": detail,
+        "gambar": detail,
+        "image": thumbnail,
+        "image_file": thumbnail,
+        "image_url": f"/static/{thumbnail}" if thumbnail else "",
+        "thumbnail_url": f"/static/{thumbnail}" if thumbnail else "",
+        "detail_image_url": f"/static/{detail}" if detail else "",
+
+        "click_count": click_count,
+        "views": click_count,
+        "view_count": click_count,
+
+        "created_at": berita_api_datetime(created_at) if "berita_api_datetime" in globals() else str(created_at or ""),
+        "updated_at": berita_api_datetime(updated_at) if "berita_api_datetime" in globals() else str(updated_at or ""),
+        "published_at": berita_api_datetime(published_at) if "berita_api_datetime" in globals() else str(published_at or ""),
+        "tayang_pada": berita_api_datetime(published_at) if "berita_api_datetime" in globals() else str(published_at or ""),
+        "tanggal": berita_api_datetime(published_at) if "berita_api_datetime" in globals() else str(published_at or ""),
+        "date": berita_api_datetime(published_at) if "berita_api_datetime" in globals() else str(published_at or ""),
+
+        "slug": news_pick(item, ["slug"], f"berita-{kode}"),
+        "url": detail_url,
+        "link": detail_url,
+        "detail_url": detail_url,
+
+        "is_new": bool(news_pick(item, ["is_new"], False)),
+        "is_published": True,
+    }
+
+
+
+
+
+
+def news_republish_frontend():
+    payload = build_berita_api_payload()
+    return write_published_berita_payload(payload)
+
+
+# NEWS_PRO_WORKFLOW_HELPERS_END
+
+
+
 @app.route("/admin/berita/list")
 def admin_berita_list():
     if not session.get("logged_in") and not session.get("is_logged_in"):
         return redirect(url_for("admin_login"))
 
-    def pick(obj, names, default=None):
-        for name in names:
-            if hasattr(obj, name):
-                value = getattr(obj, name)
-                if value is not None and value != "":
-                    return value
-        return default
+    rows = Berita.query.order_by(Berita.id.desc()).all()
+    cards = [news_admin_card(item) for item in rows]
 
-    def fmt_date(value):
-        if not value:
-            return "-"
-        if hasattr(value, "strftime"):
-            return value.strftime("%d %b %Y %H:%M")
-        return str(value)
-
-    def normalize_status(item):
-        is_published = bool(pick(item, ["is_published"], False))
-        needs_publish = bool(pick(item, ["needs_publish"], False))
-        publish_status = str(pick(item, ["publish_status", "status"], "") or "").lower()
-        scheduled_at = pick(item, ["scheduled_at", "tayang_pada"], None)
-
-        if "schedule" in publish_status or "jadwal" in publish_status:
-            return "schedule", "Terjadwal", "Berita sudah dijadwalkan untuk tayang."
-
-        if needs_publish:
-            return "queue", "Perlu Update", "Ada perubahan admin yang belum dikirim ke frontend."
-
-        if is_published or publish_status in {"published", "publish", "live"}:
-            return "live", "Sudah Rilis", "Berita sudah tampil di frontend."
-
-        if publish_status in {"archived", "archive", "arsip"}:
-            return "draft", "Arsip", "Berita tidak sedang ditayangkan."
-
-        if scheduled_at and not is_published:
-            return "schedule", "Terjadwal", "Berita memiliki jadwal tayang."
-
-        return "draft", "Draft", "Berita tersimpan di admin dan belum tampil."
-
-    berita_items = Berita.query.order_by(Berita.id.desc()).all()
-
-    cards = []
-
-    for item in berita_items:
-        status_key, status_label, status_note = normalize_status(item)
-
-        media_path = pick(
-            item,
-            [
-                "thumbnail",
-                "gambar_thumbnail",
-                "gambar_cover",
-                "gambar_utama",
-                "gambar",
-                "gambar_detail",
-                "image",
-                "image_file",
-            ],
-            "",
-        )
-
-        cards.append(
-            {
-                "id": item.id,
-                "kode_berita": pick(item, ["kode_berita", "kode"], f"{item.id:05d}"),
-                "judul": pick(item, ["judul", "title"], "Tanpa Judul"),
-                "subjudul": pick(item, ["subjudul", "ringkasan", "excerpt", "summary"], ""),
-                "group_type": pick(item, ["group_type", "kategori", "category"], "umum"),
-                "thumbnail": media_path,
-                "status_key": status_key,
-                "status_label": status_label,
-                "status_note": status_note,
-                "created_at_text": fmt_date(pick(item, ["created_at", "tanggal_dibuat"], None)),
-                "published_at_text": fmt_date(pick(item, ["published_at", "tayang_pada"], None)),
-                "click_count": int(pick(item, ["click_count", "views", "view_count"], 0) or 0),
-            }
-        )
+    live_cards = [card for card in cards if card["status_key"] == "live"]
+    stock_cards = [card for card in cards if card["status_key"] == "stock"]
+    inactive_cards = [card for card in cards if card["status_key"] == "inactive"]
 
     stats = {
+        "live": len(live_cards),
+        "stock": len(stock_cards),
+        "inactive": len(inactive_cards),
         "total": len(cards),
-        "live": sum(1 for card in cards if card["status_key"] == "live"),
-        "draft": sum(1 for card in cards if card["status_key"] == "draft"),
-        "queue": sum(1 for card in cards if card["status_key"] == "queue"),
-        "schedule": sum(1 for card in cards if card["status_key"] == "schedule"),
         "clicks": sum(card["click_count"] for card in cards),
     }
 
     return render_template(
         "admin_berita_list.html",
         cards=cards,
+        live_cards=live_cards,
+        stock_cards=stock_cards,
+        inactive_cards=inactive_cards,
         stats=stats,
     )
 
@@ -3295,56 +3536,101 @@ def admin_berita_publish():
     if not session.get("logged_in") and not session.get("is_logged_in"):
         return redirect(url_for("admin_login"))
 
-    publish_now = datetime.utcnow()
-    published_count = 0
-
-    for berita in Berita.query.order_by(Berita.id.asc()).all():
-        status = str(getattr(berita, "publish_status", "") or "").lower()
-
-        if status in {"archived", "archive", "arsip"}:
-            continue
-
-        should_publish = bool(getattr(berita, "needs_publish", False))
-
-        if should_publish:
-            published_count += 1
-
-        if should_publish:
-            if hasattr(berita, "is_published"):
-                berita.is_published = True
-
-            if hasattr(berita, "needs_publish"):
-                berita.needs_publish = False
-
-            if hasattr(berita, "publish_status"):
-                berita.publish_status = "published"
-
-            if hasattr(berita, "published_at") and not getattr(berita, "published_at", None):
-                berita.published_at = publish_now
-
-            if hasattr(berita, "tayang_pada") and not getattr(berita, "tayang_pada", None):
-                berita.tayang_pada = publish_now
-
-            if hasattr(berita, "updated_at"):
-                berita.updated_at = publish_now
-
-    db.session.commit()
-
-    payload = build_berita_api_payload()
-    write_published_berita_payload(payload)
-
-    if published_count:
-        flash(f"{published_count} berita berhasil dipublish ke frontend.", "success")
-    else:
-        flash("Frontend berita sudah sinkron.", "info")
+    news_republish_frontend()
+    flash("Preview frontend berita sudah diperbarui.", "success")
 
     return redirect(url_for("admin_berita_list"))
 
 
+@app.route("/admin/berita/<int:berita_id>/activate", methods=["POST"])
+def admin_berita_activate(berita_id):
+    if not session.get("logged_in") and not session.get("is_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    from datetime import datetime
+
+    berita = Berita.query.get_or_404(berita_id)
+    now = datetime.utcnow()
+
+    news_set_if_exists(berita, "is_published", True)
+    news_set_if_exists(berita, "needs_publish", False)
+    news_set_if_exists(berita, "publish_status", "published")
+    news_set_if_exists(berita, "published_at", now)
+    news_set_if_exists(berita, "tayang_pada", now)
+    news_set_if_exists(berita, "updated_at", now)
+
+    db.session.commit()
+    news_republish_frontend()
+
+    flash("Berita sudah diposting ke frontend.", "success")
+    return redirect(url_for("admin_berita_list"))
+
+
+@app.route("/admin/berita/<int:berita_id>/unpublish", methods=["POST"])
+def admin_berita_unpublish(berita_id):
+    if not session.get("logged_in") and not session.get("is_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    from datetime import datetime
+
+    berita = Berita.query.get_or_404(berita_id)
+
+    news_set_if_exists(berita, "is_published", False)
+    news_set_if_exists(berita, "needs_publish", False)
+    news_set_if_exists(berita, "publish_status", "stock")
+    news_set_if_exists(berita, "updated_at", datetime.utcnow())
+
+    db.session.commit()
+    news_republish_frontend()
+
+    flash("Berita diturunkan ke stok dan hilang dari frontend.", "success")
+    return redirect(url_for("admin_berita_list"))
+
+
+@app.route("/admin/berita/<int:berita_id>/maintenance", methods=["POST"])
+def admin_berita_maintenance(berita_id):
+    if not session.get("logged_in") and not session.get("is_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    from datetime import datetime
+
+    berita = Berita.query.get_or_404(berita_id)
+
+    news_set_if_exists(berita, "is_published", False)
+    news_set_if_exists(berita, "needs_publish", False)
+    news_set_if_exists(berita, "publish_status", "maintenance")
+    news_set_if_exists(berita, "updated_at", datetime.utcnow())
+
+    db.session.commit()
+    news_republish_frontend()
+
+    flash("Berita dipindahkan ke nonaktif. Berita tidak tampil di frontend.", "success")
+    return redirect(url_for("admin_berita_list"))
+
+
+@app.route("/admin/berita/<int:berita_id>/restore-stock", methods=["POST"])
+def admin_berita_restore_stock(berita_id):
+    if not session.get("logged_in") and not session.get("is_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    from datetime import datetime
+
+    berita = Berita.query.get_or_404(berita_id)
+
+    news_set_if_exists(berita, "is_published", False)
+    news_set_if_exists(berita, "needs_publish", False)
+    news_set_if_exists(berita, "publish_status", "stock")
+    news_set_if_exists(berita, "updated_at", datetime.utcnow())
+
+    db.session.commit()
+    news_republish_frontend()
+
+    flash("Berita dikembalikan ke stok.", "success")
+    return redirect(url_for("admin_berita_list"))
+
 @app.route("/api/berita")
 def api_berita():
-    payload = build_berita_api_payload()
-    return jsonify(payload)
+    return jsonify(build_berita_api_payload())
 
 
 @app.route("/api/track-click", methods=["POST"])
@@ -3500,112 +3786,28 @@ def berita_api_datetime(value):
     return str(value)
 
 
+
+
+def berita_api_media_path(value):
+    path = str(value or "").strip().replace("\\", "/")
+
+    if not path or path.lower() in {"none", "null"}:
+        return ""
+
+    if path.startswith("/static/"):
+        path = path[len("/static/"):]
+
+    if path.startswith("backend/static/"):
+        path = path[len("backend/static/"):]
+
+    if path.startswith("static/"):
+        path = path[len("static/"):]
+
+    return path.lstrip("/")
+
+
 def berita_to_api_item(berita):
-    kode = berita_api_pick(berita, ["kode_berita", "kode"], f"{berita.id:05d}")
-    kode = str(kode).zfill(5)
-
-    judul = berita_api_pick(berita, ["judul", "title"], "Tanpa Judul")
-    subjudul = berita_api_pick(berita, ["subjudul", "ringkasan", "excerpt", "summary"], "")
-    isi = berita_api_pick(berita, ["isi", "content", "body"], "")
-    kategori = berita_api_pick(berita, ["group_type", "kategori", "category"], "umum")
-
-    thumbnail = berita_api_pick(
-        berita,
-        [
-            "thumbnail",
-            "gambar_thumbnail",
-            "gambar_cover",
-            "gambar_utama",
-            "gambar",
-            "gambar_detail",
-            "image",
-            "image_file",
-        ],
-        "",
-    )
-
-    gambar_detail = berita_api_pick(
-        berita,
-        [
-            "gambar_detail",
-            "gambar_cover",
-            "gambar_utama",
-            "gambar",
-            "thumbnail",
-            "gambar_thumbnail",
-            "image",
-            "image_file",
-        ],
-        thumbnail,
-    )
-
-    published_at = berita_api_pick(berita, ["published_at", "tayang_pada", "created_at"], None)
-    created_at = berita_api_pick(berita, ["created_at"], None)
-    updated_at = berita_api_pick(berita, ["updated_at"], created_at)
-
-    click_count = int(berita_api_pick(berita, ["click_count", "views", "view_count"], 0) or 0)
-
-    thumbnail_url = f"/static/{thumbnail}" if thumbnail else ""
-    detail_image_url = f"/static/{gambar_detail}" if gambar_detail else thumbnail_url
-    detail_url = f"berita-detail.html?kode={kode}"
-
-    return {
-        "id": berita.id,
-
-        "kode": kode,
-        "kode_berita": kode,
-        "code": kode,
-
-        "judul": judul,
-        "judul_id": judul,
-        "judul_en": judul,
-        "title": judul,
-        "title_id": judul,
-        "title_en": judul,
-
-        "subjudul": subjudul,
-        "ringkasan": subjudul,
-        "excerpt": subjudul,
-        "summary": subjudul,
-        "description": subjudul,
-
-        "isi": isi,
-        "content": isi,
-        "body": isi,
-
-        "group_type": kategori,
-        "kategori": kategori,
-        "category": kategori,
-
-        "thumbnail": thumbnail,
-        "gambar_thumbnail": thumbnail,
-        "gambar_detail": gambar_detail,
-        "gambar": gambar_detail,
-        "image": thumbnail,
-        "image_file": thumbnail,
-        "image_url": thumbnail_url,
-        "thumbnail_url": thumbnail_url,
-        "detail_image_url": detail_image_url,
-
-        "click_count": click_count,
-        "views": click_count,
-        "view_count": click_count,
-
-        "created_at": berita_api_datetime(created_at),
-        "updated_at": berita_api_datetime(updated_at),
-        "published_at": berita_api_datetime(published_at),
-        "tayang_pada": berita_api_datetime(published_at),
-        "tanggal": berita_api_datetime(published_at),
-        "date": berita_api_datetime(published_at),
-
-        "slug": berita_api_pick(berita, ["slug"], f"berita-{kode}"),
-        "url": detail_url,
-        "link": detail_url,
-        "detail_url": detail_url,
-
-        "is_new": bool(berita_api_pick(berita, ["is_new"], False)),
-        "is_published": bool(getattr(berita, "is_published", False)),
-    }
+    return news_to_api_item(berita)
 
 
 def build_berita_api_payload():
@@ -3664,6 +3866,187 @@ def write_published_berita_payload(payload):
     return output_path
 
 # NEWS_API_COMPAT_HELPERS_END
+
+
+
+
+
+
+# NEWS_MEDIA_RESOLVER_START
+
+NEWS_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+
+def normalize_static_media_path(value):
+    path = str(value or "").strip().replace("\\", "/")
+
+    if not path or path.lower() in {"none", "null"}:
+        return ""
+
+    if path.startswith("http://") or path.startswith("https://") or path.startswith("data:"):
+        return path
+
+    if path.startswith("/static/"):
+        path = path[len("/static/"):]
+
+    if path.startswith("backend/static/"):
+        path = path[len("backend/static/"):]
+
+    if path.startswith("static/"):
+        path = path[len("static/"):]
+
+    return path.lstrip("/")
+
+
+def static_media_exists(rel_path):
+    rel_path = normalize_static_media_path(rel_path)
+
+    if not rel_path or rel_path.startswith("http") or rel_path.startswith("data:"):
+        return False
+
+    return os.path.exists(os.path.join(BASE_DIR, "static", rel_path))
+
+
+def scan_static_folder_for_image(folder_rel, stems=None):
+    folder_rel = normalize_static_media_path(folder_rel)
+    stems = [str(stem).lower() for stem in (stems or []) if stem]
+
+    folder_abs = os.path.join(BASE_DIR, "static", folder_rel)
+
+    if not os.path.isdir(folder_abs):
+        return ""
+
+    files = []
+
+    for name in sorted(os.listdir(folder_abs)):
+        abs_path = os.path.join(folder_abs, name)
+
+        if not os.path.isfile(abs_path):
+            continue
+
+        stem, ext = os.path.splitext(name)
+        ext = ext.lower()
+
+        if ext in NEWS_IMAGE_EXTENSIONS or ext == "":
+            files.append((name, stem.lower()))
+
+    for wanted_stem in stems:
+        for name, stem in files:
+            if stem == wanted_stem or name.lower() == wanted_stem:
+                return f"{folder_rel}/{name}".replace("\\", "/")
+
+    if files:
+        return f"{folder_rel}/{files[0][0]}".replace("\\", "/")
+
+    return ""
+
+
+def resolve_existing_static_media_path(value="", folder_rel="", stems=None):
+    rel_path = normalize_static_media_path(value)
+
+    if rel_path and static_media_exists(rel_path):
+        return rel_path
+
+    if rel_path and not os.path.splitext(rel_path)[1]:
+        for ext in [".jpg", ".jpeg", ".png", ".webp", ".gif"]:
+            candidate = rel_path + ext
+            if static_media_exists(candidate):
+                return candidate
+
+    if rel_path:
+        folder = os.path.dirname(rel_path).replace("\\", "/")
+        stem = os.path.splitext(os.path.basename(rel_path))[0]
+        found = scan_static_folder_for_image(folder, [stem])
+        if found:
+            return found
+
+    if folder_rel:
+        found = scan_static_folder_for_image(folder_rel, stems)
+        if found:
+            return found
+
+    return rel_path
+
+
+def get_berita_media_code(berita):
+    kode = getattr(berita, "kode_berita", None)
+
+    if kode:
+        return str(kode).zfill(5)
+
+    return f"{berita.id:05d}"
+
+
+def berita_media_path(berita, kind="thumbnail"):
+    if not berita:
+        return ""
+
+    code = get_berita_media_code(berita)
+    folder_rel = f"uploads/berita/{code}"
+
+    if kind == "detail":
+        fields = [
+            "gambar_detail",
+            "gambar",
+            "gambar_cover",
+            "gambar_utama",
+            "thumbnail",
+            "gambar_thumbnail",
+            "image",
+            "image_file",
+        ]
+        stems = ["detail", "gambar_detail", "cover", "thumbnail", "thumb"]
+    else:
+        fields = [
+            "thumbnail",
+            "gambar_thumbnail",
+            "gambar_cover",
+            "gambar_utama",
+            "gambar",
+            "gambar_detail",
+            "image",
+            "image_file",
+        ]
+        stems = ["thumbnail", "thumb", "detail", "gambar_detail", "cover"]
+
+    for field in fields:
+        if hasattr(berita, field):
+            value = getattr(berita, field, "")
+            resolved = resolve_existing_static_media_path(value, folder_rel, stems)
+
+            if resolved and static_media_exists(resolved):
+                return resolved
+
+    return resolve_existing_static_media_path("", folder_rel, stems)
+
+
+def berita_media_url(berita, kind="thumbnail"):
+    rel_path = berita_media_path(berita, kind)
+
+    if not rel_path:
+        return ""
+
+    if rel_path.startswith("http://") or rel_path.startswith("https://") or rel_path.startswith("data:"):
+        return rel_path
+
+    return url_for("static", filename=rel_path)
+
+
+def static_media_url(path):
+    rel_path = resolve_existing_static_media_path(path)
+
+    if not rel_path:
+        return ""
+
+    if rel_path.startswith("http://") or rel_path.startswith("https://") or rel_path.startswith("data:"):
+        return rel_path
+
+    return url_for("static", filename=rel_path)
+
+
+app.jinja_env.globals["static_media_url"] = static_media_url
+app.jinja_env.globals["berita_media_url"] = berita_media_url
+
+# NEWS_MEDIA_RESOLVER_END
 
 
 if __name__ == "__main__":

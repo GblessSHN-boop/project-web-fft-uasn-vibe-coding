@@ -1,4 +1,4 @@
-// Admin News Editor UX
+// News Studio Editor
 (function () {
   const form = document.querySelector("[data-news-editor-form]");
   if (!form) return;
@@ -10,6 +10,7 @@
 
   const titleCount = document.querySelector("[data-news-title-count]");
   const summaryCount = document.querySelector("[data-news-summary-count]");
+  const saveNote = document.querySelector("[data-news-save-note]");
 
   const previewTitle = document.querySelector("[data-news-preview-title]");
   const previewSummary = document.querySelector("[data-news-preview-summary]");
@@ -19,31 +20,35 @@
   const cardImage = document.querySelector("[data-news-card-image]");
   const detailImage = document.querySelector("[data-news-detail-image]");
 
+  const tabs = document.querySelectorAll("[data-news-tab]");
+  const panels = document.querySelectorAll("[data-news-panel]");
+  const checks = document.querySelectorAll("[data-news-check]");
+  const deleteForm = document.querySelector("[data-news-editor-delete-form]");
+
   const modal = document.querySelector("[data-news-crop-modal]");
   const viewport = document.querySelector("[data-news-crop-viewport]");
   const cropImage = document.querySelector("[data-news-crop-image]");
   const cropTitle = document.querySelector("[data-news-crop-title]");
   const cropRule = document.querySelector("[data-news-crop-rule]");
-  const cropSizeLabel = document.querySelector("[data-news-crop-size-label]");
+  const cropLabel = document.querySelector("[data-news-crop-size-label]");
   const zoomInput = document.querySelector("[data-news-crop-zoom]");
-  const cancelButtons = document.querySelectorAll("[data-news-crop-cancel]");
   const resetButton = document.querySelector("[data-news-crop-reset]");
   const applyButton = document.querySelector("[data-news-crop-apply]");
-  const deleteForm = document.querySelector("[data-news-editor-delete-form]");
+  const cancelButtons = document.querySelectorAll("[data-news-crop-cancel]");
 
   let activeInput = null;
   let activeKind = "";
   let activeOutput = null;
   let objectUrl = "";
-  let imageReady = false;
 
-  const cropState = {
-    naturalWidth: 0,
-    naturalHeight: 0,
+  const state = {
+    ready: false,
+    naturalWidth: 1,
+    naturalHeight: 1,
     outputWidth: 1600,
     outputHeight: 900,
-    frameWidth: 0,
-    frameHeight: 0,
+    frameWidth: 1,
+    frameHeight: 1,
     baseScale: 1,
     zoom: 1,
     offsetX: 0,
@@ -55,35 +60,28 @@
     startOffsetY: 0,
   };
 
-  function revokeObjectUrl() {
-    if (objectUrl) {
-      URL.revokeObjectURL(objectUrl);
-      objectUrl = "";
-    }
+  function clean(value) {
+    return String(value || "").trim();
   }
 
   function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
   }
 
-  function text(value, fallback) {
-    const clean = String(value || "").trim();
-    return clean || fallback;
+  function markChanged() {
+    if (saveNote) {
+      saveNote.textContent = "Ada perubahan yang belum disimpan.";
+    }
   }
 
-  function updateTextPreview() {
-    const title = text(titleInput && titleInput.value, "Judul berita akan tampil di sini");
-    const summary = text(summaryInput && summaryInput.value, "Ringkasan berita akan tampil di sini.");
-    const content = text(contentInput && contentInput.value, "Isi berita akan tampil di area ini.");
-    const category = text(categoryInput && categoryInput.value, "umum").toUpperCase();
+  function updatePreview() {
+    const title = clean(titleInput && titleInput.value) || "Judul berita tampil di sini";
+    const summary = clean(summaryInput && summaryInput.value) || "Ringkasan berita tampil di sini.";
+    const content = clean(contentInput && contentInput.value) || "Isi berita akan tampil di sini.";
+    const category = (clean(categoryInput && categoryInput.value) || "umum").toUpperCase();
 
-    if (titleCount && titleInput) {
-      titleCount.textContent = `${titleInput.value.length} / 150 karakter`;
-    }
-
-    if (summaryCount && summaryInput) {
-      summaryCount.textContent = `${summaryInput.value.length} / 260 karakter`;
-    }
+    if (titleCount && titleInput) titleCount.textContent = titleInput.value.length;
+    if (summaryCount && summaryInput) summaryCount.textContent = summaryInput.value.length;
 
     if (previewTitle) previewTitle.textContent = title;
     if (detailTitle) detailTitle.textContent = title;
@@ -91,76 +89,113 @@
     if (detailContent) detailContent.textContent = content;
 
     if (previewMeta) {
-      const current = previewMeta.textContent || "KODE BARU";
-      const code = current.split("·")[0].trim() || "KODE BARU";
+      const code = (previewMeta.textContent || "KODE BARU").split("·")[0].trim();
       previewMeta.textContent = `${code} · ${category}`;
+    }
+
+    updateChecklist();
+  }
+
+  function setCheck(name, ok, text) {
+    const item = Array.from(checks).find((el) => el.getAttribute("data-news-check") === name);
+    if (!item) return;
+
+    item.textContent = `${ok ? "✓" : "!"} ${text}`;
+    item.classList.toggle("is-ok", ok);
+    item.classList.toggle("is-warning", !ok);
+  }
+
+  function hasImage(box) {
+    return Boolean(box && box.querySelector("img"));
+  }
+
+  function updateChecklist() {
+    const title = clean(titleInput && titleInput.value);
+    const summary = clean(summaryInput && summaryInput.value);
+    const content = clean(contentInput && contentInput.value);
+
+    setCheck("title", title.length >= 8 && title.length <= 120, "Judul jelas dan tidak terlalu panjang.");
+    setCheck("summary", summary.length >= 20 && summary.length <= 220, "Ringkasan cukup pendek untuk kartu berita.");
+    setCheck("content", content.length >= 80, "Isi berita sudah cukup untuk halaman detail.");
+    setCheck("thumbnail", hasImage(document.querySelector('[data-news-preview-box="thumbnail"]')), "Thumbnail tersedia.");
+    setCheck("detail", hasImage(document.querySelector('[data-news-preview-box="detail"]')), "Gambar detail tersedia.");
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", function () {
+      const target = tab.getAttribute("data-news-tab");
+
+      tabs.forEach((item) => item.classList.remove("is-active"));
+      panels.forEach((panel) => {
+        panel.classList.toggle("is-active", panel.getAttribute("data-news-panel") === target);
+      });
+
+      tab.classList.add("is-active");
+    });
+  });
+
+  function releaseObjectUrl() {
+    if (objectUrl) {
+      URL.revokeObjectURL(objectUrl);
+      objectUrl = "";
     }
   }
 
-  function getViewportSize() {
+  function getViewport() {
     const rect = viewport.getBoundingClientRect();
-    cropState.frameWidth = Math.max(1, rect.width);
-    cropState.frameHeight = Math.max(1, rect.height);
-  }
-
-  function clampOffsets(displayWidth, displayHeight) {
-    const maxX = Math.max(0, (displayWidth - cropState.frameWidth) / 2);
-    const maxY = Math.max(0, (displayHeight - cropState.frameHeight) / 2);
-
-    cropState.offsetX = clamp(cropState.offsetX, -maxX, maxX);
-    cropState.offsetY = clamp(cropState.offsetY, -maxY, maxY);
+    state.frameWidth = Math.max(1, rect.width);
+    state.frameHeight = Math.max(1, rect.height);
   }
 
   function renderCrop() {
-    if (!imageReady) return;
+    if (!state.ready) return;
 
-    getViewportSize();
+    getViewport();
 
-    cropState.baseScale = Math.max(
-      cropState.frameWidth / cropState.naturalWidth,
-      cropState.frameHeight / cropState.naturalHeight
+    state.baseScale = Math.max(
+      state.frameWidth / state.naturalWidth,
+      state.frameHeight / state.naturalHeight
     );
 
-    const scale = cropState.baseScale * cropState.zoom;
-    const displayWidth = cropState.naturalWidth * scale;
-    const displayHeight = cropState.naturalHeight * scale;
+    const scale = state.baseScale * state.zoom;
+    const displayWidth = state.naturalWidth * scale;
+    const displayHeight = state.naturalHeight * scale;
 
-    clampOffsets(displayWidth, displayHeight);
+    const maxX = Math.max(0, (displayWidth - state.frameWidth) / 2);
+    const maxY = Math.max(0, (displayHeight - state.frameHeight) / 2);
 
-    const left = (cropState.frameWidth - displayWidth) / 2 + cropState.offsetX;
-    const top = (cropState.frameHeight - displayHeight) / 2 + cropState.offsetY;
+    state.offsetX = clamp(state.offsetX, -maxX, maxX);
+    state.offsetY = clamp(state.offsetY, -maxY, maxY);
 
     cropImage.style.width = `${displayWidth}px`;
     cropImage.style.height = `${displayHeight}px`;
-    cropImage.style.left = `${left}px`;
-    cropImage.style.top = `${top}px`;
+    cropImage.style.left = `${(state.frameWidth - displayWidth) / 2 + state.offsetX}px`;
+    cropImage.style.top = `${(state.frameHeight - displayHeight) / 2 + state.offsetY}px`;
   }
 
   function resetCrop() {
-    cropState.zoom = 1;
-    cropState.offsetX = 0;
-    cropState.offsetY = 0;
+    state.zoom = 1;
+    state.offsetX = 0;
+    state.offsetY = 0;
 
-    if (zoomInput) {
-      zoomInput.value = "1";
-    }
+    if (zoomInput) zoomInput.value = "1";
 
     renderCrop();
   }
 
   function getCropData() {
-    getViewportSize();
+    getViewport();
 
-    const scale = cropState.baseScale * cropState.zoom;
-    const displayWidth = cropState.naturalWidth * scale;
-    const displayHeight = cropState.naturalHeight * scale;
-    const left = (cropState.frameWidth - displayWidth) / 2 + cropState.offsetX;
-    const top = (cropState.frameHeight - displayHeight) / 2 + cropState.offsetY;
+    const scale = state.baseScale * state.zoom;
+    const displayWidth = state.naturalWidth * scale;
+    const displayHeight = state.naturalHeight * scale;
+    const left = (state.frameWidth - displayWidth) / 2 + state.offsetX;
+    const top = (state.frameHeight - displayHeight) / 2 + state.offsetY;
 
-    const x = clamp((0 - left) / scale, 0, cropState.naturalWidth);
-    const y = clamp((0 - top) / scale, 0, cropState.naturalHeight);
-    const width = clamp(cropState.frameWidth / scale, 1, cropState.naturalWidth - x);
-    const height = clamp(cropState.frameHeight / scale, 1, cropState.naturalHeight - y);
+    const x = clamp((0 - left) / scale, 0, state.naturalWidth);
+    const y = clamp((0 - top) / scale, 0, state.naturalHeight);
+    const width = clamp(state.frameWidth / scale, 1, state.naturalWidth - x);
+    const height = clamp(state.frameHeight / scale, 1, state.naturalHeight - y);
 
     return {
       x: Math.round(x),
@@ -170,13 +205,13 @@
     };
   }
 
-  function createCroppedPreview(crop) {
+  function createPreview(crop) {
     const canvas = document.createElement("canvas");
-    canvas.width = cropState.outputWidth;
-    canvas.height = cropState.outputHeight;
+    canvas.width = state.outputWidth;
+    canvas.height = state.outputHeight;
 
-    const context = canvas.getContext("2d");
-    context.drawImage(
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(
       cropImage,
       crop.x,
       crop.y,
@@ -191,27 +226,21 @@
     return canvas.toDataURL("image/jpeg", 0.92);
   }
 
-  function setPreviewImage(kind, dataUrl) {
-    const target = kind === "thumbnail" ? cardImage : detailImage;
+  function setImagePreview(kind, dataUrl) {
+    const uploadBox = document.querySelector(`[data-news-preview-box="${kind}"]`);
+    const liveBox = kind === "thumbnail" ? cardImage : detailImage;
 
-    if (!target) return;
+    [uploadBox, liveBox].forEach((box) => {
+      if (!box) return;
 
-    target.innerHTML = "";
+      box.innerHTML = "";
+      const img = document.createElement("img");
+      img.src = dataUrl;
+      img.alt = kind === "thumbnail" ? "Thumbnail berita" : "Gambar detail berita";
+      box.appendChild(img);
+    });
 
-    const img = document.createElement("img");
-    img.src = dataUrl;
-    img.alt = kind === "thumbnail" ? "Preview thumbnail" : "Preview detail";
-
-    target.appendChild(img);
-
-    const mediaPreview = document.querySelector(`[data-news-preview-box="${kind}"]`);
-    if (mediaPreview) {
-      mediaPreview.innerHTML = "";
-      const mediaImg = document.createElement("img");
-      mediaImg.src = dataUrl;
-      mediaImg.alt = img.alt;
-      mediaPreview.appendChild(mediaImg);
-    }
+    updateChecklist();
   }
 
   function openCrop(input) {
@@ -220,7 +249,7 @@
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      alert("File harus berupa gambar.");
+      alert("File harus gambar.");
       input.value = "";
       return;
     }
@@ -229,37 +258,26 @@
     activeKind = input.getAttribute("data-news-media-input") || "thumbnail";
     activeOutput = document.querySelector(`[data-news-crop-output="${activeKind}"]`);
 
-    cropState.outputWidth = Number(input.getAttribute("data-output-width")) || 1600;
-    cropState.outputHeight = Number(input.getAttribute("data-output-height")) || 900;
+    state.outputWidth = Number(input.getAttribute("data-output-width")) || 1600;
+    state.outputHeight = Number(input.getAttribute("data-output-height")) || 900;
+    state.ready = false;
 
-    revokeObjectUrl();
+    releaseObjectUrl();
     objectUrl = URL.createObjectURL(file);
 
-    imageReady = false;
     cropImage.src = objectUrl;
 
-    if (cropTitle) {
-      cropTitle.textContent = activeKind === "thumbnail" ? "Crop Thumbnail Berita" : "Crop Gambar Detail";
-    }
-
-    if (cropRule) {
-      cropRule.textContent = `Output final: ${cropState.outputWidth} × ${cropState.outputHeight} px.`;
-    }
-
-    if (cropSizeLabel) {
-      cropSizeLabel.textContent = `${cropState.outputWidth} × ${cropState.outputHeight}`;
-    }
-
-    if (viewport) {
-      viewport.style.aspectRatio = `${cropState.outputWidth} / ${cropState.outputHeight}`;
-    }
+    if (viewport) viewport.style.aspectRatio = `${state.outputWidth} / ${state.outputHeight}`;
+    if (cropTitle) cropTitle.textContent = activeKind === "thumbnail" ? "Crop Thumbnail" : "Crop Gambar Detail";
+    if (cropRule) cropRule.textContent = `Output final ${state.outputWidth} × ${state.outputHeight} px.`;
+    if (cropLabel) cropLabel.textContent = `${state.outputWidth} × ${state.outputHeight}`;
 
     modal.hidden = false;
 
     cropImage.onload = function () {
-      cropState.naturalWidth = cropImage.naturalWidth || 1;
-      cropState.naturalHeight = cropImage.naturalHeight || 1;
-      imageReady = true;
+      state.naturalWidth = cropImage.naturalWidth || 1;
+      state.naturalHeight = cropImage.naturalHeight || 1;
+      state.ready = true;
       resetCrop();
     };
   }
@@ -270,42 +288,43 @@
 
   document.querySelectorAll("[data-news-media-input]").forEach((input) => {
     input.addEventListener("change", function () {
-      const output = document.querySelector(`[data-news-crop-output="${input.getAttribute("data-news-media-input")}"]`);
+      const kind = input.getAttribute("data-news-media-input");
+      const output = document.querySelector(`[data-news-crop-output="${kind}"]`);
       if (output) output.value = "";
       openCrop(input);
+      markChanged();
     });
   });
 
   if (zoomInput) {
     zoomInput.addEventListener("input", function () {
-      cropState.zoom = Number(zoomInput.value) || 1;
+      state.zoom = Number(zoomInput.value) || 1;
       renderCrop();
     });
   }
 
   if (viewport) {
     viewport.addEventListener("pointerdown", function (event) {
-      if (!imageReady) return;
+      if (!state.ready) return;
 
-      cropState.dragging = true;
-      cropState.startX = event.clientX;
-      cropState.startY = event.clientY;
-      cropState.startOffsetX = cropState.offsetX;
-      cropState.startOffsetY = cropState.offsetY;
+      state.dragging = true;
+      state.startX = event.clientX;
+      state.startY = event.clientY;
+      state.startOffsetX = state.offsetX;
+      state.startOffsetY = state.offsetY;
       viewport.setPointerCapture(event.pointerId);
     });
 
     viewport.addEventListener("pointermove", function (event) {
-      if (!cropState.dragging) return;
+      if (!state.dragging) return;
 
-      cropState.offsetX = cropState.startOffsetX + (event.clientX - cropState.startX);
-      cropState.offsetY = cropState.startOffsetY + (event.clientY - cropState.startY);
-
+      state.offsetX = state.startOffsetX + event.clientX - state.startX;
+      state.offsetY = state.startOffsetY + event.clientY - state.startY;
       renderCrop();
     });
 
     viewport.addEventListener("pointerup", function (event) {
-      cropState.dragging = false;
+      state.dragging = false;
       try {
         viewport.releasePointerCapture(event.pointerId);
       } catch (error) {
@@ -314,9 +333,7 @@
     });
   }
 
-  if (resetButton) {
-    resetButton.addEventListener("click", resetCrop);
-  }
+  if (resetButton) resetButton.addEventListener("click", resetCrop);
 
   cancelButtons.forEach((button) => {
     button.addEventListener("click", closeCrop);
@@ -324,51 +341,59 @@
 
   if (applyButton) {
     applyButton.addEventListener("click", function () {
-      if (!imageReady || !activeOutput || !activeInput) return;
+      if (!state.ready || !activeOutput) return;
 
       const crop = getCropData();
       activeOutput.value = JSON.stringify(crop);
 
-      const dataUrl = createCroppedPreview(crop);
-      setPreviewImage(activeKind, dataUrl);
-
+      setImagePreview(activeKind, createPreview(crop));
       closeCrop();
+      markChanged();
     });
   }
 
+  [titleInput, summaryInput, contentInput, categoryInput].forEach((input) => {
+    if (!input) return;
+
+    input.addEventListener("input", function () {
+      updatePreview();
+      markChanged();
+    });
+
+    input.addEventListener("change", function () {
+      updatePreview();
+      markChanged();
+    });
+  });
+
   form.addEventListener("submit", function (event) {
-    const thumbnailInput = document.querySelector('[data-news-media-input="thumbnail"]');
+    const thumbInput = document.querySelector('[data-news-media-input="thumbnail"]');
     const detailInput = document.querySelector('[data-news-media-input="detail"]');
-    const thumbnailOutput = document.querySelector('[data-news-crop-output="thumbnail"]');
+    const thumbOutput = document.querySelector('[data-news-crop-output="thumbnail"]');
     const detailOutput = document.querySelector('[data-news-crop-output="detail"]');
 
-    if (thumbnailInput && thumbnailInput.files[0] && thumbnailOutput && !thumbnailOutput.value) {
+    if (thumbInput && thumbInput.files[0] && thumbOutput && !thumbOutput.value) {
       event.preventDefault();
-      alert("Thumbnail sudah dipilih, tapi belum dicrop. Terapkan crop terlebih dahulu.");
-      openCrop(thumbnailInput);
+      alert("Thumbnail sudah dipilih, tapi belum dicrop.");
+      openCrop(thumbInput);
       return;
     }
 
     if (detailInput && detailInput.files[0] && detailOutput && !detailOutput.value) {
       event.preventDefault();
-      alert("Gambar detail sudah dipilih, tapi belum dicrop. Terapkan crop terlebih dahulu.");
+      alert("Gambar detail sudah dipilih, tapi belum dicrop.");
       openCrop(detailInput);
     }
   });
 
   if (deleteForm) {
     deleteForm.addEventListener("submit", function (event) {
-      const ok = window.confirm("Hapus berita ini?\n\nData berita akan dihapus dari admin.");
+      const ok = window.confirm("Hapus berita ini?\n\nAksi ini akan menghapus berita dari admin.");
       if (!ok) event.preventDefault();
     });
   }
 
-  [titleInput, summaryInput, contentInput, categoryInput].forEach((input) => {
-    if (input) input.addEventListener("input", updateTextPreview);
-    if (input) input.addEventListener("change", updateTextPreview);
-  });
-
   window.addEventListener("resize", renderCrop);
 
-  updateTextPreview();
+  updatePreview();
 })();
