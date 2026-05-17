@@ -2047,6 +2047,20 @@ def admin_berita_choose():
     return render_template("admin_berita_choose.html")
 
 
+
+
+@app.route("/admin/banner/stock")
+def admin_banner_stock():
+    if not session.get("logged_in") and not session.get("is_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    active_banner = BannerInformasi.query.first()
+
+    return render_template(
+        "admin_banner_stock.html",
+        active_banner=active_banner,
+    )
+
 @app.route("/admin/banner-informasi")
 def admin_banner_informasi():
     if not is_logged_in():

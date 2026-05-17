@@ -1,0 +1,110 @@
+﻿<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stok Banner | FFT UASN Content Center</title>
+  <meta name="robots" content="noindex,nofollow,noarchive">
+
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-module.css') }}">
+</head>
+
+<body class="fft-admin-module-body">
+  {% set media_path = active_banner.media_file if active_banner and active_banner.media_file else '' %}
+  {% set media_url = url_for('static', filename=media_path) if media_path else '' %}
+
+  <div class="fft-admin-app">
+    <aside class="fft-admin-rail">
+      <a class="fft-admin-brand" href="{{ url_for('admin_choose') }}">
+        <img src="{{ url_for('static', filename='admin/images/logo-fft.png') }}" alt="Logo FFT">
+        <span>
+          <strong>Panel FFT</strong>
+          <small>Content Center</small>
+        </span>
+      </a>
+
+      <nav class="fft-admin-menu">
+        <a href="{{ url_for('admin_choose') }}">Dashboard</a>
+        <a href="{{ url_for('admin_berita_list') }}">Berita</a>
+        <a class="is-active" href="{{ url_for('admin_banner_stock') }}">Stok Banner</a>
+        <a href="{{ url_for('admin_banner_informasi') }}">Kelola Banner</a>
+        <a href="{{ url_for('admin_dekan') }}">Dekan</a>
+        <a href="{{ url_for('admin_dosen_list') }}">Dosen</a>
+      </nav>
+
+      <div class="fft-admin-rail-footer">
+        <a href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}">Lihat Website</a>
+        <a href="{{ url_for('admin_logout') }}">Keluar</a>
+      </div>
+    </aside>
+
+    <main class="fft-admin-work">
+      <section class="fft-page-hero">
+        <div>
+          <p class="fft-kicker">Banner Informasi</p>
+          <h1>Stok Banner</h1>
+          <p>
+            Halaman ini adalah dasar untuk alur baru: melihat banner yang sedang tampil,
+            menyiapkan stok banner, lalu memilih stok mana yang akan dijadikan banner tampil.
+          </p>
+        </div>
+
+        <div class="fft-hero-actions">
+          <a class="fft-btn fft-btn-light" href="{{ url_for('admin_banner_informasi') }}">Kelola Banner Lama</a>
+          <a class="fft-btn fft-btn-dark" href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}">Lihat Website</a>
+        </div>
+      </section>
+
+      <section class="fft-card">
+        <div class="fft-card-head">
+          <p class="fft-kicker">Sedang Tampil</p>
+          <h2>Banner yang Tampil Sekarang</h2>
+          <p>Bagian ini membaca data banner aktif yang saat ini dipakai frontend.</p>
+        </div>
+
+        {% if media_url %}
+          <div class="fft-public-banner-preview">
+            <div class="fft-public-banner-preview__label">UNIVERSITAS ADVENT SURYA NUSANTARA</div>
+
+            <a class="fft-public-banner-preview__media" href="{{ active_banner.target_url if active_banner and active_banner.target_url else '#' }}" target="_blank" rel="noopener">
+              {% if active_banner.media_type == 'video' %}
+                <video src="{{ media_url }}" controls muted playsinline></video>
+              {% else %}
+                <img src="{{ media_url }}" alt="Banner yang sedang tampil">
+              {% endif %}
+            </a>
+          </div>
+
+          <dl class="fft-meta-list">
+            <div>
+              <dt>Link Tujuan</dt>
+              <dd>{{ active_banner.target_url if active_banner and active_banner.target_url else '-' }}</dd>
+            </div>
+            <div>
+              <dt>Terakhir Publish</dt>
+              <dd>{{ active_banner.published_at.strftime('%d %B %Y %H:%M') if active_banner and active_banner.published_at else '-' }}</dd>
+            </div>
+          </dl>
+        {% else %}
+          <div class="fft-empty-state">
+            <strong>Belum ada banner aktif</strong>
+            <span>Nanti stok banner dapat dipilih untuk dijadikan banner tampil.</span>
+          </div>
+        {% endif %}
+      </section>
+
+      <section class="fft-card">
+        <div class="fft-card-head">
+          <p class="fft-kicker">Tahap Berikutnya</p>
+          <h2>Fitur Stok Banner</h2>
+          <p>
+            Setelah route ini aman, kita lanjut membangun fitur tambah stok,
+            daftar stok, preview stok, dan tombol Jadikan Banner Tampil.
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
