@@ -1,399 +1,867 @@
-// News Studio Editor
+// Professional admin news editor
 (function () {
   const form = document.querySelector("[data-news-editor-form]");
+
   if (!form) return;
 
-  const titleInput = document.querySelector("[data-news-title]");
-  const summaryInput = document.querySelector("[data-news-summary]");
-  const contentInput = document.querySelector("[data-news-content]");
-  const categoryInput = document.querySelector("[data-news-category]");
-
-  const titleCount = document.querySelector("[data-news-title-count]");
-  const summaryCount = document.querySelector("[data-news-summary-count]");
-  const saveNote = document.querySelector("[data-news-save-note]");
-
-  const previewTitle = document.querySelector("[data-news-preview-title]");
-  const previewSummary = document.querySelector("[data-news-preview-summary]");
-  const previewMeta = document.querySelector("[data-news-preview-meta]");
-  const detailTitle = document.querySelector("[data-news-detail-title]");
-  const detailContent = document.querySelector("[data-news-detail-content]");
-  const cardImage = document.querySelector("[data-news-card-image]");
-  const detailImage = document.querySelector("[data-news-detail-image]");
-
-  const tabs = document.querySelectorAll("[data-news-tab]");
-  const panels = document.querySelectorAll("[data-news-panel]");
-  const checks = document.querySelectorAll("[data-news-check]");
-  const deleteForm = document.querySelector("[data-news-editor-delete-form]");
-
-  const modal = document.querySelector("[data-news-crop-modal]");
-  const viewport = document.querySelector("[data-news-crop-viewport]");
-  const cropImage = document.querySelector("[data-news-crop-image]");
-  const cropTitle = document.querySelector("[data-news-crop-title]");
-  const cropRule = document.querySelector("[data-news-crop-rule]");
-  const cropLabel = document.querySelector("[data-news-crop-size-label]");
-  const zoomInput = document.querySelector("[data-news-crop-zoom]");
-  const resetButton = document.querySelector("[data-news-crop-reset]");
-  const applyButton = document.querySelector("[data-news-crop-apply]");
-  const cancelButtons = document.querySelectorAll("[data-news-crop-cancel]");
-
-  let activeInput = null;
-  let activeKind = "";
-  let activeOutput = null;
-  let objectUrl = "";
-
-  const state = {
-    ready: false,
-    naturalWidth: 1,
-    naturalHeight: 1,
-    outputWidth: 1600,
-    outputHeight: 900,
-    frameWidth: 1,
-    frameHeight: 1,
-    baseScale: 1,
-    zoom: 1,
-    offsetX: 0,
-    offsetY: 0,
-    dragging: false,
-    startX: 0,
-    startY: 0,
-    startOffsetX: 0,
-    startOffsetY: 0,
+  const fields = {
+    title: form.querySelector('[data-news-input="title"]'),
+    summary: form.querySelector('[data-news-input="summary"]'),
+    content: form.querySelector('[data-news-input="content"]'),
+    category: form.querySelector('[data-news-input="category"]'),
   };
 
-  function clean(value) {
-    return String(value || "").trim();
+  const counters = {
+    summary: document.querySelector('[data-news-count="summary"]'),
+    content: document.querySelector('[data-news-count="content"]'),
+  };
+
+  const previewTitle = document.querySelector("[data-news-preview-title]");
+  const previewTitleDetail = document.querySelector("[data-news-preview-title-detail]");
+  const previewSummary = document.querySelector("[data-news-preview-summary]");
+  const previewContent = document.querySelector("[data-news-preview-content]");
+  const previewCategory = document.querySelector("[data-news-preview-category]");
+
+  const tabs = Array.from(document.querySelectorAll("[data-news-preview-tab]"));
+  const panels = Array.from(document.querySelectorAll("[data-news-preview-panel]"));
+
+  let isDirty = false;
+
+  function getValue(key) {
+    return fields[key] ? String(fields[key].value || "").trim() : "";
   }
 
-  function clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
+  function syncAliases() {
+    Object.entries(fields).forEach(([key, input]) => {
+      if (!input) return;
+
+      const aliases = form.querySelectorAll(`[data-news-alias="${key}"]`);
+
+      aliases.forEach((alias) => {
+        alias.value = input.value;
+      });
+    });
   }
 
-  function markChanged() {
-    if (saveNote) {
-      saveNote.textContent = "Ada perubahan yang belum disimpan.";
+  function updateCounters() {
+    if (counters.summary && fields.summary) {
+      counters.summary.textContent = String(fields.summary.value.length);
+    }
+
+    if (counters.content && fields.content) {
+      counters.content.textContent = String(fields.content.value.length);
     }
   }
 
   function updatePreview() {
-    const title = clean(titleInput && titleInput.value) || "Judul berita tampil di sini";
-    const summary = clean(summaryInput && summaryInput.value) || "Ringkasan berita tampil di sini.";
-    const content = clean(contentInput && contentInput.value) || "Isi berita akan tampil di sini.";
-    const category = (clean(categoryInput && categoryInput.value) || "umum").toUpperCase();
-
-    if (titleCount && titleInput) titleCount.textContent = titleInput.value.length;
-    if (summaryCount && summaryInput) summaryCount.textContent = summaryInput.value.length;
+    const title = getValue("title") || "Judul berita akan muncul di sini";
+    const summary = getValue("summary") || "Ringkasan berita akan muncul di sini.";
+    const content = getValue("content") || "Isi berita akan muncul di sini.";
+    const category = getValue("category") || "UMUM";
 
     if (previewTitle) previewTitle.textContent = title;
-    if (detailTitle) detailTitle.textContent = title;
+    if (previewTitleDetail) previewTitleDetail.textContent = title;
     if (previewSummary) previewSummary.textContent = summary;
-    if (detailContent) detailContent.textContent = content;
-
-    if (previewMeta) {
-      const code = (previewMeta.textContent || "KODE BARU").split("·")[0].trim();
-      previewMeta.textContent = `${code} · ${category}`;
+    if (previewContent) previewContent.textContent = content;
+    if (previewCategory) {
+      const current = previewCategory.textContent || "";
+      const code = current.split("·")[0].trim() || "Kode";
+      previewCategory.textContent = `${code} · ${category}`;
     }
+  }
+
+  function updateChecklist() {
+    const checks = {
+      title: Boolean(getValue("title")),
+      summary: Boolean(getValue("summary")),
+      content: Boolean(getValue("content")),
+      thumbnail: Boolean(document.querySelector('[data-news-live-image="thumbnail"]:not([hidden])')),
+      detail: Boolean(document.querySelector('[data-news-live-image="detail"]:not([hidden])')),
+    };
+
+    Object.entries(checks).forEach(([key, ok]) => {
+      const element = document.querySelector(`[data-news-check="${key}"]`);
+      if (element) element.classList.toggle("is-ok", ok);
+    });
+  }
+
+  function refreshAll() {
+    syncAliases();
+    updateCounters();
+    updatePreview();
+    updateChecklist();
+  }
+
+  Object.values(fields).forEach((input) => {
+    if (!input) return;
+
+    input.addEventListener("input", function () {
+      isDirty = true;
+      refreshAll();
+    });
+
+    input.addEventListener("change", function () {
+      isDirty = true;
+      refreshAll();
+    });
+  });
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", function () {
+      const target = tab.getAttribute("data-news-preview-tab");
+
+      tabs.forEach((button) => {
+        button.classList.toggle("is-active", button === tab);
+      });
+
+      panels.forEach((panel) => {
+        panel.classList.toggle(
+          "is-active",
+          panel.getAttribute("data-news-preview-panel") === target
+        );
+      });
+    });
+  });
+
+  function setImagePreview(kind, file) {
+    const objectUrl = URL.createObjectURL(file);
+
+    const previewImage = document.querySelector(`[data-news-image-preview="${kind}"]`);
+    const liveImage = document.querySelector(`[data-news-live-image="${kind}"]`);
+    const empty = document.querySelector(`[data-news-image-empty="${kind}"]`);
+    const liveEmpty = document.querySelector(`[data-news-live-empty="${kind}"]`);
+
+    [previewImage, liveImage].forEach((image) => {
+      if (!image) return;
+
+      image.src = objectUrl;
+      image.hidden = false;
+    });
+
+    if (empty) empty.hidden = true;
+    if (liveEmpty) liveEmpty.hidden = true;
 
     updateChecklist();
   }
 
-  function setCheck(name, ok, text) {
-    const item = Array.from(checks).find((el) => el.getAttribute("data-news-check") === name);
-    if (!item) return;
+  document.querySelectorAll("[data-news-file]").forEach((input) => {
+    input.addEventListener("change", function () {
+      const file = input.files && input.files[0];
 
-    item.textContent = `${ok ? "✓" : "!"} ${text}`;
-    item.classList.toggle("is-ok", ok);
-    item.classList.toggle("is-warning", !ok);
-  }
+      if (!file) return;
 
-  function hasImage(box) {
-    return Boolean(box && box.querySelector("img"));
-  }
+      if (!file.type || !file.type.startsWith("image/")) {
+        alert("File yang dipilih harus berupa gambar.");
+        input.value = "";
+        return;
+      }
 
-  function updateChecklist() {
-    const title = clean(titleInput && titleInput.value);
-    const summary = clean(summaryInput && summaryInput.value);
-    const content = clean(contentInput && contentInput.value);
-
-    setCheck("title", title.length >= 8 && title.length <= 120, "Judul jelas dan tidak terlalu panjang.");
-    setCheck("summary", summary.length >= 20 && summary.length <= 220, "Ringkasan cukup pendek untuk kartu berita.");
-    setCheck("content", content.length >= 80, "Isi berita sudah cukup untuk halaman detail.");
-    setCheck("thumbnail", hasImage(document.querySelector('[data-news-preview-box="thumbnail"]')), "Thumbnail tersedia.");
-    setCheck("detail", hasImage(document.querySelector('[data-news-preview-box="detail"]')), "Gambar detail tersedia.");
-  }
-
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", function () {
-      const target = tab.getAttribute("data-news-tab");
-
-      tabs.forEach((item) => item.classList.remove("is-active"));
-      panels.forEach((panel) => {
-        panel.classList.toggle("is-active", panel.getAttribute("data-news-panel") === target);
-      });
-
-      tab.classList.add("is-active");
+      isDirty = true;
+      setImagePreview(input.getAttribute("data-news-file"), file);
     });
   });
 
-  function releaseObjectUrl() {
-    if (objectUrl) {
-      URL.revokeObjectURL(objectUrl);
-      objectUrl = "";
+  const deleteButton = document.querySelector("[data-news-delete-submit]");
+
+  if (deleteButton) {
+    deleteButton.addEventListener("click", function (event) {
+      const ok = window.confirm(
+        "Hapus berita ini?\n\nTindakan ini hanya dilakukan jika berita benar-benar tidak diperlukan lagi."
+      );
+
+      if (!ok) {
+        event.preventDefault();
+      }
+    });
+  }
+
+  const saveButton = document.querySelector("[data-news-save-submit]");
+
+  if (saveButton) {
+    saveButton.addEventListener("click", function () {
+      syncAliases();
+      isDirty = false;
+    });
+  }
+
+  form.addEventListener("submit", function () {
+    syncAliases();
+    isDirty = false;
+  });
+
+  window.addEventListener("beforeunload", function (event) {
+    if (!isDirty) return;
+
+    event.preventDefault();
+    event.returnValue = "";
+  });
+
+  refreshAll();
+})();
+
+/* NEWS_IMAGE_CROP_SCRIPT_START */
+(function () {
+  "use strict";
+
+  const CROP_CONFIGS = [
+    {
+      key: "thumbnail",
+      label: "Thumbnail Kartu",
+      width: 1450,
+      height: 1000,
+      match(input) {
+        const value = `${input.name || ""} ${input.id || ""}`.toLowerCase();
+        return value.includes("thumbnail") ||
+          value.includes("thumb") ||
+          value.includes("gambar_thumbnail") ||
+          value.includes("gambar_cover") ||
+          value.includes("cover");
+      }
+    },
+    {
+      key: "detail",
+      label: "Gambar Detail",
+      width: 1600,
+      height: 900,
+      match(input) {
+        const value = `${input.name || ""} ${input.id || ""}`.toLowerCase();
+        return value.includes("detail") ||
+          value.includes("gambar_detail") ||
+          value.includes("gambar_utama") ||
+          value === "gambar" ||
+          value.endsWith(" gambar");
+      }
+    }
+  ];
+
+  const state = {
+    input: null,
+    file: null,
+    config: null,
+    objectUrl: "",
+    image: null,
+    modal: null,
+    stage: null,
+    imgEl: null,
+    frame: null,
+    zoom: null,
+    baseScale: 1,
+    scale: 1,
+    zoomValue: 1,
+    panX: 0,
+    panY: 0,
+    dragging: false,
+    startX: 0,
+    startY: 0,
+    startPanX: 0,
+    startPanY: 0,
+    internalUpdate: false
+  };
+
+  function ready(fn) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn);
+    } else {
+      fn();
     }
   }
 
-  function getViewport() {
-    const rect = viewport.getBoundingClientRect();
-    state.frameWidth = Math.max(1, rect.width);
-    state.frameHeight = Math.max(1, rect.height);
+  function getConfig(input) {
+    return CROP_CONFIGS.find((config) => config.match(input));
   }
 
-  function renderCrop() {
-    if (!state.ready) return;
+  function removePreviewTabs() {
+    const labels = new Set(["KARTU", "DETAIL", "CEK"]);
 
-    getViewport();
+    const buttons = Array.from(document.querySelectorAll("button, a, [role='tab']"))
+      .filter((element) => labels.has((element.textContent || "").trim().toUpperCase()));
 
-    state.baseScale = Math.max(
-      state.frameWidth / state.naturalWidth,
-      state.frameHeight / state.naturalHeight
-    );
+    buttons.forEach((button) => {
+      let group = button.closest("[data-news-preview-tabs], [data-editor-preview-tabs], .news-editor-preview-tabs, .news-preview-tabs, .preview-tabs, [role='tablist']");
 
-    const scale = state.baseScale * state.zoom;
-    const displayWidth = state.naturalWidth * scale;
-    const displayHeight = state.naturalHeight * scale;
+      if (!group) {
+        let node = button.parentElement;
 
-    const maxX = Math.max(0, (displayWidth - state.frameWidth) / 2);
-    const maxY = Math.max(0, (displayHeight - state.frameHeight) / 2);
+        for (let i = 0; i < 5 && node; i += 1) {
+          const text = (node.textContent || "").toUpperCase();
 
-    state.offsetX = clamp(state.offsetX, -maxX, maxX);
-    state.offsetY = clamp(state.offsetY, -maxY, maxY);
+          if (text.includes("KARTU") && text.includes("DETAIL") && text.includes("CEK")) {
+            group = node;
+            break;
+          }
 
-    cropImage.style.width = `${displayWidth}px`;
-    cropImage.style.height = `${displayHeight}px`;
-    cropImage.style.left = `${(state.frameWidth - displayWidth) / 2 + state.offsetX}px`;
-    cropImage.style.top = `${(state.frameHeight - displayHeight) / 2 + state.offsetY}px`;
+          node = node.parentElement;
+        }
+      }
+
+      if (group) {
+        group.remove();
+      }
+    });
+  }
+
+  function ensureModal() {
+    state.modal = document.getElementById("newsImageCropModal");
+
+    if (!state.modal) {
+      const wrapper = document.createElement("div");
+      wrapper.innerHTML = `
+        <div class="news-crop-modal" id="newsImageCropModal" hidden aria-hidden="true">
+          <div class="news-crop-dialog" role="dialog" aria-modal="true" aria-labelledby="newsCropTitle">
+            <div class="news-crop-header">
+              <div>
+                <p class="news-crop-kicker">Crop Manual</p>
+                <h2 id="newsCropTitle">Atur Potongan Gambar</h2>
+                <p id="newsCropHelp">Geser gambar dan atur zoom sampai komposisi terlihat rapi.</p>
+              </div>
+              <button type="button" class="news-crop-close" data-news-crop-cancel aria-label="Tutup">×</button>
+            </div>
+
+            <div class="news-crop-body">
+              <div class="news-crop-stage" data-news-crop-stage>
+                <img alt="Gambar yang akan dipotong" data-news-crop-image>
+                <div class="news-crop-frame" data-news-crop-frame>
+                  <span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+
+              <div class="news-crop-control">
+                <label for="newsCropZoom">Zoom gambar</label>
+                <input id="newsCropZoom" type="range" min="1" max="3" step="0.01" value="1" data-news-crop-zoom>
+              </div>
+            </div>
+
+            <div class="news-crop-footer">
+              <button type="button" class="btn btn-secondary" data-news-crop-reset>Reset</button>
+              <button type="button" class="btn btn-secondary" data-news-crop-cancel>Batal</button>
+              <button type="button" class="btn btn-primary" data-news-crop-apply>Gunakan Hasil Crop</button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(wrapper.firstElementChild);
+      state.modal = document.getElementById("newsImageCropModal");
+    }
+
+    state.stage = state.modal.querySelector("[data-news-crop-stage]");
+    state.imgEl = state.modal.querySelector("[data-news-crop-image]");
+    state.frame = state.modal.querySelector("[data-news-crop-frame]");
+    state.zoom = state.modal.querySelector("[data-news-crop-zoom]");
+
+    state.modal.querySelectorAll("[data-news-crop-cancel]").forEach((button) => {
+      button.addEventListener("click", closeCrop);
+    });
+
+    const resetButton = state.modal.querySelector("[data-news-crop-reset]");
+    if (resetButton) {
+      resetButton.addEventListener("click", resetCrop);
+    }
+
+    const applyButton = state.modal.querySelector("[data-news-crop-apply]");
+    if (applyButton) {
+      applyButton.addEventListener("click", applyCrop);
+    }
+
+    state.zoom.addEventListener("input", () => {
+      state.zoomValue = Number(state.zoom.value || 1);
+      updateImagePosition(true);
+    });
+
+    state.stage.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
+
+    state.stage.addEventListener("wheel", (event) => {
+      if (state.modal.hidden) return;
+
+      event.preventDefault();
+
+      const current = Number(state.zoom.value || 1);
+      const next = Math.min(3, Math.max(1, current + (event.deltaY > 0 ? -0.08 : 0.08)));
+
+      state.zoom.value = String(next);
+      state.zoomValue = next;
+      updateImagePosition(true);
+    }, { passive: false });
+
+    window.addEventListener("resize", () => {
+      if (!state.modal.hidden) {
+        resetCrop();
+      }
+    });
+  }
+
+  function attachInputs() {
+    document.querySelectorAll("input[type='file']").forEach((input) => {
+      const config = getConfig(input);
+
+      if (!config || input.dataset.newsCropBound === "1") return;
+
+      input.dataset.newsCropBound = "1";
+      input.setAttribute("accept", "image/png,image/jpeg,image/jpg,image/webp");
+
+      input.addEventListener("change", () => {
+        if (state.internalUpdate) return;
+
+        const file = input.files && input.files[0];
+
+        if (!file) return;
+
+        if (!/^image\//i.test(file.type)) {
+          alert("File harus berupa gambar.");
+          input.value = "";
+          return;
+        }
+
+        openCrop(input, file, config);
+      });
+    });
+  }
+
+  function openCrop(input, file, config) {
+    ensureModal();
+
+    if (state.objectUrl) {
+      URL.revokeObjectURL(state.objectUrl);
+    }
+
+    state.input = input;
+    state.file = file;
+    state.config = config;
+    state.objectUrl = URL.createObjectURL(file);
+    state.image = new Image();
+
+    const title = state.modal.querySelector("#newsCropTitle");
+    const help = state.modal.querySelector("#newsCropHelp");
+
+    if (title) {
+      title.textContent = `Atur ${config.label}`;
+    }
+
+    if (help) {
+      help.textContent = `Hasil akhir akan dibuat otomatis menjadi ${config.width} × ${config.height} px. Geser gambar dan atur zoom sampai posisinya sesuai.`;
+    }
+
+    state.image.onload = () => {
+      state.imgEl.src = state.objectUrl;
+      state.modal.hidden = false;
+      state.modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+
+      requestAnimationFrame(resetCrop);
+    };
+
+    state.image.src = state.objectUrl;
   }
 
   function resetCrop() {
-    state.zoom = 1;
-    state.offsetX = 0;
-    state.offsetY = 0;
+    if (!state.image || !state.config || !state.stage) return;
 
-    if (zoomInput) zoomInput.value = "1";
+    const stageRect = state.stage.getBoundingClientRect();
+    const ratio = state.config.width / state.config.height;
 
-    renderCrop();
+    let frameWidth = Math.max(260, stageRect.width - 64);
+    let frameHeight = frameWidth / ratio;
+
+    if (frameHeight > stageRect.height - 64) {
+      frameHeight = Math.max(180, stageRect.height - 64);
+      frameWidth = frameHeight * ratio;
+    }
+
+    state.frame.style.width = `${frameWidth}px`;
+    state.frame.style.height = `${frameHeight}px`;
+    state.frame.style.left = `${(stageRect.width - frameWidth) / 2}px`;
+    state.frame.style.top = `${(stageRect.height - frameHeight) / 2}px`;
+
+    state.baseScale = Math.max(
+      frameWidth / state.image.naturalWidth,
+      frameHeight / state.image.naturalHeight
+    );
+
+    state.zoomValue = 1;
+    state.zoom.value = "1";
+    state.panX = 0;
+    state.panY = 0;
+
+    updateImagePosition(true);
   }
 
-  function getCropData() {
-    getViewport();
+  function clampPan() {
+    const stageRect = state.stage.getBoundingClientRect();
+    const frameRect = state.frame.getBoundingClientRect();
 
-    const scale = state.baseScale * state.zoom;
-    const displayWidth = state.naturalWidth * scale;
-    const displayHeight = state.naturalHeight * scale;
-    const left = (state.frameWidth - displayWidth) / 2 + state.offsetX;
-    const top = (state.frameHeight - displayHeight) / 2 + state.offsetY;
+    const stageW = stageRect.width;
+    const stageH = stageRect.height;
+    const frameLeft = frameRect.left - stageRect.left;
+    const frameTop = frameRect.top - stageRect.top;
+    const frameRight = frameLeft + frameRect.width;
+    const frameBottom = frameTop + frameRect.height;
 
-    const x = clamp((0 - left) / scale, 0, state.naturalWidth);
-    const y = clamp((0 - top) / scale, 0, state.naturalHeight);
-    const width = clamp(state.frameWidth / scale, 1, state.naturalWidth - x);
-    const height = clamp(state.frameHeight / scale, 1, state.naturalHeight - y);
+    const centerX = stageW / 2;
+    const centerY = stageH / 2;
+
+    const imageW = state.image.naturalWidth * state.scale;
+    const imageH = state.image.naturalHeight * state.scale;
+
+    const minPanX = frameRight - centerX - imageW / 2;
+    const maxPanX = frameLeft - centerX + imageW / 2;
+    const minPanY = frameBottom - centerY - imageH / 2;
+    const maxPanY = frameTop - centerY + imageH / 2;
+
+    state.panX = Math.min(maxPanX, Math.max(minPanX, state.panX));
+    state.panY = Math.min(maxPanY, Math.max(minPanY, state.panY));
+  }
+
+  function updateImagePosition(shouldClamp) {
+    if (!state.image || !state.stage || !state.imgEl) return;
+
+    state.scale = state.baseScale * state.zoomValue;
+
+    if (shouldClamp) {
+      clampPan();
+    }
+
+    const stageRect = state.stage.getBoundingClientRect();
+    const imageW = state.image.naturalWidth * state.scale;
+    const imageH = state.image.naturalHeight * state.scale;
+
+    const left = stageRect.width / 2 - imageW / 2 + state.panX;
+    const top = stageRect.height / 2 - imageH / 2 + state.panY;
+
+    state.imgEl.style.width = `${imageW}px`;
+    state.imgEl.style.height = `${imageH}px`;
+    state.imgEl.style.left = `${left}px`;
+    state.imgEl.style.top = `${top}px`;
+  }
+
+  function onPointerDown(event) {
+    if (state.modal.hidden || !state.image) return;
+
+    state.dragging = true;
+    state.stage.classList.add("is-dragging");
+    state.stage.setPointerCapture(event.pointerId);
+
+    state.startX = event.clientX;
+    state.startY = event.clientY;
+    state.startPanX = state.panX;
+    state.startPanY = state.panY;
+  }
+
+  function onPointerMove(event) {
+    if (!state.dragging) return;
+
+    state.panX = state.startPanX + event.clientX - state.startX;
+    state.panY = state.startPanY + event.clientY - state.startY;
+
+    updateImagePosition(true);
+  }
+
+  function onPointerUp() {
+    state.dragging = false;
+
+    if (state.stage) {
+      state.stage.classList.remove("is-dragging");
+    }
+  }
+
+  function cropCoordinates() {
+    const stageRect = state.stage.getBoundingClientRect();
+    const frameRect = state.frame.getBoundingClientRect();
+
+    const imageW = state.image.naturalWidth * state.scale;
+    const imageH = state.image.naturalHeight * state.scale;
+
+    const imgLeft = stageRect.width / 2 - imageW / 2 + state.panX;
+    const imgTop = stageRect.height / 2 - imageH / 2 + state.panY;
+
+    const frameLeft = frameRect.left - stageRect.left;
+    const frameTop = frameRect.top - stageRect.top;
 
     return {
-      x: Math.round(x),
-      y: Math.round(y),
-      width: Math.round(width),
-      height: Math.round(height),
+      sx: Math.max(0, (frameLeft - imgLeft) / state.scale),
+      sy: Math.max(0, (frameTop - imgTop) / state.scale),
+      sw: frameRect.width / state.scale,
+      sh: frameRect.height / state.scale
     };
   }
 
-  function createPreview(crop) {
-    const canvas = document.createElement("canvas");
-    canvas.width = state.outputWidth;
-    canvas.height = state.outputHeight;
+  function applyCrop() {
+    if (!state.input || !state.image || !state.config) return;
 
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(
-      cropImage,
-      crop.x,
-      crop.y,
-      crop.width,
-      crop.height,
+    const coords = cropCoordinates();
+    const canvas = document.createElement("canvas");
+
+    canvas.width = state.config.width;
+    canvas.height = state.config.height;
+
+    const context = canvas.getContext("2d");
+
+    context.drawImage(
+      state.image,
+      coords.sx,
+      coords.sy,
+      coords.sw,
+      coords.sh,
       0,
       0,
       canvas.width,
       canvas.height
     );
 
-    return canvas.toDataURL("image/jpeg", 0.92);
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+
+      const originalName = state.file.name || "gambar-berita.jpg";
+      const cleanName = originalName.replace(/\.[^.]+$/, "");
+      const finalName = `${cleanName}-crop-${state.config.width}x${state.config.height}.jpg`;
+      const finalFile = new File([blob], finalName, {
+        type: "image/jpeg",
+        lastModified: Date.now()
+      });
+
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(finalFile);
+
+      state.internalUpdate = true;
+      state.input.files = dataTransfer.files;
+      state.internalUpdate = false;
+
+      updateExistingPreview(state.input, URL.createObjectURL(finalFile));
+      closeCrop();
+    }, "image/jpeg", 0.92);
   }
 
-  function setImagePreview(kind, dataUrl) {
-    const uploadBox = document.querySelector(`[data-news-preview-box="${kind}"]`);
-    const liveBox = kind === "thumbnail" ? cardImage : detailImage;
+  function updateExistingPreview(input, objectUrl) {
+    let box = input.parentElement;
 
-    [uploadBox, liveBox].forEach((box) => {
-      if (!box) return;
+    for (let i = 0; i < 7 && box; i += 1) {
+      const fileInputCount = box.querySelectorAll("input[type='file']").length;
+      const image = box.querySelector("img");
 
-      box.innerHTML = "";
-      const img = document.createElement("img");
-      img.src = dataUrl;
-      img.alt = kind === "thumbnail" ? "Thumbnail berita" : "Gambar detail berita";
-      box.appendChild(img);
-    });
+      if (image && fileInputCount <= 1) {
+        image.src = objectUrl;
+        return;
+      }
 
-    updateChecklist();
-  }
-
-  function openCrop(input) {
-    const file = input.files && input.files[0];
-
-    if (!file) return;
-
-    if (!file.type.startsWith("image/")) {
-      alert("File harus gambar.");
-      input.value = "";
-      return;
+      box = box.parentElement;
     }
 
-    activeInput = input;
-    activeKind = input.getAttribute("data-news-media-input") || "thumbnail";
-    activeOutput = document.querySelector(`[data-news-crop-output="${activeKind}"]`);
+    const config = getConfig(input);
 
-    state.outputWidth = Number(input.getAttribute("data-output-width")) || 1600;
-    state.outputHeight = Number(input.getAttribute("data-output-height")) || 900;
-    state.ready = false;
+    if (!config) return;
 
-    releaseObjectUrl();
-    objectUrl = URL.createObjectURL(file);
+    const keyword = config.key === "thumbnail" ? "thumbnail" : "detail";
 
-    cropImage.src = objectUrl;
+    const images = Array.from(document.querySelectorAll("img"));
+    const target = images.find((image) => {
+      const text = `${image.alt || ""} ${image.title || ""} ${image.dataset ? JSON.stringify(image.dataset) : ""}`.toLowerCase();
+      return text.includes(keyword) || (config.key === "thumbnail" && text.includes("kartu"));
+    });
 
-    if (viewport) viewport.style.aspectRatio = `${state.outputWidth} / ${state.outputHeight}`;
-    if (cropTitle) cropTitle.textContent = activeKind === "thumbnail" ? "Crop Thumbnail" : "Crop Gambar Detail";
-    if (cropRule) cropRule.textContent = `Output final ${state.outputWidth} × ${state.outputHeight} px.`;
-    if (cropLabel) cropLabel.textContent = `${state.outputWidth} × ${state.outputHeight}`;
-
-    modal.hidden = false;
-
-    cropImage.onload = function () {
-      state.naturalWidth = cropImage.naturalWidth || 1;
-      state.naturalHeight = cropImage.naturalHeight || 1;
-      state.ready = true;
-      resetCrop();
-    };
+    if (target) {
+      target.src = objectUrl;
+    }
   }
 
   function closeCrop() {
-    modal.hidden = true;
+    if (state.modal) {
+      state.modal.hidden = true;
+      state.modal.setAttribute("aria-hidden", "true");
+    }
+
+    document.body.style.overflow = "";
+
+    if (state.objectUrl) {
+      URL.revokeObjectURL(state.objectUrl);
+    }
+
+    state.objectUrl = "";
+    state.input = null;
+    state.file = null;
+    state.config = null;
+    state.image = null;
+    state.dragging = false;
   }
 
-  document.querySelectorAll("[data-news-media-input]").forEach((input) => {
-    input.addEventListener("change", function () {
-      const kind = input.getAttribute("data-news-media-input");
-      const output = document.querySelector(`[data-news-crop-output="${kind}"]`);
-      if (output) output.value = "";
-      openCrop(input);
-      markChanged();
-    });
+  ready(() => {
+    removePreviewTabs();
+    ensureModal();
+    attachInputs();
+
+    setTimeout(removePreviewTabs, 300);
+    setTimeout(removePreviewTabs, 900);
   });
+})();
+/* NEWS_IMAGE_CROP_SCRIPT_END */
 
-  if (zoomInput) {
-    zoomInput.addEventListener("input", function () {
-      state.zoom = Number(zoomInput.value) || 1;
-      renderCrop();
+/* NEWS_REMOVE_EDITOR_PREVIEW_START */
+(function () {
+  "use strict";
+
+  function looksLikePreviewPanel(element) {
+    const text = (element.textContent || "").replace(/\s+/g, " ").trim().toUpperCase();
+
+    if (!text) return false;
+
+    const hasTabs =
+      text.includes("KARTU") &&
+      text.includes("DETAIL") &&
+      text.includes("CEK");
+
+    const hasPreviewText =
+      text.includes("JUDUL BERITA AKAN MUNCUL") ||
+      text.includes("RINGKASAN BERITA AKAN MUNCUL") ||
+      text.includes("KODE BARU") ||
+      text.includes("PREVIEW THUMBNAIL");
+
+    return hasTabs || hasPreviewText;
+  }
+
+  function removeEditorPreviewPanel() {
+    const candidates = Array.from(document.querySelectorAll(
+      "aside, section, .card, .admin-card, .module-card, .news-preview, .news-editor-preview, .preview-panel, .editor-preview, .form-preview, .content-card, div"
+    ));
+
+    const matches = candidates
+      .filter(looksLikePreviewPanel)
+      .sort((a, b) => b.querySelectorAll("*").length - a.querySelectorAll("*").length);
+
+    matches.forEach((element) => {
+      const text = (element.textContent || "").toUpperCase();
+
+      const containsFormFields =
+        text.includes("JUDUL BERITA") &&
+        text.includes("RINGKASAN") &&
+        text.includes("GAMBAR KARTU DAN DETAIL") &&
+        element.querySelector("form, input[type='file'], textarea");
+
+      if (containsFormFields) {
+        return;
+      }
+
+      element.remove();
     });
   }
 
-  if (viewport) {
-    viewport.addEventListener("pointerdown", function (event) {
-      if (!state.ready) return;
+  function run() {
+    removeEditorPreviewPanel();
+    setTimeout(removeEditorPreviewPanel, 250);
+    setTimeout(removeEditorPreviewPanel, 800);
+  }
 
-      state.dragging = true;
-      state.startX = event.clientX;
-      state.startY = event.clientY;
-      state.startOffsetX = state.offsetX;
-      state.startOffsetY = state.offsetY;
-      viewport.setPointerCapture(event.pointerId);
-    });
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", run);
+  } else {
+    run();
+  }
+})();
+/* NEWS_REMOVE_EDITOR_PREVIEW_END */
 
-    viewport.addEventListener("pointermove", function (event) {
-      if (!state.dragging) return;
+/* NEWS_EDITOR_UX_POLISH_START */
+(function () {
+  "use strict";
 
-      state.offsetX = state.startOffsetX + event.clientX - state.startX;
-      state.offsetY = state.startOffsetY + event.clientY - state.startY;
-      renderCrop();
-    });
+  function ready(callback) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", callback);
+    } else {
+      callback();
+    }
+  }
 
-    viewport.addEventListener("pointerup", function (event) {
-      state.dragging = false;
-      try {
-        viewport.releasePointerCapture(event.pointerId);
-      } catch (error) {
-        // ignore
+  function isEditorPage() {
+    return location.pathname.includes("/admin/berita/edit") ||
+      location.pathname.includes("/admin/berita/add");
+  }
+
+  function addEditorGuide() {
+    if (!isEditorPage()) return;
+
+    document.body.classList.add("news-editor-page");
+
+    if (document.querySelector(".news-editor-guide")) return;
+
+    const form = document.querySelector("form");
+
+    if (!form) return;
+
+    const guide = document.createElement("section");
+    guide.className = "news-editor-guide";
+    guide.innerHTML = `
+      <div class="news-editor-guide__header">
+        <p>Alur Pengisian</p>
+        <h2>Lengkapi berita dengan urutan yang sederhana</h2>
+      </div>
+      <div class="news-editor-guide__steps">
+        <div>
+          <strong>01</strong>
+          <span>Isi judul, ringkasan, isi lengkap, dan kategori berita.</span>
+        </div>
+        <div>
+          <strong>02</strong>
+          <span>Pilih gambar, lalu gunakan crop manual agar tampilan kartu dan detail tetap rapi.</span>
+        </div>
+        <div>
+          <strong>03</strong>
+          <span>Klik Simpan. Setelah itu Anda akan kembali ke daftar berita untuk menayangkan konten.</span>
+        </div>
+      </div>
+    `;
+
+    const target = form.closest("section, article, .admin-card, .module-card") || form;
+    target.insertAdjacentElement("beforebegin", guide);
+  }
+
+  function polishButtons() {
+    if (!isEditorPage()) return;
+
+    const isAdd = location.pathname.includes("/admin/berita/add");
+
+    document.querySelectorAll("button, input[type='submit'], a").forEach(function (element) {
+      const text = (element.textContent || element.value || "").trim().toUpperCase();
+
+      if (text === "SIMPAN BERITA" || text === "SIMPAN PERUBAHAN") {
+        if (element.tagName === "INPUT") {
+          element.value = isAdd ? "Simpan Berita Baru" : "Simpan Perubahan";
+        } else {
+          element.textContent = isAdd ? "Simpan Berita Baru" : "Simpan Perubahan";
+        }
+
+        element.classList.add("news-editor-primary-action");
+      }
+
+      if (text === "BATAL") {
+        element.classList.add("news-editor-secondary-action");
       }
     });
   }
 
-  if (resetButton) resetButton.addEventListener("click", resetCrop);
+  function improveFileInputs() {
+    if (!isEditorPage()) return;
 
-  cancelButtons.forEach((button) => {
-    button.addEventListener("click", closeCrop);
-  });
+    document.querySelectorAll("input[type='file']").forEach(function (input) {
+      input.classList.add("news-editor-file-input");
 
-  if (applyButton) {
-    applyButton.addEventListener("click", function () {
-      if (!state.ready || !activeOutput) return;
+      const parent = input.parentElement;
 
-      const crop = getCropData();
-      activeOutput.value = JSON.stringify(crop);
-
-      setImagePreview(activeKind, createPreview(crop));
-      closeCrop();
-      markChanged();
+      if (parent) {
+        parent.classList.add("news-editor-file-box");
+      }
     });
   }
 
-  [titleInput, summaryInput, contentInput, categoryInput].forEach((input) => {
-    if (!input) return;
+  function run() {
+    addEditorGuide();
+    polishButtons();
+    improveFileInputs();
 
-    input.addEventListener("input", function () {
-      updatePreview();
-      markChanged();
-    });
-
-    input.addEventListener("change", function () {
-      updatePreview();
-      markChanged();
-    });
-  });
-
-  form.addEventListener("submit", function (event) {
-    const thumbInput = document.querySelector('[data-news-media-input="thumbnail"]');
-    const detailInput = document.querySelector('[data-news-media-input="detail"]');
-    const thumbOutput = document.querySelector('[data-news-crop-output="thumbnail"]');
-    const detailOutput = document.querySelector('[data-news-crop-output="detail"]');
-
-    if (thumbInput && thumbInput.files[0] && thumbOutput && !thumbOutput.value) {
-      event.preventDefault();
-      alert("Thumbnail sudah dipilih, tapi belum dicrop.");
-      openCrop(thumbInput);
-      return;
-    }
-
-    if (detailInput && detailInput.files[0] && detailOutput && !detailOutput.value) {
-      event.preventDefault();
-      alert("Gambar detail sudah dipilih, tapi belum dicrop.");
-      openCrop(detailInput);
-    }
-  });
-
-  if (deleteForm) {
-    deleteForm.addEventListener("submit", function (event) {
-      const ok = window.confirm("Hapus berita ini?\n\nAksi ini akan menghapus berita dari admin.");
-      if (!ok) event.preventDefault();
-    });
+    setTimeout(function () {
+      addEditorGuide();
+      polishButtons();
+      improveFileInputs();
+    }, 500);
   }
 
-  window.addEventListener("resize", renderCrop);
-
-  updatePreview();
+  ready(run);
 })();
+/* NEWS_EDITOR_UX_POLISH_END */

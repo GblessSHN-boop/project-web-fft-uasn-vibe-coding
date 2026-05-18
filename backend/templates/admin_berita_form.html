@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ 'Edit Berita' if berita else 'Tambah Berita' }} | FFT UASN Content Center</title>
+  <title>{{ 'Edit Berita' if is_edit else 'Tambah Berita' }} | Panel FFT</title>
   <meta name="robots" content="noindex,nofollow,noarchive">
 
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
@@ -11,22 +11,39 @@
 </head>
 
 <body class="fft-admin-module-body">
-  {% set is_edit = berita is defined and berita %}
-  {% set berita_id = berita.id if is_edit else '' %}
-  {% set kode_berita = berita.kode_berita if is_edit and berita.kode_berita else ('%05d'|format(berita.id) if is_edit else 'BARU') %}
-  {% set current_group = berita.group_type if is_edit and berita.group_type else 'umum' %}
-  {% set thumb_path = berita.thumbnail if is_edit and berita.thumbnail else '' %}
-  {% set detail_path = berita.gambar_detail if is_edit and berita.gambar_detail else '' %}
-  {% set thumb_url = berita_media_url(berita, 'thumbnail') if is_edit else '' %}
-  {% set detail_url = berita_media_url(berita, 'detail') if is_edit else '' %}
-  {% set is_live = berita.is_published if is_edit and berita.is_published else false %}
-  {% set needs_publish = berita.needs_publish if is_edit and berita.needs_publish else false %}
-  {% set status_label = 'Perlu Publish' if needs_publish else ('Sudah Rilis' if is_live else 'Draft') %}
-  {% set status_key = 'queue' if needs_publish else ('live' if is_live else 'draft') %}
-  {% set thumb_w = berita_thumb_crop_width|default(1450)|int %}
-  {% set thumb_h = berita_thumb_crop_height|default(1000)|int %}
-  {% set detail_w = berita_detail_crop_width|default(1600)|int %}
-  {% set detail_h = berita_detail_crop_height|default(900)|int %}
+  {% set item = berita if berita is defined else none %}
+  {% set is_edit = item is not none %}
+
+  {% if is_edit %}
+    {% set kode_value = item.kode_berita|default(item.kode|default('%05d'|format(item.id), true), true) %}
+    {% set judul_value = item.judul|default(item.title|default('', true), true) %}
+    {% set subjudul_value = item.subjudul|default(item.ringkasan|default(item.excerpt|default(item.summary|default('', true), true), true), true) %}
+    {% set isi_value = item.isi|default(item.content|default(item.body|default('', true), true), true) %}
+    {% set kategori_value = item.group_type|default(item.kategori|default(item.category|default('UMUM', true), true), true) %}
+    {% set status_value = 'Sedang Tayang' if item.is_published|default(false) else 'Stok Berita' %}
+    {% set thumbnail_value = item.thumbnail|default(item.gambar_thumbnail|default(item.gambar_cover|default(item.gambar|default('', true), true), true), true) %}
+    {% set detail_value = item.gambar_detail|default(item.gambar|default(item.gambar_cover|default(thumbnail_value, true), true), true) %}
+  {% else %}
+    {% set kode_value = 'Baru' %}
+    {% set judul_value = '' %}
+    {% set subjudul_value = '' %}
+    {% set isi_value = '' %}
+    {% set kategori_value = 'UMUM' %}
+    {% set status_value = 'Stok Berita' %}
+    {% set thumbnail_value = '' %}
+    {% set detail_value = '' %}
+  {% endif %}
+
+  {% macro media_src(path) -%}
+    {%- set clean = (path or '')|replace('\\', '/') -%}
+    {%- if clean.startswith('/static/') -%}
+      {{ clean }}
+    {%- elif clean.startswith('static/') -%}
+      /{{ clean }}
+    {%- elif clean -%}
+      {{ url_for('static', filename=clean) }}
+    {%- endif -%}
+  {%- endmacro %}
 
   <div class="fft-admin-app">
     <aside class="fft-admin-rail">
@@ -52,20 +69,19 @@
       </div>
     </aside>
 
-    <main class="fft-admin-work news-studio">
-      <section class="news-studio-hero">
+    <main class="fft-admin-work news-editor-page">
+      <section class="news-editor-hero">
         <div>
-          <p class="fft-kicker">News Studio</p>
-          <h1>{{ 'Edit Berita' if is_edit else 'Tambah Berita' }}</h1>
+          <p class="fft-kicker">Berita</p>
+          <h1>{{ 'Edit Berita' if is_edit else 'Tambah Berita Baru' }}</h1>
           <p>
-            Satu halaman untuk menulis berita, mengatur gambar, melihat preview,
-            dan memastikan berita siap dikirim ke frontend.
+            Perbarui judul, ringkasan, isi, kategori, dan gambar berita.
+            Simpan perubahan terlebih dahulu sebelum berita ditayangkan di website.
           </p>
         </div>
 
-        <div class="news-studio-hero-actions">
-          <a class="fft-btn fft-btn-light" href="{{ url_for('admin_berita_list') }}">Kembali</a>
-          <a class="fft-btn fft-btn-light" href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}#berita" target="_blank" rel="noopener">Lihat Website</a>
+        <div class="news-editor-hero-actions">
+          <a class="fft-btn fft-btn-light" href="{{ url_for('admin_berita_list') }}">Kembali ke Daftar</a>
         </div>
       </section>
 
@@ -79,258 +95,268 @@
         {% endif %}
       {% endwith %}
 
-      <form
-        class="news-studio-form"
-        method="POST"
-        action="{{ url_for('admin_berita_save') }}"
-        enctype="multipart/form-data"
-        data-news-editor-form
-        data-news-studio-key="news-studio-{{ berita_id if berita_id else 'new' }}"
-      >
-        <input type="hidden" name="berita_id" value="{{ berita_id }}">
-        <input type="hidden" name="thumbnail_crop_data" id="thumbnail_crop_data" data-news-crop-output="thumbnail">
-        <input type="hidden" name="detail_crop_data" id="detail_crop_data" data-news-crop-output="detail">
-
-        <section class="news-studio-main">
-          <article class="news-studio-card">
-            <div class="news-studio-step">
+      <form action="{{ url_for('admin_berita_edit', berita_id=item.id) if is_edit else url_for('admin_berita_add') }}" enctype="multipart/form-data" class="news-editor-layout" data-news-editor-form method="POST">
+        <div class="news-editor-main">
+          <section class="news-editor-card">
+            <div class="news-editor-section-title">
               <span>01</span>
               <div>
-                <h2>Tulis Berita</h2>
-                <p>Isi judul, ringkasan, isi berita, dan kategori.</p>
+                <p class="fft-kicker">Informasi Berita</p>
+                <h2>Isi Utama Berita</h2>
+                <p>Gunakan kalimat yang jelas, singkat, dan mudah dipahami pengunjung website.</p>
               </div>
             </div>
 
-            <label class="news-studio-field">
-              <span>Judul Berita</span>
+            <div class="news-editor-field">
+              <label for="newsTitle">Judul Berita</label>
               <input
-                name="judul"
+                id="newsTitle"
                 type="text"
-                value="{{ berita.judul if is_edit and berita.judul else '' }}"
-                placeholder="Tulis judul berita yang jelas..."
-                maxlength="150"
+                name="judul"
+                value="{{ judul_value }}"
+                placeholder="Contoh: Seminar Akademik Fakultas Filsafat Teologi"
                 required
-                data-news-title
+                data-news-input="title"
               >
-              <small><b data-news-title-count>0</b>/150 karakter</small>
-            </label>
+              <input type="hidden" name="title" value="{{ judul_value }}" data-news-alias="title">
+              <input type="hidden" name="news_title" value="{{ judul_value }}" data-news-alias="title">
+            </div>
 
-            <label class="news-studio-field">
-              <span>Ringkasan</span>
+            <div class="news-editor-field">
+              <label for="newsSummary">Ringkasan Singkat</label>
               <textarea
+                id="newsSummary"
                 name="subjudul"
                 rows="4"
-                placeholder="Tulis ringkasan pendek untuk kartu berita..."
-                maxlength="260"
-                required
-                data-news-summary
-              >{{ berita.subjudul if is_edit and berita.subjudul else '' }}</textarea>
-              <small><b data-news-summary-count>0</b>/260 karakter</small>
-            </label>
+                placeholder="Tulis ringkasan singkat yang akan muncul pada kartu berita."
+                data-news-input="summary"
+              >{{ subjudul_value }}</textarea>
+              <small><span data-news-count="summary">0</span> karakter. Disarankan 120–180 karakter.</small>
+              <input type="hidden" name="ringkasan" value="{{ subjudul_value }}" data-news-alias="summary">
+              <input type="hidden" name="excerpt" value="{{ subjudul_value }}" data-news-alias="summary">
+              <input type="hidden" name="summary" value="{{ subjudul_value }}" data-news-alias="summary">
+            </div>
 
-            <label class="news-studio-field">
-              <span>Isi Berita</span>
-              <textarea
-                name="isi"
-                rows="13"
-                placeholder="Tulis isi berita lengkap di sini..."
-                required
-                data-news-content
-              >{{ berita.isi if is_edit and berita.isi else '' }}</textarea>
-              <small>Gunakan paragraf pendek agar mudah dibaca.</small>
-            </label>
+            <div class="news-editor-grid">
+              <div class="news-editor-field">
+                <label for="newsCategory">Kategori</label>
+                <select id="newsCategory" name="group_type" data-news-input="category">
+                  {% for option in ['UMUM', 'AKADEMIK', 'KEGIATAN', 'PENGUMUMAN', 'PRESTASI'] %}
+                    <option value="{{ option }}" {% if kategori_value|string|upper == option %}selected{% endif %}>{{ option.title() }}</option>
+                  {% endfor %}
+                </select>
+                <input type="hidden" name="kategori" value="{{ kategori_value }}" data-news-alias="category">
+              <input type="hidden" name="category" value="{{ kategori_value }}" data-news-alias="category">
+              </div>
 
-            <label class="news-studio-field">
-              <span>Kategori</span>
-              <select name="group_type" data-news-category>
-                {% for option in ['umum', 'akademik', 'kegiatan', 'pengumuman', 'prestasi'] %}
-                  <option value="{{ option }}" {{ 'selected' if current_group == option else '' }}>{{ option|upper }}</option>
-                {% endfor %}
-              </select>
-            </label>
-          </article>
-
-          <article class="news-studio-card">
-            <div class="news-studio-step">
-              <span>02</span>
-              <div>
-                <h2>Gambar Berita</h2>
-                <p>Upload gambar, lalu atur crop manual agar rapi di frontend.</p>
+              <div class="news-editor-field">
+                <label>Status Berita</label>
+                <div class="news-editor-status-box">
+                  <strong>{{ status_value }}</strong>
+                  <span>
+                    {% if status_value == 'Sedang Tayang' %}
+                      Berita ini sedang tampil di website.
+                    {% else %}
+                      Berita tersimpan di admin dan belum ditayangkan.
+                    {% endif %}
+                  </span>
+                </div>
               </div>
             </div>
 
-            <div class="news-studio-media-grid">
-              <label class="news-studio-media-card">
-                <span>Thumbnail Kartu</span>
-
-                <div class="news-studio-media-frame is-thumb" data-news-preview-box="thumbnail">
-                  {% if thumb_url %}
-                    <img src="{{ thumb_url }}" alt="Thumbnail berita">
-                  {% else %}
-                    <strong>Belum ada thumbnail</strong>
-                  {% endif %}
-                </div>
-
-                <input
-                  name="thumbnail"
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif"
-                  data-news-media-input="thumbnail"
-                  data-output-width="{{ thumb_w }}"
-                  data-output-height="{{ thumb_h }}"
-                  {{ '' if is_edit and thumb_path else 'required' }}
-                >
-
-                <small>Crop final: {{ thumb_w }} × {{ thumb_h }} px.</small>
-              </label>
-
-              <label class="news-studio-media-card">
-                <span>Gambar Detail</span>
-
-                <div class="news-studio-media-frame is-detail" data-news-preview-box="detail">
-                  {% if detail_url %}
-                    <img src="{{ detail_url }}" alt="Gambar detail berita">
-                  {% else %}
-                    <strong>Belum ada gambar detail</strong>
-                  {% endif %}
-                </div>
-
-                <input
-                  name="gambar_detail"
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif"
-                  data-news-media-input="detail"
-                  data-output-width="{{ detail_w }}"
-                  data-output-height="{{ detail_h }}"
-                  {{ '' if is_edit and detail_path else 'required' }}
-                >
-
-                <small>Crop final: {{ detail_w }} × {{ detail_h }} px.</small>
-              </label>
+            <div class="news-editor-field">
+              <label for="newsContent">Isi Lengkap Berita</label>
+              <textarea
+                id="newsContent"
+                name="isi"
+                rows="13"
+                placeholder="Tulis isi berita secara lengkap di sini."
+                data-news-input="content"
+              >{{ isi_value }}</textarea>
+              <small><span data-news-count="content">0</span> karakter. Gunakan paragraf pendek agar nyaman dibaca.</small>
+              <input type="hidden" name="konten" value="{{ isi_value }}" data-news-alias="content">
+              <input type="hidden" name="content" value="{{ isi_value }}" data-news-alias="content">
+              <input type="hidden" name="body" value="{{ isi_value }}" data-news-alias="content">
             </div>
-          </article>
-        </section>
-
-        <aside class="news-studio-side">
-          <section class="news-studio-panel">
-            <div class="news-studio-status">
-              <span class="news-studio-status-badge is-{{ status_key }}">{{ status_label }}</span>
-              <strong>Kode {{ kode_berita }}</strong>
-              <small data-news-save-note>Belum ada perubahan baru.</small>
-            </div>
-
-            <div class="news-studio-action-stack">
-              <button class="fft-btn fft-btn-primary" type="submit">Simpan Berita</button>
-              <a class="fft-btn fft-btn-light" href="{{ url_for('admin_berita_list') }}">Batal</a>
-            </div>
-
-            <p class="news-studio-note">
-              Setelah simpan, buka daftar berita dan klik Publish Perubahan agar tampil di frontend.
-            </p>
           </section>
 
-          <section class="news-studio-panel">
-            <div class="news-studio-tabs" role="tablist">
-              <button class="is-active" type="button" data-news-tab="card">Kartu</button>
-              <button type="button" data-news-tab="detail">Detail</button>
-              <button type="button" data-news-tab="check">Cek</button>
+          <section class="news-editor-card">
+            <div class="news-editor-section-title">
+              <span>02</span>
+              <div>
+                <p class="fft-kicker">Gambar Berita</p>
+                <h2>Gambar Kartu dan Detail</h2>
+                <p>
+                  Gunakan gambar yang jelas. Thumbnail dipakai untuk kartu berita,
+                  sedangkan gambar detail dipakai pada halaman detail berita.
+                </p>
+              </div>
             </div>
 
-            <div class="news-studio-preview-panel is-active" data-news-panel="card">
-              <article class="news-studio-card-preview">
-                <div class="news-studio-card-preview-image" data-news-card-image>
-                  {% if thumb_url %}
-                    <img src="{{ thumb_url }}" alt="Preview thumbnail">
+            <div class="news-editor-media-grid">
+              <div class="news-editor-media-field">
+                <label>Thumbnail Kartu</label>
+                <div class="news-editor-image-preview" data-news-image-box="thumbnail">
+                  {% if thumbnail_value %}
+                    <img src="{{ media_src(thumbnail_value) }}" alt="Thumbnail berita" data-news-image-preview="thumbnail">
                   {% else %}
-                    <span>Thumbnail</span>
+                    <span data-news-image-empty="thumbnail">Belum ada thumbnail</span>
+                    <img alt="Thumbnail berita" data-news-image-preview="thumbnail" hidden>
                   {% endif %}
                 </div>
 
-                <div class="news-studio-card-preview-body">
-                  <small data-news-preview-meta>KODE {{ kode_berita }} · {{ current_group|upper }}</small>
-                  <h3 data-news-preview-title>{{ berita.judul if is_edit and berita.judul else 'Judul berita tampil di sini' }}</h3>
-                  <p data-news-preview-summary>{{ berita.subjudul if is_edit and berita.subjudul else 'Ringkasan berita tampil di sini.' }}</p>
-                </div>
-              </article>
-            </div>
+                <input type="file" name="thumbnail_file" accept="image/*" data-news-file="thumbnail">
+                <small>Disarankan rasio 1450 × 1000 px.</small>
+              </div>
 
-            <div class="news-studio-preview-panel" data-news-panel="detail">
-              <article class="news-studio-detail-preview">
-                <div class="news-studio-detail-preview-image" data-news-detail-image>
-                  {% if detail_url %}
-                    <img src="{{ detail_url }}" alt="Preview detail">
+              <div class="news-editor-media-field">
+                <label>Gambar Detail</label>
+                <div class="news-editor-image-preview is-wide" data-news-image-box="detail">
+                  {% if detail_value %}
+                    <img src="{{ media_src(detail_value) }}" alt="Gambar detail berita" data-news-image-preview="detail">
                   {% else %}
-                    <span>Gambar detail</span>
+                    <span data-news-image-empty="detail">Belum ada gambar detail</span>
+                    <img alt="Gambar detail berita" data-news-image-preview="detail" hidden>
                   {% endif %}
                 </div>
 
-                <h3 data-news-detail-title>{{ berita.judul if is_edit and berita.judul else 'Judul berita' }}</h3>
-                <p data-news-detail-content>{{ berita.isi if is_edit and berita.isi else 'Isi berita akan tampil di sini.' }}</p>
-              </article>
+                <input type="file" name="detail_file" accept="image/*" data-news-file="detail">
+                <small>Disarankan rasio 1600 × 900 px.</small>
+              </div>
+            </div>
+          </section>
+
+          {% if is_edit %}
+            <section class="news-editor-danger">
+              <div>
+                <h2>Zona Hapus</h2>
+                <p>Hapus berita hanya jika konten ini benar-benar tidak diperlukan lagi.</p>
+              </div>
+
+              <button
+                class="fft-btn fft-btn-light"
+                type="submit"
+                formaction="{{ url_for('admin_berita_delete', berita_id=item.id) }}"
+                formmethod="POST"
+                data-news-delete-submit
+              >
+                Hapus Berita
+              </button>
+            </section>
+          {% endif %}
+        </div>
+
+        <aside class="news-editor-side">
+          <section class="news-editor-save-card">
+            <p class="fft-kicker">Ringkasan</p>
+            <h2>Kode {{ kode_value }}</h2>
+            <p>
+              Setelah menyimpan, kembali ke daftar berita untuk menayangkan
+              atau menyimpan berita sebagai stok.
+            </p>
+
+            <button class="fft-btn fft-btn-primary" type="submit" data-news-save-submit>
+              {{ 'Simpan Perubahan' if is_edit else 'Simpan Berita' }}
+            </button>
+
+            <a class="fft-btn fft-btn-light" href="{{ url_for('admin_berita_list') }}">
+              Batal
+            </a>
+          </section>
+
+          <section class="news-editor-preview-card">
+            <div class="news-editor-preview-tabs">
+              <button type="button" class="is-active" data-news-preview-tab="card">Kartu</button>
+              <button type="button" data-news-preview-tab="detail">Detail</button>
+              <button type="button" data-news-preview-tab="check">Cek</button>
             </div>
 
-            <div class="news-studio-preview-panel" data-news-panel="check">
-              <ul class="news-studio-checklist">
-                <li data-news-check="title">Judul belum dicek.</li>
-                <li data-news-check="summary">Ringkasan belum dicek.</li>
-                <li data-news-check="content">Isi berita belum dicek.</li>
-                <li data-news-check="thumbnail">Thumbnail belum dicek.</li>
-                <li data-news-check="detail">Gambar detail belum dicek.</li>
+            <div class="news-editor-preview-panel is-active" data-news-preview-panel="card">
+              <div class="news-editor-live-card">
+                <div class="news-editor-live-image">
+                  {% if thumbnail_value %}
+                    <img src="{{ media_src(thumbnail_value) }}" alt="Preview thumbnail" data-news-live-image="thumbnail">
+                  {% else %}
+                    <span data-news-live-empty="thumbnail">Thumbnail</span>
+                    <img alt="Preview thumbnail" data-news-live-image="thumbnail" hidden>
+                  {% endif %}
+                </div>
+
+                <div class="news-editor-live-body">
+                  <small data-news-preview-category>Kode {{ kode_value }} · {{ kategori_value }}</small>
+                  <h3 data-news-preview-title>{{ judul_value or 'Judul berita akan muncul di sini' }}</h3>
+                  <p data-news-preview-summary>{{ subjudul_value or 'Ringkasan berita akan muncul di sini.' }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="news-editor-preview-panel" data-news-preview-panel="detail">
+              <div class="news-editor-detail-preview">
+                <div class="news-editor-detail-image">
+                  {% if detail_value %}
+                    <img src="{{ media_src(detail_value) }}" alt="Preview detail" data-news-live-image="detail">
+                  {% else %}
+                    <span data-news-live-empty="detail">Gambar Detail</span>
+                    <img alt="Preview detail" data-news-live-image="detail" hidden>
+                  {% endif %}
+                </div>
+
+                <h3 data-news-preview-title-detail>{{ judul_value or 'Judul berita akan muncul di sini' }}</h3>
+                <p data-news-preview-content>{{ isi_value or 'Isi berita akan muncul di sini.' }}</p>
+              </div>
+            </div>
+
+            <div class="news-editor-preview-panel" data-news-preview-panel="check">
+              <ul class="news-editor-checklist">
+                <li data-news-check="title">Judul berita</li>
+                <li data-news-check="summary">Ringkasan berita</li>
+                <li data-news-check="content">Isi lengkap berita</li>
+                <li data-news-check="thumbnail">Thumbnail kartu</li>
+                <li data-news-check="detail">Gambar detail</li>
               </ul>
             </div>
           </section>
         </aside>
       </form>
-
-      {% if is_edit %}
-        <form class="news-studio-delete" method="POST" action="{{ url_for('admin_berita_delete', berita_id=berita.id) }}" data-news-editor-delete-form>
-          <div>
-            <strong>Zona Hapus</strong>
-            <span>Hapus berita hanya jika konten ini memang tidak diperlukan lagi.</span>
-          </div>
-          <button class="fft-btn fft-btn-light" type="submit">Hapus Berita</button>
-        </form>
-      {% endif %}
     </main>
   </div>
 
-  <div class="news-crop-modal" data-news-crop-modal hidden>
-    <div class="news-crop-backdrop" data-news-crop-cancel></div>
-
-    <section class="news-crop-dialog" role="dialog" aria-modal="true" aria-label="Crop gambar berita">
-      <header class="news-crop-head">
-        <div>
-          <p class="fft-kicker">Crop Manual</p>
-          <h2 data-news-crop-title>Atur Gambar</h2>
-          <span data-news-crop-rule>Geser dan zoom gambar sampai bagian penting masuk frame.</span>
-        </div>
-
-        <button type="button" data-news-crop-cancel aria-label="Tutup">×</button>
-      </header>
-
-      <div class="news-crop-body">
-        <div class="news-crop-stage" data-news-crop-viewport>
-          <img alt="Gambar crop" data-news-crop-image>
-          <span data-news-crop-size-label>Crop</span>
-        </div>
-
-        <aside class="news-crop-tools">
-          <strong>Atur posisi gambar</strong>
-          <p>Drag gambar untuk mengatur posisi. Pakai zoom jika objek terlalu kecil.</p>
-
-          <label>
-            <span>Zoom</span>
-            <input type="range" min="1" max="3" step="0.01" value="1" data-news-crop-zoom>
-          </label>
-
-          <button class="fft-btn fft-btn-light" type="button" data-news-crop-reset>Reset</button>
-          <button class="fft-btn fft-btn-light" type="button" data-news-crop-cancel>Batal</button>
-          <button class="fft-btn fft-btn-primary" type="button" data-news-crop-apply>Terapkan Crop</button>
-        </aside>
-      </div>
-    </section>
-  </div>
-
   <script src="{{ url_for('static', filename='admin/js/admin-news-editor.js') }}"></script>
+
+<!-- NEWS_IMAGE_CROP_MODAL_START -->
+<div class="news-crop-modal" id="newsImageCropModal" hidden aria-hidden="true">
+  <div class="news-crop-dialog" role="dialog" aria-modal="true" aria-labelledby="newsCropTitle">
+    <div class="news-crop-header">
+      <div>
+        <p class="news-crop-kicker">Crop Manual</p>
+        <h2 id="newsCropTitle">Atur Potongan Gambar</h2>
+        <p id="newsCropHelp">Geser gambar dan atur zoom sampai komposisi terlihat rapi.</p>
+      </div>
+      <button type="button" class="news-crop-close" data-news-crop-cancel aria-label="Tutup">×</button>
+    </div>
+
+    <div class="news-crop-body">
+      <div class="news-crop-stage" data-news-crop-stage>
+        <img alt="Gambar yang akan dipotong" data-news-crop-image>
+        <div class="news-crop-frame" data-news-crop-frame>
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="news-crop-control">
+        <label for="newsCropZoom">Zoom gambar</label>
+        <input id="newsCropZoom" type="range" min="1" max="3" step="0.01" value="1" data-news-crop-zoom>
+      </div>
+    </div>
+
+    <div class="news-crop-footer">
+      <button type="button" class="btn btn-secondary" data-news-crop-reset>Reset</button>
+      <button type="button" class="btn btn-secondary" data-news-crop-cancel>Batal</button>
+      <button type="button" class="btn btn-primary" data-news-crop-apply>Gunakan Hasil Crop</button>
+    </div>
+  </div>
+</div>
+<!-- NEWS_IMAGE_CROP_MODAL_END -->
+
 </body>
 </html>

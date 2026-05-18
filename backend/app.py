@@ -3395,23 +3395,144 @@ def admin_berita_list():
     )
 
 
-@app.route("/admin/berita/add")
+
+@app.route("/admin/berita/add", methods=["GET", "POST"])
 def admin_berita_add():
-    if not is_logged_in():
+    if not session.get("logged_in") and not session.get("is_logged_in"):
         return redirect(url_for("admin_login"))
 
-    return render_template(
-        "admin_berita_form.html",
-        berita=None,
-        form_publish_mode="now",
-        berita_thumb_crop_width=BERITA_THUMB_CROP_WIDTH,
-        berita_thumb_crop_height=BERITA_THUMB_CROP_HEIGHT,
-        berita_detail_crop_width=BERITA_DETAIL_CROP_WIDTH,
-        berita_detail_crop_height=BERITA_DETAIL_CROP_HEIGHT,
+    if request.method == "GET":
+        return render_template("admin_berita_form.html", berita=None)
+
+    from pathlib import Path
+    from datetime import datetime
+    from werkzeug.utils import secure_filename
+
+    now = datetime.utcnow()
+
+    def form_value(*names, default=""):
+        for name in names:
+            value = request.form.get(name)
+            if value is not None and str(value).strip() != "":
+                return str(value).strip()
+        return default
+
+    def set_col(obj, names, value):
+        for name in names:
+            if hasattr(obj, name):
+                setattr(obj, name, value)
+
+    def has_col(obj, name):
+        return hasattr(obj, name)
+
+    def allowed_image(filename):
+        if "." not in filename:
+            return False
+        return filename.rsplit(".", 1)[1].lower() in {"jpg", "jpeg", "png", "webp", "gif"}
+
+    def save_upload(file_keys, folder_abs, folder_rel, preferred_name):
+        for key in file_keys:
+            uploaded = request.files.get(key)
+
+            if not uploaded or not uploaded.filename:
+                continue
+
+            filename = secure_filename(uploaded.filename)
+
+            if not filename or not allowed_image(filename):
+                continue
+
+            ext = filename.rsplit(".", 1)[1].lower()
+            final_name = f"{preferred_name}.{ext}"
+
+            folder_abs.mkdir(parents=True, exist_ok=True)
+            uploaded.save(str(folder_abs / final_name))
+
+            return f"{folder_rel}/{final_name}".replace("\\", "/")
+
+        return ""
+
+    judul = form_value("judul", "title", "news_title", default="Judul Berita Baru")
+    ringkasan = form_value("subjudul", "ringkasan", "excerpt", "summary", default="")
+    isi = form_value("isi", "konten", "content", "body", default="")
+    kategori = form_value("group_type", "kategori", "category", default="UMUM").upper()
+
+    berita = Berita()
+
+    last_id = db.session.query(db.func.max(Berita.id)).scalar() or 0
+    next_number = int(last_id) + 1
+    kode = f"{next_number:05d}"
+
+    # Pastikan kode tidak bentrok jika ada data lama.
+    for code_field in ["kode_berita", "kode", "code"]:
+        if hasattr(Berita, code_field):
+            field = getattr(Berita, code_field)
+            while Berita.query.filter(field == kode).first():
+                next_number += 1
+                kode = f"{next_number:05d}"
+            break
+
+
+    import re as _news_slug_re
+    import unicodedata as _news_slug_unicodedata
+
+    slug_source = _news_slug_unicodedata.normalize("NFKD", str(judul or "berita"))
+    slug_source = slug_source.encode("ascii", "ignore").decode("ascii")
+    slug_base = _news_slug_re.sub(r"[^a-z0-9]+", "-", slug_source.lower()).strip("-") or "berita"
+    slug = f"{slug_base}-{kode}"
+
+    set_col(berita, ["kode_berita", "kode", "code"], kode)
+    set_col(berita, ["slug"], slug)
+    set_col(berita, ["judul", "title"], judul)
+    set_col(berita, ["subjudul", "ringkasan", "excerpt", "summary"], ringkasan)
+    set_col(berita, ["isi", "konten", "content", "body"], isi)
+    set_col(berita, ["group_type", "kategori", "category"], kategori)
+
+    # Default berita baru masuk stok dulu, belum tampil di website.
+    set_col(berita, ["is_published"], False)
+    set_col(berita, ["published"], False)
+    set_col(berita, ["needs_publish"], False)
+    set_col(berita, ["publish_status", "status"], "stock")
+    set_col(berita, ["click_count", "views", "view_count"], 0)
+    set_col(berita, ["created_at"], now)
+    set_col(berita, ["updated_at"], now)
+
+    folder_rel = f"uploads/berita/{kode}"
+    folder_abs = Path(app.root_path) / "static" / folder_rel
+
+    thumbnail_path = save_upload(
+        ["thumbnail_file", "thumbnail", "gambar_thumbnail", "gambar_cover"],
+        folder_abs,
+        folder_rel,
+        "thumbnail",
     )
 
+    detail_path = save_upload(
+        ["detail_file", "gambar_detail", "detail", "gambar"],
+        folder_abs,
+        folder_rel,
+        "detail",
+    )
 
-@app.route("/admin/berita/edit/<int:berita_id>")
+    if thumbnail_path:
+        set_col(berita, ["thumbnail", "gambar_thumbnail", "gambar_cover", "image", "image_file"], thumbnail_path)
+
+    if detail_path:
+        set_col(berita, ["gambar_detail", "gambar", "gambar_utama"], detail_path)
+
+    if thumbnail_path and not detail_path:
+        set_col(berita, ["gambar_detail", "gambar", "gambar_utama"], thumbnail_path)
+
+    if detail_path and not thumbnail_path:
+        set_col(berita, ["thumbnail", "gambar_thumbnail", "gambar_cover", "image", "image_file"], detail_path)
+
+    db.session.add(berita)
+    db.session.commit()
+
+    flash("Berita baru berhasil disimpan sebagai stok berita.", "success")
+    return redirect(url_for("admin_berita_list"))
+
+@app.route("/admin/berita/edit/<int:berita_id>", methods=["GET", "POST"])
 def admin_berita_edit(berita_id):
     if not is_logged_in():
         return redirect(url_for("admin_login"))
@@ -4047,6 +4168,271 @@ app.jinja_env.globals["static_media_url"] = static_media_url
 app.jinja_env.globals["berita_media_url"] = berita_media_url
 
 # NEWS_MEDIA_RESOLVER_END
+
+
+
+
+
+
+
+
+# NEWS_CROP_SAVE_INTERCEPT_START
+@app.before_request
+def news_crop_save_intercept():
+    from pathlib import Path
+    from datetime import datetime
+    import re
+    from flask import request, flash, redirect, url_for
+    from werkzeug.utils import secure_filename
+
+    if request.method != "POST":
+        return None
+
+    current_path = request.path.rstrip("/")
+    is_edit_page = re.match(r"^/admin/berita/edit/\d+$", current_path) is not None
+    is_add_page = current_path == "/admin/berita/add"
+
+    if not is_edit_page and not is_add_page:
+        return None
+
+    def safe_redirect_to_list(notice):
+        try:
+            return redirect(url_for("admin_berita_list", notice=notice))
+        except Exception:
+            return redirect(f"/admin/berita/list?notice={notice}")
+
+    def has_attr(obj, name):
+        return hasattr(obj, name)
+
+    def form_value(*names, default=""):
+        for name in names:
+            value = request.form.get(name)
+            if value is not None:
+                return value.strip()
+        return default
+
+    def make_slug(value):
+        text = str(value or "").strip().lower()
+        text = re.sub(r"[^a-z0-9]+", "-", text)
+        text = re.sub(r"-+", "-", text).strip("-")
+        return text or "berita"
+
+    def make_unique_slug(base_slug, current_id=None):
+        if not hasattr(Berita, "slug"):
+            return base_slug
+
+        slug = base_slug
+        counter = 2
+
+        while True:
+            query = Berita.query.filter(Berita.slug == slug)
+
+            if current_id is not None and hasattr(Berita, "id"):
+                query = query.filter(Berita.id != current_id)
+
+            if not query.first():
+                return slug
+
+            slug = f"{base_slug}-{counter}"
+            counter += 1
+
+    def next_kode_berita():
+        rows = Berita.query.all()
+        max_number = 0
+
+        for row in rows:
+            kode = str(getattr(row, "kode_berita", "") or "")
+            match = re.search(r"(\d+)", kode)
+
+            if match:
+                max_number = max(max_number, int(match.group(1)))
+
+        return f"{max_number + 1:05d}"
+
+    def static_root():
+        return Path(__file__).resolve().parent / "static"
+
+    def save_uploaded_file(file_storage, kode, target_kind):
+        if not file_storage or not file_storage.filename:
+            return None
+
+        original = secure_filename(file_storage.filename)
+        ext = Path(original).suffix.lower()
+
+        if ext not in {".jpg", ".jpeg", ".png", ".webp"}:
+            ext = ".jpg"
+
+        final_name = "thumbnail.jpg" if target_kind == "thumbnail" else "detail.jpg"
+
+        folder = static_root() / "uploads" / "berita" / kode
+        folder.mkdir(parents=True, exist_ok=True)
+
+        destination = folder / final_name
+        file_storage.save(destination)
+
+        return f"uploads/berita/{kode}/{final_name}"
+
+    def detect_file_kind(field_name, file_name, order_index):
+        text = f"{field_name} {file_name}".lower()
+
+        if "1450x1000" in text:
+            return "thumbnail"
+
+        if "1600x900" in text:
+            return "detail"
+
+        if any(key in text for key in ["thumbnail", "thumb", "cover", "kartu"]):
+            return "thumbnail"
+
+        if any(key in text for key in ["detail", "utama", "gambar_detail"]):
+            return "detail"
+
+        return "thumbnail" if order_index == 0 else "detail"
+
+    try:
+        is_new_article = is_add_page
+
+        if is_edit_page:
+            berita_id = int(current_path.split("/")[-1])
+            berita = Berita.query.get_or_404(berita_id)
+        else:
+            berita = Berita()
+            kode_baru = next_kode_berita()
+
+            if has_attr(berita, "kode_berita"):
+                berita.kode_berita = kode_baru
+
+            if has_attr(berita, "created_at"):
+                berita.created_at = datetime.now()
+
+            if has_attr(berita, "click_count"):
+                berita.click_count = 0
+
+            if has_attr(berita, "is_published"):
+                berita.is_published = False
+
+            if has_attr(berita, "needs_publish"):
+                berita.needs_publish = False
+
+            if has_attr(berita, "publish_status"):
+                berita.publish_status = "stock"
+
+            db.session.add(berita)
+
+        kode = str(getattr(berita, "kode_berita", "") or "").strip()
+
+        if not kode:
+            kode = next_kode_berita()
+
+            if has_attr(berita, "kode_berita"):
+                berita.kode_berita = kode
+
+        judul = form_value(
+            "judul",
+            "title",
+            "judul_berita",
+            default=getattr(berita, "judul", "") or ""
+        )
+
+        subjudul = form_value(
+            "subjudul",
+            "ringkasan",
+            "summary",
+            "excerpt",
+            default=getattr(berita, "subjudul", "") or ""
+        )
+
+        isi = form_value(
+            "isi",
+            "content",
+            "konten",
+            "body",
+            default=getattr(berita, "isi", "") or ""
+        )
+
+        kategori = form_value(
+            "group_type",
+            "kategori",
+            "category",
+            default=getattr(berita, "group_type", "") or "UMUM"
+        )
+
+        final_judul = judul or getattr(berita, "judul", "") or "Tanpa Judul"
+
+        if has_attr(berita, "judul"):
+            berita.judul = final_judul
+
+        if has_attr(berita, "slug"):
+            berita.slug = make_unique_slug(
+                make_slug(final_judul or kode),
+                getattr(berita, "id", None)
+            )
+
+        if has_attr(berita, "subjudul"):
+            berita.subjudul = subjudul
+
+        if has_attr(berita, "isi"):
+            berita.isi = isi
+
+        if has_attr(berita, "group_type"):
+            berita.group_type = kategori or "UMUM"
+
+        if has_attr(berita, "updated_at"):
+            berita.updated_at = datetime.now()
+
+        if has_attr(berita, "needs_publish"):
+            berita.needs_publish = True
+
+        uploaded_files = [
+            (field_name, file_storage)
+            for field_name, file_storage in request.files.items(multi=True)
+            if file_storage and file_storage.filename
+        ]
+
+        used_kinds = set()
+
+        for index, (field_name, file_storage) in enumerate(uploaded_files):
+            kind = detect_file_kind(field_name, file_storage.filename, index)
+
+            if kind in used_kinds:
+                continue
+
+            saved_path = save_uploaded_file(file_storage, kode, kind)
+
+            if not saved_path:
+                continue
+
+            if kind == "thumbnail" and has_attr(berita, "thumbnail"):
+                berita.thumbnail = saved_path
+                used_kinds.add(kind)
+
+            if kind == "detail" and has_attr(berita, "gambar_detail"):
+                berita.gambar_detail = saved_path
+                used_kinds.add(kind)
+
+        db.session.commit()
+
+        if is_new_article:
+            flash(
+                "Berita baru berhasil tersimpan sebagai stok. Silakan tinjau kembali sebelum ditayangkan di website.",
+                "success"
+            )
+            return safe_redirect_to_list("add_saved")
+
+        flash(
+            "Perubahan berita berhasil disimpan. Silakan tinjau kembali di daftar berita sebelum ditayangkan di website.",
+            "success"
+        )
+        return safe_redirect_to_list("edit_saved")
+
+    except Exception as error:
+        db.session.rollback()
+        flash(
+            "Berita belum berhasil disimpan. Periksa kembali data yang diisi, lalu coba simpan ulang.",
+            "error"
+        )
+        return safe_redirect_to_list("save_failed")
+# NEWS_CROP_SAVE_INTERCEPT_END
 
 
 if __name__ == "__main__":
