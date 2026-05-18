@@ -17,6 +17,7 @@ import json
 import shutil
 import uuid
 import re
+import traceback
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 
@@ -3398,158 +3399,47 @@ def admin_berita_list():
 
 @app.route("/admin/berita/add", methods=["GET", "POST"])
 def admin_berita_add():
-    if not session.get("logged_in") and not session.get("is_logged_in"):
+    if not fft_admin_is_logged_in():
         return redirect(url_for("admin_login"))
 
-    if request.method == "GET":
-        return render_template("admin_berita_form.html", berita=None)
+    if request.method == "POST":
+        return fft_save_news_from_request()
 
-    from pathlib import Path
-    from datetime import datetime
-    from werkzeug.utils import secure_filename
-
-    now = datetime.utcnow()
-
-    def form_value(*names, default=""):
-        for name in names:
-            value = request.form.get(name)
-            if value is not None and str(value).strip() != "":
-                return str(value).strip()
-        return default
-
-    def set_col(obj, names, value):
-        for name in names:
-            if hasattr(obj, name):
-                setattr(obj, name, value)
-
-    def has_col(obj, name):
-        return hasattr(obj, name)
-
-    def allowed_image(filename):
-        if "." not in filename:
-            return False
-        return filename.rsplit(".", 1)[1].lower() in {"jpg", "jpeg", "png", "webp", "gif"}
-
-    def save_upload(file_keys, folder_abs, folder_rel, preferred_name):
-        for key in file_keys:
-            uploaded = request.files.get(key)
-
-            if not uploaded or not uploaded.filename:
-                continue
-
-            filename = secure_filename(uploaded.filename)
-
-            if not filename or not allowed_image(filename):
-                continue
-
-            ext = filename.rsplit(".", 1)[1].lower()
-            final_name = f"{preferred_name}.{ext}"
-
-            folder_abs.mkdir(parents=True, exist_ok=True)
-            uploaded.save(str(folder_abs / final_name))
-
-            return f"{folder_rel}/{final_name}".replace("\\", "/")
-
-        return ""
-
-    judul = form_value("judul", "title", "news_title", default="Judul Berita Baru")
-    ringkasan = form_value("subjudul", "ringkasan", "excerpt", "summary", default="")
-    isi = form_value("isi", "konten", "content", "body", default="")
-    kategori = form_value("group_type", "kategori", "category", default="UMUM").upper()
-
-    berita = Berita()
-
-    last_id = db.session.query(db.func.max(Berita.id)).scalar() or 0
-    next_number = int(last_id) + 1
-    kode = f"{next_number:05d}"
-
-    # Pastikan kode tidak bentrok jika ada data lama.
-    for code_field in ["kode_berita", "kode", "code"]:
-        if hasattr(Berita, code_field):
-            field = getattr(Berita, code_field)
-            while Berita.query.filter(field == kode).first():
-                next_number += 1
-                kode = f"{next_number:05d}"
-            break
-
-
-    import re as _news_slug_re
-    import unicodedata as _news_slug_unicodedata
-
-    slug_source = _news_slug_unicodedata.normalize("NFKD", str(judul or "berita"))
-    slug_source = slug_source.encode("ascii", "ignore").decode("ascii")
-    slug_base = _news_slug_re.sub(r"[^a-z0-9]+", "-", slug_source.lower()).strip("-") or "berita"
-    slug = f"{slug_base}-{kode}"
-
-    set_col(berita, ["kode_berita", "kode", "code"], kode)
-    set_col(berita, ["slug"], slug)
-    set_col(berita, ["judul", "title"], judul)
-    set_col(berita, ["subjudul", "ringkasan", "excerpt", "summary"], ringkasan)
-    set_col(berita, ["isi", "konten", "content", "body"], isi)
-    set_col(berita, ["group_type", "kategori", "category"], kategori)
-
-    # Default berita baru masuk stok dulu, belum tampil di website.
-    set_col(berita, ["is_published"], False)
-    set_col(berita, ["published"], False)
-    set_col(berita, ["needs_publish"], False)
-    set_col(berita, ["publish_status", "status"], "stock")
-    set_col(berita, ["click_count", "views", "view_count"], 0)
-    set_col(berita, ["created_at"], now)
-    set_col(berita, ["updated_at"], now)
-
-    folder_rel = f"uploads/berita/{kode}"
-    folder_abs = Path(app.root_path) / "static" / folder_rel
-
-    thumbnail_path = save_upload(
-        ["thumbnail_file", "thumbnail", "gambar_thumbnail", "gambar_cover"],
-        folder_abs,
-        folder_rel,
-        "thumbnail",
+    return render_template(
+        "admin_berita_form.html",
+        berita=None,
+        is_edit=False,
+        form_publish_mode="stock",
+        berita_thumb_crop_width=BERITA_THUMB_CROP_WIDTH,
+        berita_thumb_crop_height=BERITA_THUMB_CROP_HEIGHT,
+        berita_detail_crop_width=BERITA_DETAIL_CROP_WIDTH,
+        berita_detail_crop_height=BERITA_DETAIL_CROP_HEIGHT,
     )
 
-    detail_path = save_upload(
-        ["detail_file", "gambar_detail", "detail", "gambar"],
-        folder_abs,
-        folder_rel,
-        "detail",
-    )
-
-    if thumbnail_path:
-        set_col(berita, ["thumbnail", "gambar_thumbnail", "gambar_cover", "image", "image_file"], thumbnail_path)
-
-    if detail_path:
-        set_col(berita, ["gambar_detail", "gambar", "gambar_utama"], detail_path)
-
-    if thumbnail_path and not detail_path:
-        set_col(berita, ["gambar_detail", "gambar", "gambar_utama"], thumbnail_path)
-
-    if detail_path and not thumbnail_path:
-        set_col(berita, ["thumbnail", "gambar_thumbnail", "gambar_cover", "image", "image_file"], detail_path)
-
-    db.session.add(berita)
-    db.session.commit()
-
-    flash("Berita baru berhasil disimpan sebagai stok berita.", "success")
-    return redirect(url_for("admin_berita_list"))
 
 @app.route("/admin/berita/edit/<int:berita_id>", methods=["GET", "POST"])
 def admin_berita_edit(berita_id):
-    if not is_logged_in():
+    if not fft_admin_is_logged_in():
         return redirect(url_for("admin_login"))
+
+    if request.method == "POST":
+        return fft_save_news_from_request(berita_id)
 
     berita = Berita.query.get_or_404(berita_id)
 
-    form_publish_mode = "now"
-    if (
-        berita.is_published
-        and berita.tayang_pada
-        and (berita.published_at is None or berita.tayang_pada > datetime.utcnow())
-    ):
+    form_publish_mode = "stock"
+
+    if bool(getattr(berita, "is_published", False)):
+        form_publish_mode = "published"
+
+    scheduled_at = getattr(berita, "scheduled_at", None) or getattr(berita, "tayang_pada", None)
+    if scheduled_at and scheduled_at > datetime.utcnow():
         form_publish_mode = "schedule"
 
     return render_template(
         "admin_berita_form.html",
         berita=berita,
+        is_edit=True,
         form_publish_mode=form_publish_mode,
         berita_thumb_crop_width=BERITA_THUMB_CROP_WIDTH,
         berita_thumb_crop_height=BERITA_THUMB_CROP_HEIGHT,
@@ -3576,80 +3466,13 @@ def admin_berita_delete(berita_id):
 
 @app.route("/admin/berita/save", methods=["GET", "POST"])
 def admin_berita_save():
-    if not is_logged_in():
+    if not fft_admin_is_logged_in():
         return redirect(url_for("admin_login"))
 
     if request.method == "GET":
         return redirect(url_for("admin_berita_list"))
 
-    berita_id = request.form.get("berita_id")
-    judul = request.form.get("judul", "").strip()
-    subjudul = request.form.get("subjudul", "").strip()
-    isi = request.form.get("isi", "").strip()
-    group_type = request.form.get("group_type", "umum").strip() or "umum"
-
-    thumbnail_crop_data = request.form.get("thumbnail_crop_data", "").strip()
-    detail_crop_data = request.form.get("detail_crop_data", "").strip()
-
-    thumbnail_file = request.files.get("thumbnail")
-    gambar_detail_file = request.files.get("gambar_detail")
-
-    redirect_target = (
-        url_for("admin_berita_edit", berita_id=int(berita_id))
-        if berita_id
-        else url_for("admin_berita_add")
-    )
-
-    if not judul or not isi:
-        flash("Judul dan isi berita wajib diisi.", "danger")
-        return redirect(redirect_target)
-
-    if thumbnail_file and thumbnail_file.filename and not thumbnail_crop_data:
-        flash("Thumbnail frontend wajib dicrop terlebih dahulu.", "danger")
-        return redirect(redirect_target)
-
-    if gambar_detail_file and gambar_detail_file.filename and not detail_crop_data:
-        flash("Gambar halaman detail wajib dicrop terlebih dahulu.", "danger")
-        return redirect(redirect_target)
-
-    if berita_id:
-        berita = Berita.query.get_or_404(int(berita_id))
-        kode_berita = berita.kode_berita or generate_next_kode_berita()
-        berita.kode_berita = kode_berita
-        slug_baru = generate_berita_slug(judul, exclude_id=berita.id)
-    else:
-        berita = None
-        kode_berita = generate_next_kode_berita()
-        slug_baru = generate_berita_slug(judul)
-
-        if not thumbnail_file or not thumbnail_file.filename:
-            flash("Thumbnail frontend berita wajib diupload.", "danger")
-            return redirect(redirect_target)
-
-        if not gambar_detail_file or not gambar_detail_file.filename:
-            flash("Gambar halaman detail berita wajib diupload.", "danger")
-            return redirect(redirect_target)
-
-    thumbnail_path = (
-        save_berita_thumbnail(thumbnail_file, kode_berita, thumbnail_crop_data)
-        if (thumbnail_file and thumbnail_file.filename) or thumbnail_crop_data
-        else None
-    )
-
-    gambar_detail_path = (
-        save_berita_detail(gambar_detail_file, kode_berita, detail_crop_data)
-        if (gambar_detail_file and gambar_detail_file.filename) or detail_crop_data
-        else None
-    )
-
-    if thumbnail_path is False or gambar_detail_path is False:
-        flash(
-            "Format file tidak didukung atau crop gagal diproses. Gunakan PNG, JPG, JPEG, atau WEBP.",
-            "danger",
-        )
-        return redirect(redirect_target)
-
-    now = datetime.utcnow()
+    return fft_save_news_from_request()
 
 
 @app.route("/admin/berita/publish", methods=["POST"])
@@ -4176,264 +3999,1997 @@ app.jinja_env.globals["berita_media_url"] = berita_media_url
 
 
 
-# NEWS_CROP_SAVE_INTERCEPT_START
-@app.before_request
-def news_crop_save_intercept():
-    from pathlib import Path
-    from datetime import datetime
-    import re
-    from flask import request, flash, redirect, url_for
-    from werkzeug.utils import secure_filename
 
-    if request.method != "POST":
-        return None
 
-    current_path = request.path.rstrip("/")
-    is_edit_page = re.match(r"^/admin/berita/edit/\d+$", current_path) is not None
-    is_add_page = current_path == "/admin/berita/add"
 
-    if not is_edit_page and not is_add_page:
-        return None
+# CRUD_STABILITY_HELPERS_START
 
-    def safe_redirect_to_list(notice):
-        try:
-            return redirect(url_for("admin_berita_list", notice=notice))
-        except Exception:
-            return redirect(f"/admin/berita/list?notice={notice}")
+def fft_admin_is_logged_in():
+    return bool(session.get("logged_in") or session.get("is_logged_in"))
 
-    def has_attr(obj, name):
-        return hasattr(obj, name)
 
-    def form_value(*names, default=""):
-        for name in names:
-            value = request.form.get(name)
-            if value is not None:
-                return value.strip()
-        return default
+def fft_set_if_exists(obj, field, value):
+    if hasattr(obj, field):
+        setattr(obj, field, value)
 
-    def make_slug(value):
-        text = str(value or "").strip().lower()
-        text = re.sub(r"[^a-z0-9]+", "-", text)
-        text = re.sub(r"-+", "-", text).strip("-")
-        return text or "berita"
 
-    def make_unique_slug(base_slug, current_id=None):
-        if not hasattr(Berita, "slug"):
-            return base_slug
+def fft_slugify_text(value):
+    text_value = str(value or "").strip().lower()
+    text_value = re.sub(r"[^a-z0-9]+", "-", text_value)
+    text_value = re.sub(r"-+", "-", text_value).strip("-")
+    return text_value or "berita"
 
-        slug = base_slug
-        counter = 2
 
-        while True:
-            query = Berita.query.filter(Berita.slug == slug)
+def fft_unique_news_slug(title, exclude_id=None):
+    base_slug = fft_slugify_text(title)
+    candidate = base_slug
+    counter = 2
 
-            if current_id is not None and hasattr(Berita, "id"):
-                query = query.filter(Berita.id != current_id)
+    if not hasattr(Berita, "slug"):
+        return candidate
 
-            if not query.first():
-                return slug
+    while True:
+        query = Berita.query.filter(Berita.slug == candidate)
 
-            slug = f"{base_slug}-{counter}"
-            counter += 1
+        if exclude_id:
+            query = query.filter(Berita.id != exclude_id)
 
-    def next_kode_berita():
-        rows = Berita.query.all()
-        max_number = 0
+        if not query.first():
+            return candidate
 
-        for row in rows:
-            kode = str(getattr(row, "kode_berita", "") or "")
-            match = re.search(r"(\d+)", kode)
+        candidate = f"{base_slug}-{counter}"
+        counter += 1
 
-            if match:
-                max_number = max(max_number, int(match.group(1)))
 
-        return f"{max_number + 1:05d}"
+def fft_next_news_code():
+    highest = 0
 
-    def static_root():
-        return Path(__file__).resolve().parent / "static"
+    for item in Berita.query.all():
+        raw_code = str(getattr(item, "kode_berita", "") or "").strip()
 
-    def save_uploaded_file(file_storage, kode, target_kind):
-        if not file_storage or not file_storage.filename:
-            return None
+        if raw_code.isdigit():
+            highest = max(highest, int(raw_code))
 
-        original = secure_filename(file_storage.filename)
-        ext = Path(original).suffix.lower()
+    while True:
+        highest += 1
+        candidate = f"{highest:05d}"
 
-        if ext not in {".jpg", ".jpeg", ".png", ".webp"}:
-            ext = ".jpg"
+        exists = False
+        if hasattr(Berita, "kode_berita"):
+            exists = Berita.query.filter(Berita.kode_berita == candidate).first() is not None
 
-        final_name = "thumbnail.jpg" if target_kind == "thumbnail" else "detail.jpg"
+        if not exists:
+            return candidate
 
-        folder = static_root() / "uploads" / "berita" / kode
-        folder.mkdir(parents=True, exist_ok=True)
 
-        destination = folder / final_name
-        file_storage.save(destination)
+def fft_pick_form(*names, default=""):
+    for name in names:
+        value = request.form.get(name)
 
-        return f"uploads/berita/{kode}/{final_name}"
+        if value is not None and str(value).strip():
+            return str(value).strip()
 
-    def detect_file_kind(field_name, file_name, order_index):
-        text = f"{field_name} {file_name}".lower()
+    return default
 
-        if "1450x1000" in text:
-            return "thumbnail"
 
-        if "1600x900" in text:
-            return "detail"
+def fft_save_news_upload(file_storage, kode_berita, kind, crop_data=""):
+    if kind == "thumbnail":
+        if "save_berita_thumbnail" in globals():
+            return save_berita_thumbnail(file_storage, kode_berita, crop_data)
 
-        if any(key in text for key in ["thumbnail", "thumb", "cover", "kartu"]):
-            return "thumbnail"
+        target_name = "thumbnail"
+    else:
+        if "save_berita_detail" in globals():
+            return save_berita_detail(file_storage, kode_berita, crop_data)
 
-        if any(key in text for key in ["detail", "utama", "gambar_detail"]):
-            return "detail"
+        target_name = "detail"
 
-        return "thumbnail" if order_index == 0 else "detail"
+    if not file_storage or not file_storage.filename:
+        return ""
 
+    folder = os.path.join(BERITA_UPLOAD_FOLDER, kode_berita)
+    os.makedirs(folder, exist_ok=True)
+
+    original = secure_filename(file_storage.filename)
+    ext = os.path.splitext(original)[1].lower() or ".jpg"
+    target_path = os.path.join(folder, f"{target_name}{ext}")
+
+    file_storage.save(target_path)
+
+    return f"uploads/berita/{kode_berita}/{target_name}{ext}"
+
+
+def fft_save_news_from_request(edit_id=None):
     try:
-        is_new_article = is_add_page
+        form_id = request.form.get("berita_id") or request.form.get("id")
 
-        if is_edit_page:
-            berita_id = int(current_path.split("/")[-1])
-            berita = Berita.query.get_or_404(berita_id)
+        if edit_id is None and form_id:
+            edit_id = int(form_id)
+
+        is_edit = edit_id is not None
+        now = datetime.utcnow()
+
+        if is_edit:
+            berita = Berita.query.get_or_404(int(edit_id))
+            kode_berita = str(getattr(berita, "kode_berita", "") or "").zfill(5)
         else:
             berita = Berita()
-            kode_baru = next_kode_berita()
+            kode_berita = fft_next_news_code()
+            fft_set_if_exists(berita, "kode_berita", kode_berita)
+            fft_set_if_exists(berita, "created_at", now)
 
-            if has_attr(berita, "kode_berita"):
-                berita.kode_berita = kode_baru
+        judul = fft_pick_form("judul", "title", default="")
+        subjudul = fft_pick_form("subjudul", "ringkasan", "excerpt", "summary", default="")
+        isi = fft_pick_form("isi", "content", "body", default="")
+        kategori = fft_pick_form("group_type", "kategori", "category", default="UMUM").upper()
 
-            if has_attr(berita, "created_at"):
-                berita.created_at = datetime.now()
+        if not judul:
+            judul = f"Berita {kode_berita}"
 
-            if has_attr(berita, "click_count"):
-                berita.click_count = 0
+        if not subjudul:
+            subjudul = "Ringkasan berita belum diisi."
 
-            if has_attr(berita, "is_published"):
-                berita.is_published = False
+        if not isi:
+            isi = "Isi berita belum diisi."
 
-            if has_attr(berita, "needs_publish"):
-                berita.needs_publish = False
-
-            if has_attr(berita, "publish_status"):
-                berita.publish_status = "stock"
-
-            db.session.add(berita)
-
-        kode = str(getattr(berita, "kode_berita", "") or "").strip()
-
-        if not kode:
-            kode = next_kode_berita()
-
-            if has_attr(berita, "kode_berita"):
-                berita.kode_berita = kode
-
-        judul = form_value(
-            "judul",
-            "title",
-            "judul_berita",
-            default=getattr(berita, "judul", "") or ""
+        thumbnail_file = (
+            request.files.get("thumbnail")
+            or request.files.get("gambar_thumbnail")
+            or request.files.get("image")
+            or request.files.get("image_file")
         )
 
-        subjudul = form_value(
+        detail_file = (
+            request.files.get("gambar_detail")
+            or request.files.get("detail")
+            or request.files.get("gambar")
+            or request.files.get("gambar_utama")
+        )
+
+        thumbnail_crop_data = (
+            request.form.get("thumbnail_crop_data")
+            or request.form.get("thumbnailCropData")
+            or request.form.get("thumbnail_cropped")
+            or ""
+        ).strip()
+
+        detail_crop_data = (
+            request.form.get("detail_crop_data")
+            or request.form.get("gambar_detail_crop_data")
+            or request.form.get("detailCropData")
+            or request.form.get("detail_cropped")
+            or ""
+        ).strip()
+
+        if not is_edit:
+            if not thumbnail_file or not thumbnail_file.filename:
+                flash("Thumbnail berita wajib dipilih sebelum berita disimpan.", "danger")
+                return redirect(url_for("admin_berita_add"))
+
+            if not detail_file or not detail_file.filename:
+                flash("Gambar detail berita wajib dipilih sebelum berita disimpan.", "danger")
+                return redirect(url_for("admin_berita_add"))
+
+        thumbnail_path = ""
+        detail_path = ""
+
+        if (thumbnail_file and thumbnail_file.filename) or thumbnail_crop_data:
+            thumbnail_path = fft_save_news_upload(thumbnail_file, kode_berita, "thumbnail", thumbnail_crop_data)
+
+        if (detail_file and detail_file.filename) or detail_crop_data:
+            detail_path = fft_save_news_upload(detail_file, kode_berita, "detail", detail_crop_data)
+
+        fft_set_if_exists(berita, "judul", judul)
+        fft_set_if_exists(berita, "title", judul)
+        fft_set_if_exists(berita, "slug", fft_unique_news_slug(judul, getattr(berita, "id", None) if is_edit else None))
+        fft_set_if_exists(berita, "subjudul", subjudul)
+        fft_set_if_exists(berita, "ringkasan", subjudul)
+        fft_set_if_exists(berita, "isi", isi)
+        fft_set_if_exists(berita, "content", isi)
+        fft_set_if_exists(berita, "group_type", kategori)
+        fft_set_if_exists(berita, "kategori", kategori)
+
+        if thumbnail_path:
+            fft_set_if_exists(berita, "thumbnail", thumbnail_path)
+            fft_set_if_exists(berita, "gambar_thumbnail", thumbnail_path)
+
+        if detail_path:
+            fft_set_if_exists(berita, "gambar_detail", detail_path)
+            fft_set_if_exists(berita, "gambar", detail_path)
+
+        if not is_edit:
+            fft_set_if_exists(berita, "is_published", False)
+            fft_set_if_exists(berita, "needs_publish", True)
+            fft_set_if_exists(berita, "publish_status", "stock")
+            fft_set_if_exists(berita, "published_at", None)
+            fft_set_if_exists(berita, "tayang_pada", None)
+            fft_set_if_exists(berita, "scheduled_at", None)
+            fft_set_if_exists(berita, "click_count", 0)
+            fft_set_if_exists(berita, "is_new", False)
+            db.session.add(berita)
+        else:
+            if bool(getattr(berita, "is_published", False)):
+                fft_set_if_exists(berita, "needs_publish", True)
+
+        fft_set_if_exists(berita, "updated_at", now)
+
+        db.session.commit()
+
+        if "build_berita_api_payload" in globals() and "write_published_berita_payload" in globals():
+            try:
+                write_published_berita_payload(build_berita_api_payload())
+            except Exception:
+                pass
+
+        if is_edit:
+            flash("Perubahan berita berhasil disimpan. Silakan tinjau kembali sebelum ditayangkan di website.", "success")
+            return redirect(url_for("admin_berita_list", notice="updated"))
+
+        flash("Berita baru berhasil disimpan sebagai stok. Berita dapat ditayangkan dari halaman daftar berita.", "success")
+        return redirect(url_for("admin_berita_list", notice="created"))
+
+    except Exception as error:
+        db.session.rollback()
+        print("NEWS SAVE ERROR:", repr(error))
+        traceback.print_exc()
+        flash("Berita belum berhasil disimpan. Periksa kembali judul, isi, dan gambar berita.", "danger")
+
+        if edit_id:
+            return redirect(url_for("admin_berita_edit", berita_id=edit_id))
+
+        return redirect(url_for("admin_berita_add"))
+
+
+def save_banner_stock_media_file(file_storage, media_type):
+    if not file_storage or not file_storage.filename:
+        return False, "", "File media banner wajib dipilih."
+
+    media_type = str(media_type or "image").strip().lower()
+    filename = secure_filename(file_storage.filename)
+    ext = os.path.splitext(filename)[1].lower()
+
+    image_exts = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+    video_exts = {".mp4", ".webm", ".mov"}
+
+    if media_type == "image" and ext not in image_exts:
+        return False, "", "Format gambar harus JPG, JPEG, PNG, WEBP, atau GIF."
+
+    if media_type == "video" and ext not in video_exts:
+        return False, "", "Format video harus MP4, WEBM, atau MOV."
+
+    if media_type not in {"image", "video"}:
+        return False, "", "Jenis banner tidak valid."
+
+    stock_folder = os.path.join(BANNER_UPLOAD_FOLDER, "stock")
+    os.makedirs(stock_folder, exist_ok=True)
+
+    stored_name = f"stock_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex[:10]}{ext}"
+    absolute_path = os.path.join(stock_folder, stored_name)
+
+    file_storage.save(absolute_path)
+
+    return True, f"uploads/banner_informasi/stock/{stored_name}", ""
+
+
+def copy_banner_stock_to_active_media(stock_media_path):
+    value = str(stock_media_path or "").strip().replace("\\", "/").lstrip("/")
+
+    if not value:
+        return False, "", "Media stok banner tidak ditemukan."
+
+    if value.startswith("backend/static/"):
+        value = value[len("backend/static/"):]
+
+    if value.startswith("static/"):
+        value = value[len("static/"):]
+
+    source_path = os.path.join(BASE_DIR, "static", value)
+
+    if not os.path.exists(source_path):
+        return False, "", "File media stok banner tidak ditemukan di storage."
+
+    ext = os.path.splitext(source_path)[1].lower() or ".jpg"
+    active_folder = os.path.join(BANNER_UPLOAD_FOLDER, "single")
+    os.makedirs(active_folder, exist_ok=True)
+
+    try:
+        if "clear_old_banner_media_files" in globals():
+            clear_old_banner_media_files(active_folder)
+        else:
+            for old_name in os.listdir(active_folder):
+                if old_name.startswith("media."):
+                    old_path = os.path.join(active_folder, old_name)
+                    if os.path.isfile(old_path):
+                        os.remove(old_path)
+    except Exception:
+        pass
+
+    active_name = f"media{ext}"
+    destination_path = os.path.join(active_folder, active_name)
+    shutil.copy2(source_path, destination_path)
+
+    return True, f"uploads/banner_informasi/single/{active_name}", ""
+
+# CRUD_STABILITY_HELPERS_END
+
+# PANIC_NEWS_BANNER_CRUD_LOCK_START
+from pathlib import Path as _panic_Path
+from datetime import datetime as _panic_datetime
+import os as _panic_os
+import re as _panic_re
+import uuid as _panic_uuid
+import shutil as _panic_shutil
+import traceback as _panic_traceback
+
+try:
+    from werkzeug.utils import secure_filename as _panic_secure_filename
+except Exception:
+    _panic_secure_filename = None
+
+
+def _panic_logged_in():
+    return bool(session.get("logged_in") or session.get("is_logged_in"))
+
+
+def _panic_static_root():
+    return _panic_Path(__file__).resolve().parent / "static"
+
+
+def _panic_news_columns():
+    return {column.name: column for column in Berita.__table__.columns}
+
+
+def _panic_news_pk_name():
+    primary_keys = list(Berita.__table__.primary_key.columns)
+    return primary_keys[0].name if primary_keys else "id"
+
+
+def _panic_put(values, names, value):
+    columns = _panic_news_columns()
+    for name in names:
+        if name in columns:
+            values[name] = value
+            return True
+    return False
+
+
+def _panic_get(obj, names, default=""):
+    if obj is None:
+        return default
+    for name in names:
+        if hasattr(obj, name):
+            value = getattr(obj, name)
+            if value is not None and str(value).strip() != "":
+                return value
+    return default
+
+
+def _panic_slugify(value):
+    value = str(value or "").strip().lower()
+    value = _panic_re.sub(r"[^a-z0-9]+", "-", value)
+    value = _panic_re.sub(r"-+", "-", value).strip("-")
+    return value or "berita"
+
+
+def _panic_unique_slug(title, exclude_id=None):
+    slug_base = _panic_slugify(title)
+    slug = slug_base
+
+    if not hasattr(Berita, "slug"):
+        return slug
+
+    pk_name = _panic_news_pk_name()
+    pk_attr = getattr(Berita, pk_name, None)
+
+    counter = 2
+    while True:
+        query = Berita.query.filter(getattr(Berita, "slug") == slug)
+
+        if exclude_id is not None and pk_attr is not None:
+            query = query.filter(pk_attr != int(exclude_id))
+
+        if query.first() is None:
+            return slug
+
+        slug = f"{slug_base}-{counter}"
+        counter += 1
+
+
+def _panic_next_news_code():
+    code_attr = None
+
+    for name in ["kode_berita", "kode", "code"]:
+        if hasattr(Berita, name):
+            code_attr = getattr(Berita, name)
+            break
+
+    used = set()
+
+    if code_attr is not None:
+        try:
+            for row in db.session.query(code_attr).all():
+                raw = row[0] if isinstance(row, tuple) else row
+                match = _panic_re.search(r"(\d+)", str(raw or ""))
+                if match:
+                    used.add(int(match.group(1)))
+        except Exception:
+            pass
+
+    number = 1
+    while number in used:
+        number += 1
+
+    return f"{number:05d}"
+
+
+def _panic_form(*names, default=""):
+    for name in names:
+        value = request.form.get(name)
+        if value is not None and str(value).strip():
+            return str(value).strip()
+    return default
+
+
+def _panic_all_uploaded_files():
+    files = []
+    try:
+        for key in request.files:
+            for item in request.files.getlist(key):
+                if item and getattr(item, "filename", ""):
+                    files.append(item)
+    except Exception:
+        pass
+    return files
+
+
+def _panic_file_by_names(names, index=None):
+    for name in names:
+        item = request.files.get(name)
+        if item and getattr(item, "filename", ""):
+            return item
+
+    files = _panic_all_uploaded_files()
+
+    if index is not None and len(files) > index:
+        return files[index]
+
+    return None
+
+
+def _panic_news_folder(kode):
+    folder = _panic_static_root() / "uploads" / "berita" / str(kode)
+    folder.mkdir(parents=True, exist_ok=True)
+    return folder
+
+
+def _panic_save_news_image(file_storage, kode, kind):
+    if not file_storage or not getattr(file_storage, "filename", ""):
+        return ""
+
+    folder = _panic_news_folder(kode)
+
+    try:
+        from PIL import Image, ImageOps
+
+        try:
+            file_storage.stream.seek(0)
+        except Exception:
+            pass
+
+        image = Image.open(file_storage.stream)
+        image = ImageOps.exif_transpose(image)
+
+        if image.mode != "RGB":
+            image = image.convert("RGB")
+
+        target = folder / f"{kind}.jpg"
+        image.save(target, "JPEG", quality=92, optimize=True)
+
+        return f"uploads/berita/{kode}/{kind}.jpg"
+
+    except Exception:
+        try:
+            try:
+                file_storage.stream.seek(0)
+            except Exception:
+                pass
+
+            filename = file_storage.filename or f"{kind}.jpg"
+
+            if _panic_secure_filename:
+                filename = _panic_secure_filename(filename)
+
+            ext = _panic_os.path.splitext(filename)[1].lower()
+
+            if ext not in [".jpg", ".jpeg", ".png", ".webp", ".gif"]:
+                ext = ".jpg"
+
+            target = folder / f"{kind}{ext}"
+            file_storage.save(str(target))
+
+            return f"uploads/berita/{kode}/{kind}{ext}"
+
+        except Exception:
+            return ""
+
+
+def _panic_column_default(column, now):
+    type_name = column.type.__class__.__name__.lower()
+
+    if "bool" in type_name:
+        return False
+
+    if "int" in type_name:
+        return 0
+
+    if "float" in type_name or "numeric" in type_name or "decimal" in type_name:
+        return 0
+
+    if "datetime" in type_name:
+        return now
+
+    if type_name == "date":
+        return now.date()
+
+    return ""
+
+
+def _panic_fill_required(values, now):
+    for column in Berita.__table__.columns:
+        name = column.name
+
+        if column.primary_key:
+            continue
+
+        if name in values:
+            if values[name] is None and not column.nullable:
+                values[name] = _panic_column_default(column, now)
+            continue
+
+        if column.nullable:
+            continue
+
+        if column.default is not None or column.server_default is not None:
+            continue
+
+        values[name] = _panic_column_default(column, now)
+
+    return values
+
+
+def _panic_put_optional_datetime(values, names, now):
+    columns = _panic_news_columns()
+
+    for name in names:
+        column = columns.get(name)
+        if column is None:
+            continue
+
+        values[name] = None if column.nullable else now
+        return True
+
+    return False
+
+
+def _panic_build_news_values(kode, title, summary, body, category, thumbnail_path, detail_path, now, is_edit=False, berita_id=None, current=None):
+    values = {}
+
+    _panic_put(values, ["kode_berita", "kode", "code"], kode)
+    _panic_put(values, ["judul", "title", "headline"], title)
+    _panic_put(values, ["slug"], _panic_unique_slug(title, berita_id))
+    _panic_put(values, ["subjudul", "ringkasan", "summary", "excerpt", "description"], summary)
+    _panic_put(values, ["isi", "konten", "content", "body", "artikel"], body)
+    _panic_put(values, ["group_type", "kategori", "category", "jenis"], category)
+
+    _panic_put(values, ["thumbnail", "gambar_thumbnail", "thumbnail_path", "image", "image_file"], thumbnail_path)
+    _panic_put(values, ["gambar_detail", "detail", "detail_image", "gambar", "gambar_utama"], detail_path)
+
+    _panic_put(values, ["updated_at"], now)
+
+    if not is_edit:
+        _panic_put(values, ["created_at"], now)
+        _panic_put(values, ["is_published", "published"], False)
+        _panic_put(values, ["needs_publish"], False)
+        _panic_put(values, ["publish_status", "status"], "stock")
+        _panic_put(values, ["click_count", "views", "view_count"], 0)
+        _panic_put(values, ["is_new"], False)
+
+        _panic_put_optional_datetime(values, ["published_at"], now)
+        _panic_put_optional_datetime(values, ["tayang_pada"], now)
+        _panic_put_optional_datetime(values, ["scheduled_at"], now)
+        _panic_put_optional_datetime(values, ["last_previewed_at"], now)
+        _panic_put_optional_datetime(values, ["new_until"], now)
+
+    else:
+        is_published = bool(_panic_get(current, ["is_published", "published"], False))
+        if is_published:
+            _panic_put(values, ["needs_publish"], True)
+
+    return _panic_fill_required(values, now)
+
+
+def _panic_publish_news_snapshot_safe():
+    try:
+        if callable(globals().get("publish_berita_snapshot")):
+            publish_berita_snapshot()
+            return
+
+        if callable(globals().get("build_berita_api_payload")) and callable(globals().get("write_published_berita_payload")):
+            write_published_berita_payload(build_berita_api_payload())
+            return
+
+        if callable(globals().get("build_berita_payload")) and callable(globals().get("write_published_berita_payload")):
+            write_published_berita_payload(build_berita_payload())
+            return
+    except Exception:
+        pass
+
+
+def _panic_save_news(berita_id=None):
+    now = _panic_datetime.utcnow()
+
+    try:
+        form_id = request.form.get("berita_id") or request.form.get("id")
+        if berita_id is None and form_id:
+            berita_id = int(form_id)
+
+        is_edit = berita_id is not None
+        current = Berita.query.get(int(berita_id)) if is_edit else None
+
+        if is_edit and current is None:
+            flash("Berita tidak ditemukan.", "danger")
+            return redirect(url_for("admin_berita_list"))
+
+        kode = str(_panic_get(current, ["kode_berita", "kode", "code"], "") or "").strip()
+        if not kode:
+            kode = _panic_next_news_code()
+
+        title = _panic_form(
+            "judul",
+            "title",
+            "headline",
+            "nama_berita",
+            default="",
+        )
+
+        summary = _panic_form(
             "subjudul",
             "ringkasan",
             "summary",
             "excerpt",
-            default=getattr(berita, "subjudul", "") or ""
+            "description",
+            default="",
         )
 
-        isi = form_value(
+        body = _panic_form(
             "isi",
-            "content",
             "konten",
+            "content",
             "body",
-            default=getattr(berita, "isi", "") or ""
+            "artikel",
+            default="",
         )
 
-        kategori = form_value(
+        category = _panic_form(
             "group_type",
             "kategori",
             "category",
-            default=getattr(berita, "group_type", "") or "UMUM"
+            "jenis",
+            default="UMUM",
         )
 
-        final_judul = judul or getattr(berita, "judul", "") or "Tanpa Judul"
+        if not title:
+            title = "Berita Tanpa Judul"
 
-        if has_attr(berita, "judul"):
-            berita.judul = final_judul
+        if not summary:
+            summary = title
 
-        if has_attr(berita, "slug"):
-            berita.slug = make_unique_slug(
-                make_slug(final_judul or kode),
-                getattr(berita, "id", None)
+        if not body:
+            body = summary
+
+        existing_thumbnail = str(_panic_get(current, ["thumbnail", "gambar_thumbnail", "thumbnail_path", "image", "image_file"], "") or "").strip()
+        existing_detail = str(_panic_get(current, ["gambar_detail", "detail", "detail_image", "gambar", "gambar_utama"], "") or "").strip()
+
+        thumbnail_file = _panic_file_by_names(
+            [
+                "thumbnail",
+                "thumbnail_file",
+                "gambar_thumbnail",
+                "gambar_thumbnail_file",
+                "thumb",
+                "thumb_file",
+                "image",
+                "image_file",
+                "foto",
+                "thumbnail_input",
+            ],
+            0,
+        )
+
+        detail_file = _panic_file_by_names(
+            [
+                "gambar_detail",
+                "gambar_detail_file",
+                "detail",
+                "detail_file",
+                "gambar",
+                "gambar_utama",
+                "gambar_utama_file",
+                "main_image",
+            ],
+            1,
+        )
+
+        thumbnail_path = _panic_save_news_image(thumbnail_file, kode, "thumbnail") or existing_thumbnail
+        detail_path = _panic_save_news_image(detail_file, kode, "detail") or existing_detail
+
+        if thumbnail_path and not detail_path:
+            detail_path = thumbnail_path
+
+        if detail_path and not thumbnail_path:
+            thumbnail_path = detail_path
+
+        if not thumbnail_path:
+            thumbnail_path = f"uploads/berita/{kode}/thumbnail.jpg"
+
+        if not detail_path:
+            detail_path = thumbnail_path
+
+        values = _panic_build_news_values(
+            kode,
+            title,
+            summary,
+            body,
+            category,
+            thumbnail_path,
+            detail_path,
+            now,
+            is_edit=is_edit,
+            berita_id=berita_id,
+            current=current,
+        )
+
+        table = Berita.__table__
+
+        if is_edit:
+            pk_name = _panic_news_pk_name()
+            db.session.execute(
+                table.update()
+                .where(table.c[pk_name] == int(berita_id))
+                .values(**values)
             )
-
-        if has_attr(berita, "subjudul"):
-            berita.subjudul = subjudul
-
-        if has_attr(berita, "isi"):
-            berita.isi = isi
-
-        if has_attr(berita, "group_type"):
-            berita.group_type = kategori or "UMUM"
-
-        if has_attr(berita, "updated_at"):
-            berita.updated_at = datetime.now()
-
-        if has_attr(berita, "needs_publish"):
-            berita.needs_publish = True
-
-        uploaded_files = [
-            (field_name, file_storage)
-            for field_name, file_storage in request.files.items(multi=True)
-            if file_storage and file_storage.filename
-        ]
-
-        used_kinds = set()
-
-        for index, (field_name, file_storage) in enumerate(uploaded_files):
-            kind = detect_file_kind(field_name, file_storage.filename, index)
-
-            if kind in used_kinds:
-                continue
-
-            saved_path = save_uploaded_file(file_storage, kode, kind)
-
-            if not saved_path:
-                continue
-
-            if kind == "thumbnail" and has_attr(berita, "thumbnail"):
-                berita.thumbnail = saved_path
-                used_kinds.add(kind)
-
-            if kind == "detail" and has_attr(berita, "gambar_detail"):
-                berita.gambar_detail = saved_path
-                used_kinds.add(kind)
+            notice = "updated"
+            message = "Perubahan berita berhasil disimpan. Silakan tinjau kembali sebelum berita ditayangkan di website."
+        else:
+            db.session.execute(table.insert().values(**values))
+            notice = "created"
+            message = "Berita baru berhasil disimpan sebagai stok berita. Berita dapat ditayangkan dari halaman Kelola Berita."
 
         db.session.commit()
+        _panic_publish_news_snapshot_safe()
 
-        if is_new_article:
-            flash(
-                "Berita baru berhasil tersimpan sebagai stok. Silakan tinjau kembali sebelum ditayangkan di website.",
-                "success"
-            )
-            return safe_redirect_to_list("add_saved")
-
-        flash(
-            "Perubahan berita berhasil disimpan. Silakan tinjau kembali di daftar berita sebelum ditayangkan di website.",
-            "success"
-        )
-        return safe_redirect_to_list("edit_saved")
+        flash(message, "success")
+        return redirect(url_for("admin_berita_list", notice=notice))
 
     except Exception as error:
         db.session.rollback()
-        flash(
-            "Berita belum berhasil disimpan. Periksa kembali data yang diisi, lalu coba simpan ulang.",
-            "error"
+
+        print("\n=== PANIC NEWS SAVE ERROR ASLI ===")
+        print(repr(error))
+        _panic_traceback.print_exc()
+        print("=== END PANIC NEWS SAVE ERROR ASLI ===\n")
+
+        flash("Berita belum berhasil disimpan karena terjadi kesalahan teknis. Detail error sudah ditampilkan di terminal.", "danger")
+
+        if berita_id:
+            return redirect(url_for("admin_berita_edit", berita_id=berita_id))
+
+        return redirect(url_for("admin_berita_list", notice="save_failed"))
+
+
+def _panic_admin_berita_add():
+    if not _panic_logged_in():
+        return redirect(url_for("admin_login"))
+
+    if request.method == "POST":
+        return _panic_save_news()
+
+    return render_template(
+        "admin_berita_form.html",
+        berita=None,
+        is_edit=False,
+        form_publish_mode="stock",
+        berita_thumb_crop_width=globals().get("BERITA_THUMB_CROP_WIDTH", 1450),
+        berita_thumb_crop_height=globals().get("BERITA_THUMB_CROP_HEIGHT", 1000),
+        berita_detail_crop_width=globals().get("BERITA_DETAIL_CROP_WIDTH", 1600),
+        berita_detail_crop_height=globals().get("BERITA_DETAIL_CROP_HEIGHT", 900),
+    )
+
+
+def _panic_admin_berita_edit(berita_id):
+    if not _panic_logged_in():
+        return redirect(url_for("admin_login"))
+
+    if request.method == "POST":
+        return _panic_save_news(berita_id)
+
+    berita = Berita.query.get_or_404(int(berita_id))
+
+    return render_template(
+        "admin_berita_form.html",
+        berita=berita,
+        is_edit=True,
+        form_publish_mode="published" if bool(_panic_get(berita, ["is_published", "published"], False)) else "stock",
+        berita_thumb_crop_width=globals().get("BERITA_THUMB_CROP_WIDTH", 1450),
+        berita_thumb_crop_height=globals().get("BERITA_THUMB_CROP_HEIGHT", 1000),
+        berita_detail_crop_width=globals().get("BERITA_DETAIL_CROP_WIDTH", 1600),
+        berita_detail_crop_height=globals().get("BERITA_DETAIL_CROP_HEIGHT", 900),
+    )
+
+
+def _panic_admin_berita_save():
+    if not _panic_logged_in():
+        return redirect(url_for("admin_login"))
+
+    if request.method == "GET":
+        return redirect(url_for("admin_berita_list"))
+
+    berita_id = request.form.get("berita_id") or request.form.get("id")
+
+    if berita_id:
+        return _panic_save_news(int(berita_id))
+
+    return _panic_save_news()
+
+
+def save_banner_stock_media_file(file_storage, media_type):
+    if not file_storage or not getattr(file_storage, "filename", ""):
+        return False, "", "File banner wajib dipilih."
+
+    media_type = str(media_type or "image").strip().lower()
+
+    filename = file_storage.filename or "banner.jpg"
+    if _panic_secure_filename:
+        filename = _panic_secure_filename(filename)
+
+    ext = _panic_os.path.splitext(filename)[1].lower()
+
+    image_exts = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+    video_exts = {".mp4", ".webm", ".mov", ".m4v"}
+
+    if media_type == "video":
+        allowed = video_exts
+        fallback_ext = ".mp4"
+    else:
+        allowed = image_exts
+        fallback_ext = ".jpg"
+        media_type = "image"
+
+    if ext not in allowed:
+        ext = fallback_ext
+
+    folder = _panic_static_root() / "uploads" / "banner_informasi" / "stock"
+    folder.mkdir(parents=True, exist_ok=True)
+
+    stored_name = f"stock_{_panic_datetime.utcnow().strftime('%Y%m%d%H%M%S')}_{_panic_uuid.uuid4().hex[:10]}{ext}"
+    target = folder / stored_name
+
+    try:
+        file_storage.stream.seek(0)
+    except Exception:
+        pass
+
+    file_storage.save(str(target))
+
+    return True, f"uploads/banner_informasi/stock/{stored_name}", "Banner berhasil disimpan sebagai stok."
+
+
+def copy_banner_stock_to_active_media(stock_media_path):
+    value = str(stock_media_path or "").strip().replace("\\", "/").lstrip("/")
+
+    if value.startswith("backend/static/"):
+        value = value[len("backend/static/"):]
+
+    if value.startswith("static/"):
+        value = value[len("static/"):]
+
+    if value.startswith("/static/"):
+        value = value[len("/static/"):]
+
+    source = _panic_static_root() / value
+
+    if not value or not source.exists():
+        return False, "", "File stok banner tidak ditemukan."
+
+    ext = source.suffix.lower() or ".jpg"
+
+    active_folder = _panic_static_root() / "uploads" / "banner_informasi" / "single"
+    active_folder.mkdir(parents=True, exist_ok=True)
+
+    for old_file in active_folder.glob("media.*"):
+        try:
+            old_file.unlink()
+        except Exception:
+            pass
+
+    target = active_folder / f"media{ext}"
+    _panic_shutil.copy2(str(source), str(target))
+
+    return True, f"uploads/banner_informasi/single/media{ext}", "Banner berhasil dijadikan tampilan aktif."
+
+
+globals()["save_banner_stock_media_file"] = save_banner_stock_media_file
+globals()["copy_banner_stock_to_active_media"] = copy_banner_stock_to_active_media
+
+app.view_functions["admin_berita_add"] = _panic_admin_berita_add
+app.view_functions["admin_berita_edit"] = _panic_admin_berita_edit
+app.view_functions["admin_berita_save"] = _panic_admin_berita_save
+
+# PANIC_NEWS_BANNER_CRUD_LOCK_END
+
+
+# === FFT STABLE NEWS AND BANNER SAVE PATCH ===
+import re as _fft_re
+import uuid as _fft_uuid
+import shutil as _fft_shutil
+import traceback as _fft_traceback
+from pathlib import Path as _fft_Path
+from datetime import datetime as _fft_datetime
+from flask import request as _fft_request, redirect as _fft_redirect
+from werkzeug.utils import secure_filename as _fft_secure_filename
+
+
+def _fft_news_slugify(value):
+    value = str(value or "").strip().lower()
+    value = _fft_re.sub(r"[^a-z0-9]+", "-", value)
+    value = _fft_re.sub(r"-+", "-", value).strip("-")
+    return value or "berita"
+
+
+def _fft_news_unique_slug(title, berita_id=None):
+    base = _fft_news_slugify(title)
+    slug = base
+    counter = 2
+
+    while True:
+        query = Berita.query.filter(Berita.slug == slug)
+        if berita_id:
+            query = query.filter(Berita.id != berita_id)
+
+        if not query.first():
+            return slug
+
+        slug = f"{base}-{counter}"
+        counter += 1
+
+
+def _fft_news_next_code():
+    used_codes = set()
+
+    for row in db.session.query(Berita.kode_berita).all():
+        raw = str(row[0] or "").strip()
+        if raw.isdigit():
+            used_codes.add(raw.zfill(5))
+
+    number = 1
+    while True:
+        code = f"{number:05d}"
+        if code not in used_codes:
+            return code
+        number += 1
+
+
+def _fft_news_form_value(*names, default=""):
+    for name in names:
+        value = _fft_request.form.get(name)
+        if value is not None and str(value).strip() != "":
+            return str(value).strip()
+    return default
+
+
+def _fft_news_file_value(*names):
+    for name in names:
+        uploaded = _fft_request.files.get(name)
+        if uploaded and uploaded.filename:
+            return uploaded
+    return None
+
+
+def _fft_news_save_upload(uploaded_file, kode_berita, target_name):
+    if not uploaded_file or not uploaded_file.filename:
+        return None
+
+    safe_name = _fft_secure_filename(uploaded_file.filename)
+    ext = _fft_Path(safe_name).suffix.lower()
+
+    allowed = {".jpg", ".jpeg", ".png", ".webp"}
+    if ext not in allowed:
+        ext = ".jpg"
+
+    folder = _fft_Path(app.root_path) / "static" / "uploads" / "berita" / str(kode_berita)
+    folder.mkdir(parents=True, exist_ok=True)
+
+    for old_file in folder.glob(f"{target_name}.*"):
+        try:
+            old_file.unlink()
+        except Exception:
+            pass
+
+    target = folder / f"{target_name}{ext}"
+    uploaded_file.save(str(target))
+
+    return f"uploads/berita/{kode_berita}/{target.name}"
+
+
+def _fft_news_apply_form_to_item(item, is_new=False):
+    title = _fft_news_form_value("judul", "title", default="")
+    summary = _fft_news_form_value("subjudul", "ringkasan", "summary", default="")
+    content = _fft_news_form_value("isi", "konten", "content", "body", default="")
+    category = _fft_news_form_value("group_type", "kategori", "category", default="UMUM").upper()
+
+    if not title:
+        raise ValueError("Judul berita kosong.")
+
+    if not content:
+        content = summary or "Konten berita sedang disiapkan."
+
+    if not summary:
+        summary = content[:180]
+
+    now = _fft_datetime.utcnow()
+
+    if is_new:
+        item.kode_berita = item.kode_berita or _fft_news_next_code()
+        item.created_at = item.created_at or now
+        item.is_published = False
+        item.needs_publish = False
+        item.publish_status = "stock"
+        item.published_at = None
+        item.tayang_pada = None
+        item.click_count = item.click_count or 0
+        item.is_new = False
+
+    item.judul = title
+    item.slug = _fft_news_unique_slug(title, getattr(item, "id", None))
+    item.subjudul = summary
+    item.isi = content
+    item.group_type = category[:20] or "UMUM"
+    item.updated_at = now
+
+    thumbnail_file = _fft_news_file_value("thumbnail", "thumbnail_file", "gambar_thumbnail")
+    detail_file = _fft_news_file_value("gambar_detail", "detail", "detail_file", "image_detail")
+
+    if thumbnail_file:
+        item.thumbnail = _fft_news_save_upload(thumbnail_file, item.kode_berita, "thumbnail")
+
+    if detail_file:
+        item.gambar_detail = _fft_news_save_upload(detail_file, item.kode_berita, "detail")
+
+    return item
+
+
+_FFT_ORIGINAL_NEWS_ADD_VIEW = app.view_functions.get("admin_berita_add")
+_FFT_ORIGINAL_NEWS_EDIT_VIEW = app.view_functions.get("admin_berita_edit")
+
+
+def _fft_stable_news_add():
+    if _fft_request.method == "GET":
+        return _FFT_ORIGINAL_NEWS_ADD_VIEW()
+
+    try:
+        item = Berita()
+        _fft_news_apply_form_to_item(item, is_new=True)
+
+        db.session.add(item)
+        db.session.commit()
+
+        return _fft_redirect("/admin/berita/list?notice=new_saved")
+
+    except Exception:
+        db.session.rollback()
+        print("\n=== FFT NEWS ADD SAVE ERROR ===")
+        _fft_traceback.print_exc()
+        print("=== END FFT NEWS ADD SAVE ERROR ===\n")
+        return _fft_redirect("/admin/berita/list?notice=save_failed")
+
+
+def _fft_stable_news_edit(berita_id):
+    if _fft_request.method == "GET":
+        return _FFT_ORIGINAL_NEWS_EDIT_VIEW(berita_id)
+
+    try:
+        item = Berita.query.get_or_404(berita_id)
+
+        if not item.kode_berita:
+            item.kode_berita = _fft_news_next_code()
+
+        _fft_news_apply_form_to_item(item, is_new=False)
+
+        db.session.commit()
+
+        return _fft_redirect("/admin/berita/list?notice=changes_saved")
+
+    except Exception:
+        db.session.rollback()
+        print("\n=== FFT NEWS EDIT SAVE ERROR ===")
+        _fft_traceback.print_exc()
+        print("=== END FFT NEWS EDIT SAVE ERROR ===\n")
+        return _fft_redirect("/admin/berita/list?notice=save_failed")
+
+
+app.view_functions["admin_berita_add"] = _fft_stable_news_add
+app.view_functions["admin_berita_edit"] = _fft_stable_news_edit
+
+
+def save_banner_stock_media_file(media_file, media_type=None):
+    if not media_file or not media_file.filename:
+        return False, None, "File banner belum dipilih."
+
+    safe_name = _fft_secure_filename(media_file.filename)
+    ext = _fft_Path(safe_name).suffix.lower()
+
+    allowed = {".jpg", ".jpeg", ".png", ".webp", ".mp4", ".webm", ".mov"}
+    if ext not in allowed:
+        return False, None, "Format file banner tidak didukung."
+
+    folder = _fft_Path(app.root_path) / "static" / "uploads" / "banner_informasi" / "stock"
+    folder.mkdir(parents=True, exist_ok=True)
+
+    filename = f"stock_{_fft_datetime.utcnow().strftime('%Y%m%d%H%M%S')}_{_fft_uuid.uuid4().hex[:10]}{ext}"
+    target = folder / filename
+    media_file.save(str(target))
+
+    return True, f"uploads/banner_informasi/stock/{filename}", "Stok banner berhasil disimpan."
+
+
+def copy_banner_stock_to_active_media(stock_media_path):
+    rel_path = str(stock_media_path or "").strip().lstrip("/")
+    if not rel_path:
+        return False, None, "File stok banner tidak ditemukan."
+
+    src = _fft_Path(app.root_path) / "static" / rel_path
+
+    if not src.exists():
+        src = _fft_Path(app.root_path) / "static" / "uploads" / "banner_informasi" / "stock" / _fft_Path(rel_path).name
+
+    if not src.exists():
+        return False, None, "File stok banner tidak ditemukan di folder upload."
+
+    ext = src.suffix.lower() or ".jpg"
+
+    active_folder = _fft_Path(app.root_path) / "static" / "uploads" / "banner_informasi" / "single"
+    active_folder.mkdir(parents=True, exist_ok=True)
+
+    for old_file in active_folder.glob("media.*"):
+        try:
+            old_file.unlink()
+        except Exception:
+            pass
+
+    target = active_folder / f"media{ext}"
+    _fft_shutil.copy2(src, target)
+
+    return True, f"uploads/banner_informasi/single/{target.name}", "Banner berhasil dijadikan tampilan aktif."
+
+
+# === END FFT STABLE NEWS AND BANNER SAVE PATCH ===
+
+
+
+
+# === FFT STABLE NEWS AND BANNER HOTFIX START ===
+
+def _fft_make_slug(value):
+    import re
+    import unicodedata
+
+    text = unicodedata.normalize("NFKD", str(value or ""))
+    text = text.encode("ascii", "ignore").decode("ascii")
+    text = re.sub(r"[^a-zA-Z0-9]+", "-", text).strip("-").lower()
+    return text or "berita"
+
+
+def _fft_unique_news_slug(title, ignore_id=None):
+    base = _fft_make_slug(title)
+    slug = base
+    counter = 2
+
+    while True:
+        query = Berita.query.filter(Berita.slug == slug)
+        if ignore_id:
+            query = query.filter(Berita.id != ignore_id)
+
+        if not query.first():
+            return slug
+
+        slug = f"{base}-{counter}"
+        counter += 1
+
+
+def _fft_next_news_code():
+    codes = []
+    for row in Berita.query.with_entities(Berita.kode_berita).all():
+        code = str(row[0] or "").strip()
+        if code.isdigit():
+            codes.append(int(code))
+
+    next_number = (max(codes) + 1) if codes else 1
+    return f"{next_number:05d}"
+
+
+def _fft_first_form_value(*names):
+    from flask import request
+
+    for name in names:
+        value = request.form.get(name)
+        if value is not None and str(value).strip():
+            return str(value).strip()
+    return ""
+
+
+def _fft_first_uploaded_file(*names):
+    from flask import request
+
+    for name in names:
+        try:
+            uploaded_list = request.files.getlist(name)
+        except Exception:
+            uploaded_list = []
+
+        for uploaded in uploaded_list:
+            filename = str(getattr(uploaded, "filename", "") or "").strip()
+            if filename:
+                return uploaded
+
+    return None
+
+
+def _fft_save_news_media(uploaded_file, kode_berita, target_name):
+    from pathlib import Path
+    from werkzeug.utils import secure_filename
+
+    if not uploaded_file or not uploaded_file.filename:
+        return None
+
+    filename = secure_filename(uploaded_file.filename)
+    suffix = Path(filename).suffix.lower() or ".jpg"
+
+    allowed = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+    if suffix not in allowed:
+        suffix = ".jpg"
+
+    news_dir = Path(app.root_path) / "static" / "uploads" / "berita" / kode_berita
+    news_dir.mkdir(parents=True, exist_ok=True)
+
+    target_file = news_dir / f"{target_name}{suffix}"
+    uploaded_file.save(target_file)
+
+    return f"uploads/berita/{kode_berita}/{target_name}{suffix}"
+
+
+def _fft_save_banner_stock_media_file(media_file, media_type=None):
+    from pathlib import Path
+    from datetime import datetime
+    from werkzeug.utils import secure_filename
+    import secrets
+
+    if not media_file or not media_file.filename:
+        return False, None, "File banner belum dipilih."
+
+    filename = secure_filename(media_file.filename)
+    suffix = Path(filename).suffix.lower()
+
+    allowed = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".mp4", ".webm", ".mov"}
+    if suffix not in allowed:
+        return False, None, "Format file banner tidak didukung."
+
+    stock_dir = Path(app.root_path) / "static" / "uploads" / "banner_informasi" / "stock"
+    stock_dir.mkdir(parents=True, exist_ok=True)
+
+    saved_name = f"stock_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}_{secrets.token_hex(5)}{suffix}"
+    target_file = stock_dir / saved_name
+
+    media_file.save(target_file)
+
+    return True, f"uploads/banner_informasi/stock/{saved_name}", "Banner berhasil disimpan ke stok."
+
+
+def _fft_copy_banner_stock_to_active_media(media_file):
+    from pathlib import Path
+    import shutil
+
+    if not media_file:
+        return False, None, "File stok banner tidak ditemukan."
+
+    relative_path = str(media_file).replace("\\", "/").lstrip("/")
+    if relative_path.startswith("static/"):
+        relative_path = relative_path[len("static/"):]
+
+    source_file = Path(app.root_path) / "static" / relative_path
+    if not source_file.exists():
+        return False, None, "File stok banner tidak ditemukan di folder upload."
+
+    active_dir = Path(app.root_path) / "static" / "uploads" / "banner_informasi" / "single"
+    active_dir.mkdir(parents=True, exist_ok=True)
+
+    for old_file in active_dir.glob("media.*"):
+        try:
+            old_file.unlink()
+        except OSError:
+            pass
+
+    suffix = source_file.suffix.lower() or ".jpg"
+    active_file = active_dir / f"media{suffix}"
+    shutil.copy2(source_file, active_file)
+
+    return True, f"uploads/banner_informasi/single/media{suffix}", "Banner berhasil dijadikan tampilan utama."
+
+
+globals()["save_banner_stock_media_file"] = globals().get("save_banner_stock_media_file") or _fft_save_banner_stock_media_file
+globals()["copy_banner_stock_to_active_media"] = globals().get("copy_banner_stock_to_active_media") or _fft_copy_banner_stock_to_active_media
+
+
+_fft_original_admin_berita_add = app.view_functions.get("admin_berita_add")
+_fft_original_admin_berita_edit = app.view_functions.get("admin_berita_edit")
+
+
+def _fft_create_news_from_request():
+    from flask import redirect, url_for
+    from datetime import datetime
+    import traceback
+
+    try:
+        title = _fft_first_form_value("judul", "title")
+        summary = _fft_first_form_value("subjudul", "ringkasan", "summary")
+        content = _fft_first_form_value("isi", "konten", "content", "body")
+        group_type = _fft_first_form_value("group_type", "kategori", "category") or "UMUM"
+
+        thumbnail_file = _fft_first_uploaded_file(
+            "thumbnail",
+            "thumbnail_file",
+            "thumbnail_kartu",
+            "card_image",
+            "image_thumbnail",
+            "cropped_thumbnail",
+            "thumbnail_cropped",
         )
-        return safe_redirect_to_list("save_failed")
-# NEWS_CROP_SAVE_INTERCEPT_END
+
+        detail_file = _fft_first_uploaded_file(
+            "gambar_detail",
+            "gambar_detail_file",
+            "detail_file",
+            "detail_image",
+            "detail",
+            "image_detail",
+            "cropped_detail",
+            "detail_cropped",
+        )
+
+        if not title or not summary or not content or not thumbnail_file or not detail_file:
+            print("[NEWS_SAVE_ERROR] Data belum lengkap.")
+            print("[NEWS_SAVE_ERROR] title:", bool(title), "summary:", bool(summary), "content:", bool(content))
+            print("[NEWS_SAVE_ERROR] files:", list(request.files.keys()))
+            return redirect(url_for("admin_berita_list", notice="save_failed"))
+
+        now = datetime.utcnow()
+        kode_berita = _fft_next_news_code()
+
+        news = Berita()
+        news.kode_berita = kode_berita
+        news.judul = title
+        news.slug = _fft_unique_news_slug(title)
+        news.subjudul = summary
+        news.isi = content
+        news.thumbnail = _fft_save_news_media(thumbnail_file, kode_berita, "thumbnail")
+        news.gambar_detail = _fft_save_news_media(detail_file, kode_berita, "detail")
+        news.is_published = False
+        news.needs_publish = False
+        news.created_at = now
+        news.updated_at = now
+        news.published_at = None
+        news.tayang_pada = None
+        news.group_type = group_type[:20]
+        news.is_new = False
+        news.new_until = None
+        news.click_count = 0
+        news.publish_status = "stock"
+        news.scheduled_at = None
+        news.last_previewed_at = None
+
+        db.session.add(news)
+        db.session.commit()
+
+        return redirect(url_for("admin_berita_list", notice="created"))
+
+    except Exception as error:
+        db.session.rollback()
+        print("\n[NEWS_SAVE_ERROR] Gagal menyimpan berita baru:")
+        print(repr(error))
+        traceback.print_exc()
+        return redirect(url_for("admin_berita_list", notice="save_failed"))
+
+
+def _fft_update_news_from_request(berita_id):
+    from flask import redirect, url_for
+    from datetime import datetime
+    import traceback
+
+    try:
+        news = Berita.query.get_or_404(berita_id)
+
+        title = _fft_first_form_value("judul", "title")
+        summary = _fft_first_form_value("subjudul", "ringkasan", "summary")
+        content = _fft_first_form_value("isi", "konten", "content", "body")
+        group_type = _fft_first_form_value("group_type", "kategori", "category") or getattr(news, "group_type", "UMUM") or "UMUM"
+
+        if not title or not summary or not content:
+            print("[NEWS_UPDATE_ERROR] Judul, ringkasan, atau isi kosong.")
+            return redirect(url_for("admin_berita_list", notice="save_failed"))
+
+        if not getattr(news, "kode_berita", None):
+            news.kode_berita = _fft_next_news_code()
+
+        news.judul = title
+        news.slug = _fft_unique_news_slug(title, ignore_id=news.id)
+        news.subjudul = summary
+        news.isi = content
+        news.group_type = group_type[:20]
+        news.updated_at = datetime.utcnow()
+
+        thumbnail_file = _fft_first_uploaded_file(
+            "thumbnail",
+            "thumbnail_file",
+            "thumbnail_kartu",
+            "card_image",
+            "image_thumbnail",
+            "cropped_thumbnail",
+            "thumbnail_cropped",
+        )
+
+        detail_file = _fft_first_uploaded_file(
+            "gambar_detail",
+            "gambar_detail_file",
+            "detail_file",
+            "detail_image",
+            "detail",
+            "image_detail",
+            "cropped_detail",
+            "detail_cropped",
+        )
+
+        if thumbnail_file:
+            news.thumbnail = _fft_save_news_media(thumbnail_file, news.kode_berita, "thumbnail")
+
+        if detail_file:
+            news.gambar_detail = _fft_save_news_media(detail_file, news.kode_berita, "detail")
+
+        if not getattr(news, "slug", None):
+            news.slug = _fft_unique_news_slug(news.judul, ignore_id=news.id)
+
+        if not getattr(news, "publish_status", None):
+            news.publish_status = "stock"
+
+        db.session.commit()
+
+        return redirect(url_for("admin_berita_list", notice="saved"))
+
+    except Exception as error:
+        db.session.rollback()
+        print("\n[NEWS_UPDATE_ERROR] Gagal menyimpan perubahan berita:")
+        print(repr(error))
+        traceback.print_exc()
+        return redirect(url_for("admin_berita_list", notice="save_failed"))
+
+
+def _fft_stable_admin_berita_add():
+    from flask import request
+
+    if request.method == "GET":
+        return _fft_original_admin_berita_add()
+
+    return _fft_create_news_from_request()
+
+
+def _fft_stable_admin_berita_edit(berita_id):
+    from flask import request
+
+    if request.method == "GET":
+        return _fft_original_admin_berita_edit(berita_id)
+
+    return _fft_update_news_from_request(berita_id)
+
+
+def _fft_stable_admin_berita_save():
+    from flask import request, redirect, url_for
+
+    if request.method == "GET":
+        return redirect(url_for("admin_berita_list"))
+
+    berita_id = request.form.get("berita_id") or request.form.get("id")
+    if berita_id and str(berita_id).isdigit():
+        return _fft_update_news_from_request(int(berita_id))
+
+    return _fft_create_news_from_request()
+
+
+app.view_functions["admin_berita_add"] = _fft_stable_admin_berita_add
+app.view_functions["admin_berita_edit"] = _fft_stable_admin_berita_edit
+app.view_functions["admin_berita_save"] = _fft_stable_admin_berita_save
+
+# === FFT STABLE NEWS AND BANNER HOTFIX END ===
+
+
+# PATCH_NEWS_EDIT_PRESERVE_STATUS_START
+def _patch_news_preserve_get(obj, names, default=None):
+    if obj is None:
+        return default
+
+    for name in names:
+        if hasattr(obj, name):
+            value = getattr(obj, name)
+            if value is not None:
+                return value
+
+    return default
+
+
+def _patch_news_preserve_existing_status(values, current):
+    if current is None:
+        return values
+
+    preserved_columns = {
+        "is_published": ["is_published", "published"],
+        "published": ["is_published", "published"],
+        "needs_publish": ["needs_publish"],
+        "publish_status": ["publish_status", "status"],
+        "status": ["publish_status", "status"],
+        "published_at": ["published_at", "tayang_pada"],
+        "tayang_pada": ["tayang_pada", "published_at"],
+        "scheduled_at": ["scheduled_at"],
+        "last_previewed_at": ["last_previewed_at"],
+        "created_at": ["created_at"],
+        "click_count": ["click_count", "views", "view_count"],
+        "views": ["click_count", "views", "view_count"],
+        "view_count": ["click_count", "views", "view_count"],
+        "is_new": ["is_new"],
+        "new_until": ["new_until"],
+    }
+
+    try:
+        columns = _abs_news_columns() if "_abs_news_columns" in globals() else {c.name: c for c in Berita.__table__.columns}
+    except Exception:
+        columns = {}
+
+    for column_name, candidate_names in preserved_columns.items():
+        if column_name not in columns:
+            continue
+
+        existing_value = _patch_news_preserve_get(current, candidate_names, None)
+
+        if existing_value is not None:
+            values[column_name] = existing_value
+
+    return values
+
+
+# FFT_DISABLE_BROKEN_NEWS_PRESERVE_STATUS_PATCH_20260518
+# Patch lama PATCH_NEWS_EDIT_PRESERVE_STATUS dimatikan karena memanggil
+# _abs_build_news_values yang tidak ada.
+# Alur edit, save, dan delete berita sekarang ditangani oleh
+# FFT NEWS EDIT DELETE GUARD di bawah.
+
+
+
+# === FFT NEWS EDIT DELETE GUARD START ===
+
+def _fft_news_guard_logged_in():
+    return bool(session.get("logged_in") or session.get("is_logged_in"))
+
+
+def _fft_news_guard_text(*names, default=""):
+    for name in names:
+        value = request.form.get(name)
+        if value is not None and str(value).strip():
+            return str(value).strip()
+    return default
+
+
+def _fft_news_guard_file(*names):
+    for name in names:
+        file_storage = request.files.get(name)
+        if file_storage and getattr(file_storage, "filename", ""):
+            return file_storage
+    return None
+
+
+def _fft_news_guard_slugify(value):
+    text_value = str(value or "").strip().lower()
+    text_value = re.sub(r"[^a-z0-9]+", "-", text_value)
+    text_value = re.sub(r"-+", "-", text_value).strip("-")
+    return text_value or f"berita-{uuid.uuid4().hex[:8]}"
+
+
+def _fft_news_guard_unique_slug(title, ignore_id=None):
+    base_slug = _fft_news_guard_slugify(title)
+    slug = base_slug
+    counter = 2
+
+    while True:
+        query = Berita.query.filter(Berita.slug == slug)
+
+        if ignore_id:
+            query = query.filter(Berita.id != int(ignore_id))
+
+        if not query.first():
+            return slug
+
+        slug = f"{base_slug}-{counter}"
+        counter += 1
+
+
+def _fft_news_guard_next_code():
+    max_number = 0
+
+    for item in Berita.query.all():
+        raw = str(getattr(item, "kode_berita", "") or "")
+        match = re.search(r"\d+", raw)
+        if match:
+            max_number = max(max_number, int(match.group(0)))
+
+    return str(max_number + 1).zfill(5)
+
+
+def _fft_news_guard_upload_root():
+    return Path(BERITA_UPLOAD_FOLDER)
+
+
+def _fft_news_guard_folder(kode_berita):
+    folder = _fft_news_guard_upload_root() / str(kode_berita)
+    folder.mkdir(parents=True, exist_ok=True)
+    return folder
+
+
+def _fft_news_guard_clean_old_variant(folder, prefix):
+    allowed = set(globals().get("ALLOWED_EXTENSIONS", {"png", "jpg", "jpeg", "webp"})) | {"jpg", "jpeg", "png", "webp"}
+    for ext in allowed:
+        target = folder / f"{prefix}.{ext}"
+        if target.exists() and target.is_file():
+            try:
+                target.unlink()
+            except OSError:
+                pass
+
+
+def _fft_news_guard_save_file(file_storage, kode_berita, prefix):
+    if not file_storage or not getattr(file_storage, "filename", ""):
+        return None
+
+    original_name = secure_filename(file_storage.filename)
+    if "." not in original_name:
+        raise ValueError("File gambar tidak memiliki ekstensi.")
+
+    ext = original_name.rsplit(".", 1)[1].lower()
+    allowed = set(globals().get("ALLOWED_EXTENSIONS", {"png", "jpg", "jpeg", "webp"}))
+
+    if ext not in allowed:
+        raise ValueError("Format gambar berita tidak didukung.")
+
+    folder = _fft_news_guard_folder(kode_berita)
+    _fft_news_guard_clean_old_variant(folder, prefix)
+
+    filename = f"{prefix}.{ext}"
+    target = folder / filename
+
+    try:
+        file_storage.stream.seek(0)
+    except Exception:
+        pass
+
+    file_storage.save(str(target))
+
+    return f"uploads/berita/{kode_berita}/{filename}"
+
+
+def _fft_news_guard_make_placeholder(kode_berita, prefix):
+    width = 1450 if prefix == "thumbnail" else 1600
+    height = 1000 if prefix == "thumbnail" else 900
+
+    folder = _fft_news_guard_folder(kode_berita)
+    _fft_news_guard_clean_old_variant(folder, prefix)
+
+    target = folder / f"{prefix}.jpg"
+
+    try:
+        image = Image.new("RGB", (width, height), (15, 15, 15))
+        draw = ImageDraw.Draw(image)
+        text_value = "Gambar berita belum tersedia"
+
+        try:
+            bbox = draw.textbbox((0, 0), text_value)
+            text_w = bbox[2] - bbox[0]
+            text_h = bbox[3] - bbox[1]
+        except Exception:
+            text_w = 360
+            text_h = 24
+
+        draw.text(
+            ((width - text_w) / 2, (height - text_h) / 2),
+            text_value,
+            fill=(230, 230, 230),
+        )
+        image.save(str(target), format="JPEG", quality=88)
+    except Exception:
+        target.write_bytes(b"")
+
+    return f"uploads/berita/{kode_berita}/{prefix}.jpg"
+
+
+def _fft_news_guard_delete_folder(kode_berita):
+    if not kode_berita:
+        return
+
+    folder = _fft_news_guard_upload_root() / str(kode_berita)
+
+    if folder.exists() and folder.is_dir():
+        shutil.rmtree(str(folder), ignore_errors=True)
+
+
+def _fft_news_guard_publish_snapshot():
+    try:
+        if "news_republish_frontend" in globals():
+            news_republish_frontend()
+            return
+
+        if "publish_berita_snapshot" in globals():
+            publish_berita_snapshot()
+            return
+
+        if "build_berita_api_payload" in globals() and "write_published_berita_payload" in globals():
+            write_published_berita_payload(build_berita_api_payload())
+    except Exception as error:
+        print("[NEWS_GUARD] Snapshot berita gagal diperbarui:", repr(error))
+
+
+def _fft_news_guard_is_live(item):
+    status = str(getattr(item, "publish_status", "") or "").lower()
+    return bool(getattr(item, "is_published", False)) or status == "published"
+
+
+def _fft_news_guard_save(berita_id=None):
+    if not _fft_news_guard_logged_in():
+        return redirect(url_for("admin_login"))
+
+    is_edit = berita_id is not None
+    now = datetime.utcnow()
+
+    try:
+        if is_edit:
+            berita = Berita.query.get_or_404(int(berita_id))
+            kode_berita = getattr(berita, "kode_berita", None) or _fft_news_guard_next_code()
+            old_status = str(getattr(berita, "publish_status", "") or "").lower()
+            old_is_published = bool(getattr(berita, "is_published", False))
+            old_needs_publish = bool(getattr(berita, "needs_publish", False))
+            old_published_at = getattr(berita, "published_at", None)
+            old_tayang_pada = getattr(berita, "tayang_pada", None)
+        else:
+            berita = Berita()
+            kode_berita = _fft_news_guard_next_code()
+            old_status = "stock"
+            old_is_published = False
+            old_needs_publish = True
+            old_published_at = None
+            old_tayang_pada = None
+
+        title = _fft_news_guard_text("judul", "title", "news_title")
+        summary = _fft_news_guard_text("subjudul", "ringkasan", "summary", "excerpt")
+        content = _fft_news_guard_text("isi", "konten", "content", "body")
+        category = _fft_news_guard_text("group_type", "kategori", "category", default="UMUM").upper()
+
+        if not title or not content:
+            flash("Berita belum berhasil disimpan. Judul dan isi berita wajib diisi.", "danger")
+            return redirect(url_for("admin_berita_edit", berita_id=berita_id) if is_edit else url_for("admin_berita_add"))
+
+        thumbnail_file = _fft_news_guard_file(
+            "thumbnail_file",
+            "thumbnail",
+            "gambar_thumbnail",
+            "gambar_cover",
+            "cover",
+            "image",
+        )
+
+        detail_file = _fft_news_guard_file(
+            "detail_file",
+            "gambar_detail",
+            "gambar",
+            "gambar_utama",
+            "main_image",
+        )
+
+        thumbnail_path = getattr(berita, "thumbnail", None) if is_edit else None
+        detail_path = getattr(berita, "gambar_detail", None) if is_edit else None
+
+        saved_thumbnail = _fft_news_guard_save_file(thumbnail_file, kode_berita, "thumbnail")
+        saved_detail = _fft_news_guard_save_file(detail_file, kode_berita, "detail")
+
+        if saved_thumbnail:
+            thumbnail_path = saved_thumbnail
+
+        if saved_detail:
+            detail_path = saved_detail
+
+        if thumbnail_path and not detail_path:
+            detail_path = thumbnail_path
+
+        if detail_path and not thumbnail_path:
+            thumbnail_path = detail_path
+
+        if not thumbnail_path:
+            thumbnail_path = _fft_news_guard_make_placeholder(kode_berita, "thumbnail")
+
+        if not detail_path:
+            detail_path = _fft_news_guard_make_placeholder(kode_berita, "detail")
+
+        berita.kode_berita = kode_berita
+        berita.judul = title
+        berita.slug = _fft_news_guard_unique_slug(title, getattr(berita, "id", None))
+        berita.subjudul = summary
+        berita.isi = content
+        berita.group_type = category
+        berita.thumbnail = thumbnail_path
+        berita.gambar_detail = detail_path
+        berita.updated_at = now
+
+        if not is_edit:
+            berita.created_at = now
+            berita.is_published = False
+            berita.needs_publish = True
+            berita.publish_status = "stock"
+            berita.published_at = None
+            berita.tayang_pada = None
+            berita.scheduled_at = None
+            berita.click_count = 0
+            berita.is_new = False
+            db.session.add(berita)
+        else:
+            # KUNCI UTAMA:
+            # Edit tidak boleh mengubah status tayang/stok.
+            # Jadi status lama dipertahankan.
+            if old_status:
+                berita.publish_status = old_status
+            else:
+                berita.publish_status = "published" if old_is_published else "stock"
+
+            berita.is_published = old_is_published
+            berita.needs_publish = old_needs_publish
+            berita.published_at = old_published_at
+            berita.tayang_pada = old_tayang_pada
+
+        db.session.commit()
+
+        if _fft_news_guard_is_live(berita):
+            _fft_news_guard_publish_snapshot()
+
+        if is_edit:
+            flash("Perubahan berita berhasil disimpan. Status penayangan tetap dipertahankan.", "success")
+            return redirect(url_for("admin_berita_list", notice="updated"))
+
+        flash("Berita baru berhasil disimpan sebagai stok. Berita dapat ditayangkan dari halaman Kelola Berita.", "success")
+        return redirect(url_for("admin_berita_list", notice="created"))
+
+    except Exception as error:
+        db.session.rollback()
+        print("\n[NEWS_GUARD_SAVE_ERROR]")
+        print(repr(error))
+        traceback.print_exc()
+        print("[END_NEWS_GUARD_SAVE_ERROR]\n")
+
+        flash("Berita belum berhasil disimpan karena terjadi kesalahan teknis. Periksa terminal untuk detail error.", "danger")
+        return redirect(url_for("admin_berita_edit", berita_id=berita_id) if is_edit else url_for("admin_berita_add"))
+
+
+def _fft_news_guard_add():
+    if not _fft_news_guard_logged_in():
+        return redirect(url_for("admin_login"))
+
+    if request.method == "POST":
+        return _fft_news_guard_save()
+
+    return render_template(
+        "admin_berita_form.html",
+        berita=None,
+        is_edit=False,
+        form_publish_mode="stock",
+        berita_thumb_crop_width=globals().get("BERITA_THUMB_CROP_WIDTH", 1450),
+        berita_thumb_crop_height=globals().get("BERITA_THUMB_CROP_HEIGHT", 1000),
+        berita_detail_crop_width=globals().get("BERITA_DETAIL_CROP_WIDTH", 1600),
+        berita_detail_crop_height=globals().get("BERITA_DETAIL_CROP_HEIGHT", 900),
+    )
+
+
+def _fft_news_guard_edit(berita_id):
+    if not _fft_news_guard_logged_in():
+        return redirect(url_for("admin_login"))
+
+    if request.method == "POST":
+        return _fft_news_guard_save(int(berita_id))
+
+    berita = Berita.query.get_or_404(int(berita_id))
+
+    return render_template(
+        "admin_berita_form.html",
+        berita=berita,
+        is_edit=True,
+        form_publish_mode="published" if _fft_news_guard_is_live(berita) else "stock",
+        berita_thumb_crop_width=globals().get("BERITA_THUMB_CROP_WIDTH", 1450),
+        berita_thumb_crop_height=globals().get("BERITA_THUMB_CROP_HEIGHT", 1000),
+        berita_detail_crop_width=globals().get("BERITA_DETAIL_CROP_WIDTH", 1600),
+        berita_detail_crop_height=globals().get("BERITA_DETAIL_CROP_HEIGHT", 900),
+    )
+
+
+def _fft_news_guard_save_route():
+    if not _fft_news_guard_logged_in():
+        return redirect(url_for("admin_login"))
+
+    if request.method == "GET":
+        return redirect(url_for("admin_berita_list"))
+
+    berita_id = request.form.get("berita_id") or request.form.get("id")
+    if berita_id and str(berita_id).isdigit():
+        return _fft_news_guard_save(int(berita_id))
+
+    return _fft_news_guard_save()
+
+
+def _fft_news_guard_delete(berita_id):
+    if not _fft_news_guard_logged_in():
+        return redirect(url_for("admin_login"))
+
+    berita = Berita.query.get_or_404(int(berita_id))
+    kode_berita = getattr(berita, "kode_berita", None)
+    was_live = _fft_news_guard_is_live(berita)
+
+    try:
+        _fft_news_guard_delete_folder(kode_berita)
+        db.session.delete(berita)
+        db.session.commit()
+
+        if was_live:
+            _fft_news_guard_publish_snapshot()
+
+        flash("Berita berhasil dihapus dari database dan folder upload.", "success")
+        return redirect(url_for("admin_berita_list", notice="deleted"))
+
+    except Exception as error:
+        db.session.rollback()
+        print("\n[NEWS_GUARD_DELETE_ERROR]")
+        print(repr(error))
+        traceback.print_exc()
+        print("[END_NEWS_GUARD_DELETE_ERROR]\n")
+
+        flash("Berita belum berhasil dihapus. Periksa terminal untuk detail error.", "danger")
+        return redirect(url_for("admin_berita_list", notice="delete_failed"))
+
+
+# Nonaktifkan interceptor lama yang pernah memotong POST berita sebelum masuk route.
+try:
+    for _key, _funcs in list(app.before_request_funcs.items()):
+        app.before_request_funcs[_key] = [
+            _func for _func in _funcs
+            if getattr(_func, "__name__", "") not in {"news_crop_save_intercept"}
+        ]
+except Exception:
+    pass
+
+
+app.view_functions["admin_berita_add"] = _fft_news_guard_add
+app.view_functions["admin_berita_edit"] = _fft_news_guard_edit
+app.view_functions["admin_berita_save"] = _fft_news_guard_save_route
+app.view_functions["admin_berita_delete"] = _fft_news_guard_delete
+
+# === FFT NEWS EDIT DELETE GUARD END ===
 
 
 if __name__ == "__main__":
-    app.run(debug=True, use_reloader=False)
+    app.run(debug=True)

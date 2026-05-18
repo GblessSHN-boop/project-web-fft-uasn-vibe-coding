@@ -93,3 +93,9 @@ _trash*/
 repo-backup-before-clean*/
 Web FFT UASN - CLEAN*/
 web-fft-uasn/
+*.bak-*
+backend/database.db
+backend/*.db
+instance/
+backend/static/published/*.json
+frontend/public/data/*.json

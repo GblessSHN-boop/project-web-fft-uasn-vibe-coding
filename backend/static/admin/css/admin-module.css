@@ -4384,3 +4384,203 @@ body.fft-admin-module-body {
   }
 }
 /* NEWS_EDITOR_SAVE_UX_STYLE_END */
+
+/* NEWS_EDITOR_SUBMIT_BUTTON_FIX_STYLE_START */
+.news-editor-submit-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: center;
+  margin: 28px 0 0;
+  padding: 26px;
+  border: 1px solid #d8d2cf;
+  border-top: 6px solid #8f1018;
+  background: #ffffff;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, .06);
+}
+
+.news-editor-submit-card__text p {
+  margin: 0 0 8px;
+  color: #737b88;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+.news-editor-submit-card__text h2 {
+  margin: 0;
+  color: #111111;
+  font-size: clamp(26px, 2.7vw, 38px);
+  line-height: 1;
+  letter-spacing: -.05em;
+}
+
+.news-editor-submit-card__text span {
+  display: block;
+  max-width: 760px;
+  margin-top: 10px;
+  color: #646c78;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.news-editor-submit-card__actions {
+  display: grid;
+  gap: 10px;
+  min-width: 260px;
+}
+
+.news-editor-submit-card__actions button,
+.news-editor-submit-card__actions a,
+.news-editor-primary-action {
+  min-height: 54px;
+  display: inline-grid;
+  place-items: center;
+  padding: 14px 24px;
+  border: 1px solid #8f1018;
+  background: #9f111c;
+  color: #ffffff !important;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: .03em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.news-editor-submit-card__actions a,
+.news-editor-secondary-action {
+  border: 1px solid #d8d2cf !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+}
+
+@media (max-width: 900px) {
+  .news-editor-submit-card {
+    grid-template-columns: 1fr;
+  }
+
+  .news-editor-submit-card__actions {
+    min-width: 0;
+  }
+}
+/* NEWS_EDITOR_SUBMIT_BUTTON_FIX_STYLE_END */
+
+/* NEWS_LIST_ACTION_GUARD_STYLE_START */
+.fft-news-delete-form {
+  width: 100%;
+  margin: 0;
+}
+
+.fft-news-delete-button {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(139, 15, 23, 0.28);
+  background: #ffffff;
+  color: #8b0f17;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.fft-news-delete-button:hover {
+  background: rgba(139, 15, 23, 0.08);
+}
+
+.fft-news-delete-button span[aria-hidden="true"] {
+  font-size: 16px;
+  line-height: 1;
+}
+/* NEWS_LIST_ACTION_GUARD_STYLE_END */
+
+/* FFT_NEWS_EDITOR_FIXED_SAVE_BAR_20260518
+   UI polish: action bar simpan dibuat sticky, ringan, dan tidak menutupi konten.
+*/
+.news-editor-save-card,
+.news-editor-submit-card {
+  display: none !important;
+}
+
+.news-editor-page {
+  padding-bottom: 48px !important;
+}
+
+.news-editor-fixed-save-bar {
+  grid-column: 1 / -1;
+  position: sticky;
+  top: 18px;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  margin: 0 0 22px;
+  padding: 18px 20px;
+  border: 1px solid rgba(139, 15, 23, 0.18);
+  border-top: 5px solid var(--fft-maroon);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 14px 34px rgba(20, 20, 20, 0.10);
+}
+
+.news-editor-fixed-save-bar__text {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.news-editor-fixed-save-bar__text strong {
+  color: var(--fft-ink);
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+}
+
+.news-editor-fixed-save-bar__text span {
+  color: var(--fft-muted);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.news-editor-fixed-save-bar__actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.news-editor-fixed-save-bar__actions .fft-btn {
+  min-height: 46px;
+  padding-inline: 22px;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.news-editor-fixed-save-bar__actions .fft-btn-primary {
+  box-shadow: 0 12px 24px rgba(139, 15, 23, 0.18);
+}
+
+@media (max-width: 900px) {
+  .news-editor-fixed-save-bar {
+    top: 12px;
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .news-editor-fixed-save-bar__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .news-editor-fixed-save-bar__actions .fft-btn {
+    width: 100%;
+  }
+}
+
+/* FFT_POLISH_NEWS_EDITOR_SAVE_BAR_UI_20260518 */
+

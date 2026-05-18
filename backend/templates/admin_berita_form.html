@@ -8,6 +8,9 @@
 
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-module.css') }}">
+
+
+
 </head>
 
 <body class="fft-admin-module-body">
@@ -95,7 +98,24 @@
         {% endif %}
       {% endwith %}
 
-      <form action="{{ url_for('admin_berita_edit', berita_id=item.id) if is_edit else url_for('admin_berita_add') }}" enctype="multipart/form-data" class="news-editor-layout" data-news-editor-form method="POST">
+      <form action="{{ url_for('admin_berita_edit', berita_id=item.id) if is_edit else url_for('admin_berita_add') }}" enctype="multipart/form-data" id="newsEditorForm" class="news-editor-layout" data-news-editor-form method="POST">
+        <section class="news-editor-fixed-save-bar">
+          <!-- FFT_NEWS_EDITOR_FIXED_SAVE_BAR_20260518 -->
+          <div class="news-editor-fixed-save-bar__text">
+            <strong>{{ 'Simpan Perubahan' if is_edit else 'Simpan Berita' }}</strong>
+            <span>{{ 'Perubahan akan disimpan tanpa mengubah status tayang.' if is_edit else 'Berita akan masuk ke stok terlebih dahulu.' }}</span>
+          </div>
+
+          <div class="news-editor-fixed-save-bar__actions">
+            <a class="fft-btn fft-btn-light" href="{{ url_for('admin_berita_list') }}">
+              Batal
+            </a>
+            <button class="fft-btn fft-btn-primary" type="submit" data-news-save-submit>
+              {{ 'Simpan Perubahan' if is_edit else 'Simpan Berita' }}
+            </button>
+          </div>
+        </section>
+
         <div class="news-editor-main">
           <section class="news-editor-card">
             <div class="news-editor-section-title">
@@ -225,44 +245,9 @@
               </div>
             </div>
           </section>
-
-          {% if is_edit %}
-            <section class="news-editor-danger">
-              <div>
-                <h2>Zona Hapus</h2>
-                <p>Hapus berita hanya jika konten ini benar-benar tidak diperlukan lagi.</p>
-              </div>
-
-              <button
-                class="fft-btn fft-btn-light"
-                type="submit"
-                formaction="{{ url_for('admin_berita_delete', berita_id=item.id) }}"
-                formmethod="POST"
-                data-news-delete-submit
-              >
-                Hapus Berita
-              </button>
-            </section>
-          {% endif %}
-        </div>
+</div>
 
         <aside class="news-editor-side">
-          <section class="news-editor-save-card">
-            <p class="fft-kicker">Ringkasan</p>
-            <h2>Kode {{ kode_value }}</h2>
-            <p>
-              Setelah menyimpan, kembali ke daftar berita untuk menayangkan
-              atau menyimpan berita sebagai stok.
-            </p>
-
-            <button class="fft-btn fft-btn-primary" type="submit" data-news-save-submit>
-              {{ 'Simpan Perubahan' if is_edit else 'Simpan Berita' }}
-            </button>
-
-            <a class="fft-btn fft-btn-light" href="{{ url_for('admin_berita_list') }}">
-              Batal
-            </a>
-          </section>
 
           <section class="news-editor-preview-card">
             <div class="news-editor-preview-tabs">
@@ -316,7 +301,7 @@
               </ul>
             </div>
           </section>
-        </aside>
+</aside>
       </form>
     </main>
   </div>

@@ -865,3 +865,118 @@
   ready(run);
 })();
 /* NEWS_EDITOR_UX_POLISH_END */
+
+/* NEWS_EDITOR_SUBMIT_BUTTON_FIX_START */
+(function () {
+  "use strict";
+
+  function ready(callback) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", callback);
+    } else {
+      callback();
+    }
+  }
+
+  function isNewsEditorPage() {
+    return location.pathname.includes("/admin/berita/add") ||
+      location.pathname.includes("/admin/berita/edit");
+  }
+
+  function findMainNewsForm() {
+    const forms = Array.from(document.querySelectorAll("form"));
+
+    if (!forms.length) return null;
+
+    return forms.find(function (form) {
+      return form.querySelector("input[type='file']") ||
+        form.querySelector("textarea") ||
+        form.querySelector("input[name='judul']") ||
+        form.querySelector("input[name='title']") ||
+        form.querySelector("textarea[name='isi']") ||
+        form.querySelector("textarea[name='content']");
+    }) || forms[0];
+  }
+
+  function normalizeForm(form) {
+    form.setAttribute("method", "POST");
+    form.setAttribute("enctype", "multipart/form-data");
+  }
+
+  function normalizeExistingSubmit(form, isAddPage) {
+    const submitButtons = Array.from(
+      form.querySelectorAll("button[type='submit'], input[type='submit']")
+    );
+
+    submitButtons.forEach(function (button) {
+      const text = isAddPage ? "Simpan Berita Baru" : "Simpan Perubahan";
+
+      if (button.tagName === "INPUT") {
+        button.value = text;
+      } else {
+        button.textContent = text;
+      }
+
+      button.classList.add("news-editor-primary-action");
+    });
+
+    return submitButtons.length > 0;
+  }
+
+  function addSubmitCard(form) {
+    if (form.querySelector(".news-editor-submit-card")) return;
+
+    const isAddPage = location.pathname.includes("/admin/berita/add");
+
+    const card = document.createElement("section");
+    card.className = "news-editor-submit-card";
+    card.innerHTML = `
+      <div class="news-editor-submit-card__text">
+        <p>${isAddPage ? "Simpan Berita" : "Simpan Perubahan"}</p>
+        <h2>${isAddPage ? "Berita siap disimpan sebagai stok" : "Simpan perubahan berita"}</h2>
+        <span>
+          ${isAddPage
+            ? "Setelah disimpan, berita masuk ke daftar stok. Berita belum tampil di website sampai Anda menayangkannya."
+            : "Setelah disimpan, Anda akan kembali ke daftar berita untuk meninjau status penayangan."}
+        </span>
+      </div>
+      <div class="news-editor-submit-card__actions">
+        <button type="submit" class="news-editor-primary-action">
+          ${isAddPage ? "Simpan Berita Baru" : "Simpan Perubahan"}
+        </button>
+        <a href="/admin/berita/list" class="news-editor-secondary-action">
+          Batal
+        </a>
+      </div>
+    `;
+
+    form.appendChild(card);
+  }
+
+  function run() {
+    if (!isNewsEditorPage()) return;
+
+    const form = findMainNewsForm();
+
+    if (!form) return;
+
+    document.body.classList.add("news-editor-page");
+
+    normalizeForm(form);
+
+    const hasSubmit = normalizeExistingSubmit(form, location.pathname.includes("/admin/berita/add"));
+
+    addSubmitCard(form);
+
+    if (!hasSubmit) {
+      console.info("Tombol simpan berita ditambahkan otomatis.");
+    }
+  }
+
+  ready(function () {
+    run();
+    setTimeout(run, 300);
+    setTimeout(run, 900);
+  });
+})();
+/* NEWS_EDITOR_SUBMIT_BUTTON_FIX_END */

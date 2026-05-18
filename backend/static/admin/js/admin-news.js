@@ -193,3 +193,183 @@
   });
 })();
 /* NEWS_LIST_NOTICE_END */
+
+/* NEWS_LIST_ACTION_GUARD_START */
+(function () {
+  "use strict";
+
+  function ready(callback) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", callback);
+    } else {
+      callback();
+    }
+  }
+
+  function cleanText(element) {
+    return String((element && element.textContent) || "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toUpperCase();
+  }
+
+  function closestNewsCard(element) {
+    if (!element) return null;
+
+    const direct = element.closest(
+      "[data-news-card], .fft-news-item, .berita-card, .news-card, .admin-news-card, article, li"
+    );
+
+    if (direct) return direct;
+
+    let node = element.parentElement;
+
+    for (let i = 0; i < 8 && node; i += 1) {
+      const text = cleanText(node);
+      const hasCode = /KODE\s+\d{5}/.test(text);
+      const hasAction =
+        text.includes("TAYANGKAN SEKARANG") ||
+        text.includes("SIMPAN SEBAGAI STOK") ||
+        text.includes("NONAKTIFKAN SEMENTARA");
+
+      if (hasCode && hasAction) return node;
+
+      node = node.parentElement;
+    }
+
+    return null;
+  }
+
+  function actionUrl(element) {
+    if (!element) return "";
+
+    if (element.matches("a[href]")) return element.getAttribute("href") || "";
+    if (element.matches("form[action]")) return element.getAttribute("action") || "";
+    if (element.matches("button[formaction]")) return element.getAttribute("formaction") || "";
+
+    const form = element.closest("form[action]");
+    if (form) return form.getAttribute("action") || "";
+
+    const link = element.closest("a[href]");
+    if (link) return link.getAttribute("href") || "";
+
+    return "";
+  }
+
+  function extractNewsId(card) {
+    if (!card) return "";
+
+    const candidates = Array.from(
+      card.querySelectorAll("a[href], form[action], button[formaction]")
+    );
+
+    for (const candidate of candidates) {
+      const url = actionUrl(candidate);
+
+      const patterns = [
+        /\/admin\/berita\/edit\/(\d+)/,
+        /\/admin\/berita\/delete\/(\d+)/,
+        /\/admin\/berita\/(\d+)\/activate/,
+        /\/admin\/berita\/(\d+)\/maintenance/,
+        /\/admin\/berita\/(\d+)\/restore-stock/,
+        /\/admin\/berita\/(\d+)\/unpublish/
+      ];
+
+      for (const pattern of patterns) {
+        const match = url.match(pattern);
+        if (match) return match[1];
+      }
+    }
+
+    return "";
+  }
+
+  function findActionArea(trigger, card) {
+    const form = trigger.closest("form");
+    if (form && form.parentElement) return form.parentElement;
+
+    return (
+      trigger.closest(".fft-news-actions, .news-actions, .berita-actions, .card-actions") ||
+      card.querySelector(".fft-news-actions, .news-actions, .berita-actions, .card-actions") ||
+      trigger.parentElement ||
+      card
+    );
+  }
+
+  function removeLiveEditButtons() {
+    const editControls = Array.from(
+      document.querySelectorAll('a[href*="/admin/berita/edit/"], button, input[type="submit"]')
+    ).filter((element) => cleanText(element) === "EDIT");
+
+    editControls.forEach((editControl) => {
+      const card = closestNewsCard(editControl);
+
+      if (!card) return;
+
+      const text = cleanText(card);
+
+      if (!text.includes("SIMPAN SEBAGAI STOK")) return;
+
+      const removable =
+        editControl.closest("form") ||
+        editControl.closest("a") ||
+        editControl;
+
+      if (removable) {
+        removable.remove();
+      }
+    });
+  }
+
+  function addStockDeleteButtons() {
+    const publishTriggers = Array.from(
+      document.querySelectorAll("button, a, input[type='submit']")
+    ).filter((element) => cleanText(element).includes("TAYANGKAN SEKARANG"));
+
+    publishTriggers.forEach((trigger) => {
+      const card = closestNewsCard(trigger);
+
+      if (!card) return;
+      if (card.querySelector("[data-news-stock-delete-form]")) return;
+
+      const newsId = extractNewsId(card);
+      if (!newsId) return;
+
+      const actionArea = findActionArea(trigger, card);
+
+      // FFT_DISABLE_DUPLICATE_NEWS_DELETE_BUTTON_20260518
+      // Tombol Hapus sudah dirender dari template admin_berita_list.html.
+      // Injeksi tombol Hapus dari admin-news.js dimatikan agar tidak muncul ganda.
+
+    });
+  }
+
+  function bindDeleteConfirm() {
+    document.addEventListener("submit", function (event) {
+      const form = event.target;
+
+      if (!form || !form.matches("[data-news-stock-delete-form]")) return;
+
+      const ok = window.confirm(
+        "Hapus berita ini?\n\nData berita akan dihapus dari database dan folder upload. Tindakan ini tidak dapat dibatalkan."
+      );
+
+      if (!ok) {
+        event.preventDefault();
+      }
+    });
+  }
+
+  function run() {
+    removeLiveEditButtons();
+    addStockDeleteButtons();
+  }
+
+  ready(function () {
+    bindDeleteConfirm();
+    run();
+    setTimeout(run, 300);
+    setTimeout(run, 900);
+  });
+})();
+ /* NEWS_LIST_ACTION_GUARD_END */
