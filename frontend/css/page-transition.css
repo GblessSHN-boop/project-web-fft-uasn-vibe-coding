@@ -1,0 +1,160 @@
+/* FFT_STABLE_CRIMSON_PUSH_WIPE_NO_FLICKER_20260519
+   Push-wipe transition stabil untuk inner pages.
+   Memperbaiki kedip akhir transisi dan memakai logo kecil sebagai identitas visual.
+   Tidak aktif di indexfft.html.
+*/
+
+html.fft-page-transition-enabled,
+html.fft-page-transition-enabled body {
+  overflow-x: hidden;
+}
+
+.fft-page-transition-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, #430808 0%, #5f0e0e 58%, #7a1111 100%);
+  transform: translate3d(100%, 0, 0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.fft-page-transition-layer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.fft-page-transition-brand {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: translateX(20px);
+  transition:
+    opacity 260ms ease,
+    transform 360ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.fft-page-transition-brand img {
+  width: clamp(74px, 8vw, 112px);
+  height: clamp(74px, 8vw, 112px);
+  object-fit: contain;
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.28));
+}
+
+.fft-page-transition-layer.is-covering .fft-page-transition-brand,
+.fft-page-transition-layer.is-revealing .fft-page-transition-brand {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fft-page-transition-layer.is-covering {
+  animation: fftStablePushCoverNoFlicker 560ms cubic-bezier(.22, .72, .18, 1) both;
+}
+
+.fft-page-transition-layer.is-revealing {
+  transform: translate3d(0, 0, 0);
+  animation: fftStablePushRevealNoFlicker 680ms cubic-bezier(.16, .84, .24, 1) both;
+}
+
+@keyframes fftStablePushCoverNoFlicker {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fftStablePushRevealNoFlicker {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@media (max-width: 768px) {
+  .fft-page-transition-layer.is-covering {
+    animation-duration: 440ms;
+  }
+
+  .fft-page-transition-layer.is-revealing {
+    animation-duration: 540ms;
+  }
+
+  .fft-page-transition-layer::before {
+    width: 5px;
+  }
+
+  .fft-page-transition-brand img {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fft-page-transition-layer {
+    display: none !important;
+  }
+}
+
+/* FFT_TRANSITION_BRAND_LOGO_SCALE_OPACITY_20260519
+   Logo transisi dibuat lebih besar dan transparan agar tetap premium, tidak mengganggu.
+*/
+.fft-page-transition-brand {
+  opacity: 0 !important;
+}
+
+.fft-page-transition-layer.is-covering .fft-page-transition-brand,
+.fft-page-transition-layer.is-revealing .fft-page-transition-brand {
+  opacity: 0.5 !important;
+}
+
+.fft-page-transition-brand img {
+  width: clamp(118px, 13vw, 190px) !important;
+  height: clamp(118px, 13vw, 190px) !important;
+  filter: drop-shadow(0 22px 42px rgba(0, 0, 0, 0.22)) !important;
+}
+
+@media (max-width: 768px) {
+  .fft-page-transition-brand img {
+    width: 112px !important;
+    height: 112px !important;
+  }
+}
+
+/* FFT_TRANSITION_BRAND_LOGO_3X_OPACITY_20_20260519
+   Logo transisi dibuat sekitar 3x dari ukuran awal 112px dan opacity diturunkan ke 20%.
+*/
+.fft-page-transition-layer.is-covering .fft-page-transition-brand,
+.fft-page-transition-layer.is-revealing .fft-page-transition-brand {
+  opacity: 0.2 !important;
+}
+
+.fft-page-transition-brand img {
+  width: clamp(220px, 26vw, 336px) !important;
+  height: clamp(220px, 26vw, 336px) !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 24px 46px rgba(0, 0, 0, 0.18)) !important;
+}
+
+@media (max-width: 768px) {
+  .fft-page-transition-brand img {
+    width: clamp(168px, 42vw, 240px) !important;
+    height: clamp(168px, 42vw, 240px) !important;
+  }
+}
+
