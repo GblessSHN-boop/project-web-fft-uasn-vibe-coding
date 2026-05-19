@@ -1449,3 +1449,225 @@ const FFT_WHY_CHOOSE_I18N = {
 }());
 /* FFT WHY CHOOSE I18N PATCH END */
 
+
+/* NEWS_ORIGINAL_DESIGN_DISTRIBUTION_FIX_START */
+(function () {
+  "use strict";
+
+  const API_BASE = "http://127.0.0.1:5000";
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function normalizeImage(value) {
+    const raw = String(value || "").replace(/\\/g, "/").trim();
+
+    if (!raw) return "berita/news-empty.png";
+    if (raw.startsWith("http://") || raw.startsWith("https://")) return raw;
+    if (raw.startsWith("/static/")) return API_BASE + raw;
+    if (raw.startsWith("static/")) return API_BASE + "/" + raw;
+    if (raw.startsWith("uploads/")) return API_BASE + "/static/" + raw;
+
+    return raw;
+  }
+
+  function imageOf(item) {
+    return normalizeImage(
+      item.thumbnail_url ||
+      item.thumbnail ||
+      item.gambar_thumbnail ||
+      item.gambar_cover ||
+      item.image ||
+      item.image_file ||
+      item.gambar_detail ||
+      item.gambar ||
+      ""
+    );
+  }
+
+  function titleOf(item) {
+    return item.judul || item.title || item.judul_id || item.title_id || "Tanpa Judul";
+  }
+
+  function summaryOf(item) {
+    return item.subjudul || item.ringkasan || item.summary || item.excerpt || "";
+  }
+
+  function dateOf(item) {
+    const value = item.published_at || item.tayang_pada || item.created_at || item.date || item.tanggal;
+
+    if (!value) return "";
+
+    const parsed = new Date(value);
+
+    if (Number.isNaN(parsed.getTime())) {
+      return String(value);
+    }
+
+    return parsed.toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    }) + ", " + parsed.toLocaleTimeString("id-ID", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }
+
+  function detailUrl(item) {
+    return "berita-detail.html?id=" + encodeURIComponent(item.id || item.berita_id || item.kode || "");
+  }
+
+  function collectNews(payload) {
+    const buckets = [
+      payload.trending,
+      payload.trending_news,
+      payload.latest,
+      payload.latest_news,
+      payload.items,
+      payload.data,
+      payload.berita,
+      payload.news,
+      payload.all,
+      payload.banner
+    ];
+
+    const map = new Map();
+
+    buckets.forEach(function (bucket) {
+      if (!Array.isArray(bucket)) return;
+
+      bucket.forEach(function (item) {
+        if (!item) return;
+
+        const id = String(item.id || item.kode || item.kode_berita || item.slug || titleOf(item));
+
+        if (!map.has(id)) {
+          map.set(id, item);
+        }
+      });
+    });
+
+    return Array.from(map.values()).sort(function (a, b) {
+      const clickA = Number(a.click_count || a.views || a.view_count || 0);
+      const clickB = Number(b.click_count || b.views || b.view_count || 0);
+
+      if (clickB !== clickA) return clickB - clickA;
+
+      const dateA = new Date(a.published_at || a.tayang_pada || a.created_at || 0).getTime() || 0;
+      const dateB = new Date(b.published_at || b.tayang_pada || b.created_at || 0).getTime() || 0;
+
+      return dateB - dateA;
+    });
+  }
+
+  function renderBigCard(item, index) {
+    return `
+      <a href="${detailUrl(item)}" class="berita-feature-card berita-feature-card-large show" data-news-card data-news-search="${escapeHtml(titleOf(item) + " " + summaryOf(item))}">
+        <div class="berita-image-wrap">
+          <img src="${imageOf(item)}" alt="${escapeHtml(titleOf(item))}" />
+        </div>
+        <div class="berita-card-overlay">
+          ${item.is_new ? '<span class="berita-badge-new">NEW TITLE</span>' : ""}
+          <p class="berita-title-text">${escapeHtml(titleOf(item))}</p>
+          <span class="berita-date-chip">${escapeHtml(dateOf(item))}</span>
+          <span class="berita-tag">TRENDING ${index + 1}</span>
+        </div>
+      </a>
+    `;
+  }
+
+  function renderSideCard(item) {
+    return `
+      <a href="${detailUrl(item)}" class="berita-grid-item show" data-news-card data-news-search="${escapeHtml(titleOf(item) + " " + summaryOf(item))}">
+        <div class="berita-grid-thumb">
+          <img src="${imageOf(item)}" alt="${escapeHtml(titleOf(item))}" />
+        </div>
+        ${item.is_new ? '<span class="berita-badge-new berita-badge-inline">NEW TITLE</span>' : ""}
+        <p class="berita-grid-title">${escapeHtml(titleOf(item))}</p>
+        <span class="berita-grid-date">${escapeHtml(dateOf(item))}</span>
+      </a>
+    `;
+  }
+
+  async function fixNewsDistributionOnly() {
+    const trendingContainer = document.getElementById("beritaTrendingContainer");
+    const gridContainer = document.getElementById("beritaGridContainer");
+    const searchInput = document.getElementById("beritaSearch");
+    const emptyState = document.getElementById("beritaEmptyState");
+
+    if (!trendingContainer || !gridContainer) return;
+
+    try {
+      const response = await fetch(API_BASE + "/api/berita?v=" + Date.now(), {
+        cache: "no-store"
+      });
+
+      if (!response.ok) return;
+
+      const payload = await response.json();
+      const items = collectNews(payload);
+
+      if (!items.length) {
+        return;
+      }
+
+      const trending = items.slice(0, 2);
+      const sideNews = items.slice(2);
+
+      trendingContainer.innerHTML = trending
+        .map(function (item, index) {
+          return renderBigCard(item, index);
+        })
+        .join("");
+
+      gridContainer.innerHTML = sideNews
+        .map(function (item) {
+          return renderSideCard(item);
+        })
+        .join("");
+
+      if (emptyState) {
+        emptyState.hidden = true;
+      }
+
+      if (searchInput) {
+        searchInput.oninput = function () {
+          const keyword = searchInput.value.trim().toLowerCase();
+          const cards = document.querySelectorAll("[data-news-card]");
+
+          cards.forEach(function (card) {
+            const text = String(card.getAttribute("data-news-search") || "").toLowerCase();
+            const match = !keyword || text.includes(keyword);
+
+            card.classList.toggle("show", match);
+            card.style.display = match ? "" : "none";
+          });
+        };
+      }
+    } catch (error) {
+      console.error("Gagal memperbaiki pembagian berita:", error);
+    }
+  }
+
+  function startFix() {
+    fixNewsDistributionOnly();
+
+    setTimeout(fixNewsDistributionOnly, 400);
+    setTimeout(fixNewsDistributionOnly, 1200);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startFix);
+  } else {
+    startFix();
+  }
+})();
+/* NEWS_ORIGINAL_DESIGN_DISTRIBUTION_FIX_END */
+
