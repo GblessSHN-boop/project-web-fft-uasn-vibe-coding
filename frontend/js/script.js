@@ -102,7 +102,6 @@ const translations = {
     nav_admission: "Admission",
     nav_students: "Students",
     nav_why_choose: "Why Choose FFT",
-    nav_quick_facts: "Quick Facts",
     nav_student_achievement: "Student Achievement",
     nav_top_leader: "Student Top Leader",
     nav_top_leader_short: "Top Leader",
@@ -276,7 +275,6 @@ about_desc_4:
     nav_admission: "Pendaftaran",
     nav_students: "Mahasiswa",
     nav_why_choose: "Why Choose FFT",
-    nav_quick_facts: "Quick Facts",
     nav_student_achievement: "Prestasi Mahasiswa",
     nav_top_leader: "Top Leader Mahasiswa",
     nav_top_leader_short: "Top Leader",
@@ -1671,3 +1669,4 @@ const FFT_WHY_CHOOSE_I18N = {
 })();
 /* NEWS_ORIGINAL_DESIGN_DISTRIBUTION_FIX_END */
 
+/* FFT_REMOVE_UNUSED_QUICK_FACTS_PAGE_20260519: removed unused Quick Facts navigation label. */
