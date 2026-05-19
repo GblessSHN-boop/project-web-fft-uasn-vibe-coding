@@ -2215,6 +2215,18 @@ def admin_banner_stock_preview(stock_id):
     return render_template("admin_banner_stock_preview.html", stock=stock)
 
 
+
+# === FFT_FIX_MISSING_BANNER_SNAPSHOT_PUBLISHER_20260518 START ===
+def publish_banner_informasi_snapshot():
+    """
+    Fallback aman untuk route aktivasi stok banner.
+    Helper lama ini dipanggil oleh admin_banner_stock_activate,
+    tetapi definisinya hilang. Route utama tetap mengatur status banner
+    melalui database, jadi fungsi ini dibuat no-op agar tidak memicu 500.
+    """
+    return None
+# === FFT_FIX_MISSING_BANNER_SNAPSHOT_PUBLISHER_20260518 END ===
+
 @app.route("/admin/banner/stock/<int:stock_id>/activate", methods=["POST"])
 def admin_banner_stock_activate(stock_id):
     if not session.get("logged_in") and not session.get("is_logged_in"):

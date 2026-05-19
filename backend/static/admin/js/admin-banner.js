@@ -516,7 +516,7 @@
 
     form.addEventListener("submit", function (event) {
       const ok = window.confirm(
-        "Jadikan stok banner ini sebagai banner yang tampil di website?\n\nBanner aktif sebelumnya akan diganti."
+        "Aktifkan banner ini sebagai banner utama website?\n\nBanner aktif sebelumnya akan diganti."
       );
 
       if (!ok) {
@@ -565,3 +565,5 @@
 })();
 // BANNER STOCK HISTORY ARCHIVE END
 
+
+// FFT_POLISH_BANNER_STOCK_WORDING_AND_CURRENT_STATE_20260519
