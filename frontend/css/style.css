@@ -7014,3 +7014,60 @@ footer.fft-footer .footer-orbit-canvas,
   user-select: none;
 }
 
+
+
+/* FFT_FORCE_REMOVE_ALL_PAGE_KICKER_LINES_20260519
+   Paksa hapus garis dekoratif merah di kiri label halaman.
+   Tidak mengubah backend, API, banner, berita, navbar, atau logic JS.
+*/
+.page-content-kicker::before,
+.page-content-kicker:before,
+.page-content-eyebrow::before,
+.page-content-eyebrow:before,
+.section-kicker::before,
+.section-kicker:before,
+.section-eyebrow::before,
+.section-eyebrow:before,
+.hero-kicker::before,
+.hero-kicker:before,
+.quick-page-kicker::before,
+.quick-page-kicker:before,
+[class*="kicker"]::before,
+[class*="kicker"]:before,
+[class*="eyebrow"]::before,
+[class*="eyebrow"]:before {
+  content: none !important;
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.page-content-kicker > span:first-child,
+.page-content-eyebrow > span:first-child,
+.section-kicker > span:first-child,
+.section-eyebrow > span:first-child,
+.hero-kicker > span:first-child,
+.quick-page-kicker > span:first-child,
+[class*="kicker"] > span:first-child,
+[class*="eyebrow"] > span:first-child {
+  display: none !important;
+}
+
+.page-content-kicker,
+.page-content-eyebrow,
+.section-kicker,
+.section-eyebrow,
+.hero-kicker,
+.quick-page-kicker,
+[class*="kicker"],
+[class*="eyebrow"] {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+  gap: 0 !important;
+}
