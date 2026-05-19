@@ -723,27 +723,25 @@
   <body>
     <div class="reading-progress" id="readingProgress"></div>
 
-    <header class="site-header" id="siteHeader">
+    <!-- FFT_SYNC_FRONTEND_HEADER_FROM_INDEX_20260519: header disamakan dengan indexfft.html -->
+<header class="site-header" id="siteHeader">
       <div class="topbar">
         <div class="topbar_left">
-          <a
-            href="https://suryanusantara.ac.id/"
-            target="_blank"
-            rel="noopener noreferrer">
-            <img class="topbar-logo-img" src="../assets/images/site/uasnlogo.png" alt="Logo UASN" />
+          <a href="https://suryanusantara.ac.id/">
+            <img class="topbar-logo-img" src="../assets/images/site/uasnlogo.png" alt="Universitas Advent Surya Nusantara" />
             <span data-i18n="top_website">Website UASN</span>
           </a>
 
-          <a href="indexfft.html" class="topbar-quick-link">
-            <span data-i18n="top_quick_access">Akses Cepat</span>
+          <a href="#kontak" class="topbar-quick-link" data-i18n="top_quick_access">
+            Akses Cepat
           </a>
         </div>
 
         <div class="topbar_right">
-          <div class="language-switcher" aria-label="Pilih bahasa">
-            <button class="lang-btn active" type="button" data-lang="id">ID</button>
+          <div class="language-switcher" aria-label="Language switcher">
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
             <span class="lang-separator">|</span>
-            <button class="lang-btn" type="button" data-lang="en">EN</button>
+            <button type="button" class="lang-btn active" data-lang="id">ID</button>
           </div>
 
           <a href="#" class="daftar-btn" data-i18n="top_apply">
@@ -751,13 +749,11 @@
           </a>
         </div>
       </div>
-
       <div class="container">
-        <a href="indexfft.html" class="brand-wrapper" style="text-decoration: none">
+        <a href="indexfft.html" class="brand-wrapper" aria-label="Kembali ke halaman utama FFT">
           <div class="logo">
-            <img src="../assets/images/site/fftkb.png" alt="Logo Fakultas Filsafat Teologi" />
+            <img src="../assets/images/site/fftkb.png" alt="FILSAFAT TEOLOGI" />
           </div>
-
           <div class="branding">
             <h1 data-i18n="brand_faculty">FAKULTAS FILSAFAT TEOLOGI</h1>
             <p class="brand-universitas" data-i18n="brand_university">
@@ -765,16 +761,8 @@
             </p>
           </div>
         </a>
-
         <div>
-          <button class="menu-toggle" type="button" aria-label="Buka menu">
-            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
-              <path
-                fill="currentColor"
-                d="M4 7h16v2H4V7Zm0 4h16v2H4v-2Zm0 4h16v2H4v-2Z" />
-            </svg>
-          </button>
-
+          <button class="menu-toggle">☰</button>
                     <nav class="sidebar-nav" aria-label="Navigasi utama">
             <ul class="nav-root">
               <li class="nav-item">
@@ -801,10 +789,8 @@
                   <span class="nav-chevron" aria-hidden="true">▾</span>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a href="quick-facts.html#quick-facts" data-i18n="nav_quick_facts">Quick Facts</a></li>
-                  <li><a href="quick-facts.html#prestasi" data-i18n="nav_student_achievement">Prestasi Mahasiswa</a></li>
-                  <li><a href="quick-facts.html#top-leader" data-i18n="nav_top_leader">Top Leader Mahasiswa</a></li>
-                  <li><a href="quick-facts.html#lulusan" data-i18n="nav_graduates">Lulusan FFT</a></li>
+                  <li><a href="kurikulum.html" data-i18n="nav_curriculum">Kurikulum</a></li>
+                  <li><a href="kalender-akademik.html" data-i18n="nav_academic_calendar">Kalender Akademik</a></li>
                 </ul>
               </li>
 
@@ -814,10 +800,9 @@
                   <span class="nav-chevron" aria-hidden="true">▾</span>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a href="pendaftaran.html#alur" data-i18n="nav_admission_flow">Alur Pendaftaran</a></li>
-                  <li><a href="pendaftaran.html#offline" data-i18n="nav_offline_simulation">Simulasi Offline</a></li>
-                  <li><a href="pendaftaran.html#persyaratan" data-i18n="nav_requirements">Persyaratan</a></li>
-                  <li><a href="e-brochure.html" data-i18n="nav_brochure">E-Brochure</a></li>
+                  <li><a href="alur-pendaftaran.html" data-i18n="nav_admission_flow" data-page-id="Alur Pendaftaran" data-page-en="Admission Flow">Alur Pendaftaran</a></li>
+                  <li><a href="simulasi-pendaftaran-offline.html" data-i18n="nav_offline_simulation" data-page-id="Simulasi Offline" data-page-en="Offline Simulation">Simulasi Offline</a></li>
+                  <li><a href="e-brochure.html" data-i18n="nav_ebrochure" data-page-id="E-Brochure" data-page-en="E-Brochure">E-Brochure</a></li>
                 </ul>
               </li>
 
@@ -827,9 +812,9 @@
                   <span class="nav-chevron" aria-hidden="true">▾</span>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a href="indexfft.html#testimoni" data-i18n="nav_testimonials">Testimoni</a></li>
-                  <li><a href="quick-facts.html#top-leader" data-i18n="nav_top_leader_short">Top Leader</a></li>
-                  <li><a href="quick-facts.html#prestasi" data-i18n="nav_student_achievement">Prestasi Mahasiswa</a></li>
+<li><a href="papan-peringkat.html" data-i18n="nav_ranking_board">Papan Peringkat</a></li>
+                  <li><a href="testimoni.html" data-i18n="nav_testimonials">Testimoni</a></li>
+                  <li><a href="aturan-akademik.html" data-i18n="nav_academic_rules">Aturan Akademik</a></li>
                 </ul>
               </li>
 
