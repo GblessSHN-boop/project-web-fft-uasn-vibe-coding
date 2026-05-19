@@ -4577,3 +4577,31 @@ body.ebrochure-modal-open {
   }
 }
 /* FFT EBROCHURE LIBRARY END */
+
+/* FFT_REMOVE_PAGE_LABEL_LEFT_ACCENT_ONLY_20260519
+   Hanya menghapus garis aksen kiri pada label kecil halaman.
+   Tidak mengubah layout, header, backend, banner, berita, atau animasi logic.
+*/
+.page-content-kicker::before,
+.page-content-eyebrow::before,
+.section-kicker::before,
+.section-eyebrow::before,
+.hero-kicker::before,
+.fft-kicker::before,
+.news-detail-kicker::before,
+.ranking-kicker::before {
+  content: none !important;
+  display: none !important;
+}
+
+.page-content-kicker,
+.page-content-eyebrow,
+.section-kicker,
+.section-eyebrow,
+.hero-kicker,
+.fft-kicker,
+.news-detail-kicker,
+.ranking-kicker {
+  padding-left: 0 !important;
+}
+
