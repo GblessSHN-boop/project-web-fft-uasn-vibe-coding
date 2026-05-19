@@ -8,7 +8,12 @@
 }
 
 .page-content-hero {
-  padding: clamp(72px, 7vw, 108px) 0 clamp(42px, 5vw, 72px);
+  /* FFT_ALIGN_INNER_PAGE_CONTENT_WITH_HEADER_20260519
+   Header semua halaman sudah identik dengan indexfft.html.
+   Penyesuaian ini hanya merapikan jarak konten pertama halaman dalam agar tidak tampak turun.
+   Tidak mengubah header, navbar, backend, API, banner, berita, atau admin.
+*/
+  padding: clamp(34px, 3.4vw, 52px) 0 clamp(40px, 4.5vw, 64px);
   border-bottom: 1px solid rgba(67, 8, 8, 0.10);
 }
 
