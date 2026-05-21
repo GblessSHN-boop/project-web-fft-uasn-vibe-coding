@@ -395,7 +395,19 @@
     });
   }
 
+
+  /* FFT_FIX_DOUBLE_MOBILE_HAMBURGER_20260521 */
+  function hideNativeMobileToggles() {
+    document.querySelectorAll(".hamburger, .menu-toggle, .nav-toggle, .mobile-menu-toggle").forEach(function (item) {
+      if (!item.classList.contains("fft-brand-nav-trigger")) {
+        item.setAttribute("aria-hidden", "true");
+        item.style.display = "none";
+      }
+    });
+  }
+
   function install() {
+    hideNativeMobileToggles();
     var brandTarget = replaceBrand();
     var row = getHeaderRow(brandTarget);
 
@@ -407,6 +419,7 @@
     updateBrand();
 
     window.setTimeout(function () {
+      hideNativeMobileToggles();
       var again = replaceBrand();
       var againRow = getHeaderRow(again);
 

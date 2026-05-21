@@ -219,3 +219,79 @@
     max-height: 54px !important;
   }
 }
+
+
+/* FFT_FIX_DOUBLE_MOBILE_HAMBURGER_20260521
+   Sisakan satu hamburger mobile dari sistem brand nav.
+   Hamburger bawaan header lama disembunyikan agar tidak dobel.
+*/
+@media (max-width: 768px) {
+  .hamburger:not(.fft-brand-nav-trigger),
+  .menu-toggle:not(.fft-brand-nav-trigger),
+  .nav-toggle:not(.fft-brand-nav-trigger),
+  .mobile-menu-toggle:not(.fft-brand-nav-trigger),
+  button.hamburger:not(.fft-brand-nav-trigger),
+  button.menu-toggle:not(.fft-brand-nav-trigger),
+  button.nav-toggle:not(.fft-brand-nav-trigger),
+  button.mobile-menu-toggle:not(.fft-brand-nav-trigger) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  .fft-brand-nav-trigger {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+}
+
+/* FFT_FIX_DESKTOP_HEADER_TRIGGER_LINE_20260521
+   Sembunyikan trigger hamburger dan panel mobile di desktop.
+   Ini menghapus garis horizontal yang muncul di bawah brand header desktop.
+*/
+.fft-brand-nav-trigger,
+.fft-brand-mobile-nav-backdrop,
+.fft-brand-mobile-nav-panel {
+  display: none !important;
+}
+
+.fft-brand-nav-trigger span {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .fft-brand-nav-trigger {
+    display: inline-flex !important;
+  }
+
+  .fft-brand-nav-trigger span {
+    display: block !important;
+  }
+
+  .fft-brand-mobile-nav-backdrop,
+  .fft-brand-mobile-nav-panel {
+    display: block !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .fft-brand-nav-trigger,
+  .fft-brand-mobile-nav-backdrop,
+  .fft-brand-mobile-nav-panel {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+  }
+}
