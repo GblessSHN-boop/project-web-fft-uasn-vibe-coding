@@ -1,0 +1,173 @@
+/* FFT_MOTION_SYSTEM_STAGE1_20260521
+   Motion system stage 1.
+   Feel: Linear + Stripe, micro-interaction terbatas ala Framer.
+   Scope: inner pages only, indexfft.html tidak disentuh.
+*/
+
+:root {
+  --fft-motion-duration: 680ms;
+  --fft-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fft-hover-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --fft-brand-maroon: #5f0e0e;
+}
+
+[data-fft-motion] {
+  --fft-reveal-x: 0px;
+  --fft-reveal-y: 22px;
+  --fft-reveal-scale: 1;
+  --fft-magnetic-x: 0px;
+  --fft-magnetic-y: 0px;
+
+  opacity: 0;
+  filter: blur(2px);
+  transform:
+    translate3d(
+      calc(var(--fft-reveal-x) + var(--fft-magnetic-x)),
+      calc(var(--fft-reveal-y) + var(--fft-magnetic-y)),
+      0
+    )
+    scale(var(--fft-reveal-scale));
+  transition:
+    opacity var(--fft-motion-duration) var(--fft-motion-ease),
+    filter var(--fft-motion-duration) var(--fft-motion-ease),
+    transform var(--fft-motion-duration) var(--fft-motion-ease);
+  transition-delay: var(--fft-motion-delay, 0ms);
+  will-change: opacity, filter, transform;
+}
+
+[data-fft-motion].is-visible {
+  --fft-reveal-x: 0px;
+  --fft-reveal-y: 0px;
+  --fft-reveal-scale: 1;
+
+  opacity: 1;
+  filter: blur(0);
+}
+
+[data-fft-motion="fade"] {
+  --fft-reveal-y: 0px;
+}
+
+[data-fft-motion="left"] {
+  --fft-reveal-x: -22px;
+  --fft-reveal-y: 0px;
+}
+
+[data-fft-motion="right"] {
+  --fft-reveal-x: 22px;
+  --fft-reveal-y: 0px;
+}
+
+[data-fft-motion="scale"] {
+  --fft-reveal-y: 0px;
+  --fft-reveal-scale: 0.985;
+}
+
+[data-fft-magnetic] {
+  --fft-magnetic-x: 0px;
+  --fft-magnetic-y: 0px;
+
+  transition:
+    transform 240ms var(--fft-hover-ease),
+    box-shadow 240ms var(--fft-hover-ease),
+    border-color 240ms var(--fft-hover-ease),
+    background-color 240ms var(--fft-hover-ease),
+    color 240ms var(--fft-hover-ease);
+  will-change: transform;
+}
+
+[data-fft-magnetic]:not([data-fft-motion]) {
+  transform: translate3d(var(--fft-magnetic-x), var(--fft-magnetic-y), 0);
+}
+
+[data-fft-magnetic]:hover {
+  box-shadow: 0 14px 36px rgba(95, 14, 14, 0.16);
+}
+
+[data-fft-spotlight] {
+  position: relative;
+  isolation: isolate;
+  transition:
+    transform 260ms var(--fft-hover-ease),
+    box-shadow 260ms var(--fft-hover-ease),
+    border-color 260ms var(--fft-hover-ease);
+}
+
+[data-fft-spotlight]::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(
+      360px circle at var(--fft-spotlight-x, 50%) var(--fft-spotlight-y, 50%),
+      rgba(95, 14, 14, 0.14),
+      rgba(95, 14, 14, 0.05) 32%,
+      transparent 62%
+    );
+  transition: opacity 260ms ease;
+}
+
+[data-fft-spotlight]:hover {
+  transform: translateY(-4px);
+  border-color: rgba(95, 14, 14, 0.28);
+  box-shadow: 0 18px 44px rgba(15, 15, 16, 0.12);
+}
+
+[data-fft-spotlight]:hover::before {
+  opacity: 1;
+}
+
+
+[data-fft-image-frame] {
+  overflow: hidden;
+}
+
+[data-fft-image-hover] {
+  transition:
+    transform 620ms var(--fft-motion-ease),
+    filter 620ms var(--fft-motion-ease);
+  will-change: transform;
+}
+
+[data-fft-image-frame]:hover [data-fft-image-hover] {
+  transform: scale(1.045);
+  filter: saturate(1.04) contrast(1.02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-fft-motion],
+  [data-fft-motion].is-visible,
+  [data-fft-magnetic],
+  [data-fft-spotlight],
+  [data-fft-image-hover] {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  [data-fft-spotlight]::before {
+    display: none !important;
+  }
+}
+
+
+}
+
+/* FFT_MOTION_SYSTEM_STAGE1_SAFE_TUNING_20260521
+   Safety override untuk halaman yang layout-nya kompleks.
+   Tetap izinkan reveal, tetapi matikan perubahan bentuk dari mouse interaction.
+*/
+body:has(.staff-hero) [data-fft-spotlight],
+body:has(.offline-hero) [data-fft-spotlight] {
+  transform: none !important;
+  box-shadow: inherit !important;
+}
+
+body:has(.staff-hero) [data-fft-spotlight]::before,
+body:has(.offline-hero) [data-fft-spotlight]::before {
+  display: none !important;
+}
