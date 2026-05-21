@@ -1,0 +1,127 @@
+/* FFT_ADMISSION_AD_SLOT_MEDIA_ONLY_20260521
+   Floating PMB ad slot.
+   Final visual sementara:
+   - muncul setelah scroll
+   - background putih atau media gambar/video
+   - hanya tombol CTA dan X
+*/
+
+.fft-ad-slot {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 8990;
+  width: min(920px, calc(100vw - 32px));
+  transform: translate(-50%, 18px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 320ms ease, transform 320ms ease;
+}
+
+.fft-ad-slot.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+
+.fft-ad-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 112px;
+  padding: 18px 70px 18px 22px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(95, 14, 14, 0.22);
+  border-left: 7px solid #5f0e0e;
+  box-shadow: 0 22px 58px rgba(15, 15, 16, 0.24);
+  backdrop-filter: blur(10px);
+}
+
+.fft-ad-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #ffffff;
+}
+
+.fft-ad-media img,
+.fft-ad-media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fft-ad-action {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 26px;
+  background: #5f0e0e;
+  border: 1px solid #5f0e0e;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.20);
+}
+
+.fft-ad-action:hover {
+  background: #430808;
+  border-color: #430808;
+}
+
+.fft-ad-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(95, 14, 14, 0.22);
+  background: #ffffff;
+  color: #5f0e0e;
+  font-size: 1.2rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.fft-ad-close:hover {
+  background: #5f0e0e;
+  color: #ffffff;
+}
+
+@media (max-width: 760px) {
+  .fft-ad-slot {
+    bottom: 14px;
+    width: calc(100vw - 24px);
+  }
+
+  .fft-ad-card {
+    min-height: 132px;
+    padding: 18px 56px 18px 18px;
+  }
+
+  .fft-ad-action {
+    width: max-content;
+    min-height: 46px;
+    padding: 0 20px;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fft-ad-slot {
+    transition: none;
+  }
+}
