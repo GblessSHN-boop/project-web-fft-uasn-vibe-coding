@@ -1,0 +1,221 @@
+/* FFT_BRAND_LANGUAGE_LOGO_FIX_20260521
+   Fix final:
+   - Hilangkan icon HTML lama di kiri.
+   - Pakai hanya gambar brand EN/ID.
+   - Pastikan hamburger mobile muncul.
+*/
+
+.fft-brand-image-shell {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+  text-decoration: none !important;
+}
+
+.fft-brand-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  text-decoration: none !important;
+}
+
+.fft-header-brand-img {
+  display: block !important;
+  width: min(560px, 42vw) !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 76px !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+}
+
+.fft-brand-header-row {
+  min-width: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .fft-brand-header-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+  }
+
+  .fft-brand-image-shell,
+  .fft-brand-link {
+    flex: 1 1 auto !important;
+    width: min(285px, calc(100vw - 104px)) !important;
+    max-width: calc(100vw - 104px) !important;
+  }
+
+  .fft-header-brand-img {
+    width: 100% !important;
+    max-height: 58px !important;
+  }
+
+  header nav:not(.fft-brand-mobile-nav-panel),
+  .main-nav:not(.fft-brand-mobile-nav-panel),
+  .site-nav:not(.fft-brand-mobile-nav-panel),
+  .nav-menu:not(.fft-brand-mobile-nav-panel) {
+    display: none !important;
+  }
+
+  .fft-brand-nav-trigger {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+    flex: 0 0 46px !important;
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    min-height: 46px !important;
+    margin-left: auto !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 10060 !important;
+  }
+
+  .fft-brand-nav-trigger span {
+    display: block !important;
+    width: 30px !important;
+    height: 3px !important;
+    background: #740909 !important;
+    border-radius: 999px !important;
+  }
+
+  .fft-brand-mobile-nav-backdrop {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 10030 !important;
+    background: rgba(0, 0, 0, 0.46) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: opacity 220ms ease, visibility 220ms ease !important;
+  }
+
+  .fft-brand-mobile-nav-panel {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 10040 !important;
+    width: min(360px, 92vw) !important;
+    max-width: 92vw !important;
+    padding: 18px 18px 26px !important;
+    background: #ffffff !important;
+    border-left: 1px solid rgba(116, 9, 9, 0.18) !important;
+    box-shadow: -26px 0 70px rgba(0, 0, 0, 0.32) !important;
+    overflow-y: auto !important;
+    transform: translateX(104%) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: transform 240ms ease, opacity 240ms ease, visibility 240ms ease !important;
+  }
+
+  body.fft-brand-nav-open {
+    overflow: hidden !important;
+  }
+
+  body.fft-brand-nav-open .fft-brand-mobile-nav-backdrop {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  body.fft-brand-nav-open .fft-brand-mobile-nav-panel {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  .fft-brand-mobile-nav-head {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    padding-bottom: 16px !important;
+    margin-bottom: 10px !important;
+    border-bottom: 1px solid rgba(116, 9, 9, 0.14) !important;
+  }
+
+  .fft-brand-mobile-nav-head img {
+    display: block !important;
+    width: min(230px, 62vw) !important;
+    height: auto !important;
+    max-height: 58px !important;
+    object-fit: contain !important;
+    object-position: left center !important;
+  }
+
+  .fft-brand-mobile-nav-close {
+    width: 42px !important;
+    height: 42px !important;
+    border: 1px solid rgba(116, 9, 9, 0.22) !important;
+    background: #ffffff !important;
+    color: #740909 !important;
+    font-size: 1.4rem !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+  }
+
+  .fft-brand-mobile-nav-group {
+    padding: 10px 0 12px !important;
+    border-bottom: 1px solid rgba(116, 9, 9, 0.10) !important;
+  }
+
+  .fft-brand-mobile-nav-title {
+    margin: 0 0 6px !important;
+    color: #740909 !important;
+    font-size: 0.72rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.16em !important;
+    text-transform: uppercase !important;
+  }
+
+  .fft-brand-mobile-nav-link {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    min-height: 42px !important;
+    color: #151519 !important;
+    font-size: 0.96rem !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    text-decoration: none !important;
+  }
+
+  .fft-brand-mobile-nav-link::after {
+    content: "›" !important;
+    color: #740909 !important;
+    font-size: 1.25rem !important;
+    font-weight: 900 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .fft-brand-image-shell,
+  .fft-brand-link {
+    width: min(260px, calc(100vw - 100px)) !important;
+    max-width: calc(100vw - 100px) !important;
+  }
+
+  .fft-header-brand-img {
+    max-height: 54px !important;
+  }
+}
