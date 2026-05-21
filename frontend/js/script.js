@@ -134,7 +134,7 @@ const translations = {
     why_card_6_title: "Content Not Available Yet",
     why_card_6_desc: "Content not available yet.",
 
-    view_more: "VIEW MORE",
+    view_more: "REGISTER NOW",
 
     intro_title: "FACULTY OF PHILOSOPHY AND THEOLOGY",
 
@@ -307,7 +307,7 @@ about_desc_4:
     why_card_6_title: "Konten Belum Tersedia",
     why_card_6_desc: "Konten belum tersedia.",
 
-    view_more: "VIEW MORE",
+    view_more: "DAFTAR SEKARANG",
 
     intro_title: "FAKULTAS FILSAFAT TEOLOGI",
 
@@ -1670,3 +1670,5 @@ const FFT_WHY_CHOOSE_I18N = {
 /* NEWS_ORIGINAL_DESIGN_DISTRIBUTION_FIX_END */
 
 /* FFT_REMOVE_UNUSED_QUICK_FACTS_PAGE_20260519: removed unused Quick Facts navigation label. */
+
+/* FFT_HOME_HERO_CTA_REGISTER_20260521: homepage hero CTA translation updated. */
