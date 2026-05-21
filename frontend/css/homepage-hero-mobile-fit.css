@@ -1,0 +1,403 @@
+/* FFT_HOME_HERO_MOBILE_FIT_STAGE2_20260521
+   Scope: indexfft.html only via body.fft-homepage.
+   Strategi:
+   - Hero mobile lebih pendek dan proporsional.
+   - Gambar tetap fill area, bukan contain di wadah besar.
+   - Crop dikurangi dengan rasio hero yang lebih dekat ke rasio foto.
+   - CTA dibuat cukup besar tanpa menutup background berlebihan.
+   - Desktop tidak disentuh.
+*/
+
+@media (max-width: 768px) {
+  body.fft-homepage {
+    overflow-x: hidden !important;
+  }
+
+  body.fft-homepage :is(
+    .hero,
+    .home-hero,
+    .hero-section,
+    .hero-banner,
+    .hero-area,
+    .main-hero,
+    .hero-slider,
+    .hero-carousel,
+    .slider,
+    .carousel
+  ) {
+    position: relative !important;
+    width: 100% !important;
+    min-height: clamp(235px, 62vw, 340px) !important;
+    height: clamp(235px, 62vw, 340px) !important;
+    max-height: 340px !important;
+    overflow: hidden !important;
+    background-color: #120202 !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+  }
+
+  body.fft-homepage :is(
+    .hero .hero-slide,
+    .home-hero .hero-slide,
+    .hero-section .hero-slide,
+    .hero-banner .hero-slide,
+    .hero-area .hero-slide,
+    .main-hero .hero-slide,
+    .hero .slide,
+    .home-hero .slide,
+    .hero-section .slide,
+    .hero-banner .slide,
+    .hero-area .slide,
+    .main-hero .slide,
+    .hero .swiper-slide,
+    .home-hero .swiper-slide,
+    .hero-section .swiper-slide,
+    .hero-banner .swiper-slide,
+    .hero-area .swiper-slide,
+    .main-hero .swiper-slide,
+    .hero .carousel-item,
+    .home-hero .carousel-item,
+    .hero-section .carousel-item,
+    .hero-banner .carousel-item,
+    .hero-area .carousel-item,
+    .main-hero .carousel-item
+  ) {
+    position: relative !important;
+    min-height: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    overflow: hidden !important;
+    background-color: #120202 !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+  }
+
+  body.fft-homepage :is(
+    .hero img,
+    .home-hero img,
+    .hero-section img,
+    .hero-banner img,
+    .hero-area img,
+    .main-hero img,
+    .hero video,
+    .home-hero video,
+    .hero-section video,
+    .hero-banner video,
+    .hero-area video,
+    .main-hero video
+  ) {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+
+  body.fft-homepage :is(
+    .hero::before,
+    .home-hero::before,
+    .hero-section::before,
+    .hero-banner::before,
+    .hero-area::before,
+    .main-hero::before
+  ) {
+    height: 100% !important;
+  }
+
+  body.fft-homepage :is(
+    .hero::after,
+    .home-hero::after,
+    .hero-section::after,
+    .hero-banner::after,
+    .hero-area::after,
+    .main-hero::after
+  ) {
+    height: 52% !important;
+    bottom: 0 !important;
+    top: auto !important;
+  }
+
+  body.fft-homepage :is(
+    .hero-content,
+    .home-hero-content,
+    .hero-caption,
+    .hero-text,
+    .hero-cta,
+    .hero-actions
+  ) {
+    position: relative !important;
+    z-index: 5 !important;
+  }
+
+  body.fft-homepage :is(
+    .hero .daftar-btn,
+    .home-hero .daftar-btn,
+    .hero-section .daftar-btn,
+    .hero-banner .daftar-btn,
+    .hero-area .daftar-btn,
+    .main-hero .daftar-btn,
+    .hero .btn,
+    .home-hero .btn,
+    .hero-section .btn,
+    .hero-banner .btn,
+    .hero-area .btn,
+    .main-hero .btn
+  ) {
+    width: min(284px, 74vw) !important;
+    max-width: min(284px, 74vw) !important;
+    min-height: 56px !important;
+    padding: 0 24px !important;
+    font-size: 0.82rem !important;
+    letter-spacing: 0.18em !important;
+    line-height: 1.1 !important;
+  }
+}
+
+@media (max-width: 420px) {
+  body.fft-homepage :is(
+    .hero,
+    .home-hero,
+    .hero-section,
+    .hero-banner,
+    .hero-area,
+    .main-hero,
+    .hero-slider,
+    .hero-carousel,
+    .slider,
+    .carousel
+  ) {
+    min-height: clamp(230px, 64vw, 300px) !important;
+    height: clamp(230px, 64vw, 300px) !important;
+    max-height: 300px !important;
+  }
+
+  body.fft-homepage :is(
+    .hero .daftar-btn,
+    .home-hero .daftar-btn,
+    .hero-section .daftar-btn,
+    .hero-banner .daftar-btn,
+    .hero-area .daftar-btn,
+    .main-hero .daftar-btn,
+    .hero .btn,
+    .home-hero .btn,
+    .hero-section .btn,
+    .hero-banner .btn,
+    .hero-area .btn,
+    .main-hero .btn
+  ) {
+    width: min(270px, 72vw) !important;
+    max-width: min(270px, 72vw) !important;
+    min-height: 54px !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+@media (max-width: 360px) {
+  body.fft-homepage :is(
+    .hero,
+    .home-hero,
+    .hero-section,
+    .hero-banner,
+    .hero-area,
+    .main-hero,
+    .hero-slider,
+    .hero-carousel,
+    .slider,
+    .carousel
+  ) {
+    min-height: 220px !important;
+    height: 220px !important;
+    max-height: 220px !important;
+  }
+}
+
+/* FFT_HOME_HERO_MOBILE_SLIDER_STACK_FIX_20260521
+   Memperbaiki bug slide kedua dan seterusnya tidak tampil.
+   Penyebab: aturan mobile sebelumnya membuat .slide menjadi relative.
+   Hero slider membutuhkan semua gambar slide absolute di area yang sama.
+*/
+@media (max-width: 768px) {
+  body.fft-homepage .hero {
+    position: relative !important;
+    overflow: hidden !important;
+  }
+
+  body.fft-homepage .hero > .hero-slider {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: none !important;
+    overflow: hidden !important;
+    z-index: 0 !important;
+    background: #120202 !important;
+  }
+
+  body.fft-homepage .hero > .hero-slider > img.slide {
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    z-index: 1 !important;
+    transition: opacity 900ms ease, visibility 900ms ease !important;
+  }
+
+  body.fft-homepage .hero > .hero-slider > img.slide.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 2 !important;
+  }
+
+  body.fft-homepage .hero > .hero-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+  }
+
+  body.fft-homepage .hero > .hero-content {
+    position: relative !important;
+    z-index: 3 !important;
+  }
+}
+
+/* FFT_HOME_HERO_MOBILE_CTA_FINAL_POSITION_20260521
+   Posisi final CTA hero mobile:
+   - tidak gantung di atas
+   - tidak terlalu bawah
+   - tetap besar dan terbaca
+   - berada di lower center area foto
+*/
+@media (max-width: 768px) {
+  body.fft-homepage .hero {
+    position: relative !important;
+  }
+
+  body.fft-homepage .hero > .hero-content {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 58% !important;
+    bottom: auto !important;
+    z-index: 5 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 18px !important;
+    transform: translateY(-50%) !important;
+    pointer-events: none !important;
+  }
+
+  body.fft-homepage .hero > .hero-content :is(
+    a,
+    button,
+    .btn,
+    .daftar-btn,
+    .hero-btn,
+    .hero-cta
+  ) {
+    pointer-events: auto !important;
+  }
+
+  body.fft-homepage :is(
+    .hero .daftar-btn,
+    .home-hero .daftar-btn,
+    .hero-section .daftar-btn,
+    .hero-banner .daftar-btn,
+    .hero-area .daftar-btn,
+    .main-hero .daftar-btn,
+    .hero .btn,
+    .home-hero .btn,
+    .hero-section .btn,
+    .hero-banner .btn,
+    .hero-area .btn,
+    .main-hero .btn
+  ) {
+    width: min(286px, 76vw) !important;
+    max-width: min(286px, 76vw) !important;
+    min-height: 56px !important;
+    padding: 0 24px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    font-size: 0.82rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.18em !important;
+    line-height: 1.1 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.78) !important;
+    background: rgba(10, 10, 12, 0.34) !important;
+    backdrop-filter: blur(9px) !important;
+    -webkit-backdrop-filter: blur(9px) !important;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22) !important;
+  }
+}
+
+@media (max-width: 420px) {
+  body.fft-homepage .hero > .hero-content {
+    top: 59% !important;
+    padding: 0 16px !important;
+  }
+
+  body.fft-homepage :is(
+    .hero .daftar-btn,
+    .home-hero .daftar-btn,
+    .hero-section .daftar-btn,
+    .hero-banner .daftar-btn,
+    .hero-area .daftar-btn,
+    .main-hero .daftar-btn,
+    .hero .btn,
+    .home-hero .btn,
+    .hero-section .btn,
+    .hero-banner .btn,
+    .hero-area .btn,
+    .main-hero .btn
+  ) {
+    width: min(272px, 74vw) !important;
+    max-width: min(272px, 74vw) !important;
+    min-height: 54px !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.17em !important;
+  }
+}
+
+@media (max-width: 360px) {
+  body.fft-homepage .hero > .hero-content {
+    top: 60% !important;
+  }
+
+  body.fft-homepage :is(
+    .hero .daftar-btn,
+    .home-hero .daftar-btn,
+    .hero-section .daftar-btn,
+    .hero-banner .daftar-btn,
+    .hero-area .daftar-btn,
+    .main-hero .daftar-btn,
+    .hero .btn,
+    .home-hero .btn,
+    .hero-section .btn,
+    .hero-banner .btn,
+    .hero-area .btn,
+    .main-hero .btn
+  ) {
+    width: min(252px, 72vw) !important;
+    max-width: min(252px, 72vw) !important;
+    min-height: 52px !important;
+    font-size: 0.74rem !important;
+  }
+}
+
