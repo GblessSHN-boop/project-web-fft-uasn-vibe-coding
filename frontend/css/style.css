@@ -7071,3 +7071,79 @@ footer.fft-footer .footer-orbit-canvas,
   margin-left: 0 !important;
   gap: 0 !important;
 }
+
+/* FFT_NORMALIZE_INNER_PAGE_HERO_STAGE1_20260521
+   Normalisasi ringan hero inner page.
+   Fokus: posisi awal, jarak label-judul-ringkasan, dan ketebalan judul.
+   Tidak menyentuh HTML, backend, API, berita, banner, atau transisi page.
+*/
+:is(.admission-flow-hero, .academic-rules-hero, .ebrochure-hero, .academic-calendar-hero, .fft-contact-hero, .curriculum-hero, .page-content-hero, .registration-hero, .offline-hero, .testimonial-hero) {
+  padding-top: clamp(64px, 7vw, 104px) !important;
+  padding-bottom: clamp(56px, 6vw, 88px) !important;
+}
+
+:is(.admission-flow-hero, .academic-rules-hero, .ebrochure-hero, .academic-calendar-hero, .fft-contact-hero, .curriculum-hero, .page-content-hero, .registration-hero, .offline-hero, .testimonial-hero) h1 {
+  margin-top: clamp(10px, 1vw, 14px) !important;
+  margin-bottom: clamp(16px, 1.4vw, 22px) !important;
+  max-width: 980px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.02 !important;
+  font-variant-ligatures: none !important;
+  font-feature-settings: "liga" 0, "clig" 0, "kern" 1 !important;
+}
+
+:is(.admission-flow-hero, .academic-rules-hero, .ebrochure-hero, .academic-calendar-hero, .fft-contact-hero, .curriculum-hero, .page-content-hero, .registration-hero, .offline-hero, .testimonial-hero) h1 + p {
+  max-width: 760px !important;
+  margin-top: 0 !important;
+  line-height: 1.65 !important;
+  letter-spacing: 0.005em !important;
+}
+
+:is(.admission-flow-hero, .academic-rules-hero, .ebrochure-hero, .academic-calendar-hero, .fft-contact-hero, .curriculum-hero, .page-content-hero, .registration-hero, .offline-hero, .testimonial-hero) strong[data-page-id] {
+  display: inline-block !important;
+  margin-bottom: clamp(10px, 1vw, 14px) !important;
+  letter-spacing: 0.13em !important;
+  line-height: 1.2 !important;
+}
+
+@media (max-width: 900px) {
+  :is(.admission-flow-hero, .academic-rules-hero, .ebrochure-hero, .academic-calendar-hero, .fft-contact-hero, .curriculum-hero, .page-content-hero, .registration-hero, .offline-hero, .testimonial-hero) {
+    padding-top: clamp(52px, 10vw, 76px) !important;
+    padding-bottom: clamp(48px, 9vw, 72px) !important;
+  }
+
+  :is(.admission-flow-hero, .academic-rules-hero, .ebrochure-hero, .academic-calendar-hero, .fft-contact-hero, .curriculum-hero, .page-content-hero, .registration-hero, .offline-hero, .testimonial-hero) h1 {
+    letter-spacing: -0.018em !important;
+    line-height: 1.05 !important;
+  }
+}
+
+/* FFT_REFINE_SELECTED_HERO_TITLE_TRACKING_20260521
+   Refinement khusus judul besar yang masih terlalu rapat:
+   Kurikulum, Alur Pendaftaran, Simulasi Pendaftaran Offline, dan Pimpinan Dosen.
+*/
+:is(.curriculum-hero, .admission-flow-hero, .offline-hero) h1 {
+  letter-spacing: -0.006em !important;
+  word-spacing: 0.035em !important;
+  font-weight: 760 !important;
+  line-height: 1.06 !important;
+  font-kerning: normal !important;
+}
+
+.staff-hero h1 {
+  letter-spacing: -0.008em !important;
+  word-spacing: 0.03em !important;
+  font-weight: 760 !important;
+  line-height: 1.05 !important;
+  font-kerning: normal !important;
+}
+
+@media (max-width: 900px) {
+  :is(.curriculum-hero, .admission-flow-hero, .offline-hero) h1,
+  .staff-hero h1 {
+    letter-spacing: -0.004em !important;
+    word-spacing: 0.025em !important;
+    line-height: 1.08 !important;
+  }
+}
