@@ -29,3 +29,40 @@
   window.addEventListener("fft-language-change", applyLabels);
   window.addEventListener("storage", applyLabels);
 });
+
+/* FFT_FIX_NAV_EBROCHURE_LABEL_20260521
+   Fix label E-Brochure pada navbar inner pages.
+   Mencegah key mentah "nav_ebrochure" tampil di dropdown Pendaftaran.
+*/
+(function () {
+  "use strict";
+
+  function fixEbrochureLabel() {
+    var selectors = [
+      '[data-i18n="nav_ebrochure"]',
+      '[data-lang-key="nav_ebrochure"]',
+      '[data-nav-key="nav_ebrochure"]'
+    ];
+
+    selectors.forEach(function (selector) {
+      document.querySelectorAll(selector).forEach(function (el) {
+        el.textContent = "E-Brochure";
+      });
+    });
+
+    document.querySelectorAll("a, button, span, li").forEach(function (el) {
+      if ((el.textContent || "").trim() === "nav_ebrochure") {
+        el.textContent = "E-Brochure";
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    fixEbrochureLabel();
+    window.setTimeout(fixEbrochureLabel, 80);
+    window.setTimeout(fixEbrochureLabel, 240);
+  });
+
+  window.addEventListener("fft-language-change", fixEbrochureLabel);
+}());
+
