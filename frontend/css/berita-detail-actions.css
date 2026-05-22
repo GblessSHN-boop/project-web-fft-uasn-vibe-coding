@@ -1,0 +1,235 @@
+/* FFT_BERITA_DETAIL_ACTIONS_20260522
+   Action area untuk berita detail publik:
+   - Kembali ke Home
+   - Share
+   - Berita lainnya
+*/
+
+.fft-news-detail-actions-wrap {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 28px 0 0;
+  padding: 0;
+}
+
+.fft-news-detail-action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 0 30px;
+}
+
+.fft-news-detail-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 18px;
+  border: 1px solid rgba(116, 9, 9, 0.26);
+  background: #ffffff;
+  color: #740909;
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.fft-news-detail-action-btn.is-primary {
+  background: #740909;
+  color: #ffffff;
+  border-color: #740909;
+}
+
+.fft-news-detail-related {
+  width: 100%;
+  margin-top: 16px;
+  padding-top: 26px;
+  border-top: 1px solid rgba(116, 9, 9, 0.14);
+}
+
+.fft-news-detail-related-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.fft-news-detail-related-kicker {
+  display: block;
+  margin-bottom: 7px;
+  color: #740909;
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.fft-news-detail-related-title {
+  margin: 0;
+  color: #111118;
+  font-size: clamp(1.7rem, 4vw, 2.55rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-weight: 1000;
+}
+
+.fft-news-detail-related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.fft-news-detail-related-card {
+  display: block;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+  background: #ffffff;
+  border: 1px solid rgba(116, 9, 9, 0.14);
+  overflow: hidden;
+}
+
+.fft-news-detail-related-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
+  background: #090909;
+}
+
+.fft-news-detail-related-body {
+  padding: 15px;
+}
+
+.fft-news-detail-related-meta {
+  display: block;
+  margin-bottom: 8px;
+  color: #740909;
+  font-size: 0.62rem;
+  font-weight: 950;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.fft-news-detail-related-card h3 {
+  margin: 0;
+  color: #151519;
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1.22;
+  letter-spacing: -0.025em;
+}
+
+.fft-news-detail-share-note {
+  display: none;
+  margin-top: 10px;
+  color: rgba(18, 18, 24, 0.62);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.fft-news-detail-share-note.is-visible {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .fft-news-detail-actions-wrap {
+    margin-top: 0;
+    padding: 0 16px 42px;
+  }
+
+  .fft-news-detail-action-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .fft-news-detail-action-btn {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 12px;
+    font-size: 0.68rem;
+    letter-spacing: 0.11em;
+  }
+
+  .fft-news-detail-related {
+    margin-top: 8px;
+    padding-top: 24px;
+  }
+
+  .fft-news-detail-related-head {
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .fft-news-detail-related-kicker {
+    font-size: 0.62rem;
+  }
+
+  .fft-news-detail-related-title {
+    font-size: clamp(1.8rem, 8vw, 2.35rem);
+  }
+
+  .fft-news-detail-related-grid {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .fft-news-detail-related-card {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    min-height: 92px;
+  }
+
+  .fft-news-detail-related-card img {
+    width: 112px;
+    height: 100%;
+    min-height: 92px;
+    aspect-ratio: auto;
+  }
+
+  .fft-news-detail-related-body {
+    padding: 12px 13px;
+  }
+
+  .fft-news-detail-related-meta {
+    margin-bottom: 7px;
+    font-size: 0.56rem;
+    letter-spacing: 0.12em;
+  }
+
+  .fft-news-detail-related-card h3 {
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+
+  .fft-news-detail-share-note {
+    font-size: 0.76rem;
+  }
+}
+
+@media (max-width: 370px) {
+  .fft-news-detail-actions-wrap {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .fft-news-detail-related-card {
+    grid-template-columns: 98px minmax(0, 1fr);
+  }
+
+  .fft-news-detail-related-card img {
+    width: 98px;
+  }
+
+  .fft-news-detail-related-card h3 {
+    font-size: 0.84rem;
+  }
+}
