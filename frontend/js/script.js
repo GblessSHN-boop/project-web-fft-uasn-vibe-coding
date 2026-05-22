@@ -538,8 +538,46 @@ if (isPimpinanPage) {
   /* BERITA FRONTEND DINAMIS */
   /* ===================== */
 
-  const API_BASE = "http://127.0.0.1:5000";
+  const API_BASE = (function () {
+    const host = window.location.hostname || "127.0.0.1";
+    const isLocal = host === "127.0.0.1" || host === "localhost";
+    return isLocal ? "http://127.0.0.1:5000" : `${window.location.protocol}//${host}:5000`;
+  }());
   const STATIC_BASE = `${API_BASE}/static/`;
+
+  /* FFT_API_URL_HELPERS_20260521 */
+  function normalizeStaticUrl(value) {
+    const raw = String(value || "").replace(/\\/g, "/").trim();
+
+    if (!raw) return "";
+    if (raw.startsWith("http://") || raw.startsWith("https://")) return raw;
+    if (raw.startsWith("/static/")) return API_BASE + raw;
+    if (raw.startsWith("static/")) return API_BASE + "/" + raw;
+    if (raw.startsWith("uploads/")) return API_BASE + "/static/" + raw;
+
+    return raw;
+  }
+
+  function normalizeFrontendTargetUrl(value) {
+    const raw = String(value || "").trim();
+
+    if (!raw || raw === "#") return "#";
+
+    try {
+      const url = new URL(raw, window.location.href);
+
+      if (
+        (url.hostname === "127.0.0.1" || url.hostname === "localhost") &&
+        url.port === "5500"
+      ) {
+        return window.location.origin + url.pathname + url.search + url.hash;
+      }
+
+      return url.href;
+    } catch (error) {
+      return raw;
+    }
+  }
 
   loadBannerInformasi();
   loadBeritaHomepage();
@@ -554,41 +592,88 @@ if (isPimpinanPage) {
 
     if (!linkEl || !emptyEl || !imageEl || !videoEl) return;
 
+    function hideBannerEmpty() {
+      emptyEl.classList.add("fft-banner-empty-hidden");
+      emptyEl.classList.remove("fft-banner-empty-visible");
+      emptyEl.setAttribute("hidden", "hidden");
+      emptyEl.setAttribute("aria-hidden", "true");
+      emptyEl.style.setProperty("display", "none", "important");
+      emptyEl.style.setProperty("visibility", "hidden", "important");
+      emptyEl.style.setProperty("opacity", "0", "important");
+      emptyEl.style.setProperty("height", "0", "important");
+      emptyEl.style.setProperty("min-height", "0", "important");
+      emptyEl.style.setProperty("max-height", "0", "important");
+      emptyEl.style.setProperty("margin", "0", "important");
+      emptyEl.style.setProperty("padding", "0", "important");
+      emptyEl.style.setProperty("overflow", "hidden", "important");
+    }
+
+    function showBannerEmpty() {
+      linkEl.style.setProperty("display", "none", "important");
+      linkEl.setAttribute("hidden", "hidden");
+      linkEl.setAttribute("aria-hidden", "true");
+
+      imageEl.removeAttribute("src");
+      imageEl.style.setProperty("display", "none", "important");
+
+      videoEl.pause();
+      videoEl.removeAttribute("src");
+      videoEl.style.setProperty("display", "none", "important");
+
+      emptyEl.classList.remove("fft-banner-empty-hidden");
+      emptyEl.classList.add("fft-banner-empty-visible");
+      emptyEl.removeAttribute("hidden");
+      emptyEl.setAttribute("aria-hidden", "false");
+      emptyEl.style.setProperty("display", "block", "important");
+      emptyEl.style.setProperty("visibility", "visible", "important");
+      emptyEl.style.setProperty("opacity", "1", "important");
+      emptyEl.style.setProperty("height", "auto", "important");
+      emptyEl.style.setProperty("max-height", "none", "important");
+      emptyEl.style.setProperty("overflow", "hidden", "important");
+    }
+
     try {
       const response = await fetch(`${API_BASE}/api/banner-informasi`, {
         cache: "no-store",
       });
+
       const payload = await response.json();
       const banner = payload && payload.data ? payload.data : null;
 
-      if (!payload || !payload.published || !banner || !banner.media_file) {
+      if (!response.ok || !payload || !payload.published || !banner || !banner.media_file) {
+        showBannerEmpty();
         return;
       }
 
-      const mediaUrl = STATIC_BASE + banner.media_file;
+      const mediaUrl = normalizeStaticUrl(banner.media_file);
+      const mediaType = String(banner.media_type || "").toLowerCase();
 
-      linkEl.href = banner.target_url || "#";
-      linkEl.style.display = "block";
-      emptyEl.style.display = "none";
+      linkEl.href = normalizeFrontendTargetUrl(banner.target_url) || "#";
+      linkEl.removeAttribute("hidden");
+      linkEl.setAttribute("aria-hidden", "false");
+      linkEl.style.setProperty("display", "block", "important");
 
-      if ((banner.media_type || "").toLowerCase() === "image") {
+      hideBannerEmpty();
+
+      if (mediaType === "image") {
         imageEl.src = mediaUrl;
-        imageEl.style.display = "block";
+        imageEl.style.setProperty("display", "block", "important");
 
         videoEl.pause();
         videoEl.removeAttribute("src");
-        videoEl.load();
-        videoEl.style.display = "none";
-      } else {
-        videoEl.src = mediaUrl;
-        videoEl.style.display = "block";
-        videoEl.load();
-
-        imageEl.removeAttribute("src");
-        imageEl.style.display = "none";
+        videoEl.style.setProperty("display", "none", "important");
+        return;
       }
+
+      videoEl.src = mediaUrl;
+      videoEl.style.setProperty("display", "block", "important");
+      videoEl.load();
+
+      imageEl.removeAttribute("src");
+      imageEl.style.setProperty("display", "none", "important");
     } catch (error) {
       console.error("Gagal memuat banner informasi:", error);
+      showBannerEmpty();
     }
   }
 
@@ -649,13 +734,13 @@ if (isPimpinanPage) {
       }
 
       trending.forEach((item, index) => {
-        const imgSrc = item.thumbnail
-          ? STATIC_BASE + item.thumbnail
-          : "berita/news-empty.png";
+        const imgSrc = normalizeStaticUrl(
+          item.thumbnail_url || item.image_url || item.thumbnail || item.image || item.gambar_thumbnail
+        ) || "berita/news-empty.png";
 
         const card = document.createElement("a");
         card.className = "berita-feature-card berita-feature-card-large show";
-        card.href = `berita-detail.html?id=${encodeURIComponent(item.id)}`;
+        card.href = item.detail_url || item.url || item.link || `berita-detail.html?id=${encodeURIComponent(item.id || "")}&kode=${encodeURIComponent(item.kode || item.kode_berita || item.code || "")}`;
         card.dataset.title = normalizeText(item.judul || "");
 
         card.innerHTML = `
@@ -674,13 +759,13 @@ if (isPimpinanPage) {
       });
 
       umum.forEach((item) => {
-        const imgSrc = item.thumbnail
-          ? STATIC_BASE + item.thumbnail
-          : "berita/news-empty.png";
+        const imgSrc = normalizeStaticUrl(
+          item.thumbnail_url || item.image_url || item.thumbnail || item.image || item.gambar_thumbnail
+        ) || "berita/news-empty.png";
 
         const card = document.createElement("a");
         card.className = "berita-grid-item show";
-        card.href = `berita-detail.html?id=${encodeURIComponent(item.id)}`;
+        card.href = item.detail_url || item.url || item.link || `berita-detail.html?id=${encodeURIComponent(item.id || "")}&kode=${encodeURIComponent(item.kode || item.kode_berita || item.code || "")}`;
         card.dataset.title = normalizeText(item.judul || "");
 
         card.innerHTML = `
@@ -1452,7 +1537,11 @@ const FFT_WHY_CHOOSE_I18N = {
 (function () {
   "use strict";
 
-  const API_BASE = "http://127.0.0.1:5000";
+  const API_BASE = (function () {
+    const host = window.location.hostname || "127.0.0.1";
+    const isLocal = host === "127.0.0.1" || host === "localhost";
+    return isLocal ? "http://127.0.0.1:5000" : `${window.location.protocol}//${host}:5000`;
+  }());
 
   function escapeHtml(value) {
     return String(value || "")
@@ -1519,7 +1608,20 @@ const FFT_WHY_CHOOSE_I18N = {
   }
 
   function detailUrl(item) {
-    return "berita-detail.html?id=" + encodeURIComponent(item.id || item.berita_id || item.kode || "");
+    const direct = item.detail_url || item.url || item.link;
+
+    if (direct) {
+      return String(direct).replace(/^\.\//, "");
+    }
+
+    const id = item.id || item.berita_id || "";
+    const kode = item.kode || item.kode_berita || item.code || "";
+    const params = new URLSearchParams();
+
+    if (id) params.set("id", id);
+    if (kode) params.set("kode", kode);
+
+    return "berita-detail.html?" + params.toString();
   }
 
   function collectNews(payload) {

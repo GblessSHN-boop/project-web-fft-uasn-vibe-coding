@@ -1,0 +1,245 @@
+/* FFT_HOME_NEWS_BANNER_MOBILE_POLISH_20260522
+   Scope: indexfft.html only via body.fft-homepage.
+   Fokus:
+   - Banner informasi / banner berita mobile konsisten 16:9.
+   - Gambar dan video tidak kepotong aneh.
+   - Placeholder tidak terlalu tinggi.
+   - Desktop tidak berubah.
+*/
+
+@media (max-width: 768px) {
+  body.fft-homepage {
+    overflow-x: hidden !important;
+  }
+
+  body.fft-homepage #berita {
+    position: relative !important;
+    overflow: hidden !important;
+  }
+
+  body.fft-homepage :is(
+    #berita .banner-informasi,
+    #berita .banner-informasi-section,
+    #berita .banner-informasi-wrapper,
+    #berita .banner-informasi-container,
+    #berita .banner-informasi-slot,
+    #berita .banner-info,
+    #berita .news-banner,
+    #berita .berita-banner,
+    #berita .banner-berita,
+    #berita .banner-slot,
+    #berita [data-banner-informasi],
+    #berita [id*="banner"],
+    #berita [class*="banner"]
+  ) {
+    box-sizing: border-box !important;
+  }
+
+  body.fft-homepage :is(
+    #berita .banner-informasi,
+    #berita .banner-informasi-section,
+    #berita .banner-informasi-wrapper,
+    #berita .banner-informasi-container,
+    #berita .banner-informasi-slot,
+    #berita .news-banner,
+    #berita .berita-banner,
+    #berita .banner-berita,
+    #berita .banner-slot,
+    #berita [data-banner-informasi]
+  ) {
+    width: calc(100% - 28px) !important;
+    max-width: 420px !important;
+    margin: 22px auto 18px !important;
+    padding: 0 !important;
+    background: #090909 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.14) !important;
+    overflow: hidden !important;
+  }
+
+  body.fft-homepage :is(
+    #berita .banner-informasi-media,
+    #berita .banner-media,
+    #berita .banner-preview,
+    #berita .banner-frame,
+    #berita .banner-content,
+    #berita .banner-informasi-content,
+    #berita .news-banner-media,
+    #berita .berita-banner-media
+  ) {
+    position: relative !important;
+    width: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #090909 !important;
+    overflow: hidden !important;
+  }
+
+  body.fft-homepage :is(
+    #berita .banner-informasi img,
+    #berita .banner-informasi video,
+    #berita .banner-informasi iframe,
+    #berita .banner-informasi-section img,
+    #berita .banner-informasi-section video,
+    #berita .banner-informasi-section iframe,
+    #berita .banner-informasi-wrapper img,
+    #berita .banner-informasi-wrapper video,
+    #berita .banner-informasi-wrapper iframe,
+    #berita .banner-informasi-container img,
+    #berita .banner-informasi-container video,
+    #berita .banner-informasi-container iframe,
+    #berita .banner-informasi-slot img,
+    #berita .banner-informasi-slot video,
+    #berita .banner-informasi-slot iframe,
+    #berita .news-banner img,
+    #berita .news-banner video,
+    #berita .news-banner iframe,
+    #berita .berita-banner img,
+    #berita .berita-banner video,
+    #berita .berita-banner iframe,
+    #berita .banner-berita img,
+    #berita .banner-berita video,
+    #berita .banner-berita iframe,
+    #berita .banner-slot img,
+    #berita .banner-slot video,
+    #berita .banner-slot iframe,
+    #berita [data-banner-informasi] img,
+    #berita [data-banner-informasi] video,
+    #berita [data-banner-informasi] iframe
+  ) {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    background: #090909 !important;
+  }
+
+  body.fft-homepage #berita video {
+    object-fit: contain !important;
+    background: #090909 !important;
+  }
+
+  body.fft-homepage :is(
+    #berita .banner-empty,
+    #berita .banner-placeholder,
+    #berita .banner-informasi-empty,
+    #berita .empty-banner,
+    #berita [class*="placeholder"]
+  ) {
+    width: calc(100% - 28px) !important;
+    max-width: 420px !important;
+    min-height: 0 !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    margin: 22px auto 18px !important;
+    padding: 16px !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    background: #090909 !important;
+    color: #ffffff !important;
+    border: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body.fft-homepage :is(
+    #berita .banner-empty,
+    #berita .banner-placeholder,
+    #berita .banner-informasi-empty,
+    #berita .empty-banner,
+    #berita [class*="placeholder"]
+  ) :is(p, span, h2, h3, strong) {
+    margin: 0 !important;
+    color: #ffffff !important;
+    font-size: 0.72rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.18em !important;
+    line-height: 1.35 !important;
+    text-transform: uppercase !important;
+  }
+
+  body.fft-homepage :is(
+    #berita .berita-wrapper,
+    #berita .news-wrapper,
+    #berita .berita-section,
+    #berita .latest-news,
+    #berita .news-section
+  ) {
+    width: calc(100% - 28px) !important;
+    max-width: 420px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    overflow: hidden !important;
+  }
+}
+
+@media (max-width: 390px) {
+  body.fft-homepage :is(
+    #berita .banner-informasi,
+    #berita .banner-informasi-section,
+    #berita .banner-informasi-wrapper,
+    #berita .banner-informasi-container,
+    #berita .banner-informasi-slot,
+    #berita .news-banner,
+    #berita .berita-banner,
+    #berita .banner-berita,
+    #berita .banner-slot,
+    #berita [data-banner-informasi],
+    #berita .banner-empty,
+    #berita .banner-placeholder,
+    #berita .banner-informasi-empty,
+    #berita .empty-banner
+  ) {
+    width: calc(100% - 22px) !important;
+    margin-top: 18px !important;
+    margin-bottom: 16px !important;
+  }
+
+  body.fft-homepage :is(
+    #berita .berita-wrapper,
+    #berita .news-wrapper,
+    #berita .berita-section,
+    #berita .latest-news,
+    #berita .news-section
+  ) {
+    width: calc(100% - 22px) !important;
+  }
+}
+
+/* FFT_HOME_NEWS_BANNER_EMPTY_CLEAN_20260522
+   Empty state banner dikontrol oleh script.js utama.
+   Tidak memakai observer.
+*/
+body.fft-homepage #berita #frontendBannerEmpty[hidden],
+body.fft-homepage #berita #frontendBannerEmpty.fft-banner-empty-hidden {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+body.fft-homepage #berita #frontendBannerEmpty.fft-banner-empty-visible {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
