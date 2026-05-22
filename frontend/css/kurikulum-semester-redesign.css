@@ -1,0 +1,284 @@
+/* FFT_KURIKULUM_SEMESTER_REDESIGN_20260522
+   Redesign khusus bagian semester pada halaman kurikulum.
+   Aktif hanya di mobile. Desktop tetap memakai struktur asli.
+*/
+
+@media (max-width: 768px) {
+  body.fft-kurikulum-page .fft-native-semester-hidden {
+    display: none !important;
+  }
+
+  body.fft-kurikulum-page .fft-curriculum-semester-redesign {
+    width: calc(100% - 28px);
+    max-width: 420px;
+    margin: 28px auto 48px;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body.fft-kurikulum-page .fft-curriculum-semester-head {
+    margin-bottom: 18px;
+  }
+
+  body.fft-kurikulum-page .fft-curriculum-semester-kicker {
+    display: block;
+    margin: 0 0 8px;
+    color: #740909;
+    font-size: 0.62rem;
+    font-weight: 950;
+    letter-spacing: 0.18em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  body.fft-kurikulum-page .fft-curriculum-semester-title {
+    margin: 0;
+    color: #111118;
+    font-size: clamp(1.82rem, 8.2vw, 2.55rem);
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    font-weight: 1000;
+  }
+
+  body.fft-kurikulum-page .fft-curriculum-semester-desc {
+    max-width: 330px;
+    margin: 10px 0 0;
+    color: rgba(18, 18, 24, 0.64);
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  body.fft-kurikulum-page .fft-semester-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  body.fft-kurikulum-page .fft-semester-card {
+    background: #ffffff;
+    border: 1px solid rgba(116, 9, 9, 0.14);
+    box-shadow: 0 14px 30px rgba(31, 20, 20, 0.07);
+    overflow: hidden;
+  }
+
+  body.fft-kurikulum-page .fft-semester-card.is-open {
+    border-color: rgba(116, 9, 9, 0.28);
+  }
+
+  body.fft-kurikulum-page .fft-semester-trigger {
+    width: 100%;
+    min-height: 64px;
+    padding: 0 15px;
+    border: 0;
+    background: #ffffff;
+    color: #111118;
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr) 34px;
+    gap: 12px;
+    align-items: center;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  body.fft-kurikulum-page .fft-semester-card.is-open .fft-semester-trigger {
+    background: #740909;
+    color: #ffffff;
+  }
+
+  body.fft-kurikulum-page .fft-semester-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 34px;
+    background: rgba(116, 9, 9, 0.1);
+    color: #740909;
+    font-size: 0.72rem;
+    font-weight: 950;
+    letter-spacing: 0.04em;
+  }
+
+  body.fft-kurikulum-page .fft-semester-card.is-open .fft-semester-number {
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+  }
+
+  body.fft-kurikulum-page .fft-semester-title-wrap {
+    min-width: 0;
+  }
+
+  body.fft-kurikulum-page .fft-semester-title {
+    display: block;
+    color: inherit;
+    font-size: 0.98rem;
+    font-weight: 950;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+
+  body.fft-kurikulum-page .fft-semester-meta {
+    display: block;
+    margin-top: 5px;
+    color: rgba(18, 18, 24, 0.54);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  body.fft-kurikulum-page .fft-semester-card.is-open .fft-semester-meta {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  body.fft-kurikulum-page .fft-semester-icon {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgba(116, 9, 9, 0.35);
+    border-radius: 999px;
+  }
+
+  body.fft-kurikulum-page .fft-semester-card.is-open .fft-semester-icon {
+    border-color: rgba(255, 255, 255, 0.62);
+  }
+
+  body.fft-kurikulum-page .fft-semester-icon::before,
+  body.fft-kurikulum-page .fft-semester-icon::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 12px;
+    height: 2px;
+    background: currentColor;
+    transform: translate(-50%, -50%);
+  }
+
+  body.fft-kurikulum-page .fft-semester-icon::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+
+  body.fft-kurikulum-page .fft-semester-card.is-open .fft-semester-icon::after {
+    opacity: 0;
+  }
+
+  body.fft-kurikulum-page .fft-semester-panel {
+    display: none;
+    background:
+      linear-gradient(180deg, #ffffff 0%, #fffafa 100%);
+    border-top: 1px solid rgba(116, 9, 9, 0.14);
+  }
+
+  body.fft-kurikulum-page .fft-semester-card.is-open .fft-semester-panel {
+    display: block;
+  }
+
+  body.fft-kurikulum-page .fft-course-head {
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr) 42px;
+    gap: 10px;
+    padding: 14px 15px 8px;
+    color: #740909;
+    font-size: 0.58rem;
+    font-weight: 950;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  body.fft-kurikulum-page .fft-course-row {
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr) 42px;
+    gap: 10px;
+    align-items: center;
+    margin: 0 15px 14px;
+    padding: 14px 0;
+    background: #ffffff;
+    border: 1px solid rgba(116, 9, 9, 0.1);
+    box-shadow: 0 10px 20px rgba(31, 20, 20, 0.045);
+  }
+
+  body.fft-kurikulum-page .fft-course-code {
+    padding-left: 12px;
+    color: #740909;
+    font-size: 0.74rem;
+    font-weight: 950;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  body.fft-kurikulum-page .fft-course-name {
+    min-width: 0;
+    color: #151519;
+    font-size: 0.92rem;
+    font-weight: 850;
+    line-height: 1.35;
+  }
+
+  body.fft-kurikulum-page .fft-course-sks {
+    justify-self: end;
+    margin-right: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 30px;
+    background: rgba(116, 9, 9, 0.08);
+    color: #740909;
+    font-size: 0.82rem;
+    font-weight: 950;
+  }
+
+  body.fft-kurikulum-page .fft-semester-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 13px 15px 16px;
+    color: rgba(18, 18, 24, 0.68);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  body.fft-kurikulum-page .fft-semester-total strong {
+    color: #740909;
+    font-size: 0.86rem;
+    font-weight: 950;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+}
+
+@media (max-width: 370px) {
+  body.fft-kurikulum-page .fft-curriculum-semester-redesign {
+    width: calc(100% - 22px);
+  }
+
+  body.fft-kurikulum-page .fft-semester-trigger {
+    grid-template-columns: 38px minmax(0, 1fr) 30px;
+    gap: 10px;
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+
+  body.fft-kurikulum-page .fft-semester-number {
+    width: 34px;
+    height: 32px;
+    font-size: 0.68rem;
+  }
+
+  body.fft-kurikulum-page .fft-course-head,
+  body.fft-kurikulum-page .fft-course-row {
+    grid-template-columns: 82px minmax(0, 1fr) 36px;
+    gap: 8px;
+  }
+
+  body.fft-kurikulum-page .fft-course-code {
+    padding-left: 10px;
+    font-size: 0.68rem;
+  }
+
+  body.fft-kurikulum-page .fft-course-name {
+    font-size: 0.86rem;
+  }
+}
