@@ -6003,5 +6003,365 @@ app.view_functions["admin_berita_delete"] = _fft_news_guard_delete
 # === FFT NEWS EDIT DELETE GUARD END ===
 
 
+
+# FFT_PUBLIC_BERITA_VIEW_COUNTER_ROUTE_20260522_START
+# Public berita view counter.
+# Dipakai oleh frontend berita-detail.html untuk menaikkan jumlah kunjungan artikel.
+@app.route("/api/berita/<int:berita_id>/view", methods=["POST", "GET"])
+@app.route("/api/berita/<int:berita_id>/visit", methods=["POST", "GET"])
+@app.route("/api/berita/view", methods=["POST", "GET"])
+@app.route("/api/berita/visit", methods=["POST", "GET"])
+def fft_public_berita_record_view(berita_id=None):
+    import json
+    from pathlib import Path
+    from flask import request, jsonify
+
+    payload = request.get_json(silent=True) or {}
+
+    target_id = (
+        berita_id
+        or payload.get("id")
+        or payload.get("berita_id")
+        or request.args.get("id")
+        or request.args.get("berita_id")
+    )
+
+    target_kode = (
+        payload.get("kode")
+        or payload.get("code")
+        or payload.get("kode_berita")
+        or request.args.get("kode")
+        or request.args.get("code")
+        or request.args.get("kode_berita")
+    )
+
+    target_slug = (
+        payload.get("slug")
+        or request.args.get("slug")
+    )
+
+    def norm(value):
+        if value is None:
+            return ""
+        return str(value).strip().lower()
+
+    target_id_norm = norm(target_id)
+    target_kode_norm = norm(target_kode)
+    target_slug_norm = norm(target_slug)
+
+    if not target_id_norm and not target_kode_norm and not target_slug_norm:
+        return jsonify({
+            "ok": False,
+            "message": "Identifier berita tidak ditemukan.",
+        }), 400
+
+    counter_fields = [
+        "click_count",
+        "views",
+        "view_count",
+        "visitor_count",
+        "dibaca",
+        "total_view",
+        "total_views",
+    ]
+
+    def item_matches(item):
+        if not isinstance(item, dict):
+            return False
+
+        aliases = [
+            item.get("id"),
+            item.get("berita_id"),
+            item.get("kode"),
+            item.get("code"),
+            item.get("kode_berita"),
+            item.get("slug"),
+        ]
+
+        aliases = [norm(value) for value in aliases if norm(value)]
+
+        return (
+            (target_id_norm and target_id_norm in aliases)
+            or (target_kode_norm and target_kode_norm in aliases)
+            or (target_slug_norm and target_slug_norm in aliases)
+        )
+
+    def increment_dict(item):
+        for field in counter_fields:
+            if field in item:
+                try:
+                    item[field] = int(item.get(field) or 0) + 1
+                except Exception:
+                    item[field] = 1
+                return field, item[field]
+
+        item["click_count"] = 1
+        return "click_count", 1
+
+    def walk_and_increment(obj):
+        if isinstance(obj, dict):
+            if item_matches(obj):
+                field, value = increment_dict(obj)
+                return True, field, value
+
+            for value in obj.values():
+                found, field, count_value = walk_and_increment(value)
+                if found:
+                    return True, field, count_value
+
+        if isinstance(obj, list):
+            for value in obj:
+                found, field, count_value = walk_and_increment(value)
+                if found:
+                    return True, field, count_value
+
+        return False, None, None
+
+    def try_sqlalchemy_update():
+        db_obj = globals().get("db")
+
+        if db_obj is None:
+            return None
+
+        model_candidates = []
+
+        for name, obj in list(globals().items()):
+            if not isinstance(obj, type):
+                continue
+
+            table_name = str(getattr(obj, "__tablename__", "") or "").lower()
+            class_name = str(name or "").lower()
+
+            if "berita" not in table_name and "berita" not in class_name and "news" not in table_name and "news" not in class_name:
+                continue
+
+            if hasattr(obj, "query"):
+                model_candidates.append(obj)
+
+        for model in model_candidates:
+            queries = []
+
+            if target_id_norm:
+                for field in ["id", "berita_id"]:
+                    if hasattr(model, field):
+                        queries.append((field, target_id))
+
+            if target_kode_norm:
+                for field in ["kode", "code", "kode_berita"]:
+                    if hasattr(model, field):
+                        queries.append((field, target_kode))
+
+            if target_slug_norm and hasattr(model, "slug"):
+                queries.append(("slug", target_slug))
+
+            for field, value in queries:
+                try:
+                    item = model.query.filter(getattr(model, field) == value).first()
+
+                    if not item and str(value).isdigit():
+                        item = model.query.filter(getattr(model, field) == int(value)).first()
+
+                    if not item:
+                        continue
+
+                    used_field = None
+                    new_value = None
+
+                    for counter_field in counter_fields:
+                        if hasattr(item, counter_field):
+                            current = getattr(item, counter_field) or 0
+                            try:
+                                current = int(current)
+                            except Exception:
+                                current = 0
+
+                            new_value = current + 1
+                            setattr(item, counter_field, new_value)
+                            used_field = counter_field
+                            break
+
+                    if not used_field:
+                        continue
+
+                    db_obj.session.commit()
+
+                    return {
+                        "storage": "database",
+                        "field": used_field,
+                        "value": new_value,
+                        "model": model.__name__,
+                    }
+                except Exception:
+                    try:
+                        db_obj.session.rollback()
+                    except Exception:
+                        pass
+
+        return None
+
+    db_result = try_sqlalchemy_update()
+
+    if db_result:
+        return jsonify({
+            "ok": True,
+            "updated": True,
+            "data": db_result,
+        }), 200
+
+    base_dir = Path(__file__).resolve().parent
+
+    json_candidates = []
+
+    for json_path in base_dir.rglob("*.json"):
+        name = json_path.name.lower()
+        parent = str(json_path.parent).lower()
+
+        if "berita" not in name and "news" not in name and "data" not in parent:
+            continue
+
+        try:
+            if json_path.stat().st_size > 5_000_000:
+                continue
+        except Exception:
+            continue
+
+        json_candidates.append(json_path)
+
+    for json_path in json_candidates:
+        try:
+            raw = json_path.read_text(encoding="utf-8")
+            data = json.loads(raw)
+        except Exception:
+            continue
+
+        found, field, count_value = walk_and_increment(data)
+
+        if not found:
+            continue
+
+        try:
+            json_path.write_text(
+                json.dumps(data, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+        except Exception as error:
+            return jsonify({
+                "ok": False,
+                "message": "Gagal menyimpan counter berita.",
+                "error": str(error),
+            }), 500
+
+        return jsonify({
+            "ok": True,
+            "updated": True,
+            "data": {
+                "storage": "json",
+                "file": str(json_path.relative_to(base_dir)),
+                "field": field,
+                "value": count_value,
+            },
+        }), 200
+
+    return jsonify({
+        "ok": False,
+        "updated": False,
+        "message": "Berita ditemukan di frontend, tetapi storage counter backend tidak ditemukan.",
+    }), 404
+# FFT_PUBLIC_BERITA_VIEW_COUNTER_ROUTE_20260522_END
+
 if __name__ == "__main__":
     app.run(debug=True)
+
+# FFT_PUBLIC_API_CORS_20260521
+@app.after_request
+def fft_public_api_cors(response):
+    if request.path.startswith("/api/") or request.path.startswith("/static/"):
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Methods"] = "GET, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    return response
+
+# FFT_PUBLIC_BERITA_DETAIL_API_20260521
+@app.route("/api/berita/<identifier>", methods=["GET"])
+@app.route("/api/berita/detail/<identifier>", methods=["GET"])
+def api_berita_detail_public(identifier):
+    def response_to_json(value):
+        if hasattr(value, "get_json"):
+            return value.get_json(silent=True) or {}
+
+        if isinstance(value, tuple) and value:
+            first = value[0]
+            if hasattr(first, "get_json"):
+                return first.get_json(silent=True) or {}
+            if isinstance(first, dict):
+                return first
+
+        if isinstance(value, dict):
+            return value
+
+        return {}
+
+    try:
+        payload = response_to_json(api_berita())
+    except Exception as error:
+        return jsonify({
+            "published": False,
+            "data": None,
+            "error": str(error),
+        }), 500
+
+    target = str(identifier or "").strip().lower()
+    items = []
+    seen = set()
+
+    for key in ("all", "latest", "banner", "trending", "umum", "data", "items", "berita", "news"):
+        bucket = payload.get(key)
+
+        if isinstance(bucket, dict):
+            bucket = [bucket]
+
+        if not isinstance(bucket, list):
+            continue
+
+        for item in bucket:
+            if not isinstance(item, dict):
+                continue
+
+            item_key = str(
+                item.get("id")
+                or item.get("kode")
+                or item.get("kode_berita")
+                or item.get("slug")
+                or item.get("judul")
+                or id(item)
+            )
+
+            if item_key in seen:
+                continue
+
+            seen.add(item_key)
+            items.append(item)
+
+    for item in items:
+        aliases = [
+            item.get("id"),
+            item.get("berita_id"),
+            item.get("kode"),
+            item.get("code"),
+            item.get("kode_berita"),
+            item.get("slug"),
+        ]
+
+        aliases = [str(value).strip().lower() for value in aliases if value is not None]
+
+        if target in aliases:
+            return jsonify({
+                "published": payload.get("published", True),
+                "data": item,
+            })
+
+    return jsonify({
+        "published": False,
+        "data": None,
+        "error": "Berita tidak ditemukan.",
+    }), 404

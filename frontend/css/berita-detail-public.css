@@ -1,0 +1,391 @@
+/* FFT_BERITA_DETAIL_PUBLIC_STAGE2_20260522 */
+
+.fft-news-detail-rendered {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fft-news-detail-article {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid rgba(116, 9, 9, 0.14);
+  overflow: hidden;
+}
+
+.fft-news-detail-figure {
+  margin: 0;
+  width: 100%;
+  background: #090909;
+}
+
+.fft-news-detail-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
+}
+
+.fft-news-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: clamp(34px, 5vw, 70px);
+  padding: clamp(34px, 5vw, 70px);
+}
+
+.fft-news-detail-main {
+  min-width: 0;
+}
+
+.fft-news-detail-kicker {
+  display: inline-flex;
+  margin-bottom: 18px;
+  padding: 9px 14px;
+  color: #740909;
+  border: 1px solid rgba(116, 9, 9, 0.22);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.fft-news-detail-title {
+  margin: 0;
+  color: #09090d;
+  font-size: clamp(2.4rem, 6.6vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.065em;
+  font-weight: 1000;
+}
+
+.fft-news-detail-lead {
+  max-width: 780px;
+  margin: 20px 0 0;
+  color: rgba(18, 18, 24, 0.68);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.65;
+}
+
+.fft-news-detail-summary {
+  margin: 38px 0 0;
+  padding: 24px 26px;
+  border-left: 6px solid #740909;
+  background: linear-gradient(90deg, rgba(116, 9, 9, 0.08), rgba(116, 9, 9, 0.02));
+}
+
+.fft-news-detail-summary strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #740909;
+  font-size: 0.8rem;
+  font-weight: 950;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.fft-news-detail-summary p {
+  margin: 0;
+  color: rgba(18, 18, 24, 0.72);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.fft-news-detail-content {
+  max-width: 820px;
+  margin-top: 42px;
+  color: #111118;
+  font-size: clamp(1rem, 1.7vw, 1.15rem);
+  line-height: 1.85;
+}
+
+.fft-news-detail-content p {
+  margin: 0 0 1.05em;
+}
+
+.fft-news-detail-info {
+  align-self: start;
+  padding: 0 0 0 26px;
+  border-left: 6px solid #740909;
+}
+
+.fft-news-detail-info h2 {
+  margin: 0 0 20px;
+  color: #09090d;
+  font-size: 0.88rem;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.fft-news-detail-info p {
+  margin: 0 0 17px;
+  color: rgba(18, 18, 24, 0.7);
+}
+
+.fft-news-detail-info span {
+  display: block;
+  margin-bottom: 5px;
+  color: #740909;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fft-news-detail-info strong {
+  display: block;
+  color: #17171c;
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.fft-news-detail-empty {
+  padding: 34px 22px;
+  color: rgba(18, 18, 24, 0.62);
+  text-align: center;
+  border: 1px solid rgba(116, 9, 9, 0.14);
+  background: #ffffff;
+}
+
+@media (max-width: 900px) {
+  .fft-news-detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .fft-news-detail-info {
+    padding-left: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .fft-news-detail-article {
+    border-radius: 0;
+  }
+
+  .fft-news-detail-layout {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 26px;
+    padding: 22px 16px 34px;
+  }
+
+  .fft-news-detail-kicker {
+    margin-bottom: 14px;
+    font-size: 0.62rem;
+    letter-spacing: 0.13em;
+  }
+
+  .fft-news-detail-title {
+    font-size: clamp(2rem, 10.4vw, 3.05rem);
+    line-height: 0.98;
+  }
+
+  .fft-news-detail-lead {
+    margin-top: 14px;
+    font-size: 0.95rem;
+    line-height: 1.58;
+  }
+
+  .fft-news-detail-summary {
+    margin-top: 26px;
+    padding: 18px 18px;
+    border-left-width: 5px;
+  }
+
+  .fft-news-detail-summary p {
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  .fft-news-detail-content {
+    margin-top: 28px;
+    font-size: 0.96rem;
+    line-height: 1.75;
+  }
+
+  .fft-news-detail-info {
+    padding-left: 18px;
+    border-left-width: 5px;
+  }
+
+  .fft-news-detail-info h2 {
+    margin-bottom: 16px;
+    font-size: 0.74rem;
+  }
+
+  .fft-news-detail-info p {
+    margin-bottom: 12px;
+  }
+
+  .fft-news-detail-info span {
+    font-size: 0.65rem;
+  }
+
+  .fft-news-detail-info strong {
+    font-size: 0.9rem;
+  }
+
+  .fft-news-detail-empty {
+    padding: 30px 18px;
+    font-size: 0.92rem;
+  }
+}
+
+/* FFT_BERITA_DETAIL_PUBLIC_STAGE3_MOBILE_POLISH_20260522
+   Revisi mobile detail berita:
+   - Label Dibaca tidak ditampilkan di halaman publik.
+   - Informasi artikel dibuat compact di mobile.
+   - Susunan mobile dibuat lebih dekat dengan desktop.
+*/
+.fft-news-detail-mobile-info {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .fft-news-detail-article {
+    border: 0 !important;
+    background: #ffffff !important;
+  }
+
+  .fft-news-detail-figure {
+    margin: 0 !important;
+    background: #090909 !important;
+  }
+
+  .fft-news-detail-image {
+    width: 100% !important;
+    aspect-ratio: 16 / 10 !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+
+  .fft-news-detail-layout {
+    display: block !important;
+    padding: 0 !important;
+  }
+
+  .fft-news-detail-main {
+    padding: 24px 16px 38px !important;
+  }
+
+  .fft-news-detail-info {
+    display: none !important;
+  }
+
+  .fft-news-detail-kicker {
+    margin-bottom: 14px !important;
+    padding: 8px 12px !important;
+    font-size: 0.62rem !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  .fft-news-detail-title {
+    max-width: 100% !important;
+    font-size: clamp(2.15rem, 10.8vw, 3.18rem) !important;
+    line-height: 0.98 !important;
+    letter-spacing: -0.06em !important;
+  }
+
+  .fft-news-detail-lead {
+    margin-top: 15px !important;
+    color: rgba(18, 18, 24, 0.68) !important;
+    font-size: 0.98rem !important;
+    line-height: 1.62 !important;
+  }
+
+  .fft-news-detail-mobile-info {
+    display: block !important;
+    margin: 22px 0 0 !important;
+    padding: 17px 18px !important;
+    border-left: 5px solid #740909 !important;
+    background: linear-gradient(90deg, rgba(116, 9, 9, 0.08), rgba(116, 9, 9, 0.02)) !important;
+  }
+
+  .fft-news-detail-mobile-info h2 {
+    margin: 0 0 14px !important;
+    color: #09090d !important;
+    font-size: 0.72rem !important;
+    font-weight: 950 !important;
+    letter-spacing: 0.16em !important;
+    line-height: 1.2 !important;
+    text-transform: uppercase !important;
+  }
+
+  .fft-news-detail-mobile-info p {
+    display: grid !important;
+    grid-template-columns: 88px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    align-items: start !important;
+    margin: 0 0 11px !important;
+  }
+
+  .fft-news-detail-mobile-info p:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  .fft-news-detail-mobile-info span {
+    color: #740909 !important;
+    font-size: 0.63rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.08em !important;
+    line-height: 1.35 !important;
+    text-transform: uppercase !important;
+  }
+
+  .fft-news-detail-mobile-info strong {
+    color: #17171c !important;
+    font-size: 0.86rem !important;
+    font-weight: 850 !important;
+    line-height: 1.4 !important;
+  }
+
+  .fft-news-detail-summary {
+    margin-top: 28px !important;
+    padding: 18px 18px !important;
+    border-left-width: 5px !important;
+  }
+
+  .fft-news-detail-summary strong {
+    font-size: 0.68rem !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  .fft-news-detail-summary p {
+    font-size: 0.94rem !important;
+    line-height: 1.62 !important;
+  }
+
+  .fft-news-detail-content {
+    margin-top: 30px !important;
+    color: #111118 !important;
+    font-size: 0.98rem !important;
+    line-height: 1.82 !important;
+  }
+
+  .fft-news-detail-content p {
+    margin-bottom: 1.08em !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .fft-news-detail-main {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .fft-news-detail-title {
+    font-size: clamp(2rem, 10.4vw, 2.86rem) !important;
+  }
+
+  .fft-news-detail-mobile-info {
+    padding: 16px !important;
+  }
+
+  .fft-news-detail-mobile-info p {
+    grid-template-columns: 78px minmax(0, 1fr) !important;
+    gap: 9px !important;
+  }
+}
+
