@@ -1,3 +1,33 @@
+/* FFT_FIX_HEADER_REFRESH_FLASH_ALL_VIEWPORTS_20260524
+   Tandai header siap setelah script navigasi selesai diproses.
+*/
+(function () {
+  "use strict";
+
+  function markHeaderReady() {
+    if (!document.documentElement) return;
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        document.documentElement.classList.add("fft-header-ready");
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", markHeaderReady);
+  } else {
+    markHeaderReady();
+  }
+
+  window.addEventListener("load", markHeaderReady);
+  window.addEventListener("pageshow", markHeaderReady);
+
+  setTimeout(function () {
+    document.documentElement.classList.add("fft-header-flash-fallback");
+  }, 700);
+}());
+
 ﻿document.addEventListener("DOMContentLoaded", function () {
   const labels = {
     nav_curriculum: { id: "Kurikulum", en: "Curriculum" },

@@ -7202,3 +7202,18 @@ footer.fft-footer .footer-orbit-canvas,
   }
 }
 
+/* FFT_FIX_HEADER_REFRESH_FLASH_ALL_VIEWPORTS_20260524
+   Mencegah header state lama muncul sekilas saat refresh di desktop dan mobile.
+*/
+html:not(.fft-header-ready):not(.fft-header-flash-fallback) .site-header {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+html.fft-header-ready .site-header,
+html.fft-header-flash-fallback .site-header {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: opacity 100ms ease !important;
+}
+
