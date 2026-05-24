@@ -2,7 +2,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const root = document.querySelector("[data-ranking-root]");
   if (!root) return;
 
-  const API_BASE = "http://127.0.0.1:5000";
+  const API_BASE = (function () {
+    const host = window.location.hostname || "127.0.0.1";
+    const isLocal = host === "127.0.0.1" || host === "localhost";
+    return isLocal ? "http://127.0.0.1:5000" : `${window.location.protocol}//${host}:5000`;
+  }());
   const board = document.getElementById("rankingBoard");
   const loading = document.getElementById("rankingLoading");
   const errorBox = document.getElementById("rankingError");
