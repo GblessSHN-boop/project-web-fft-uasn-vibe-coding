@@ -7147,3 +7147,58 @@ footer.fft-footer .footer-orbit-canvas,
     line-height: 1.08 !important;
   }
 }
+
+/* FFT_FIX_MOBILE_BANNER_INFO_LAYOUT_SHIFT_20260524
+   Menstabilkan tinggi Banner Informasi di mobile agar tidak lompat saat pertama kali halaman dibuka.
+   Khusus homepage, tidak mengubah backend, API, berita, atau halaman lain.
+*/
+@media (max-width: 768px) {
+  body.fft-homepage [id*="banner" i],
+  body.fft-homepage [class*="banner" i] {
+    transition-property: opacity, transform, background-color !important;
+  }
+
+  body.fft-homepage .banner-informasi,
+  body.fft-homepage .banner-informasi-section,
+  body.fft-homepage .banner-info,
+  body.fft-homepage .banner-info-section,
+  body.fft-homepage .information-banner,
+  body.fft-homepage .home-banner-info,
+  body.fft-homepage #banner-informasi,
+  body.fft-homepage #bannerInformasi {
+    width: 100% !important;
+    min-height: 96px !important;
+    max-height: 112px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  body.fft-homepage .banner-informasi img,
+  body.fft-homepage .banner-informasi-section img,
+  body.fft-homepage .banner-info img,
+  body.fft-homepage .banner-info-section img,
+  body.fft-homepage .information-banner img,
+  body.fft-homepage .home-banner-info img,
+  body.fft-homepage #banner-informasi img,
+  body.fft-homepage #bannerInformasi img {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 96px !important;
+    max-height: 112px !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+
+  body.fft-homepage .banner-informasi:empty,
+  body.fft-homepage .banner-informasi-section:empty,
+  body.fft-homepage .banner-info:empty,
+  body.fft-homepage .banner-info-section:empty,
+  body.fft-homepage .information-banner:empty,
+  body.fft-homepage .home-banner-info:empty,
+  body.fft-homepage #banner-informasi:empty,
+  body.fft-homepage #bannerInformasi:empty {
+    min-height: 96px !important;
+  }
+}
+
