@@ -1376,6 +1376,151 @@ body {
   <link rel="stylesheet" href="../css/mobile-friendly.css" />
   <!-- FFT_BRAND_LANGUAGE_LOGO_FIX_20260521: brand image and mobile nav fix -->
   <link rel="stylesheet" href="../css/brand-language-logo.css" />
+
+  <!-- FFT_FIX_PIMPINAN_DOSEN_MOBILE_API_HOST_20260524: rewrite local backend API host for phone access -->
+  <script>
+    (function () {
+      "use strict";
+
+      if (!window.fetch) return;
+
+      var nativeFetch = window.fetch.bind(window);
+
+      function shouldRewriteHost() {
+        var host = window.location.hostname || "";
+        return host && host !== "127.0.0.1" && host !== "localhost";
+      }
+
+      function rewriteUrl(value) {
+        if (!shouldRewriteHost() || typeof value !== "string") return value;
+
+        return value
+          .replace(/^http:\/\/127\.0\.0\.1:5000/i, "http://" + window.location.hostname + ":5000")
+          .replace(/^http:\/\/localhost:5000/i, "http://" + window.location.hostname + ":5000");
+      }
+
+      window.fetch = function (input, init) {
+        if (typeof input === "string") {
+          return nativeFetch(rewriteUrl(input), init);
+        }
+
+        if (input && input.url && typeof input.url === "string") {
+          var nextUrl = rewriteUrl(input.url);
+
+          if (nextUrl !== input.url) {
+            input = new Request(nextUrl, input);
+          }
+        }
+
+        return nativeFetch(input, init);
+      };
+    }());
+  </script>
+
+
+  <!-- FFT_FIX_PIMPINAN_DOSEN_MOBILE_IMAGE_HOST_20260524: rewrite backend image URLs for phone access -->
+  <script>
+    (function () {
+      "use strict";
+
+      function isPhoneAccessHost() {
+        var host = window.location.hostname || "";
+        return host && host !== "127.0.0.1" && host !== "localhost";
+      }
+
+      function backendOrigin() {
+        return "http://" + window.location.hostname + ":5000";
+      }
+
+      function fixUrl(value) {
+        if (!value || typeof value !== "string") return value;
+
+        var url = value.trim();
+
+        if (!isPhoneAccessHost()) return url;
+
+        if (/^http:\/\/127\.0\.0\.1:5000/i.test(url)) {
+          return url.replace(/^http:\/\/127\.0\.0\.1:5000/i, backendOrigin());
+        }
+
+        if (/^http:\/\/localhost:5000/i.test(url)) {
+          return url.replace(/^http:\/\/localhost:5000/i, backendOrigin());
+        }
+
+        if (/^\/static\//i.test(url)) {
+          return backendOrigin() + url;
+        }
+
+        if (/^static\//i.test(url)) {
+          return backendOrigin() + "/" + url;
+        }
+
+        if (/^\.\.\/\.\.\/backend\/static\//i.test(url)) {
+          return backendOrigin() + "/static/" + url.replace(/^\.\.\/\.\.\/backend\/static\//i, "");
+        }
+
+        if (/^\.\.\/backend\/static\//i.test(url)) {
+          return backendOrigin() + "/static/" + url.replace(/^\.\.\/backend\/static\//i, "");
+        }
+
+        return url;
+      }
+
+      function fixImages() {
+        document.querySelectorAll("img").forEach(function (img) {
+          var src = img.getAttribute("src") || "";
+          var dataSrc = img.getAttribute("data-src") || "";
+          var lazySrc = img.getAttribute("data-lazy-src") || "";
+
+          var nextSrc = fixUrl(src);
+          var nextDataSrc = fixUrl(dataSrc);
+          var nextLazySrc = fixUrl(lazySrc);
+
+          if (nextSrc && nextSrc !== src) {
+            img.setAttribute("src", nextSrc);
+          }
+
+          if (nextDataSrc && nextDataSrc !== dataSrc) {
+            img.setAttribute("data-src", nextDataSrc);
+          }
+
+          if (nextLazySrc && nextLazySrc !== lazySrc) {
+            img.setAttribute("data-lazy-src", nextLazySrc);
+          }
+        });
+      }
+
+      function bootImageFix() {
+        fixImages();
+
+        var observer = new MutationObserver(function () {
+          window.clearTimeout(window.__fftPimpinanImageFixTimer);
+          window.__fftPimpinanImageFixTimer = window.setTimeout(fixImages, 40);
+        });
+
+        if (document.body) {
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ["src", "data-src", "data-lazy-src"]
+          });
+        }
+
+        setTimeout(fixImages, 120);
+        setTimeout(fixImages, 500);
+        setTimeout(fixImages, 1000);
+        window.addEventListener("load", fixImages);
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", bootImageFix);
+      } else {
+        bootImageFix();
+      }
+    }());
+  </script>
+
 </head>
 
   <body>
