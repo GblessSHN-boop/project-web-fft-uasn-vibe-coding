@@ -55,3 +55,162 @@ body.alur-pendaftaran-page .site-header .branding .brand-heading {
   text-transform: uppercase !important;
 }
 
+/* FFT_UNIFY_PERSYARATAN_INTO_ALUR_PENDAFTARAN_20260525
+   Persyaratan digabung ke halaman Alur Pendaftaran.
+*/
+body.alur-pendaftaran-page .admission-flow-anchor {
+  display: block;
+  scroll-margin-top: 120px;
+}
+
+@media (max-width: 760px) {
+  body.alur-pendaftaran-page .admission-flow-anchor {
+    scroll-margin-top: 96px;
+  }
+}
+
+/* FFT_ALUR_REQUIREMENTS_ANCHOR_SCROLL_POSITION_20260525
+   Posisi anchor Persyaratan dibuat pas saat diklik dari tombol atau menu.
+*/
+body.alur-pendaftaran-page #persyaratan-pendaftaran,
+body.alur-pendaftaran-page .admission-flow-anchor {
+  display: block;
+  position: relative;
+  scroll-margin-top: 132px;
+}
+
+body.alur-pendaftaran-page #persyaratan-pendaftaran::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-top: -1px;
+}
+
+@media (max-width: 760px) {
+  body.alur-pendaftaran-page #persyaratan-pendaftaran,
+  body.alur-pendaftaran-page .admission-flow-anchor {
+    scroll-margin-top: 104px;
+  }
+}
+
+/* FFT_ALUR_REQUIREMENTS_SCROLL_OFFSET_TUNE_20260525
+   Anchor Persyaratan dinaikkan agar section checklist terlihat dari awal.
+*/
+body.alur-pendaftaran-page #persyaratan-pendaftaran,
+body.alur-pendaftaran-page .admission-flow-anchor {
+  scroll-margin-top: 238px !important;
+}
+
+@media (max-width: 760px) {
+  body.alur-pendaftaran-page #persyaratan-pendaftaran,
+  body.alur-pendaftaran-page .admission-flow-anchor {
+    scroll-margin-top: 156px !important;
+  }
+}
+
+/* FFT_ALUR_REQUIREMENTS_FINAL_SCROLL_LOCK_20260525
+   Anchor final Persyaratan berada sebelum CHECKLIST CEPAT.
+*/
+body.alur-pendaftaran-page #persyaratan-pendaftaran,
+body.alur-pendaftaran-page .admission-flow-anchor-final {
+  display: block !important;
+  height: 1px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  scroll-margin-top: 118px !important;
+}
+
+@media (max-width: 760px) {
+  body.alur-pendaftaran-page #persyaratan-pendaftaran,
+  body.alur-pendaftaran-page .admission-flow-anchor-final {
+    scroll-margin-top: 92px !important;
+  }
+}
+
+/* FFT_ALUR_REQUIREMENTS_ABOVE_CARD_DESKTOP_FIX_20260525
+   Anchor Persyaratan berada di atas card checklist.
+*/
+body.alur-pendaftaran-page #persyaratan-pendaftaran,
+body.alur-pendaftaran-page .admission-flow-anchor-above-card {
+  display: block !important;
+  height: 1px !important;
+  margin: 0 0 18px 0 !important;
+  padding: 0 !important;
+  scroll-margin-top: 26px !important;
+}
+
+@media (max-width: 760px) {
+  body.alur-pendaftaran-page #persyaratan-pendaftaran,
+  body.alur-pendaftaran-page .admission-flow-anchor-above-card {
+    margin-bottom: 14px !important;
+    scroll-margin-top: 76px !important;
+  }
+}
+
+/* FFT_ALUR_REQUIREMENTS_DESKTOP_LAYOUT_LOCK_20260525
+   Kunci layout desktop Persyaratan agar tidak pecah ke kolom kanan.
+*/
+body.alur-pendaftaran-page #persyaratan-pendaftaran,
+body.alur-pendaftaran-page .admission-flow-anchor-layout-lock {
+  display: block !important;
+  height: 1px !important;
+  margin: 0 0 18px 0 !important;
+  padding: 0 !important;
+  scroll-margin-top: 142px !important;
+}
+
+@media (min-width: 761px) {
+  body.alur-pendaftaran-page .admission-flow-checklist,
+  body.alur-pendaftaran-page .admission-flow-help,
+  body.alur-pendaftaran-page .admission-flow-faq,
+  body.alur-pendaftaran-page .faq-section {
+    grid-column: 1 / -1 !important;
+    float: none !important;
+    clear: both !important;
+    width: min(100% - 72px, 1180px) !important;
+    max-width: 1180px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-checklist {
+    display: block !important;
+    margin-top: 0 !important;
+    margin-bottom: 72px !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-checklist .admission-flow-section-head,
+  body.alur-pendaftaran-page .admission-flow-checklist ul,
+  body.alur-pendaftaran-page .admission-flow-checklist a {
+    max-width: 820px !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-help {
+    margin-top: 0 !important;
+    margin-bottom: 72px !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-faq,
+  body.alur-pendaftaran-page .faq-section {
+    margin-top: 0 !important;
+  }
+}
+
+@media (max-width: 760px) {
+  body.alur-pendaftaran-page #persyaratan-pendaftaran,
+  body.alur-pendaftaran-page .admission-flow-anchor-layout-lock {
+    margin-bottom: 14px !important;
+    scroll-margin-top: 72px !important;
+  }
+}
+
+/* FFT_ALUR_MOBILE_REQUIREMENTS_SCROLL_OFFSET_20260525
+   Offset anchor mobile Persyaratan dibuat lebih tinggi.
+*/
+@media (max-width: 760px) {
+  body.alur-pendaftaran-page #persyaratan-pendaftaran,
+  body.alur-pendaftaran-page .admission-flow-anchor-layout-lock {
+    scroll-margin-top: 142px !important;
+  }
+}

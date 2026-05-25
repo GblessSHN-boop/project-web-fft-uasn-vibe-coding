@@ -150,3 +150,95 @@
   window.addEventListener("load", boot);
   window.addEventListener("pageshow", boot);
 }());
+
+/* FFT_ALUR_REQUIREMENTS_DESKTOP_LAYOUT_LOCK_20260525
+   Scroll Persyaratan ke atas card checklist.
+   Mobile tetap dekat seperti posisi yang sudah disukai.
+   Desktop tidak lagi jatuh ke layout kolom yang rusak.
+*/
+(function () {
+  "use strict";
+
+  var targetId = "persyaratan-pendaftaran";
+
+  function isAlurPage() {
+    return document.body && document.body.classList.contains("alur-pendaftaran-page");
+  }
+
+  function topOffset() {
+    return window.innerWidth <= 760 ? 142 : 34;
+  }
+
+  function scrollToRequirements(behavior) {
+    if (!isAlurPage()) return false;
+
+    var target = document.getElementById(targetId);
+
+    if (!target) return false;
+
+    var top = target.getBoundingClientRect().top + window.pageYOffset - topOffset();
+
+    window.scrollTo({
+      top: Math.max(0, top),
+      behavior: behavior || "smooth"
+    });
+
+    return true;
+  }
+
+  function isRequirementsLink(link) {
+    if (!link) return false;
+
+    var href = String(link.getAttribute("href") || "");
+
+    return href === "#" + targetId ||
+      href.indexOf("alur-pendaftaran.html#" + targetId) !== -1 ||
+      href.indexOf("persyaratan-pendaftaran") !== -1;
+  }
+
+  document.addEventListener("click", function (event) {
+    var link = event.target && event.target.closest ? event.target.closest("a") : null;
+
+    if (!isRequirementsLink(link)) return;
+    if (!isAlurPage()) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (history.pushState) {
+      history.pushState(null, "", "#" + targetId);
+    } else {
+      window.location.hash = targetId;
+    }
+
+    setTimeout(function () { scrollToRequirements("auto"); }, 20);
+    setTimeout(function () { scrollToRequirements("smooth"); }, 160);
+    setTimeout(function () { scrollToRequirements("smooth"); }, 460);
+    setTimeout(function () { if (window.innerWidth <= 760) scrollToRequirements("smooth"); }, 920);
+  }, true);
+
+  function fixHashPosition() {
+    if (!isAlurPage()) return;
+    if (window.location.hash !== "#" + targetId) return;
+
+    setTimeout(function () { scrollToRequirements("auto"); }, 80);
+    setTimeout(function () { scrollToRequirements("smooth"); }, 260);
+    setTimeout(function () { scrollToRequirements("smooth"); }, 620);
+    setTimeout(function () { if (window.innerWidth <= 760) scrollToRequirements("smooth"); }, 1080);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", fixHashPosition);
+  } else {
+    fixHashPosition();
+  }
+
+  window.addEventListener("hashchange", fixHashPosition);
+  window.addEventListener("load", fixHashPosition);
+  window.addEventListener("pageshow", fixHashPosition);
+}());
+
+/* FFT_ALUR_MOBILE_REQUIREMENTS_SCROLL_OFFSET_20260525
+   Mobile Persyaratan berhenti lebih atas dari card checklist.
+   Desktop tidak diubah pada patch ini.
+*/

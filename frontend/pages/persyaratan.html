@@ -32,6 +32,12 @@
   <link rel="stylesheet" href="../css/mobile-friendly.css" />
   <!-- FFT_BRAND_LANGUAGE_LOGO_FIX_20260521: brand image and mobile nav fix -->
   <link rel="stylesheet" href="../css/brand-language-logo.css" />
+
+  <!-- FFT_UNIFY_PERSYARATAN_INTO_ALUR_PENDAFTARAN_20260525: Persyaratan tidak lagi berdiri sebagai page terpisah -->
+  <script>
+    window.location.replace("alur-pendaftaran.html#persyaratan-pendaftaran");
+  </script>
+
 </head>
 
   <body>
@@ -458,8 +464,13 @@
   <script src="../js/motion-system.js"></script>
   <!-- FFT_BRAND_LANGUAGE_LOGO_FIX_20260521: brand image and mobile nav fix -->
   <script src="../js/brand-language-logo.js"></script>
+
+  <noscript>
+    <p>Persyaratan pendaftaran sudah digabung ke halaman Alur Pendaftaran.</p>
+    <p><a href="alur-pendaftaran.html#persyaratan-pendaftaran">Buka bagian Persyaratan Pendaftaran</a></p>
+  </noscript>
+  <!-- FFT_UNIFY_PERSYARATAN_INTO_ALUR_PENDAFTARAN_20260525: redirect fallback selesai -->
 </body>
 
   
 </html>
-
