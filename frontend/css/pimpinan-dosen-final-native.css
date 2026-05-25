@@ -1,0 +1,188 @@
+/* FFT_PIMPINAN_DOSEN_FINAL_NATIVE_20260525 */
+
+body.pimpinan-dosen-page #fftPimpinanMobile,
+body.pimpinan-dosen-page #fftPimpinanMobileDirectory,
+body.pimpinan-dosen-page #fftMobileStaffSearchSlot,
+body.pimpinan-dosen-page #fftPdSearchPanel,
+body.pimpinan-dosen-page #fftPdSearchSuggestions,
+body.pimpinan-dosen-page #fftPdNoResults,
+body.pimpinan-dosen-page #pdOwnedSearchBox,
+body.pimpinan-dosen-page #pdStableSearchBox {
+  display: none !important;
+}
+
+body.pimpinan-dosen-page #staffSearchDock {
+  padding: 18px 24px 0;
+  background: #ffffff;
+}
+
+body.pimpinan-dosen-page #staffSearchDock .staff-tools,
+body.pimpinan-dosen-page #staffSearchDock .search-wrap {
+  width: 100%;
+  max-width: 100%;
+}
+
+body.pimpinan-dosen-page #staffSearchDock .search-input {
+  width: 100%;
+}
+
+body.pimpinan-dosen-page .lecturer-grid {
+  padding-top: 18px;
+}
+
+body.pimpinan-dosen-page .lecturer-card {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+}
+
+body.pimpinan-dosen-page .lecturer-card * {
+  filter: none !important;
+  backdrop-filter: none !important;
+}
+
+body.pimpinan-dosen-page .lecturer-card[hidden] {
+  display: none !important;
+}
+
+body.pimpinan-dosen-page .dean-photo img[src*="fftkb"],
+body.pimpinan-dosen-page .dean-photo img[src*="logo"] {
+  object-fit: contain !important;
+  padding: 18px !important;
+  background: #ffffff !important;
+}
+
+@media (max-width: 760px) {
+  body.pimpinan-dosen-page .section-head {
+    margin-bottom: 18px !important;
+  }
+
+  body.pimpinan-dosen-page .section-head .staff-tools {
+    display: none !important;
+  }
+
+  body.pimpinan-dosen-page #staffSearchDock {
+    padding: 14px 14px 0 !important;
+    border-top: 1px solid rgba(15, 15, 18, 0.08) !important;
+  }
+
+  body.pimpinan-dosen-page #staffSearchDock .staff-tools {
+    display: flex !important;
+  }
+
+  body.pimpinan-dosen-page #staffSearchDock .search-wrap {
+    display: block !important;
+  }
+
+  body.pimpinan-dosen-page #staffSearch {
+    height: 44px !important;
+    font-size: 0.86rem !important;
+    font-weight: 700 !important;
+    background: #ffffff !important;
+  }
+
+  body.pimpinan-dosen-page .lecturer-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    padding: 14px !important;
+  }
+
+  body.pimpinan-dosen-page .lecturer-card {
+    display: grid !important;
+    grid-template-columns: 88px minmax(0, 1fr) !important;
+    min-height: 118px !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(15, 15, 18, 0.09) !important;
+    background: #ffffff !important;
+    box-shadow: 0 12px 24px rgba(31, 20, 20, 0.06) !important;
+  }
+
+  body.pimpinan-dosen-page .lecturer-photo {
+    width: 88px !important;
+    min-width: 88px !important;
+    height: 118px !important;
+    min-height: 118px !important;
+    border-bottom: 0 !important;
+    border-right: 1px solid rgba(15, 15, 18, 0.08) !important;
+    background: #f7f4f1 !important;
+  }
+
+  body.pimpinan-dosen-page .lecturer-photo img {
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: auto !important;
+    object-fit: cover !important;
+  }
+
+  body.pimpinan-dosen-page .lecturer-photo img[src*="fftkb"],
+  body.pimpinan-dosen-page .lecturer-photo img[src*="logo"] {
+    object-fit: contain !important;
+    padding: 6px !important;
+    background: #ffffff !important;
+  }
+
+  body.pimpinan-dosen-page .lecturer-info {
+    padding: 13px 14px !important;
+    align-self: center !important;
+    min-width: 0 !important;
+  }
+
+  body.pimpinan-dosen-page .lecturer-tag {
+    min-height: 24px !important;
+    padding: 0 8px !important;
+    font-size: 0.62rem !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  body.pimpinan-dosen-page .lecturer-info h4 {
+    min-height: 0 !important;
+    margin: 8px 0 0 !important;
+    font-size: 0.96rem !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  body.pimpinan-dosen-page .lecturer-info p {
+    margin: 7px 0 0 !important;
+    font-size: 0.74rem !important;
+    line-height: 1.35 !important;
+  }
+
+  body.pimpinan-dosen-page .dean-content {
+    display: block !important;
+  }
+
+  body.pimpinan-dosen-page .dean-photo img {
+    aspect-ratio: 4 / 5 !important;
+  }
+}
+
+/* FFT_PIMPINAN_DOSEN_STRUCTURE_SEO_LOCK_20260525
+   Menjaga struktur heading SEO tanpa mengubah rasa visual halaman.
+*/
+body.pimpinan-dosen-page .directory-title {
+  margin: 0;
+  max-width: 860px;
+  color: #0f0f10;
+  font-size: clamp(3.4rem, 7vw, 6.8rem);
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+  font-weight: 900;
+}
+
+body.pimpinan-dosen-page .lecturer-panel,
+body.pimpinan-dosen-page .dekan-panel {
+  scroll-margin-top: 120px;
+}
+
+@media (max-width: 760px) {
+  body.pimpinan-dosen-page .directory-title {
+    font-size: clamp(2rem, 8.8vw, 2.65rem);
+    line-height: 0.96;
+    letter-spacing: -0.045em;
+  }
+}
+

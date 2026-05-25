@@ -6269,6 +6269,755 @@ def fft_public_berita_record_view(berita_id=None):
     }), 404
 # FFT_PUBLIC_BERITA_VIEW_COUNTER_ROUTE_20260522_END
 
+# FFT_FIX_DOSEN_API_PHOTO_FIELDS_V3_20260525
+# Mapping foto dosen dibuat unik per dosen. Tidak boleh semua dosen memakai foto pertama.
+_FFT_PD_IMAGE_CACHE_V3 = None
+
+
+def _fft_pd_clean_v3(value):
+    return str(value or "").strip()
+
+
+def _fft_pd_norm_v3(value):
+    import re as _re
+    return _re.sub(r"[^a-z0-9]+", "", _fft_pd_clean_v3(value).lower())
+
+
+def _fft_pd_bad_photo_v3(value):
+    from pathlib import Path as _Path
+    from urllib.parse import urlparse as _urlparse
+
+    value = _fft_pd_clean_v3(value)
+
+    if not value:
+        return True
+
+    try:
+        parsed_path = _urlparse(value).path or value
+    except Exception:
+        parsed_path = value
+
+    name = _Path(parsed_path.replace("\\", "/")).name.lower()
+
+    bad_names = {
+        "thumb.jpg",
+        "thumb.jpeg",
+        "thumb.png",
+        "thumbnail.jpg",
+        "thumbnail.jpeg",
+        "thumbnail.png",
+        "default.jpg",
+        "default.png",
+        "placeholder.jpg",
+        "placeholder.png",
+        "no-image.jpg",
+        "no-image.png",
+        "noimage.jpg",
+        "noimage.png",
+        "avatar.jpg",
+        "avatar.png",
+        "logo.jpg",
+        "logo.png",
+        "fftkb.png",
+        "fftkb.jpg",
+    }
+
+    if name in bad_names:
+        return True
+
+    if "fftkb" in name or "logo" in name:
+        return True
+
+    return False
+
+
+def _fft_pd_generic_file_v3(value):
+    from pathlib import Path as _Path
+
+    name = _Path(_fft_pd_clean_v3(value).replace("\\", "/")).name.lower()
+
+    return name in {
+        "foto.jpg",
+        "foto.jpeg",
+        "foto.png",
+        "photo.jpg",
+        "photo.jpeg",
+        "photo.png",
+        "image.jpg",
+        "image.jpeg",
+        "image.png",
+        "gambar.jpg",
+        "gambar.jpeg",
+        "gambar.png",
+    }
+
+
+def _fft_pd_static_roots_v3():
+    from pathlib import Path as _Path
+
+    roots = []
+
+    try:
+        if app.static_folder:
+            roots.append(_Path(app.static_folder))
+    except Exception:
+        pass
+
+    try:
+        roots.append(_Path(__file__).resolve().parent / "static")
+    except Exception:
+        pass
+
+    try:
+        roots.append(_Path.cwd() / "backend" / "static")
+    except Exception:
+        pass
+
+    output = []
+
+    for root in roots:
+        try:
+            root = root.resolve()
+
+            if root.exists() and root not in output:
+                output.append(root)
+        except Exception:
+            pass
+
+    return output
+
+
+def _fft_pd_inventory_v3():
+    global _FFT_PD_IMAGE_CACHE_V3
+
+    if _FFT_PD_IMAGE_CACHE_V3 is not None:
+        return _FFT_PD_IMAGE_CACHE_V3
+
+    exts = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif", ".bmp"}
+    images = []
+
+    for root in _fft_pd_static_roots_v3():
+        try:
+            for path in root.rglob("*"):
+                try:
+                    if path.is_file() and path.suffix.lower() in exts and path.stat().st_size > 0:
+                        if not _fft_pd_bad_photo_v3(path.name):
+                            images.append(path.resolve())
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+    images = sorted(set(images), key=lambda item: str(item).replace("\\", "/").lower())
+    _FFT_PD_IMAGE_CACHE_V3 = images
+
+    return images
+
+
+def _fft_pd_url_for_path_v3(path):
+    from flask import request as _request
+
+    for root in _fft_pd_static_roots_v3():
+        try:
+            rel = path.resolve().relative_to(root.resolve())
+            return _request.host_url.rstrip("/") + "/static/" + str(rel).replace("\\", "/")
+        except Exception:
+            pass
+
+    return ""
+
+
+def _fft_pd_url_key_v3(url):
+    from urllib.parse import urlparse as _urlparse
+
+    try:
+        parsed = _urlparse(_fft_pd_clean_v3(url))
+        return parsed.path or _fft_pd_clean_v3(url)
+    except Exception:
+        return _fft_pd_clean_v3(url)
+
+
+def _fft_pd_file_from_static_relative_v3(relative_path):
+    relative_path = _fft_pd_clean_v3(relative_path).replace("\\", "/").lstrip("/")
+
+    if not relative_path:
+        return None
+
+    if relative_path.startswith("static/"):
+        relative_path = relative_path[len("static/"):]
+
+    for root in _fft_pd_static_roots_v3():
+        candidate = root / relative_path
+
+        try:
+            if candidate.exists() and candidate.is_file() and not _fft_pd_bad_photo_v3(candidate.name):
+                return candidate.resolve()
+        except Exception:
+            pass
+
+    return None
+
+
+def _fft_pd_url_from_value_v3(value, used):
+    from pathlib import Path as _Path
+    from urllib.parse import urlparse as _urlparse
+
+    value = _fft_pd_clean_v3(value).replace("\\", "/")
+
+    if not value or _fft_pd_bad_photo_v3(value):
+        return ""
+
+    if value.startswith("http://") or value.startswith("https://"):
+        parsed = _urlparse(value)
+        path = parsed.path or ""
+
+        if path.startswith("/static/"):
+            file_path = _fft_pd_file_from_static_relative_v3(path.split("/static/", 1)[1])
+
+            if file_path:
+                url = _fft_pd_url_for_path_v3(file_path)
+
+                if _fft_pd_url_key_v3(url) not in used:
+                    return url
+
+            return ""
+
+        if _fft_pd_url_key_v3(value) not in used:
+            return value
+
+        return ""
+
+    clean = value.lstrip("/")
+    relatives = []
+
+    if clean.startswith("static/"):
+        relatives.append(clean[len("static/"):])
+
+    if clean.startswith("uploads/"):
+        relatives.append(clean)
+
+    if "backend/static/" in clean:
+        relatives.append(clean.split("backend/static/", 1)[1])
+
+    if "/static/" in clean:
+        relatives.append(clean.split("/static/", 1)[1])
+
+    if "/uploads/" in clean:
+        relatives.append("uploads/" + clean.split("/uploads/", 1)[1])
+
+    for rel in relatives:
+        file_path = _fft_pd_file_from_static_relative_v3(rel)
+
+        if file_path:
+            url = _fft_pd_url_for_path_v3(file_path)
+
+            if _fft_pd_url_key_v3(url) not in used:
+                return url
+
+    file_name = _Path(clean).name
+
+    if not file_name or _fft_pd_generic_file_v3(file_name):
+        return ""
+
+    for path in _fft_pd_inventory_v3():
+        if path.name.lower() == file_name.lower():
+            url = _fft_pd_url_for_path_v3(path)
+
+            if _fft_pd_url_key_v3(url) not in used:
+                return url
+
+    return ""
+
+
+def _fft_pd_name_from_item_v3(item):
+    keys = [
+        "nama",
+        "name",
+        "nama_dosen",
+        "nama_lengkap",
+        "full_name",
+        "fullName",
+    ]
+
+    for key in keys:
+        try:
+            value = item.get(key) if isinstance(item, dict) else getattr(item, key, None)
+            value = _fft_pd_clean_v3(value)
+
+            if value and value not in {"-", "None", "null", "undefined"}:
+                return value
+        except Exception:
+            pass
+
+    return ""
+
+
+def _fft_pd_media_values_v3(item):
+    if item is None:
+        return []
+
+    keys = [
+        "_fft_photo_url",
+        "_fft_photo_path",
+        "foto_backend",
+        "foto_static",
+        "foto_resolved",
+        "foto_api",
+        "url_foto",
+        "fotoUrlBackend",
+        "image_static",
+        "image_backend",
+        "photo_static",
+        "photo_backend",
+        "foto_frontend",
+        "fotoFrontend",
+        "foto_formal",
+        "fotoFormal",
+        "foto_dosen",
+        "fotoDosen",
+        "foto",
+        "foto_url",
+        "fotoUrl",
+        "foto_path",
+        "fotoPath",
+        "foto_profil",
+        "fotoProfile",
+        "foto_profile",
+        "foto_utama",
+        "gambar",
+        "gambar_url",
+        "gambarUrl",
+        "image",
+        "image_url",
+        "imageUrl",
+        "image_path",
+        "imagePath",
+        "photo",
+        "photo_url",
+        "photoUrl",
+        "photo_path",
+        "photoPath",
+        "avatar",
+        "avatar_url",
+        "thumbnail",
+        "thumbnail_url",
+        "file_foto",
+        "fileFoto",
+        "path_foto",
+        "pas_foto",
+        "pasFoto",
+        "picture",
+        "picture_url",
+        "filename",
+        "file_name",
+        "nama_file",
+    ]
+
+    values = []
+
+    for key in keys:
+        try:
+            value = item.get(key) if isinstance(item, dict) else getattr(item, key, None)
+            value = _fft_pd_clean_v3(value)
+
+            if value and value not in {"-", "None", "null", "undefined"} and not _fft_pd_bad_photo_v3(value):
+                values.append(value)
+        except Exception:
+            pass
+
+    try:
+        table = getattr(item, "__table__", None)
+        columns = getattr(table, "columns", []) if table is not None else []
+
+        for column in columns:
+            key = getattr(column, "name", "")
+            key_lower = key.lower()
+
+            if any(token in key_lower for token in ["foto", "photo", "image", "gambar", "avatar", "thumb", "file", "path"]):
+                value = _fft_pd_clean_v3(getattr(item, key, ""))
+
+                if value and value not in {"-", "None", "null", "undefined"} and not _fft_pd_bad_photo_v3(value):
+                    values.append(value)
+    except Exception:
+        pass
+
+    seen = set()
+    result = []
+
+    for value in values:
+        if value not in seen:
+            seen.add(value)
+            result.append(value)
+
+    return result
+
+
+def _fft_pd_item_id_values_v3(item, index):
+    keys = [
+        "id",
+        "dosen_id",
+        "id_dosen",
+        "lecturer_id",
+        "staff_id",
+        "kode",
+        "kode_dosen",
+    ]
+
+    values = []
+
+    for key in keys:
+        try:
+            value = item.get(key) if isinstance(item, dict) else getattr(item, key, None)
+            value = _fft_pd_clean_v3(value)
+
+            if value:
+                values.append(value)
+        except Exception:
+            pass
+
+    values.append(str(index + 1))
+
+    result = []
+
+    for value in values:
+        digits = "".join(ch for ch in value if ch.isdigit())
+
+        if digits:
+            try:
+                number = int(digits)
+                result.append(number)
+            except Exception:
+                pass
+
+    seen = set()
+    output = []
+
+    for number in result:
+        if number > 0 and number not in seen:
+            seen.add(number)
+            output.append(number)
+
+    return output
+
+
+def _fft_pd_find_by_number_v3(number, used):
+    folder_names = {
+        str(number),
+        f"{number:02d}",
+        f"{number:03d}",
+        f"{number:04d}",
+        f"{number:05d}",
+    }
+
+    matches = []
+
+    for path in _fft_pd_inventory_v3():
+        path_text = str(path).replace("\\", "/").lower()
+        parent = path.parent.name.lower()
+
+        if parent not in folder_names:
+            continue
+
+        score = 0
+
+        if "/uploads/dosen/" in path_text:
+            score += 50
+        elif "/uploads/" in path_text:
+            score += 20
+
+        if path.stem.lower() in {"foto", "photo", "image", "gambar", "profile", "profil"}:
+            score += 10
+
+        url = _fft_pd_url_for_path_v3(path)
+
+        if url and _fft_pd_url_key_v3(url) not in used:
+            matches.append((score, str(path), url))
+
+    if not matches:
+        return ""
+
+    matches.sort(key=lambda item: (-item[0], item[1]))
+
+    return matches[0][2]
+
+
+def _fft_pd_tokens_from_name_v3(name):
+    import re as _re
+
+    stop = {
+        "dr",
+        "prof",
+        "m",
+        "min",
+        "fil",
+        "mba",
+        "ab",
+        "hpr",
+        "div",
+        "ma",
+        "mar",
+        "s",
+        "th",
+        "st",
+        "pd",
+        "ir",
+        "mm",
+        "dosen",
+    }
+
+    words = _re.findall(r"[a-z0-9]+", _fft_pd_clean_v3(name).lower())
+
+    return [word for word in words if len(word) >= 4 and word not in stop]
+
+
+def _fft_pd_find_by_name_v3(name, used):
+    tokens = _fft_pd_tokens_from_name_v3(name)
+
+    if not tokens:
+        return ""
+
+    best = None
+
+    for path in _fft_pd_inventory_v3():
+        path_text = str(path).replace("\\", "/").lower()
+        searchable = _fft_pd_norm_v3(path.stem + " " + path.parent.name + " " + path.parent.parent.name + " " + path_text)
+        score = 0
+
+        for token in tokens:
+            token_norm = _fft_pd_norm_v3(token)
+
+            if token_norm and token_norm in searchable:
+                score += 10
+
+        if score <= 0:
+            continue
+
+        if "/uploads/dosen/" in path_text:
+            score += 6
+        elif "/uploads/" in path_text:
+            score += 3
+
+        url = _fft_pd_url_for_path_v3(path)
+
+        if not url or _fft_pd_url_key_v3(url) in used:
+            continue
+
+        if best is None or score > best[0]:
+            best = (score, url)
+
+    if not best:
+        return ""
+
+    minimum = 10 if len(tokens) == 1 else 14
+
+    if best[0] < minimum:
+        return ""
+
+    return best[1]
+
+
+def _fft_pd_order_by_index_v3(index, used):
+    numbered = []
+
+    for path in _fft_pd_inventory_v3():
+        path_text = str(path).replace("\\", "/").lower()
+
+        if "/uploads/dosen/" not in path_text:
+            continue
+
+        parent = path.parent.name
+
+        if not parent.isdigit():
+            continue
+
+        url = _fft_pd_url_for_path_v3(path)
+
+        if not url or _fft_pd_url_key_v3(url) in used:
+            continue
+
+        numbered.append((int(parent), str(path), url))
+
+    if not numbered:
+        return ""
+
+    numbered.sort(key=lambda item: (item[0], item[1]))
+
+    wanted = index + 1
+
+    for number, path_text, url in numbered:
+        if number == wanted:
+            return url
+
+    if index < len(numbered):
+        return numbered[index][2]
+
+    return ""
+
+
+def _fft_pd_db_rows_by_name_v3():
+    rows = {}
+
+    db_obj = globals().get("db")
+
+    try:
+        model_classes = [mapper.class_ for mapper in db_obj.Model.registry.mappers]
+    except Exception:
+        model_classes = []
+
+    for model in model_classes:
+        try:
+            table = getattr(model, "__table__", None)
+            table_name = getattr(table, "name", "").lower()
+            columns = [getattr(column, "name", "").lower() for column in getattr(table, "columns", [])]
+
+            has_name = any(key in columns for key in ["nama", "name", "nama_dosen", "nama_lengkap", "full_name"])
+            has_media = any(any(token in column for token in ["foto", "photo", "image", "gambar", "avatar", "thumb", "file", "path"]) for column in columns)
+
+            if not has_name or not has_media:
+                continue
+
+            priority = 0
+
+            if "dosen" in table_name:
+                priority += 40
+            if "lecturer" in table_name:
+                priority += 30
+            if "staff" in table_name:
+                priority += 10
+
+            for row in model.query.limit(1000).all():
+                name_key = _fft_pd_norm_v3(_fft_pd_name_from_item_v3(row))
+
+                if not name_key:
+                    continue
+
+                old = rows.get(name_key)
+
+                if old is None or priority > old[0]:
+                    rows[name_key] = (priority, row)
+        except Exception:
+            pass
+
+    return {key: value[1] for key, value in rows.items()}
+
+
+def _fft_pd_select_photo_v3(item, row, index, used):
+    values = []
+    values.extend(_fft_pd_media_values_v3(item))
+    values.extend(_fft_pd_media_values_v3(row))
+
+    for value in values:
+        url = _fft_pd_url_from_value_v3(value, used)
+
+        if url:
+            return url
+
+    for number in _fft_pd_item_id_values_v3(item, index):
+        url = _fft_pd_find_by_number_v3(number, used)
+
+        if url:
+            return url
+
+    name = _fft_pd_name_from_item_v3(item)
+    url = _fft_pd_find_by_name_v3(name, used)
+
+    if url:
+        return url
+
+    return _fft_pd_order_by_index_v3(index, used)
+
+
+def _fft_pd_photo_fields_v3():
+    return [
+        "_fft_photo_url",
+        "foto_frontend",
+        "foto_formal",
+        "foto_dosen",
+        "foto",
+        "image_url",
+        "photo_url",
+        "thumbnail",
+    ]
+
+
+def _fft_pd_apply_photo_v3(item, url):
+    if not isinstance(item, dict):
+        return
+
+    for key in _fft_pd_photo_fields_v3():
+        item[key] = url or ""
+
+
+def _fft_pd_extract_items_v3(payload):
+    if isinstance(payload, list):
+        return payload
+
+    if isinstance(payload, dict) and isinstance(payload.get("data"), list):
+        return payload.get("data")
+
+    if isinstance(payload, dict) and isinstance(payload.get("dosen"), list):
+        return payload.get("dosen")
+
+    if isinstance(payload, dict) and isinstance(payload.get("items"), list):
+        return payload.get("items")
+
+    return []
+
+
+def _fft_pd_enrich_items_v3(items):
+    if not isinstance(items, list):
+        return
+
+    rows_by_name = _fft_pd_db_rows_by_name_v3()
+    used = set()
+
+    for index, item in enumerate(items):
+        if not isinstance(item, dict):
+            continue
+
+        name_key = _fft_pd_norm_v3(_fft_pd_name_from_item_v3(item))
+        row = rows_by_name.get(name_key)
+
+        url = _fft_pd_select_photo_v3(item, row, index, used)
+
+        if url:
+            used.add(_fft_pd_url_key_v3(url))
+
+        _fft_pd_apply_photo_v3(item, url)
+
+
+@app.after_request
+def _fft_pd_after_request_enrich_dosen_photos_v3(response):
+    try:
+        from flask import request as _request
+
+        if _request.path.rstrip("/") != "/api/dosen":
+            return response
+
+        if response.status_code >= 400:
+            return response
+
+        payload = response.get_json(silent=True)
+
+        if payload is None:
+            return response
+
+        items = _fft_pd_extract_items_v3(payload)
+        _fft_pd_enrich_items_v3(items)
+
+        import json as _json
+        response.set_data(_json.dumps(payload, ensure_ascii=False))
+        response.headers["Content-Type"] = "application/json; charset=utf-8"
+    except Exception as exc:
+        try:
+            app.logger.warning("FFT dosen photo enrichment v3 failed: %s", exc)
+        except Exception:
+            pass
+
+    return response
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
 
