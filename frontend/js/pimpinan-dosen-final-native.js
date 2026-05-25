@@ -347,43 +347,8 @@
       ].join("");
     }).join("");
 
-    Array.from(root.querySelectorAll(".lecturer-card")).forEach(function (card, index) {
-      card.addEventListener("click", function () {
-        openModal(filtered[index]);
-      });
-    });
-
     root.dataset.finalNativeRender = "1";
     rendering = false;
-  }
-
-  function openModal(item) {
-    var modal = document.getElementById("profileModal");
-    if (!modal || !item) return;
-
-    var modalImage = document.getElementById("modalImage");
-    var modalLabel = document.getElementById("modalLabel");
-    var modalName = document.getElementById("modalName");
-    var modalRole = document.getElementById("modalRole");
-    var modalStatus = document.getElementById("modalStatus");
-    var modalBirthplace = document.getElementById("modalBirthplace");
-    var modalBirthdate = document.getElementById("modalBirthdate");
-
-    var name = nameOf(item);
-    var role = roleOf(item, "Dosen");
-    var field = fieldOf(item);
-    var roleText = field ? role + " / " + field : role;
-
-    if (modalImage) modalImage.src = imageUrl(imageRaw(item), "dosen");
-    if (modalLabel) modalLabel.textContent = statusOf(item);
-    if (modalName) modalName.textContent = name;
-    if (modalRole) modalRole.textContent = roleText;
-    if (modalStatus) modalStatus.textContent = statusOf(item);
-    if (modalBirthplace) modalBirthplace.textContent = pick(item, ["tempat_lahir", "tempatLahir"]) || "-";
-    if (modalBirthdate) modalBirthdate.textContent = pick(item, ["tanggal_lahir", "tanggalLahir"]) || "-";
-
-    modal.classList.add("active");
-    modal.setAttribute("aria-hidden", "false");
   }
 
   function bindSearch() {
@@ -529,4 +494,78 @@
     renderAll();
     fetchData(true);
   });
+}());
+
+/* FFT_PIMPINAN_DOSEN_SCROLL_REVEAL_ANIMATION_20260525
+   Trigger animasi hanya saat elemen tersorot di layar.
+*/
+(function () {
+  "use strict";
+
+  var selector = ".dean-card, .lecturer-card, .stat-card, .staff-stat-card";
+  var observer = null;
+
+  function revealFallback() {
+    document.querySelectorAll(selector).forEach(function (element) {
+      element.classList.add("pd-in-view");
+    });
+  }
+
+  function setupScrollReveal() {
+    if (!document.body || !document.body.classList.contains("pimpinan-dosen-page")) return;
+
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      revealFallback();
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      revealFallback();
+      return;
+    }
+
+    if (!observer) {
+      observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+
+          entry.target.classList.add("pd-in-view");
+          observer.unobserve(entry.target);
+        });
+      }, {
+        root: null,
+        threshold: 0.16,
+        rootMargin: "0px 0px -8% 0px"
+      });
+    }
+
+    document.querySelectorAll(selector).forEach(function (element) {
+      if (element.dataset.pdRevealBound === "1") return;
+
+      element.dataset.pdRevealBound = "1";
+      observer.observe(element);
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupScrollReveal);
+  } else {
+    setupScrollReveal();
+  }
+
+  var timer = null;
+  var mutationObserver = new MutationObserver(function () {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(setupScrollReveal, 80);
+  });
+
+  if (document.body) {
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  window.addEventListener("load", setupScrollReveal);
+  window.addEventListener("pageshow", setupScrollReveal);
 }());

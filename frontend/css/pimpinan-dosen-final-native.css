@@ -186,3 +186,62 @@ body.pimpinan-dosen-page .dekan-panel {
   }
 }
 
+/* FFT_CLEAN_PIMPINAN_DOSEN_UNUSED_POPUP_CODE_20260525
+   Card dosen bukan tombol popup.
+*/
+body.pimpinan-dosen-page .lecturer-card {
+  cursor: default !important;
+}
+
+/* FFT_PIMPINAN_DOSEN_SCROLL_REVEAL_ANIMATION_20260525
+   Animasi ringan saat elemen masuk area layar.
+   Tidak memakai popup dan tidak mengubah data.
+*/
+body.pimpinan-dosen-page .dean-card,
+body.pimpinan-dosen-page .lecturer-card,
+body.pimpinan-dosen-page .stat-card,
+body.pimpinan-dosen-page .staff-stat-card {
+  opacity: 0 !important;
+  transform: translateY(18px) !important;
+  transition:
+    opacity 520ms ease,
+    transform 520ms ease,
+    box-shadow 260ms ease !important;
+  will-change: opacity, transform;
+}
+
+body.pimpinan-dosen-page .dean-card.pd-in-view,
+body.pimpinan-dosen-page .lecturer-card.pd-in-view,
+body.pimpinan-dosen-page .stat-card.pd-in-view,
+body.pimpinan-dosen-page .staff-stat-card.pd-in-view {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+body.pimpinan-dosen-page .lecturer-card:nth-child(2) {
+  transition-delay: 40ms !important;
+}
+
+body.pimpinan-dosen-page .lecturer-card:nth-child(3) {
+  transition-delay: 80ms !important;
+}
+
+body.pimpinan-dosen-page .lecturer-card:nth-child(4) {
+  transition-delay: 120ms !important;
+}
+
+body.pimpinan-dosen-page .lecturer-card:nth-child(5) {
+  transition-delay: 160ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.pimpinan-dosen-page .dean-card,
+  body.pimpinan-dosen-page .lecturer-card,
+  body.pimpinan-dosen-page .stat-card,
+  body.pimpinan-dosen-page .staff-stat-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+}
