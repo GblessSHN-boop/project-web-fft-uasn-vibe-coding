@@ -1,0 +1,57 @@
+/* FFT_ALUR_MOBILE_POLISH_20260525
+   Polish ringan mobile Alur Pendaftaran.
+   Fokus spacing aman dan tidak menutup konten oleh floating button.
+*/
+@media (max-width: 760px) {
+  body.alur-pendaftaran-page {
+    overflow-x: hidden;
+  }
+
+  body.alur-pendaftaran-page main,
+  body.alur-pendaftaran-page .page-main,
+  body.alur-pendaftaran-page .admission-flow-page,
+  body.alur-pendaftaran-page .admission-flow-main {
+    padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-status,
+  body.alur-pendaftaran-page .admission-flow-section,
+  body.alur-pendaftaran-page .admission-flow-help,
+  body.alur-pendaftaran-page .admission-flow-faq,
+  body.alur-pendaftaran-page .faq-section {
+    scroll-margin-top: 92px;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-status {
+    margin-bottom: 42px !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-help {
+    margin-bottom: 44px !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-faq,
+  body.alur-pendaftaran-page .faq-section {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body.alur-pendaftaran-page .faq-list,
+  body.alur-pendaftaran-page .accordion-list {
+    margin-bottom: 28px !important;
+  }
+}
+
+/* FFT_ALUR_FIX_SINGLE_H1_SEO_20260525
+   Brand header bukan H1 agar SEO halaman hanya punya satu H1 utama.
+*/
+body.alur-pendaftaran-page .site-header .branding .brand-heading {
+  display: block !important;
+  margin: 0 !important;
+  color: #7b1113 !important;
+  font-size: clamp(0.88rem, 2.4vw, 1.08rem) !important;
+  line-height: 1.05 !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
