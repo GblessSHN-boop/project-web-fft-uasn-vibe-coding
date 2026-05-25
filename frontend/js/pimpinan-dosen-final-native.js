@@ -392,6 +392,10 @@
     renderDean();
     renderLecturers();
 
+    if (window.fftApplyPimpinanDosenLanguage) {
+      window.fftApplyPimpinanDosenLanguage();
+    }
+
     document.querySelectorAll(".reveal").forEach(function (element) {
       element.classList.add("visible");
     });
@@ -485,10 +489,10 @@
   }
 
   setTimeout(boot, 300);
-  setTimeout(function () { fetchData(true); }, 900);
-  setTimeout(function () { fetchData(true); }, 1800);
+  setTimeout(function () { if (!state.lecturers.length) fetchData(false); }, 900);
+  setTimeout(function () { if (!state.lecturers.length) fetchData(true); }, 1800);
 
-  window.addEventListener("load", boot);
+  window.addEventListener("load", function () { renderAll(); });
   window.addEventListener("pageshow", function () {
     readCache();
     renderAll();
@@ -568,4 +572,217 @@
 
   window.addEventListener("load", setupScrollReveal);
   window.addEventListener("pageshow", setupScrollReveal);
+}());
+
+/* FFT_LIGHTWEIGHT_PIMPINAN_DOSEN_LANGUAGE_20260525
+   EN ID ringan untuk Pimpinan dan Dosen.
+   Tidak memakai MutationObserver besar.
+*/
+(function () {
+  "use strict";
+
+  var staticText = {
+    id: {
+      hero_kicker: "Profil Akademik",
+      hero_title: "Pimpinan dan Dosen",
+      hero_desc: "Kenali pimpinan dan dosen Fakultas Filsafat Teologi Universitas Advent Surya Nusantara.",
+      hero_side_title: "Tenaga Akademik FFT",
+      hero_side_desc: "Informasi dosen ditampilkan untuk membantu mahasiswa, calon mahasiswa, dan masyarakat mengenal struktur akademik fakultas.",
+      breadcrumb_current: "Pimpinan & Dosen",
+      section_kicker: "Direktori Fakultas",
+      section_title: "Struktur Pimpinan dan Daftar Dosen",
+      search_placeholder: "Cari dosen atau bidang...",
+      stat_dean: "Pimpinan Fakultas",
+      stat_lecturer: "Dosen Terdata",
+      stat_total: "Total Profil",
+      dean_panel_title: "Pimpinan Fakultas",
+      lecturer_panel_title: "Daftar Dosen",
+      result_count: "profil"
+    },
+    en: {
+      hero_kicker: "Academic Profile",
+      hero_title: "Leaders and Lecturers",
+      hero_desc: "Meet the leaders and lecturers of the Faculty of Philosophy and Theology, Universitas Advent Surya Nusantara.",
+      hero_side_title: "FFT Academic Staff",
+      hero_side_desc: "Lecturer information helps students, prospective students, and the public understand the faculty academic structure.",
+      breadcrumb_current: "Leaders & Lecturers",
+      section_kicker: "Faculty Directory",
+      section_title: "Leadership Structure and Lecturer Directory",
+      search_placeholder: "Search lecturer or field...",
+      stat_dean: "Faculty Leader",
+      stat_lecturer: "Listed Lecturers",
+      stat_total: "Total Profiles",
+      dean_panel_title: "Faculty Leadership",
+      lecturer_panel_title: "Lecturer Directory",
+      result_count: "profiles"
+    }
+  };
+
+  function getLang() {
+    var saved =
+      localStorage.getItem("fft-language") ||
+      localStorage.getItem("siteLanguage") ||
+      localStorage.getItem("lang") ||
+      document.documentElement.lang ||
+      "id";
+
+    return saved === "en" ? "en" : "id";
+  }
+
+  function saveLang(lang) {
+    lang = lang === "en" ? "en" : "id";
+
+    localStorage.setItem("fft-language", lang);
+    localStorage.setItem("siteLanguage", lang);
+    localStorage.setItem("lang", lang);
+
+    return lang;
+  }
+
+  function replaceWords(value, lang) {
+    var text = String(value || "");
+
+    if (lang === "en") {
+      return text
+        .replace(/\bDEKAN\b/g, "DEAN")
+        .replace(/\bDekan\b/g, "Dean")
+        .replace(/\bDOSEN\b/g, "LECTURER")
+        .replace(/\bDosen\b/g, "Lecturer")
+        .replace(/\bAKTIF\b/g, "ACTIVE")
+        .replace(/\bAktif\b/g, "Active");
+    }
+
+    return text
+      .replace(/\bDEAN\b/g, "DEKAN")
+      .replace(/\bDean\b/g, "Dekan")
+      .replace(/\bLECTURER\b/g, "DOSEN")
+      .replace(/\bLecturer\b/g, "Dosen")
+      .replace(/\bACTIVE\b/g, "AKTIF")
+      .replace(/\bActive\b/g, "Aktif");
+  }
+
+  function applyStatic(lang) {
+    var table = staticText[lang] || staticText.id;
+
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n");
+
+      if (table[key]) {
+        el.textContent = table[key];
+      }
+    });
+
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n-placeholder");
+
+      if (table[key]) {
+        el.setAttribute("placeholder", table[key]);
+      }
+    });
+
+    var search = document.getElementById("staffSearch");
+
+    if (search) {
+      search.setAttribute("placeholder", table.search_placeholder);
+    }
+  }
+
+  function applyGenerated(lang) {
+    var table = staticText[lang] || staticText.id;
+
+    document.querySelectorAll([
+      ".dean-badge",
+      ".dean-content .dosen-status",
+      ".lecturer-tag",
+      ".lecturer-info p",
+      ".person-role",
+      ".person-bio strong",
+      ".person-bio span",
+      ".stat-label",
+      ".panel-title",
+      ".section-kicker",
+      ".section-title"
+    ].join(",")).forEach(function (el) {
+      if (!el || el.children.length > 0) return;
+      el.textContent = replaceWords(el.textContent, lang);
+    });
+
+    document.querySelectorAll(".empty-state").forEach(function (el) {
+      el.textContent = replaceWords(el.textContent, lang);
+    });
+
+    var resultInfo = document.getElementById("resultInfo");
+
+    if (resultInfo) {
+      var number = String(resultInfo.textContent || "").match(/\d+/);
+      if (number) {
+        resultInfo.textContent = number[0] + " " + table.result_count;
+      }
+    }
+  }
+
+  function setButtonState(lang) {
+    document.querySelectorAll("[data-fft-lang], [data-lang], .fft-floating-language-btn").forEach(function (button) {
+      var value = button.getAttribute("data-fft-lang") || button.getAttribute("data-lang");
+
+      if (value !== "id" && value !== "en") return;
+
+      var active = value === lang;
+
+      button.classList.toggle("is-active", active);
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  }
+
+  function applyLanguage(lang) {
+    lang = saveLang(lang || getLang());
+
+    applyStatic(lang);
+    applyGenerated(lang);
+    setButtonState(lang);
+  }
+
+  function bindButtons() {
+    if (document.documentElement.dataset.pdLanguageBound === "1") return;
+
+    document.documentElement.dataset.pdLanguageBound = "1";
+
+    document.addEventListener("click", function (event) {
+      var button = event.target.closest("[data-fft-lang], [data-lang], .fft-floating-language-btn");
+
+      if (!button) return;
+
+      var lang = button.getAttribute("data-fft-lang") || button.getAttribute("data-lang");
+
+      if (lang !== "id" && lang !== "en") return;
+
+      event.preventDefault();
+      applyLanguage(lang);
+    }, true);
+  }
+
+  window.fftApplyPimpinanDosenLanguage = function () {
+    applyLanguage(getLang());
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () {
+      bindButtons();
+      applyLanguage(getLang());
+    });
+  } else {
+    bindButtons();
+    applyLanguage(getLang());
+  }
+
+  window.addEventListener("load", function () {
+    applyLanguage(getLang());
+  });
+
+  window.addEventListener("pageshow", function () {
+    applyLanguage(getLang());
+  });
 }());
