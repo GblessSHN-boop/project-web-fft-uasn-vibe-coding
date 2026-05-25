@@ -101,7 +101,7 @@
   <!-- FFT_BRAND_LANGUAGE_LOGO_FIX_20260521: brand image and mobile nav fix -->
   <link rel="stylesheet" href="../css/brand-language-logo.css" />
   <!-- FFT_ALUR_MOBILE_POLISH_20260525 CSS -->
-  <link rel="stylesheet" href="../css/alur-pendaftaran-mobile-polish.css?v=mobile-requirements-offset-142-20260525">
+  <link rel="stylesheet" href="../css/alur-pendaftaran-mobile-polish.css?v=desktop-visible-shadow-20260525">
 
   <!-- FFT_ALUR_PENDAFTARAN_SEO_LOCK_20260525 START -->
   <meta name="description" content="Panduan alur pendaftaran calon mahasiswa Fakultas Filsafat Teologi Universitas Advent Surya Nusantara, mulai dari informasi awal, pengisian data, dokumen, verifikasi, hingga konfirmasi penerimaan.">
@@ -211,9 +211,80 @@
   </script>
   <!-- FFT_ALUR_PENDAFTARAN_SEO_LOCK_20260525 END -->
 
+
+  <!-- FFT_ALUR_DESKTOP_INLINE_GRID_FINAL_20260525 START -->
+  <style>
+    @media (min-width: 761px) {
+      body.alur-pendaftaran-page .admission-flow-support-grid {
+        position: relative !important;
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) minmax(420px, 0.92fr) !important;
+        gap: clamp(34px, 4vw, 68px) !important;
+        align-items: stretch !important;
+        width: min(100% - 96px, 1360px) !important;
+        max-width: 1360px !important;
+        margin: clamp(72px, 7vw, 112px) auto clamp(70px, 6vw, 104px) !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        clear: both !important;
+      }
+
+      body.alur-pendaftaran-page .admission-flow-support-grid > #persyaratan-pendaftaran {
+        position: absolute !important;
+        top: -34px !important;
+        left: 0 !important;
+        display: block !important;
+        width: 1px !important;
+        height: 1px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        scroll-margin-top: 34px !important;
+      }
+
+      body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-checklist {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+        width: auto !important;
+        max-width: none !important;
+        margin: 0 !important;
+        float: none !important;
+        clear: none !important;
+        align-self: stretch !important;
+        box-sizing: border-box !important;
+      }
+
+      body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-help {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        width: auto !important;
+        max-width: none !important;
+        margin: 0 !important;
+        float: none !important;
+        clear: none !important;
+        align-self: stretch !important;
+        box-sizing: border-box !important;
+      }
+
+      body.alur-pendaftaran-page .admission-flow-support-grid .admission-flow-section-head,
+      body.alur-pendaftaran-page .admission-flow-support-grid .admission-flow-section-head.compact,
+      body.alur-pendaftaran-page .admission-flow-support-grid ul,
+      body.alur-pendaftaran-page .admission-flow-support-grid a {
+        max-width: 100% !important;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body.alur-pendaftaran-page .admission-flow-support-grid {
+        display: block !important;
+      }
+    }
+  </style>
+  <!-- FFT_ALUR_DESKTOP_INLINE_GRID_FINAL_20260525 END -->
+
 </head>
 
-  <body>
+  <body class="alur-pendaftaran-page">
   <div class="reading-progress" id="readingProgress" style="width: 23.8586%;"></div>
     <header class="site-header" id="siteHeader">
       <div class="topbar">
@@ -291,8 +362,8 @@
                   <span class="nav-chevron" aria-hidden="true">▾</span>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a href="alur-pendaftaran.html" data-i18n="nav_admission_flow" data-page-id="Alur Pendaftaran" data-page-en="Admission Flow">Alur Pendaftaran</a>
-            <a href="#persyaratan-pendaftaran" data-page-id="Persyaratan" data-page-en="Requirements" data-i18n="nav_requirements">Persyaratan</a></li>
+                  <li><a href="alur-pendaftaran.html" data-i18n="nav_admission_flow" data-page-id="Alur Pendaftaran" data-page-en="Admission Flow">Alur Pendaftaran</a></li>
+                  <li><a href="#persyaratan-pendaftaran" data-page-id="Persyaratan" data-page-en="Requirements" data-i18n="nav_requirements">Persyaratan</a></li>
                   <li><a href="simulasi-pendaftaran-offline.html" data-i18n="nav_offline_simulation" data-page-id="Simulasi Offline" data-page-en="Offline Simulation">Simulasi Offline</a></li>
                   <li><a href="e-brochure.html" data-i18n="nav_ebrochure" data-page-id="E-Brochure" data-page-en="E-Brochure">E-Brochure</a></li>
                 </ul>
@@ -489,7 +560,7 @@
   </section>
 
   <section class="admission-flow-support-grid">
-  <span id="persyaratan-pendaftaran" class="admission-flow-anchor admission-flow-anchor-layout-lock" aria-hidden="true"></span>
+    <span id="persyaratan-pendaftaran" class="admission-flow-anchor admission-flow-anchor-layout-lock" aria-hidden="true"></span>
 
 <div class="admission-flow-checklist">
       <div class="admission-flow-section-head compact">
@@ -846,8 +917,59 @@
   <!-- FFT_BRAND_LANGUAGE_LOGO_FIX_20260521: brand image and mobile nav fix -->
   <script src="../js/brand-language-logo.js"></script>
   <!-- FFT_ALUR_MOBILE_POLISH_20260525 JS -->
-  <script defer src="../js/alur-pendaftaran-mobile-polish.js?v=mobile-requirements-offset-142-20260525"></script>
+  <script defer src="../js/alur-pendaftaran-mobile-polish.js?v=desktop-runtime-grid-lock-20260525"></script>
   <!-- FFT_UNIFY_PERSYARATAN_INTO_ALUR_PENDAFTARAN_20260525: Persyaratan sekarang menjadi section di Alur Pendaftaran -->
+
+  <!-- FFT_ALUR_DESKTOP_INLINE_GRID_FINAL_20260525 START -->
+  <script>
+    (function () {
+      "use strict";
+
+      function isDesktop() {
+        return window.innerWidth >= 761;
+      }
+
+      function lockDesktopGrid() {
+        if (!isDesktop()) return;
+
+        var grid = document.querySelector(".admission-flow-support-grid");
+        var anchor = document.getElementById("persyaratan-pendaftaran");
+        var checklist = document.querySelector(".admission-flow-checklist");
+        var help = document.querySelector(".admission-flow-help");
+
+        if (!grid || !checklist || !help) return;
+
+        if (anchor && anchor.parentNode !== grid) {
+          grid.insertBefore(anchor, grid.firstChild);
+        }
+
+        if (checklist.parentNode !== grid) {
+          grid.appendChild(checklist);
+        }
+
+        if (help.parentNode !== grid) {
+          grid.appendChild(help);
+        }
+
+        grid.classList.add("fft-alur-desktop-inline-grid-ready");
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", lockDesktopGrid);
+      } else {
+        lockDesktopGrid();
+      }
+
+      window.addEventListener("load", lockDesktopGrid);
+      window.addEventListener("pageshow", lockDesktopGrid);
+      window.addEventListener("resize", function () {
+        clearTimeout(window.__fftAlurInlineGridTimer);
+        window.__fftAlurInlineGridTimer = setTimeout(lockDesktopGrid, 120);
+      });
+    }());
+  </script>
+  <!-- FFT_ALUR_DESKTOP_INLINE_GRID_FINAL_20260525 END -->
+
 </body>
 
   

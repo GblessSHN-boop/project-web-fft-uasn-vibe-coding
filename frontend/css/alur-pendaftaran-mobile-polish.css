@@ -214,3 +214,235 @@ body.alur-pendaftaran-page .admission-flow-anchor-layout-lock {
     scroll-margin-top: 142px !important;
   }
 }
+
+/* FFT_ALUR_DESKTOP_REQUIREMENTS_GRID_REPAIR_20260525
+   Fix desktop Persyaratan.
+   Anchor dibuat tidak ikut menjadi item grid.
+   Mobile tidak diubah.
+*/
+@media (min-width: 761px) {
+  body.alur-pendaftaran-page .admission-flow-support-grid {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr) !important;
+    gap: clamp(28px, 3.2vw, 54px) !important;
+    align-items: stretch !important;
+    width: min(100% - 72px, 1320px) !important;
+    max-width: 1320px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-support-grid > #persyaratan-pendaftaran,
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-anchor-layout-lock {
+    position: absolute !important;
+    top: -34px !important;
+    left: 0 !important;
+    display: block !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    scroll-margin-top: 34px !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-checklist {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    align-self: stretch !important;
+    box-sizing: border-box !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-help {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    align-self: stretch !important;
+    box-sizing: border-box !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-checklist .admission-flow-section-head,
+  body.alur-pendaftaran-page .admission-flow-checklist .admission-flow-section-head.compact,
+  body.alur-pendaftaran-page .admission-flow-checklist ul,
+  body.alur-pendaftaran-page .admission-flow-checklist a {
+    max-width: 100% !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-help {
+    min-height: 100% !important;
+  }
+}
+
+/* FFT_ALUR_DESKTOP_REQUIREMENTS_RUNTIME_GRID_LOCK_20260525
+   Desktop Persyaratan dibuat dua kolom rapi.
+   Checklist kiri, Bantuan kanan.
+   Mobile tetap mengikuti desain yang sudah final.
+*/
+@media (min-width: 761px) {
+  body.alur-pendaftaran-page .fft-alur-desktop-requirements-grid {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.02fr) minmax(380px, 0.98fr) !important;
+    gap: clamp(28px, 3.2vw, 56px) !important;
+    align-items: stretch !important;
+    width: min(100% - 72px, 1320px) !important;
+    max-width: 1320px !important;
+    margin: clamp(72px, 7vw, 118px) auto clamp(70px, 6vw, 104px) !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    grid-column: 1 / -1 !important;
+    clear: both !important;
+  }
+
+  body.alur-pendaftaran-page .fft-alur-desktop-requirements-grid > #persyaratan-pendaftaran {
+    position: absolute !important;
+    top: -34px !important;
+    left: 0 !important;
+    display: block !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    scroll-margin-top: 34px !important;
+  }
+
+  body.alur-pendaftaran-page .fft-alur-desktop-requirements-grid > .admission-flow-checklist,
+  body.alur-pendaftaran-page .fft-alur-desktop-requirements-grid > .admission-flow-help {
+    width: auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    float: none !important;
+    clear: none !important;
+    box-sizing: border-box !important;
+    align-self: stretch !important;
+  }
+
+  body.alur-pendaftaran-page .fft-alur-desktop-requirements-grid > .admission-flow-checklist {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  body.alur-pendaftaran-page .fft-alur-desktop-requirements-grid > .admission-flow-help {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+  }
+
+  body.alur-pendaftaran-page .fft-alur-desktop-requirements-grid .admission-flow-section-head,
+  body.alur-pendaftaran-page .fft-alur-desktop-requirements-grid .admission-flow-section-head.compact,
+  body.alur-pendaftaran-page .fft-alur-desktop-requirements-grid ul,
+  body.alur-pendaftaran-page .fft-alur-desktop-requirements-grid a {
+    max-width: 100% !important;
+  }
+
+  body.alur-pendaftaran-page .fft-alur-desktop-requirements-grid .admission-flow-help {
+    min-height: 100% !important;
+  }
+}
+
+@media (max-width: 760px) {
+  body.alur-pendaftaran-page .fft-alur-desktop-requirements-grid {
+    display: block !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+/* FFT_ALUR_DESKTOP_REQUIREMENTS_CARD_SHADOW_20260525
+   Shadow desktop untuk card Persyaratan dan Bantuan.
+   Mobile tidak disentuh.
+*/
+@media (min-width: 761px) {
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-checklist,
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-help {
+    position: relative !important;
+    box-shadow:
+      0 34px 90px rgba(20, 12, 12, 0.12),
+      0 12px 34px rgba(122, 17, 19, 0.08) !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-checklist {
+    background: #ffffff !important;
+    border: 1px solid rgba(32, 32, 36, 0.08) !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-help {
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-checklist::before,
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-help::before {
+    content: "";
+    position: absolute;
+    inset: 18px;
+    z-index: -1;
+    pointer-events: none;
+    background: rgba(122, 17, 19, 0.08);
+    filter: blur(38px);
+    opacity: 0.7;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-checklist,
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-help {
+    z-index: 1 !important;
+  }
+}
+
+/* FFT_ALUR_DESKTOP_REQUIREMENTS_VISIBLE_SHADOW_20260525
+   Shadow desktop dibuat lebih terlihat dengan panel belakang.
+   Mobile tidak disentuh.
+*/
+@media (min-width: 761px) {
+  body.alur-pendaftaran-page .admission-flow-support-grid {
+    isolation: isolate !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-support-grid::before {
+    content: "";
+    position: absolute;
+    inset: -42px -46px -48px -46px;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(122, 17, 19, 0.10), transparent 38%),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(249, 244, 244, 0.92));
+    border: 1px solid rgba(122, 17, 19, 0.08);
+    box-shadow:
+      0 46px 120px rgba(18, 18, 22, 0.18),
+      0 18px 54px rgba(122, 17, 19, 0.13);
+  }
+
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-checklist,
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-help {
+    position: relative !important;
+    z-index: 1 !important;
+    box-shadow:
+      0 30px 86px rgba(18, 18, 22, 0.18),
+      0 12px 34px rgba(122, 17, 19, 0.12) !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-checklist {
+    background: #ffffff !important;
+    border: 1px solid rgba(24, 24, 28, 0.10) !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-support-grid > .admission-flow-help {
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  }
+
+  body.alur-pendaftaran-page .admission-flow-support-grid > #persyaratan-pendaftaran {
+    z-index: 2 !important;
+  }
+}

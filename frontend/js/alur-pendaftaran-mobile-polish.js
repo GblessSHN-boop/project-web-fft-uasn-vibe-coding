@@ -242,3 +242,87 @@
    Mobile Persyaratan berhenti lebih atas dari card checklist.
    Desktop tidak diubah pada patch ini.
 */
+
+/* FFT_ALUR_DESKTOP_REQUIREMENTS_RUNTIME_GRID_LOCK_20260525
+   Desktop only.
+   Membungkus checklist dan bantuan ke wrapper grid agar susunan desktop rapi.
+   Mobile tidak disentuh.
+*/
+(function () {
+  "use strict";
+
+  var wrapperClass = "fft-alur-desktop-requirements-grid";
+
+  function isDesktop() {
+    return window.innerWidth >= 761;
+  }
+
+  function isAlurPage() {
+    return document.body && document.body.classList.contains("alur-pendaftaran-page");
+  }
+
+  function firstInDocument(a, b) {
+    if (!a) return b;
+    if (!b) return a;
+
+    return (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_PRECEDING) ? b : a;
+  }
+
+  function ensureDesktopRequirementsGrid() {
+    if (!isAlurPage()) return;
+    if (!isDesktop()) return;
+
+    var checklist = document.querySelector(".admission-flow-checklist");
+    var help = document.querySelector(".admission-flow-help");
+    var anchor = document.getElementById("persyaratan-pendaftaran");
+
+    if (!checklist || !help) return;
+
+    var wrapper = document.querySelector("." + wrapperClass);
+
+    if (!wrapper) {
+      wrapper = document.createElement("section");
+      wrapper.className = wrapperClass;
+      wrapper.setAttribute("aria-label", "Persyaratan dan bantuan pendaftaran");
+
+      var first = firstInDocument(checklist, help);
+      first.parentNode.insertBefore(wrapper, first);
+    }
+
+    if (anchor && anchor.parentNode !== wrapper) {
+      wrapper.appendChild(anchor);
+    }
+
+    if (checklist.parentNode !== wrapper) {
+      wrapper.appendChild(checklist);
+    }
+
+    if (help.parentNode !== wrapper) {
+      wrapper.appendChild(help);
+    }
+
+    checklist.classList.add("fft-alur-desktop-checklist-lock");
+    help.classList.add("fft-alur-desktop-help-lock");
+  }
+
+  function bootDesktopRequirementsGrid() {
+    ensureDesktopRequirementsGrid();
+
+    setTimeout(ensureDesktopRequirementsGrid, 80);
+    setTimeout(ensureDesktopRequirementsGrid, 280);
+    setTimeout(ensureDesktopRequirementsGrid, 800);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootDesktopRequirementsGrid);
+  } else {
+    bootDesktopRequirementsGrid();
+  }
+
+  window.addEventListener("load", bootDesktopRequirementsGrid);
+  window.addEventListener("pageshow", bootDesktopRequirementsGrid);
+  window.addEventListener("resize", function () {
+    window.clearTimeout(window.__fftAlurDesktopGridTimer);
+    window.__fftAlurDesktopGridTimer = window.setTimeout(bootDesktopRequirementsGrid, 120);
+  });
+}());
