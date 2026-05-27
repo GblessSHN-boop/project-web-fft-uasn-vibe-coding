@@ -245,3 +245,247 @@
   }, true);
 }());
 
+/* FFT_NAVIGATION_LANGUAGE_FIX_FOT_20260527
+   Sinkron EN ID untuk navigasi global.
+   ID tetap Fakultas Filsafat Teologi.
+   EN memakai Faculty Of Theology.
+*/
+(function () {
+  "use strict";
+
+  var text = {
+    id: {
+      top_uasn: "Website UASN",
+      top_home: "Halaman Utama FFT",
+      top_apply: "Daftar Sekarang",
+
+      brand_faculty: "Fakultas Filsafat Teologi",
+      brand_title: "Fakultas Filsafat Teologi",
+      brand_university: "Universitas Advent Surya Nusantara",
+
+      nav_home: "Beranda",
+      nav_program: "Program Studi",
+      nav_background: "Latar Belakang",
+      nav_vision: "Visi & Misi",
+      nav_organization: "Organisasi",
+      nav_staff: "Pimpinan & Dosen",
+      nav_news: "Berita",
+      nav_contact: "Kontak",
+
+      nav_admission: "Pendaftaran",
+      nav_flow: "Alur Pendaftaran",
+      nav_requirements: "Persyaratan",
+      nav_simulation: "Simulasi Offline",
+      nav_ebrochure: "E Brochure",
+
+      nav_academic: "Akademik",
+      nav_rules: "Aturan Akademik",
+      nav_calendar: "Kalender Akademik",
+      nav_curriculum: "Kurikulum",
+      nav_ranking: "Papan Peringkat",
+      nav_testimony: "Testimoni",
+
+      footer_nav: "Navigasi",
+      footer_contact: "Kontak Fakultas",
+      footer_title: "Fakultas Filsafat Teologi"
+    },
+
+    en: {
+      top_uasn: "UASN Website",
+      top_home: "FFT Main Page",
+      top_apply: "Apply Now",
+
+      brand_faculty: "Faculty Of Theology",
+      brand_title: "Faculty Of Theology",
+      brand_university: "Universitas Advent Surya Nusantara",
+
+      nav_home: "Home",
+      nav_program: "Study Program",
+      nav_background: "Background",
+      nav_vision: "Vision & Mission",
+      nav_organization: "Organization",
+      nav_staff: "Leaders & Lecturers",
+      nav_news: "News",
+      nav_contact: "Contact",
+
+      nav_admission: "Admission",
+      nav_flow: "Admission Flow",
+      nav_requirements: "Requirements",
+      nav_simulation: "Offline Simulation",
+      nav_ebrochure: "E Brochure",
+
+      nav_academic: "Academic",
+      nav_rules: "Academic Rules",
+      nav_calendar: "Academic Calendar",
+      nav_curriculum: "Curriculum",
+      nav_ranking: "Ranking Board",
+      nav_testimony: "Testimonials",
+
+      footer_nav: "Navigation",
+      footer_contact: "Faculty Contact",
+      footer_title: "Faculty Of Theology"
+    }
+  };
+
+  var exactPairs = [
+    ["Website UASN", "UASN Website"],
+    ["Halaman Utama FFT", "FFT Main Page"],
+    ["Daftar Sekarang", "Apply Now"],
+
+    ["Fakultas Filsafat Teologi", "Faculty Of Theology"],
+    ["Pendaftaran", "Admission"],
+    ["Alur Pendaftaran", "Admission Flow"],
+    ["Persyaratan", "Requirements"],
+    ["Simulasi Offline", "Offline Simulation"],
+
+    ["Akademik", "Academic"],
+    ["Aturan Akademik", "Academic Rules"],
+    ["Kalender Akademik", "Academic Calendar"],
+    ["Kurikulum", "Curriculum"],
+    ["Papan Peringkat", "Ranking Board"],
+
+    ["Program Studi", "Study Program"],
+    ["Latar Belakang", "Background"],
+    ["Visi & Misi", "Vision & Mission"],
+    ["Organisasi", "Organization"],
+    ["Pimpinan & Dosen", "Leaders & Lecturers"],
+    ["Berita", "News"],
+    ["Kontak", "Contact"],
+    ["Testimoni", "Testimonials"],
+
+    ["Navigasi", "Navigation"],
+    ["Kontak Fakultas", "Faculty Contact"]
+  ];
+
+  function getLang() {
+    var saved =
+      localStorage.getItem("fft-language") ||
+      localStorage.getItem("siteLanguage") ||
+      localStorage.getItem("lang") ||
+      document.documentElement.lang ||
+      "id";
+
+    return saved === "en" ? "en" : "id";
+  }
+
+  function saveLang(lang) {
+    lang = lang === "en" ? "en" : "id";
+
+    localStorage.setItem("fft-language", lang);
+    localStorage.setItem("siteLanguage", lang);
+    localStorage.setItem("lang", lang);
+
+    return lang;
+  }
+
+  function setButtonState(lang) {
+    document.querySelectorAll("[data-fft-lang], [data-lang], .fft-floating-language-btn").forEach(function (button) {
+      var value = button.getAttribute("data-fft-lang") || button.getAttribute("data-lang");
+
+      if (value !== "id" && value !== "en") return;
+
+      var active = value === lang;
+
+      button.classList.toggle("is-active", active);
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  }
+
+  function applyDataI18n(lang) {
+    var table = text[lang] || text.id;
+
+    document.querySelectorAll("[data-i18n]").forEach(function (element) {
+      var key = element.getAttribute("data-i18n");
+
+      if (!key || !table[key]) return;
+
+      element.textContent = table[key];
+    });
+  }
+
+  function applyPageLabels(lang) {
+    document.querySelectorAll("[data-page-id][data-page-en]").forEach(function (element) {
+      var next = lang === "en"
+        ? element.getAttribute("data-page-en")
+        : element.getAttribute("data-page-id");
+
+      if (!next) return;
+
+      element.textContent = next;
+    });
+  }
+
+  function applyExactText(lang) {
+    var fromIndex = lang === "en" ? 0 : 1;
+    var toIndex = lang === "en" ? 1 : 0;
+
+    document.querySelectorAll("a, button, span, b, strong, small, p, h1, h2, h3, h4").forEach(function (element) {
+      if (!element || element.children.length > 0) return;
+
+      var current = String(element.textContent || "").replace(/\s+/g, " ").trim();
+
+      if (!current) return;
+
+      exactPairs.forEach(function (pair) {
+        if (current === pair[fromIndex] || current === pair[toIndex]) {
+          element.textContent = pair[toIndex];
+        }
+      });
+    });
+  }
+
+  function applyNavigationLanguage(lang) {
+    lang = saveLang(lang || getLang());
+
+    document.documentElement.lang = lang;
+
+    applyDataI18n(lang);
+    applyPageLabels(lang);
+    applyExactText(lang);
+    setButtonState(lang);
+  }
+
+  function bindLanguageButtons() {
+    if (document.documentElement.dataset.fftNavLanguageFixBound === "1") return;
+
+    document.documentElement.dataset.fftNavLanguageFixBound = "1";
+
+    document.addEventListener("click", function (event) {
+      var button = event.target && event.target.closest
+        ? event.target.closest("[data-fft-lang], [data-lang], .fft-floating-language-btn")
+        : null;
+
+      if (!button) return;
+
+      var lang = button.getAttribute("data-fft-lang") || button.getAttribute("data-lang");
+
+      if (lang !== "id" && lang !== "en") return;
+
+      setTimeout(function () { applyNavigationLanguage(lang); }, 20);
+      setTimeout(function () { applyNavigationLanguage(lang); }, 160);
+      setTimeout(function () { applyNavigationLanguage(lang); }, 520);
+    }, true);
+  }
+
+  function boot() {
+    bindLanguageButtons();
+
+    applyNavigationLanguage(getLang());
+
+    setTimeout(function () { applyNavigationLanguage(getLang()); }, 120);
+    setTimeout(function () { applyNavigationLanguage(getLang()); }, 500);
+  }
+
+  window.fftApplyNavigationLanguage = applyNavigationLanguage;
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+
+  window.addEventListener("load", boot);
+  window.addEventListener("pageshow", boot);
+}());
+
