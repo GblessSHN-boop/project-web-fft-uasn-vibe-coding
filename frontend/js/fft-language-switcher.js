@@ -30,7 +30,7 @@
     en: {
       "staff_kicker": "ACADEMIC PROFILE",
       "staff_title": "Leaders and Lecturers",
-      "staff_desc": "Meet the leaders and lecturers of the Faculty of Philosophy and Theology, Universitas Advent Surya Nusantara.",
+      "staff_desc": "Meet the leaders and lecturers of the Faculty Of Theology, Universitas Advent Surya Nusantara.",
       "staff_side_title": "FFT ACADEMIC STAFF",
       "staff_side_desc": "Lecturer information helps students, prospective students, and the public understand the faculty academic structure.",
       "staff_breadcrumb_current": "Leaders & Lecturers",
@@ -44,7 +44,7 @@
       "staff_lecturer_title": "Lecturer Directory",
       "staff_search_placeholder": "Search lecturer or field...",
       "why_kicker": "WHY CHOOSE FFT",
-      "why_title": "Why Choose the Faculty of Philosophy and Theology",
+      "why_title": "Why Choose the Faculty Of Theology",
       "why_subtitle": "UNIVERSITAS ADVENT SURYA NUSANTARA",
       "why_desc": "Content not available yet.",
       "why_media_placeholder": "Content Not Available Yet"

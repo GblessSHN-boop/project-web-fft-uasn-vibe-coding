@@ -2,8 +2,8 @@
 (function () {
   "use strict";
 
-  var fallbackImage = "../assets/images/site/fftkb.png";
-  var cacheKey = "fft:pimpinan-dosen:final-native:v3-photo-unique";
+  var fallbackImage = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+  var cacheKey = "fft:pimpinan-dosen:final-native:v4-light-media";
   var state = {
     dean: null,
     lecturers: [],
@@ -366,6 +366,111 @@
     });
   }
 
+
+  /* FFT_LIGHT_MEDIA_PLACEHOLDER_PIMPINAN_DOSEN_20260525
+     Ringankan media Pimpinan Dosen.
+     Cache tidak membawa foto backend.
+     Kalau foto gagal, tampilkan placeholder teks ringan.
+  */
+  function stripMediaForOfflineCache(item) {
+    if (!item || typeof item !== "object") return item;
+
+    var copy = Object.assign({}, item);
+    [
+      "_fft_photo_url",
+      "_fft_photo_path",
+      "foto_backend",
+      "foto_static",
+      "foto_resolved",
+      "foto_api",
+      "url_foto",
+      "fotoUrlBackend",
+      "image_static",
+      "image_backend",
+      "photo_static",
+      "photo_backend",
+      "foto_frontend",
+      "fotoFrontend",
+      "foto_formal",
+      "fotoFormal",
+      "foto_dosen",
+      "fotoDosen",
+      "foto",
+      "foto_url",
+      "fotoUrl",
+      "foto_path",
+      "fotoPath",
+      "foto_profil",
+      "fotoProfile",
+      "foto_profile",
+      "foto_utama",
+      "gambar",
+      "gambar_url",
+      "gambarUrl",
+      "image",
+      "image_url",
+      "imageUrl",
+      "photo",
+      "photo_url",
+      "photoUrl",
+      "avatar",
+      "thumbnail",
+      "thumbnail_url"
+    ].forEach(function (key) {
+      if (Object.prototype.hasOwnProperty.call(copy, key)) {
+        copy[key] = "";
+      }
+    });
+
+    return copy;
+  }
+
+  function markEmptyPhotoSlots() {
+    document.querySelectorAll(".lecturer-photo, .dean-photo").forEach(function (slot) {
+      var img = slot.querySelector("img");
+
+      if (!img) {
+        slot.classList.add("is-photo-empty");
+        return;
+      }
+
+      img.loading = "lazy";
+      img.decoding = "async";
+
+      try {
+        img.fetchPriority = "low";
+      } catch (error) {}
+
+      if (img.dataset.pdLightMediaBound !== "1") {
+        img.dataset.pdLightMediaBound = "1";
+
+        img.addEventListener("error", function () {
+          var parent = img.closest(".lecturer-photo, .dean-photo");
+
+          if (parent) {
+            parent.classList.add("is-photo-empty");
+          }
+
+          img.onerror = null;
+          img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+        });
+      }
+
+      var src = String(img.getAttribute("src") || "");
+
+      if (
+        !src ||
+        src === "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" ||
+        /^data:image\/gif/i.test(src) ||
+        /fftkb|logo/i.test(src)
+      ) {
+        slot.classList.add("is-photo-empty");
+      } else {
+        slot.classList.remove("is-photo-empty");
+      }
+    });
+  }
+
   function saveCache() {
     try {
       localStorage.setItem(cacheKey, JSON.stringify({
@@ -381,8 +486,8 @@
       if (!raw) return;
 
       var cached = JSON.parse(raw);
-      if (cached && cached.dean) state.dean = cached.dean;
-      if (cached && Array.isArray(cached.lecturers)) state.lecturers = validLecturers(cached.lecturers);
+      if (cached && cached.dean) state.dean = stripMediaForOfflineCache(cached.dean);
+      if (cached && Array.isArray(cached.lecturers)) state.lecturers = validLecturers(cached.lecturers.map(stripMediaForOfflineCache));
     } catch (error) {}
   }
 
@@ -391,6 +496,7 @@
     bindSearch();
     renderDean();
     renderLecturers();
+    markEmptyPhotoSlots();
 
     if (window.fftApplyPimpinanDosenLanguage) {
       window.fftApplyPimpinanDosenLanguage();
@@ -602,7 +708,7 @@
     en: {
       hero_kicker: "Academic Profile",
       hero_title: "Leaders and Lecturers",
-      hero_desc: "Meet the leaders and lecturers of the Faculty of Philosophy and Theology, Universitas Advent Surya Nusantara.",
+      hero_desc: "Meet the leaders and lecturers of the Faculty Of Theology, Universitas Advent Surya Nusantara.",
       hero_side_title: "FFT Academic Staff",
       hero_side_desc: "Lecturer information helps students, prospective students, and the public understand the faculty academic structure.",
       breadcrumb_current: "Leaders & Lecturers",
@@ -742,6 +848,7 @@
 
     applyStatic(lang);
     applyGenerated(lang);
+    if (typeof markEmptyPhotoSlots === "function") markEmptyPhotoSlots();
     setButtonState(lang);
   }
 

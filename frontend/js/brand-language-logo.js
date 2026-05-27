@@ -58,7 +58,7 @@
 
   function brandAlt() {
     return getLanguage() === "en"
-      ? "Faculty of Philosophy and Theology, Universitas Advent Surya Nusantara"
+      ? "Faculty Of Theology, Universitas Advent Surya Nusantara"
       : "Fakultas Filsafat Teologi, Universitas Advent Surya Nusantara";
   }
 

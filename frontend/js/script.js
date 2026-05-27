@@ -87,7 +87,7 @@ const translations = {
     top_quick_access: "Quick Access",
     top_apply: "APPLY NOW",
 
-    brand_faculty: "FACULTY OF PHILOSOPHY AND THEOLOGY",
+    brand_faculty: "Faculty Of Theology",
     brand_university: "UNIVERSITAS ADVENT SURYA NUSANTARA",
 
     nav_program: "Study Program",
@@ -112,7 +112,7 @@ const translations = {
     nav_brochure: "E-Brochure",
     nav_testimonials: "Testimonials",
     why_kicker: "WHY CHOOSE FFT",
-    why_title: "Why Choose the Faculty of Philosophy and Theology",
+    why_title: "Why Choose the Faculty Of Theology",
     why_subtitle: "Universitas Advent Surya Nusantara",
     why_desc: "Content not available yet.",
     why_cta_admission: "View Admission Flow",
@@ -136,13 +136,13 @@ const translations = {
 
     view_more: "REGISTER NOW",
 
-    intro_title: "FACULTY OF PHILOSOPHY AND THEOLOGY",
+    intro_title: "Faculty Of Theology",
 
     about_kicker: "About FFT",
-    about_title: "Faculty of Philosophy and Theology",
+    about_title: "Faculty Of Theology",
 
     about_intro:
-      "The Faculty of Philosophy and Theology (FFT) focuses on the study of:",
+      "The Faculty Of Theology (FFT) focuses on the study of:",
     about_item_1: "Philosophy",
     about_item_2: "Theology",
     about_item_3: "Biblical studies and spiritual leadership",
@@ -162,7 +162,7 @@ about_desc_4:
     program_kicker: "Academic Program",
     program_title: "Study Program",
     program_lead:
-      "The Faculty of Philosophy and Theology offers academic programs focused on developing spiritual leaders, educators, and community servants with a strong foundation in theology, philosophy, and Christian character.",
+      "The Faculty Of Theology offers academic programs focused on developing spiritual leaders, educators, and community servants with a strong foundation in theology, philosophy, and Christian character.",
 
     program_1_label: "Undergraduate",
     program_1_title: "Theology Study Program",
@@ -182,7 +182,7 @@ about_desc_4:
 
     background_title: "BACKGROUND",
     background_p1:
-      "The Faculty of Philosophy and Theology (FFT) of Universitas Advent Surya Nusantara was established to prepare students to become spiritual leaders, church servants, and educators with deep theological understanding grounded in Christian faith values.",
+      "The Faculty Of Theology (FFT) of Universitas Advent Surya Nusantara was established to prepare students to become spiritual leaders, church servants, and educators with deep theological understanding grounded in Christian faith values.",
     background_p2:
       "In facing contemporary developments, the church and society need human resources who not only understand theology but also have critical thinking skills, spiritual leadership, and strong moral integrity.",
     background_p3:
@@ -202,16 +202,16 @@ about_desc_4:
     organization_subtitle: "STUDENT ASSOCIATION",
     organization_label: "HIMA",
     organization_heading: "STUDENT ASSOCIATION",
-    organization_small: "FACULTY OF PHILOSOPHY AND THEOLOGY",
+    organization_small: "Faculty Of Theology",
     organization_text:
-      "The Student Association of the Faculty of Philosophy and Theology (HIMA FFT) is a student organization that supports leadership development, togetherness, and student service through academic, spiritual, and social activities.",
+      "The Student Association of the Faculty Of Theology (HIMA FFT) is a student organization that supports leadership development, togetherness, and student service through academic, spiritual, and social activities.",
     organization_more: "Read more...",
 
         organization_left_alt: "Left organization logo",
     organization_right_alt: "Right organization logo",
 
     news_watermark_alt: "HIMA FFT watermark",
-    footer_logo_alt: "Faculty of Philosophy and Theology logo",
+    footer_logo_alt: "Faculty Of Theology logo",
 
     footer_academic_economics: "Faculty of Economics",
     footer_academic_health: "Faculty of Health",
@@ -230,13 +230,13 @@ about_desc_4:
     news_footer_note: "This news content is protected by copyright.",
     news_legal: "Terms & Report",
 
-    footer_brand_title: "FACULTY OF PHILOSOPHY AND THEOLOGY",
+    footer_brand_title: "Faculty Of Theology",
     footer_brand_university: "UNIVERSITAS ADVENT SURYA NUSANTARA",
     footer_brand_desc:
       "A faculty committed to character development, service, and academic excellence based on Christian values.",
     footer_academic: "Academic",
     footer_contact_title: "Faculty Contact",
-    footer_contact_faculty: "Faculty of Philosophy and Theology",
+    footer_contact_faculty: "Faculty Of Theology",
     footer_contact_university: "Universitas Advent Surya Nusantara",
     footer_address_1: "Jl. Rakutta Sembiring No. 01",
     footer_address_2: "Siantar Martoba, Pematangsiantar",
@@ -247,7 +247,7 @@ about_desc_4:
     footer_instagram: "Faculty Instagram",
     footer_map: "Campus Location",
     footer_copy:
-      "© 2026 Faculty of Philosophy and Theology - Universitas Advent Surya Nusantara. All rights reserved.",
+      "© 2026 Faculty Of Theology - Universitas Advent Surya Nusantara. All rights reserved.",
 
       popup_title: "JOIN US",
       popup_dean: "DEAN",
@@ -1421,7 +1421,7 @@ document.addEventListener("DOMContentLoaded", function () {
 const FFT_WHY_CHOOSE_I18N = {
   en: {
     why_kicker: "WHY CHOOSE FFT",
-    why_title: "Why Choose the Faculty of Philosophy and Theology",
+    why_title: "Why Choose the Faculty Of Theology",
     why_subtitle: "Universitas Advent Surya Nusantara",
     why_desc: "Content not available yet.",
     why_media_placeholder: "Content Not Available Yet",

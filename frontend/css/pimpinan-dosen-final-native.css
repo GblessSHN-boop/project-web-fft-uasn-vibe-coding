@@ -245,3 +245,40 @@ body.pimpinan-dosen-page .lecturer-card:nth-child(5) {
     will-change: auto !important;
   }
 }
+
+/* FFT_LIGHT_MEDIA_PLACEHOLDER_PIMPINAN_DOSEN_20260525
+   Placeholder gambar dibuat teks ringan.
+   Tidak memakai logo FFT sebagai fallback.
+*/
+body.pimpinan-dosen-page .lecturer-photo.is-photo-empty,
+body.pimpinan-dosen-page .dean-photo.is-photo-empty {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #f6f3ef !important;
+  overflow: hidden !important;
+}
+
+body.pimpinan-dosen-page .lecturer-photo.is-photo-empty img,
+body.pimpinan-dosen-page .dean-photo.is-photo-empty img {
+  display: none !important;
+}
+
+body.pimpinan-dosen-page .lecturer-photo.is-photo-empty::after,
+body.pimpinan-dosen-page .dean-photo.is-photo-empty::after {
+  content: "Foto belum tersedia";
+  max-width: 84%;
+  color: rgba(15, 15, 16, 0.48);
+  font-size: 0.68rem;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+html[lang="en"] body.pimpinan-dosen-page .lecturer-photo.is-photo-empty::after,
+html[lang="en"] body.pimpinan-dosen-page .dean-photo.is-photo-empty::after {
+  content: "Photo not available";
+}
