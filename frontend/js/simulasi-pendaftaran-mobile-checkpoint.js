@@ -57,6 +57,11 @@
     return (copy[lang] && copy[lang][key]) || copy.id[key] || key;
   }
 
+
+  function isMobileCheckpointViewport() {
+    return window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
+  }
+
   function isOfflinePage() {
     return Boolean(document.querySelector(".offline-simulation-page, .offline-flow, #offlineFlow"));
   }
@@ -311,6 +316,7 @@
 
   function boot() {
     if (!isOfflinePage()) return;
+    if (!isMobileCheckpointViewport()) return;
 
     loadCompleted();
     collectSteps();
@@ -491,4 +497,238 @@
     setTimeout(requestUpdate, 40);
     setTimeout(requestUpdate, 220);
   }, true);
+}());
+
+/* FFT_SIMULASI_SUMMARY_SHEET_SCROLL_LOCK_20260527
+   Pastikan panel Ringkasan Progress bisa scroll sendiri di mobile.
+*/
+(function () {
+  "use strict";
+
+  function bindSummarySheetScroll() {
+    var panel = document.querySelector(".offline-mobile-checkpoint-sheet__panel");
+
+    if (!panel || panel.dataset.fftSummaryScrollBound === "1") return;
+
+    panel.dataset.fftSummaryScrollBound = "1";
+
+    panel.addEventListener("touchmove", function (event) {
+      event.stopPropagation();
+    }, { passive: true });
+
+    panel.addEventListener("wheel", function (event) {
+      event.stopPropagation();
+    }, { passive: true });
+  }
+
+  function refreshSheetPosition() {
+    bindSummarySheetScroll();
+
+    var panel = document.querySelector(".offline-mobile-checkpoint-sheet__panel");
+
+    if (!panel) return;
+
+    if (document.body.classList.contains("fft-offline-mobile-sheet-open")) {
+      panel.style.bottom = "calc(76px + env(safe-area-inset-bottom, 0px))";
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", refreshSheetPosition);
+  } else {
+    refreshSheetPosition();
+  }
+
+  window.addEventListener("load", refreshSheetPosition);
+  window.addEventListener("pageshow", refreshSheetPosition);
+  window.addEventListener("resize", refreshSheetPosition);
+
+  document.addEventListener("click", function () {
+    setTimeout(refreshSheetPosition, 40);
+    setTimeout(refreshSheetPosition, 180);
+  }, true);
+}());
+
+/* FFT_SIMULASI_STEP_COMPLETE_TOGGLE_STATE_FIX_20260527
+   Bersihkan focus mobile setelah tombol Tandai selesai diklik.
+*/
+(function () {
+  "use strict";
+
+  function blurStepButton(target) {
+    var button = target && target.closest
+      ? target.closest(".offline-step-complete")
+      : null;
+
+    if (!button) return;
+
+    setTimeout(function () {
+      if (document.activeElement === button) {
+        button.blur();
+      }
+
+      button.classList.remove("is-active", "active", "is-pressed");
+      button.removeAttribute("aria-pressed");
+    }, 90);
+
+    setTimeout(function () {
+      if (document.activeElement === button) {
+        button.blur();
+      }
+    }, 240);
+  }
+
+  document.addEventListener("click", function (event) {
+    blurStepButton(event.target);
+  }, true);
+
+  document.addEventListener("touchend", function (event) {
+    blurStepButton(event.target);
+  }, true);
+}());
+
+/* FFT_SIMULASI_DESKTOP_DISABLE_MOBILE_SCROLL_20260527
+   Desktop hanya handle tombol selesai.
+   Tidak handle scroll checkpoint.
+*/
+(function () {
+  "use strict";
+
+  var storageKey = "fft:simulasi-offline:checkpoint:v1";
+
+  function isDesktop() {
+    return window.matchMedia && window.matchMedia("(min-width: 761px)").matches;
+  }
+
+  function readCompleted() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
+      return new Set(Array.isArray(saved) ? saved.map(String) : []);
+    } catch (error) {
+      return new Set();
+    }
+  }
+
+  function writeCompleted(set) {
+    localStorage.setItem(storageKey, JSON.stringify(Array.from(set)));
+  }
+
+  function getLang() {
+    var saved =
+      localStorage.getItem("fft-language") ||
+      localStorage.getItem("siteLanguage") ||
+      localStorage.getItem("lang") ||
+      document.documentElement.lang ||
+      "id";
+
+    return saved === "en" ? "en" : "id";
+  }
+
+  function label(done) {
+    return getLang() === "en"
+      ? (done ? "Completed" : "Mark complete")
+      : (done ? "Selesai" : "Tandai selesai");
+  }
+
+  function syncDesktopButtons() {
+    if (!isDesktop()) return;
+
+    var completed = readCompleted();
+    var cards = Array.from(document.querySelectorAll(".offline-step-card[data-checkpoint-step]"));
+    var done = 0;
+
+    cards.forEach(function (card) {
+      var id = String(card.getAttribute("data-checkpoint-step") || "");
+      var isDone = completed.has(id);
+      var button = document.querySelector('.offline-step-complete[data-step-complete="' + id + '"]');
+      var nav = document.querySelector('[data-step-target="' + id + '"]');
+
+      if (isDone) done += 1;
+
+      card.classList.toggle("is-mobile-complete", isDone);
+
+      if (nav) nav.classList.toggle("is-complete", isDone);
+
+      if (button) {
+        button.textContent = label(isDone);
+        button.setAttribute("aria-pressed", isDone ? "true" : "false");
+        button.classList.remove("active", "is-active", "is-pressed");
+      }
+    });
+
+    var count = document.getElementById("offlineCheckpointCount");
+    var bar = document.getElementById("offlineCheckpointBar");
+
+    if (count) count.textContent = String(done);
+
+    if (bar) {
+      var percent = cards.length ? Math.round((done / cards.length) * 100) : 0;
+      bar.style.width = percent + "%";
+    }
+  }
+
+  function toggleDesktopButton(button) {
+    var id = String(button.getAttribute("data-step-complete") || "");
+
+    if (!id) return;
+
+    var completed = readCompleted();
+
+    if (completed.has(id)) {
+      completed.delete(id);
+    } else {
+      completed.add(id);
+    }
+
+    writeCompleted(completed);
+    syncDesktopButtons();
+
+    setTimeout(function () {
+      button.blur();
+    }, 40);
+  }
+
+  function bindDesktopButtonsOnly() {
+    if (document.documentElement.dataset.fftSimulasiDesktopDisableMobileScroll === "1") return;
+
+    document.documentElement.dataset.fftSimulasiDesktopDisableMobileScroll = "1";
+
+    document.addEventListener("click", function (event) {
+      if (!isDesktop()) return;
+
+      var button = event.target && event.target.closest
+        ? event.target.closest(".offline-step-complete[data-step-complete]")
+        : null;
+
+      if (!button) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+
+      toggleDesktopButton(button);
+    }, true);
+  }
+
+  function boot() {
+    bindDesktopButtonsOnly();
+
+    if (!isDesktop()) return;
+
+    document.body.classList.remove("fft-offline-mobile-sheet-open");
+    syncDesktopButtons();
+
+    setTimeout(syncDesktopButtons, 120);
+    setTimeout(syncDesktopButtons, 500);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+
+  window.addEventListener("load", boot);
+  window.addEventListener("pageshow", boot);
+  window.addEventListener("resize", boot);
 }());
