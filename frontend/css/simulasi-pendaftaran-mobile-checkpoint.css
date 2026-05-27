@@ -1,0 +1,503 @@
+/* FFT_SIMULASI_MOBILE_CHECKPOINT_20260527
+   Checkpoint mobile untuk Simulasi Pendaftaran Offline.
+   Desktop tidak diubah.
+*/
+.offline-mobile-checkpoint,
+.offline-mobile-checkpoint-sheet {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  body.fft-offline-mobile-checkpoint-ready {
+    padding-bottom: calc(124px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .offline-mobile-checkpoint {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    z-index: 9998;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px 12px;
+    align-items: center;
+    padding: 12px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(122, 17, 19, 0.12);
+    box-shadow: 0 22px 60px rgba(18, 18, 22, 0.22);
+    backdrop-filter: blur(16px);
+  }
+
+  .offline-mobile-checkpoint__main {
+    min-width: 0;
+  }
+
+  .offline-mobile-checkpoint__label {
+    margin: 0 0 4px;
+    color: rgba(122, 17, 19, 0.78);
+    font-size: 0.66rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .offline-mobile-checkpoint__count {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    color: #171719;
+    font-size: 0.95rem;
+    font-weight: 900;
+    line-height: 1.15;
+  }
+
+  .offline-mobile-checkpoint__percent {
+    color: rgba(23, 23, 25, 0.56);
+    font-size: 0.76rem;
+    font-weight: 800;
+  }
+
+  .offline-mobile-checkpoint__bar {
+    grid-column: 1 / -1;
+    height: 7px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(122, 17, 19, 0.12);
+  }
+
+  .offline-mobile-checkpoint__bar span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #7b1113, #d5a243);
+    transition: width 260ms ease;
+  }
+
+  .offline-mobile-checkpoint__actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .offline-mobile-checkpoint button {
+    appearance: none;
+    border: 0;
+    border-radius: 999px;
+    padding: 9px 12px;
+    font-size: 0.74rem;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .offline-mobile-checkpoint__summary {
+    color: #7b1113;
+    background: rgba(122, 17, 19, 0.09);
+  }
+
+  .offline-mobile-checkpoint__next {
+    color: #fff;
+    background: #7b1113;
+  }
+
+  .offline-mobile-checkpoint-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+  }
+
+  body.fft-offline-mobile-sheet-open .offline-mobile-checkpoint-sheet {
+    display: block;
+  }
+
+  .offline-mobile-checkpoint-sheet__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(14, 14, 18, 0.42);
+  }
+
+  .offline-mobile-checkpoint-sheet__panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: min(78vh, 620px);
+    overflow: auto;
+    padding: 14px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+    border-radius: 26px 26px 0 0;
+    background: #fff;
+    box-shadow: 0 -24px 70px rgba(18, 18, 22, 0.28);
+  }
+
+  .offline-mobile-checkpoint-sheet__handle {
+    width: 44px;
+    height: 5px;
+    margin: 0 auto 14px;
+    border-radius: 999px;
+    background: rgba(20, 20, 24, 0.18);
+  }
+
+  .offline-mobile-checkpoint-sheet__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .offline-mobile-checkpoint-sheet__head p {
+    margin: 0 0 4px;
+    color: rgba(122, 17, 19, 0.76);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .offline-mobile-checkpoint-sheet__head h3 {
+    margin: 0;
+    color: #171719;
+    font-size: 1.05rem;
+    line-height: 1.2;
+  }
+
+  .offline-mobile-checkpoint-sheet__close {
+    appearance: none;
+    border: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    color: #7b1113;
+    background: rgba(122, 17, 19, 0.09);
+    font-size: 1.05rem;
+    font-weight: 900;
+  }
+
+  .offline-mobile-checkpoint-sheet__list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .offline-mobile-checkpoint-sheet__item {
+    appearance: none;
+    border: 1px solid rgba(24, 24, 28, 0.08);
+    width: 100%;
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 11px;
+    border-radius: 18px;
+    background: #faf8f6;
+    text-align: left;
+  }
+
+  .offline-mobile-checkpoint-sheet__item.is-complete {
+    border-color: rgba(36, 132, 84, 0.22);
+    background: rgba(36, 132, 84, 0.08);
+  }
+
+  .offline-mobile-checkpoint-sheet__number {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    color: #fff;
+    background: #7b1113;
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+
+  .offline-mobile-checkpoint-sheet__title {
+    color: #171719;
+    font-size: 0.86rem;
+    font-weight: 900;
+    line-height: 1.25;
+  }
+
+  .offline-mobile-checkpoint-sheet__state {
+    color: rgba(23, 23, 25, 0.54);
+    font-size: 0.7rem;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+
+  .offline-step-card.is-mobile-complete {
+    border-color: rgba(36, 132, 84, 0.32) !important;
+  }
+
+  .offline-step-card.is-mobile-complete .offline-step-complete {
+    background: #248454 !important;
+    color: #fff !important;
+  }
+}
+
+/* FFT_SIMULASI_MOBILE_CHECKPOINT_POLISH_20260527
+   Rapikan checkpoint mobile agar tidak nabrak EN ID.
+   Card dibuat lebih rounded dan tombol selesai tetap merah.
+*/
+@media (max-width: 760px) {
+  body.fft-offline-mobile-checkpoint-ready {
+    padding-bottom: calc(188px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .offline-mobile-checkpoint {
+    left: 14px !important;
+    right: 14px !important;
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    padding: 12px 13px 11px !important;
+    border-radius: 24px !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    border: 1px solid rgba(122, 17, 19, 0.14) !important;
+    box-shadow:
+      0 24px 70px rgba(18, 18, 22, 0.24),
+      0 8px 22px rgba(122, 17, 19, 0.12) !important;
+  }
+
+  .offline-mobile-checkpoint__main {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+  }
+
+  .offline-mobile-checkpoint__label {
+    margin: 0 0 3px !important;
+    font-size: 0.62rem !important;
+    line-height: 1.15 !important;
+  }
+
+  .offline-mobile-checkpoint__count {
+    font-size: 0.82rem !important;
+    line-height: 1.1 !important;
+    flex-wrap: wrap !important;
+  }
+
+  .offline-mobile-checkpoint__percent {
+    font-size: 0.68rem !important;
+  }
+
+  .offline-mobile-checkpoint__actions {
+    width: 100% !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+
+  .offline-mobile-checkpoint button {
+    flex: 1 1 0 !important;
+    min-height: 36px !important;
+    padding: 9px 10px !important;
+    border-radius: 999px !important;
+    font-size: 0.69rem !important;
+    line-height: 1 !important;
+  }
+
+  .offline-mobile-checkpoint__summary {
+    color: #7b1113 !important;
+    background: rgba(122, 17, 19, 0.08) !important;
+  }
+
+  .offline-mobile-checkpoint__next {
+    color: #fff !important;
+    background: #7b1113 !important;
+  }
+
+  .offline-mobile-checkpoint__bar {
+    height: 6px !important;
+    border-radius: 999px !important;
+  }
+
+  .offline-mobile-checkpoint__bar span {
+    background: linear-gradient(90deg, #7b1113, #9d1b1e) !important;
+  }
+
+  .offline-checkpoint-card,
+  .offline-checkpoint-list,
+  .offline-checkpoint-item,
+  [data-step-target],
+  .offline-step-card {
+    border-radius: 18px !important;
+  }
+
+  .offline-step-card {
+    overflow: hidden !important;
+  }
+
+  .offline-step-card.is-mobile-complete {
+    border-color: rgba(122, 17, 19, 0.24) !important;
+    box-shadow: 0 16px 44px rgba(122, 17, 19, 0.08) !important;
+  }
+
+  .offline-step-card.is-mobile-complete .offline-step-complete,
+  .offline-step-card .offline-step-complete,
+  .offline-step-complete {
+    background: #7b1113 !important;
+    color: #ffffff !important;
+    border-color: #7b1113 !important;
+  }
+
+  .offline-mobile-checkpoint-sheet__panel {
+    border-radius: 28px 28px 0 0 !important;
+  }
+
+  .offline-mobile-checkpoint-sheet__item {
+    border-radius: 18px !important;
+  }
+
+  .offline-mobile-checkpoint-sheet__item.is-complete {
+    border-color: rgba(122, 17, 19, 0.20) !important;
+    background: rgba(122, 17, 19, 0.07) !important;
+  }
+
+  .offline-mobile-checkpoint-sheet__number {
+    background: #7b1113 !important;
+  }
+}
+
+/* FFT_SIMULASI_MOBILE_CHECKPOINT_SQUARE_20260527
+   Semua card dan kontrol checkpoint mobile dibuat petak.
+*/
+@media (max-width: 760px) {
+  .offline-mobile-checkpoint,
+  .offline-mobile-checkpoint button,
+  .offline-mobile-checkpoint__summary,
+  .offline-mobile-checkpoint__next,
+  .offline-mobile-checkpoint__bar,
+  .offline-mobile-checkpoint__bar span,
+  .offline-mobile-checkpoint-sheet__panel,
+  .offline-mobile-checkpoint-sheet__close,
+  .offline-mobile-checkpoint-sheet__item,
+  .offline-mobile-checkpoint-sheet__number,
+  .offline-checkpoint-card,
+  .offline-checkpoint-list,
+  .offline-checkpoint-item,
+  .offline-step-card,
+  .offline-step-complete,
+  [data-step-target] {
+    border-radius: 0 !important;
+  }
+
+  .offline-mobile-checkpoint {
+    overflow: visible !important;
+  }
+
+  .offline-step-card {
+    overflow: hidden !important;
+  }
+
+  .offline-step-card.is-mobile-complete,
+  .offline-step-card.is-mobile-complete .offline-step-complete,
+  .offline-step-card .offline-step-complete,
+  .offline-step-complete {
+    border-radius: 0 !important;
+  }
+
+  .offline-mobile-checkpoint-sheet__handle {
+    border-radius: 0 !important;
+  }
+}
+
+/* FFT_SIMULASI_MOBILE_CHECKPOINT_RAISE_20260527
+   Naikkan card Checkpoint Simulasi agar tidak tabrakan dengan tombol scroll ke atas.
+*/
+@media (max-width: 760px) {
+  body.fft-offline-mobile-checkpoint-ready {
+    padding-bottom: calc(224px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .offline-mobile-checkpoint {
+    bottom: calc(108px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+/* FFT_SIMULASI_MOBILE_CHECKPOINT_LOWER_20260527
+   Turunkan sedikit card Checkpoint Simulasi agar posisinya lebih pas.
+*/
+@media (max-width: 760px) {
+  body.fft-offline-mobile-checkpoint-ready {
+    padding-bottom: calc(204px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .offline-mobile-checkpoint {
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+/* FFT_SIMULASI_CHECKPOINT_AUTO_HIDE_BLUR_20260527
+   Sticky checkpoint muncul hanya saat user berada di step 1 sampai 6.
+   Saat card utama Checkpoint Simulasi terlihat, sticky checkpoint disembunyikan.
+   Masuk dan keluar memakai opacity, transform, dan blur.
+*/
+.offline-mobile-checkpoint {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  filter: blur(10px) !important;
+  transition:
+    opacity 240ms ease,
+    transform 260ms ease,
+    filter 260ms ease,
+    visibility 0ms linear 260ms !important;
+}
+
+.offline-mobile-checkpoint.is-visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  filter: blur(0) !important;
+  transition:
+    opacity 240ms ease,
+    transform 260ms ease,
+    filter 260ms ease,
+    visibility 0ms linear 0ms !important;
+}
+
+@media (max-width: 760px) {
+  .offline-mobile-checkpoint {
+    transform: translateY(18px) !important;
+  }
+
+  .offline-mobile-checkpoint.is-visible {
+    transform: translateY(0) !important;
+  }
+}
+
+@media (min-width: 761px) {
+  .offline-mobile-checkpoint {
+    display: grid !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: 24px !important;
+    width: min(720px, calc(100% - 72px)) !important;
+    max-width: 720px !important;
+    grid-template-columns: 1fr auto !important;
+    gap: 10px 14px !important;
+    align-items: center !important;
+    padding: 14px 16px !important;
+    border-radius: 0 !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    border: 1px solid rgba(122, 17, 19, 0.16) !important;
+    box-shadow:
+      0 24px 72px rgba(18, 18, 22, 0.20),
+      0 8px 26px rgba(122, 17, 19, 0.12) !important;
+    transform: translate(-50%, 20px) !important;
+  }
+
+  .offline-mobile-checkpoint.is-visible {
+    transform: translate(-50%, 0) !important;
+  }
+
+  .offline-mobile-checkpoint__bar {
+    grid-column: 1 / -1 !important;
+  }
+
+  .offline-mobile-checkpoint button {
+    border-radius: 0 !important;
+  }
+}
