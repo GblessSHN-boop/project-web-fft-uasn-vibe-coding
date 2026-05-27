@@ -326,3 +326,40 @@
     window.__fftAlurDesktopGridTimer = window.setTimeout(bootDesktopRequirementsGrid, 120);
   });
 }());
+
+/* FFT_ALUR_REMOVE_REQUIREMENTS_DETAIL_BUTTON_20260527
+   Tombol Buka Detail Persyaratan dihapus karena Persyaratan sudah menjadi section di Alur Pendaftaran.
+*/
+(function () {
+  "use strict";
+
+  function normalize(value) {
+    return String(value || "").replace(/\s+/g, " ").trim().toLowerCase();
+  }
+
+  function removeRequirementsDetailButton() {
+    document.querySelectorAll("a, button").forEach(function (el) {
+      var text = normalize(el.textContent);
+      var pageId = normalize(el.getAttribute("data-page-id"));
+      var pageEn = normalize(el.getAttribute("data-page-en"));
+
+      if (
+        text === "buka detail persyaratan" ||
+        text === "open requirements detail" ||
+        pageId === "buka detail persyaratan" ||
+        pageEn === "open requirements detail"
+      ) {
+        el.remove();
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", removeRequirementsDetailButton);
+  } else {
+    removeRequirementsDetailButton();
+  }
+
+  window.addEventListener("load", removeRequirementsDetailButton);
+  window.addEventListener("pageshow", removeRequirementsDetailButton);
+}());
