@@ -1,0 +1,191 @@
+/* FFT_EBROCHURE_COVER_GALLERY_20260528
+   Gallery cover kecil seperti katalog E Brochure. Hanya cover dan judul.
+*/
+
+.fft-cover-gallery {
+  width: min(980px, calc(100% - 44px));
+  margin: 42px auto 90px;
+  padding: 0;
+  background: transparent;
+}
+
+.fft-cover-gallery *,
+.fft-cover-gallery *::before,
+.fft-cover-gallery *::after {
+  box-sizing: border-box;
+}
+
+.fft-cover-gallery__head {
+  margin: 0 0 26px;
+}
+
+.fft-cover-gallery__head p {
+  margin: 0 0 8px;
+  color: #7b1113;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.fft-cover-gallery__head h2 {
+  margin: 0;
+  color: #17171f;
+  font-size: clamp(1.75rem, 3.2vw, 2.7rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  font-weight: 780;
+}
+
+.fft-cover-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 160px);
+  gap: 34px 54px;
+  align-items: start;
+  justify-content: start;
+}
+
+.fft-cover-gallery__item {
+  width: 160px;
+  margin: 0;
+  text-align: center;
+}
+
+.fft-cover-book {
+  position: relative;
+  width: 160px;
+  height: 226px;
+  margin: 0 auto;
+  perspective: 800px;
+}
+
+.fft-cover-book__front,
+.fft-cover-book__page {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.fft-cover-book__page {
+  background: #ffffff;
+  border: 1px solid rgba(24, 24, 28, 0.09);
+  box-shadow: 6px 8px 18px rgba(24, 24, 28, 0.08);
+}
+
+.fft-cover-book__page--one {
+  transform: translate(6px, 5px);
+}
+
+.fft-cover-book__page--two {
+  transform: translate(10px, 9px);
+  background: #f7f3f3;
+}
+
+.fft-cover-book__front {
+  z-index: 2;
+  overflow: hidden;
+  background: #7b1113;
+  box-shadow: 0 14px 26px rgba(24, 24, 28, 0.16);
+  transform-origin: left center;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.fft-cover-book__front img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fft-cover-gallery__item:hover .fft-cover-book__front {
+  transform: translateY(-4px) rotateY(-6deg);
+  box-shadow: 0 22px 34px rgba(24, 24, 28, 0.22);
+}
+
+.fft-cover-gallery__item figcaption {
+  margin: 14px auto 0;
+  color: #17171f;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.32;
+  letter-spacing: -0.01em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fft-cover-book__front {
+    transition: none !important;
+  }
+
+  .fft-cover-gallery__item:hover .fft-cover-book__front {
+    transform: none !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .fft-cover-gallery {
+    width: calc(100% - 40px);
+  }
+
+  .fft-cover-gallery__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px 22px;
+  }
+
+  .fft-cover-gallery__item,
+  .fft-cover-book {
+    width: 100%;
+  }
+
+  .fft-cover-book {
+    height: auto;
+    aspect-ratio: 210 / 297;
+  }
+}
+
+@media (max-width: 760px) {
+  .fft-cover-gallery {
+    width: calc(100% - 32px);
+    margin: 34px auto 76px;
+  }
+
+  .fft-cover-gallery__head {
+    margin-bottom: 22px;
+  }
+
+  .fft-cover-gallery__head h2 {
+    font-size: clamp(1.55rem, 7vw, 2.15rem);
+  }
+
+  .fft-cover-gallery__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 26px 18px;
+  }
+
+  .fft-cover-gallery__item {
+    text-align: center;
+  }
+
+  .fft-cover-gallery__item:hover .fft-cover-book__front {
+    transform: none;
+  }
+
+  .fft-cover-gallery__item figcaption {
+    max-width: 160px;
+    margin-top: 12px;
+    font-size: 0.84rem;
+    line-height: 1.28;
+  }
+}
+
+@media (max-width: 360px) {
+  .fft-cover-gallery__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fft-cover-gallery__item,
+  .fft-cover-book {
+    width: 170px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
