@@ -255,3 +255,109 @@ body.fft-standalone-viewer svg {
     font-size: 0.78rem !important;
   }
 }
+
+/* FFT_BROCHURE_VIEWER_CLEAN_CONTROL_BAR_FINAL_20260529
+   Control bar bawah final. A4 brosur tidak disentuh.
+*/
+
+body.fft-standalone-viewer .fft-viewer-original-controls-hidden {
+  display: none !important;
+}
+
+body.fft-standalone-viewer .fft-viewer-clean-control-bar {
+  width: fit-content !important;
+  max-width: calc(100% - 32px) !important;
+  margin: 16px auto 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+body.fft-standalone-viewer .fft-viewer-clean-control-bar,
+body.fft-standalone-viewer .fft-viewer-clean-control-bar * {
+  border-radius: 0 !important;
+}
+
+body.fft-standalone-viewer .fft-viewer-clean-button {
+  min-width: 160px !important;
+  min-height: 42px !important;
+  padding: 0 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid var(--fft-red) !important;
+  background: var(--fft-red) !important;
+  color: #ffffff !important;
+  font-size: 0.9rem !important;
+  line-height: 1 !important;
+  font-weight: 850 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  cursor: pointer !important;
+}
+
+body.fft-standalone-viewer .fft-viewer-clean-button:hover {
+  background: var(--fft-red-dark) !important;
+  border-color: var(--fft-red-dark) !important;
+  color: #ffffff !important;
+}
+
+body.fft-standalone-viewer .fft-viewer-clean-button:disabled {
+  opacity: 0.48 !important;
+  cursor: not-allowed !important;
+}
+
+body.fft-standalone-viewer .fft-viewer-clean-status {
+  min-width: 210px !important;
+  min-height: 42px !important;
+  padding: 0 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(123, 17, 19, 0.28) !important;
+  background: #ffffff !important;
+  color: var(--fft-red) !important;
+  font-size: 0.9rem !important;
+  line-height: 1 !important;
+  font-weight: 850 !important;
+  white-space: nowrap !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+@media (max-width: 760px) {
+  body.fft-standalone-viewer .fft-viewer-clean-control-bar {
+    width: calc(100% - 24px) !important;
+    max-width: 460px !important;
+    gap: 8px !important;
+  }
+
+  body.fft-standalone-viewer .fft-viewer-clean-button,
+  body.fft-standalone-viewer .fft-viewer-clean-status {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    min-height: 40px !important;
+    padding: 0 10px !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+@media (max-width: 430px) {
+  body.fft-standalone-viewer .fft-viewer-clean-control-bar {
+    width: calc(100% - 16px) !important;
+    gap: 6px !important;
+  }
+
+  body.fft-standalone-viewer .fft-viewer-clean-button,
+  body.fft-standalone-viewer .fft-viewer-clean-status {
+    min-height: 38px !important;
+    padding-inline: 8px !important;
+    font-size: 0.72rem !important;
+  }
+}
