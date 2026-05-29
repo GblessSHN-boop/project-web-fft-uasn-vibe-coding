@@ -1,0 +1,1 @@
+Preview E Brochure viewer integrated from a4-pdf-flipbook-template-vibe-coding.\nThis folder keeps the standalone viewer structure so the flipbook page can run without iframe.\n

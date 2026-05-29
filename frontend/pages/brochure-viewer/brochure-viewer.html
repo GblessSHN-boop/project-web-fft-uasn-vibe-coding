@@ -1,0 +1,408 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview Brosur Digital FFT UASN | E Brochure</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #eef5fa;
+      color: #1f2b37;
+      overflow-x: hidden;
+    }
+
+    .viewer-header {
+      height: 82px;
+      padding: 0 34px;
+      background: #ffffff;
+      border-bottom: 1px solid #d9e1e8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .viewer-title h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #0f4f86;
+      font-weight: 900;
+    }
+
+    .viewer-title p {
+      margin: 5px 0 0;
+      font-size: 14px;
+      color: #6d7b88;
+    }
+
+    .viewer-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .viewer-actions a,
+    .viewer-actions button {
+      border: 0;
+      background: #176fb7;
+      color: #ffffff;
+      padding: 12px 18px;
+      font-size: 13px;
+      font-weight: 900;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .viewer-actions a:hover,
+    .viewer-actions button:hover {
+      background: #0f4f86;
+    }
+
+    .viewer-layout {
+      min-height: calc(100vh - 82px);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+    }
+
+    .viewer-loading {
+      padding: 14px 18px;
+      background: #ffffff;
+      border: 1px solid #d9e1e8;
+      color: #6d7b88;
+      font-weight: 900;
+    }
+
+    .book {
+      display: none;
+      margin: 0 auto;
+      filter: drop-shadow(0 24px 20px rgba(0, 0, 0, 0.22));
+    }
+
+    .page {
+      background: #ffffff;
+      overflow: hidden;
+      border: 1px solid #e1e7ed;
+    }
+
+    .page canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .viewer-controls {
+      margin-top: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .viewer-controls button,
+    .viewer-controls span {
+      border: 1px solid #176fb7;
+      background: #176fb7;
+      color: #ffffff;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .viewer-controls span {
+      background: #ffffff;
+      color: #176fb7;
+      min-width: 140px;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .viewer-header {
+        height: auto;
+        padding: 18px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .viewer-actions {
+        flex-wrap: wrap;
+      }
+
+      .viewer-actions a,
+      .viewer-actions button {
+        flex: 1;
+        text-align: center;
+      }
+
+      .viewer-layout {
+      min-height: calc(100vh - 82px);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+    }
+
+      .viewer-controls button,
+      .viewer-controls span {
+        flex: 1;
+      }
+    }
+  </style>
+  <meta name="description" content="Preview brosur digital FFT UASN dalam tampilan buku digital yang rapi, ringan, dan mudah digunakan di desktop maupun mobile.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://fft.uasn.ac.id/pages/brochure-viewer/brochure-viewer.html">
+<!-- FFT_BROCHURE_VIEWER_THEME_20260529 JSONLD -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Preview Brosur Digital FFT UASN",
+  "description": "Preview brosur digital Fakultas Filsafat Teologi UASN dalam tampilan buku digital.",
+  "inLanguage": [
+    "id-ID",
+    "en"
+  ],
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Faculty Of Theology UASN",
+    "alternateName": [
+      "FFT UASN",
+      "FOT UASN",
+      "Fakultas Filsafat Teologi UASN"
+    ]
+  }
+}
+  </script>
+  <!-- FFT_BROCHURE_VIEWER_MINIMAL_TOOLBAR_20260529 CSS -->
+  <link rel="stylesheet" href="fft-viewer-theme.css?v=minimal-toolbar-20260529">
+</head>
+<body class="fft-standalone-viewer">
+
+  <header class="viewer-header">
+    <div class="viewer-title">
+      <h1>Preview E Brochure</h1>
+      <p>Baca brosur dalam halaman khusus dengan tampilan buku digital</p>
+    </div>
+
+    <div class="viewer-actions">
+      <a href="../e-brochure.html">Kembali</a>
+      <a href="assets/brosur/uji-coba-brosur.pdf" download>Download PDF</a>
+    </div>
+  </header>
+
+  <main class="viewer-layout">
+    <div id="viewerLoading" class="viewer-loading">Memuat brosur...</div>
+    <div id="book" class="book"></div>
+
+    <div class="viewer-controls">
+      <button id="prevBtn" type="button">Sebelumnya</button>
+      <span id="pageInfo">Halaman 1 dari 4</span>
+      <button id="nextBtn" type="button">Berikutnya</button>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
+
+  <script>
+    const brochurePages = [
+      "assets/brosur/uji-coba-brosur-hal-1.pdf",
+      "assets/brosur/uji-coba-brosur-hal-2.pdf",
+      "assets/brosur/uji-coba-brosur-hal-3.pdf",
+      "assets/brosur/uji-coba-brosur-hal-3.pdf"
+    ];
+
+    const bookElement = document.getElementById("book");
+    const viewerLoading = document.getElementById("viewerLoading");
+    const pageInfo = document.getElementById("pageInfo");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    let pageFlip = null;
+    let pageWidth = 420;
+    let pageHeight = 594;
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+    async function getPageMetric(pdfFile) {
+      const pdf = await pdfjsLib.getDocument(encodeURI(pdfFile)).promise;
+      const page = await pdf.getPage(1);
+      const viewport = page.getViewport({ scale: 1 });
+
+      return {
+        baseWidth: viewport.width,
+        baseHeight: viewport.height
+      };
+    }
+
+    async function renderPdfPage(pdfFile, scaleValue) {
+      const pdf = await pdfjsLib.getDocument(encodeURI(pdfFile)).promise;
+      const page = await pdf.getPage(1);
+      const viewport = page.getViewport({ scale: scaleValue });
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "page";
+      wrapper.style.width = pageWidth + "px";
+      wrapper.style.height = pageHeight + "px";
+
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+
+      canvas.width = Math.round(viewport.width);
+      canvas.height = Math.round(viewport.height);
+      canvas.style.width = pageWidth + "px";
+      canvas.style.height = pageHeight + "px";
+
+      await page.render({
+        canvasContext: context,
+        viewport: viewport
+      }).promise;
+
+      wrapper.appendChild(canvas);
+      return wrapper;
+    }
+
+    async function loadBook() {
+      viewerLoading.style.display = "block";
+      bookElement.style.display = "none";
+      bookElement.innerHTML = "";
+
+      try {
+        const metric = await getPageMetric(brochurePages[0]);
+
+        const targetHeight = Math.min(820, Math.max(680, window.innerHeight - 150));
+        const scaleValue = targetHeight / metric.baseHeight;
+
+        pageHeight = Math.round(metric.baseHeight * scaleValue);
+        pageWidth = Math.round(metric.baseWidth * scaleValue);
+
+        bookElement.style.width = (pageWidth * 2) + "px";
+        bookElement.style.height = pageHeight + "px";
+
+        for (const file of brochurePages) {
+          const renderedPage = await renderPdfPage(file, scaleValue);
+          bookElement.appendChild(renderedPage);
+        }
+
+        bookElement.style.display = "block";
+        viewerLoading.style.display = "none";
+
+        pageFlip = new St.PageFlip(bookElement, {
+          width: pageWidth,
+          height: pageHeight,
+          size: "fixed",
+          minWidth: pageWidth,
+          maxWidth: pageWidth,
+          minHeight: pageHeight,
+          maxHeight: pageHeight,
+          showCover: false,
+          usePortrait: true,
+          mobileScrollSupport: false,
+          flippingTime: 850,
+          maxShadowOpacity: 0.25,
+          drawShadow: true,
+          autoSize: false
+        });
+
+        pageFlip.loadFromHTML(document.querySelectorAll(".page"));
+        pageFlip.on("flip", updatePageInfo);
+
+        updatePageInfo();
+      } catch (error) {
+        viewerLoading.textContent = "Brosur gagal dimuat. Cek nama file PDF.";
+        console.error(error);
+      }
+    }
+
+    function updatePageInfo() {
+      if (!pageFlip) {
+        pageInfo.textContent = `Halaman 1 dari ${brochurePages.length}`;
+        return;
+      }
+
+      const currentPage = pageFlip.getCurrentPageIndex() + 1;
+      pageInfo.textContent = `Halaman ${currentPage} dari ${brochurePages.length}`;
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (pageFlip) pageFlip.flipPrev();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (pageFlip) pageFlip.flipNext();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft" && pageFlip) {
+        pageFlip.flipPrev();
+      }
+
+      if (event.key === "ArrowRight" && pageFlip) {
+        pageFlip.flipNext();
+      }
+    });
+
+    loadBook();
+  </script>
+
+<script>
+/* FFT_EBROCHURE_STANDALONE_VIEWER_20260529
+   Bridge ringan untuk integrasi ke Web FFT.
+*/
+(function () {
+  "use strict";
+
+  function setBackButtons() {
+    document.querySelectorAll("a, button").forEach(function (el) {
+      var text = (el.textContent || "").trim().toLowerCase();
+
+      if (text === "kembali" || text === "back") {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", "../e-brochure.html");
+        } else {
+          el.addEventListener("click", function () {
+            window.location.href = "../e-brochure.html";
+          });
+        }
+      }
+    });
+  }
+
+  function addQueryClass() {
+    var params = new URLSearchParams(window.location.search);
+    var brochure = params.get("brochure") || "utama";
+    document.documentElement.setAttribute("data-brochure", brochure);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () {
+      setBackButtons();
+      addQueryClass();
+    });
+  } else {
+    setBackButtons();
+    addQueryClass();
+  }
+}());
+</script>
+  <!-- FFT_BROCHURE_VIEWER_MINIMAL_TOOLBAR_20260529 JS -->
+  <script defer src="fft-viewer-theme.js?v=minimal-toolbar-20260529"></script>
+</body>
+</html>

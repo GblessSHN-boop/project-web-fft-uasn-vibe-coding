@@ -1,0 +1,154 @@
+﻿* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #efefef;
+  --white: #ffffff;
+  --black: #111111;
+  --muted: #666666;
+  --line: #d8d8d8;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--black);
+  overflow-x: hidden;
+}
+
+.viewer-header {
+  min-height: 82px;
+  padding: 18px 34px;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.viewer-header h1 {
+  margin: 0;
+  font-size: 24px;
+  color: var(--black);
+  font-weight: 900;
+}
+
+.viewer-header p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.viewer-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.viewer-actions a,
+.viewer-controls button {
+  border: 1px solid var(--black);
+  background: var(--black);
+  color: var(--white);
+  padding: 12px 18px;
+  font-size: 13px;
+  font-weight: 900;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.viewer-layout {
+  min-height: calc(100vh - 82px);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+.viewer-loading {
+  padding: 14px 18px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.book {
+  display: none;
+  margin: 0 auto;
+  filter: drop-shadow(0 24px 20px rgba(0, 0, 0, 0.22));
+}
+
+.page {
+  background: var(--white);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.page canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.viewer-controls {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.viewer-controls span {
+  border: 1px solid var(--black);
+  background: var(--white);
+  color: var(--black);
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 900;
+  min-width: 140px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .viewer-header {
+    padding: 18px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .viewer-actions {
+    flex-wrap: wrap;
+  }
+
+  .viewer-actions a {
+    flex: 1;
+    text-align: center;
+  }
+
+  .viewer-layout {
+    padding: 18px;
+    justify-content: flex-start;
+  }
+
+  .viewer-controls {
+    flex-wrap: wrap;
+  }
+
+  .viewer-controls button,
+  .viewer-controls span {
+    flex: 1;
+  }
+}
+
+  .viewer-controls button {
+    flex: 1;
+  }
+}

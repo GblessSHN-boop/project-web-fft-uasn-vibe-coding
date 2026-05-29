@@ -1,0 +1,257 @@
+/* FFT_BROCHURE_VIEWER_MINIMAL_TOOLBAR_20260529
+   Redesign minimal untuk shell viewer.
+   Halaman A4 brosur tidak disentuh.
+*/
+
+:root {
+  --fft-red: #7b1113;
+  --fft-red-dark: #5c0c0e;
+  --fft-ink: #17171f;
+  --fft-muted: #68707d;
+  --fft-bg: #f7f2f1;
+  --fft-line: rgba(123, 17, 19, 0.16);
+}
+
+html {
+  scroll-behavior: auto !important;
+}
+
+body.fft-standalone-viewer {
+  margin: 0 !important;
+  background: var(--fft-bg) !important;
+  color: var(--fft-ink) !important;
+  font-family: Inter, Montserrat, Arial, Helvetica, sans-serif !important;
+}
+
+body.fft-standalone-viewer *,
+body.fft-standalone-viewer *::before,
+body.fft-standalone-viewer *::after {
+  box-sizing: border-box !important;
+  border-radius: 0 !important;
+}
+
+/* Toolbar kecil, bukan hero besar */
+body.fft-standalone-viewer .fft-viewer-shellbar {
+  position: relative !important;
+  z-index: 20 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 18px !important;
+  min-height: 74px !important;
+  padding: 14px clamp(18px, 4vw, 56px) !important;
+  background: #ffffff !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--fft-line) !important;
+  box-shadow: none !important;
+}
+
+body.fft-standalone-viewer .fft-viewer-shellbar__text {
+  min-width: 0 !important;
+}
+
+body.fft-standalone-viewer .fft-viewer-shellbar__eyebrow {
+  margin: 0 0 5px !important;
+  color: var(--fft-red) !important;
+  font-size: 0.68rem !important;
+  line-height: 1 !important;
+  letter-spacing: 0.18em !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+}
+
+body.fft-standalone-viewer .fft-viewer-shellbar__title {
+  margin: 0 !important;
+  color: var(--fft-ink) !important;
+  font-size: clamp(1.25rem, 2.2vw, 1.8rem) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.035em !important;
+  font-weight: 900 !important;
+}
+
+body.fft-standalone-viewer .fft-viewer-shellbar__subtitle {
+  margin: 5px 0 0 !important;
+  color: var(--fft-muted) !important;
+  font-size: 0.92rem !important;
+  line-height: 1.35 !important;
+  font-weight: 500 !important;
+}
+
+body.fft-standalone-viewer .fft-viewer-shellbar__actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  flex: 0 0 auto !important;
+}
+
+body.fft-standalone-viewer .fft-viewer-shellbar__button {
+  min-height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 16px !important;
+  border: 1px solid var(--fft-red) !important;
+  background: var(--fft-red) !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  font-size: 0.88rem !important;
+  line-height: 1 !important;
+  font-weight: 850 !important;
+  white-space: nowrap !important;
+  box-shadow: none !important;
+}
+
+body.fft-standalone-viewer .fft-viewer-shellbar__button--ghost {
+  background: #ffffff !important;
+  color: var(--fft-red) !important;
+}
+
+body.fft-standalone-viewer .fft-viewer-shellbar__button:hover {
+  background: var(--fft-red-dark) !important;
+  border-color: var(--fft-red-dark) !important;
+  color: #ffffff !important;
+}
+
+/* Matikan gaya header lama */
+body.fft-standalone-viewer header:not(.fft-viewer-shellbar) h1,
+body.fft-standalone-viewer header:not(.fft-viewer-shellbar) p,
+body.fft-standalone-viewer .viewer-header:not(.fft-viewer-shellbar) h1,
+body.fft-standalone-viewer .viewer-header:not(.fft-viewer-shellbar) p {
+  all: unset !important;
+}
+
+/* Area luar buku dibuat tenang */
+body.fft-standalone-viewer main,
+body.fft-standalone-viewer .viewer-main,
+body.fft-standalone-viewer .viewer-content,
+body.fft-standalone-viewer .book-section,
+body.fft-standalone-viewer .book-viewer {
+  background: var(--fft-bg) !important;
+}
+
+body.fft-standalone-viewer .viewer-main,
+body.fft-standalone-viewer .viewer-content,
+body.fft-standalone-viewer .book-section,
+body.fft-standalone-viewer .book-viewer {
+  padding-top: 24px !important;
+  padding-bottom: 46px !important;
+}
+
+/* Stage luar saja. A4 tidak disentuh */
+body.fft-standalone-viewer .book-stage,
+body.fft-standalone-viewer .viewer-stage,
+body.fft-standalone-viewer .flipbook-stage,
+body.fft-standalone-viewer .book-container,
+body.fft-standalone-viewer .flipbook-container {
+  background: var(--fft-bg) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Kontrol bawah dibuat kecil dan netral */
+body.fft-standalone-viewer .controls,
+body.fft-standalone-viewer .viewer-controls,
+body.fft-standalone-viewer .book-controls,
+body.fft-standalone-viewer .pagination {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  margin-top: 16px !important;
+  margin-bottom: 0 !important;
+}
+
+body.fft-standalone-viewer .controls button,
+body.fft-standalone-viewer .viewer-controls button,
+body.fft-standalone-viewer .book-controls button,
+body.fft-standalone-viewer .pagination button {
+  min-height: 38px !important;
+  padding: 0 15px !important;
+  border: 1px solid var(--fft-red) !important;
+  background: var(--fft-red) !important;
+  color: #ffffff !important;
+  font-size: 0.86rem !important;
+  font-weight: 850 !important;
+  box-shadow: none !important;
+}
+
+body.fft-standalone-viewer .page-indicator,
+body.fft-standalone-viewer .indicator,
+body.fft-standalone-viewer [data-page-indicator] {
+  min-height: 38px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 14px !important;
+  border: 1px solid rgba(123, 17, 19, 0.22) !important;
+  background: #ffffff !important;
+  color: var(--fft-red) !important;
+  font-size: 0.86rem !important;
+  font-weight: 850 !important;
+}
+
+/* Tidak sentuh ukuran dan isi A4 */
+body.fft-standalone-viewer img,
+body.fft-standalone-viewer canvas,
+body.fft-standalone-viewer svg {
+  border-radius: 0 !important;
+}
+
+@media (max-width: 760px) {
+  body.fft-standalone-viewer .fft-viewer-shellbar {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    min-height: 0 !important;
+    padding: 14px 16px !important;
+  }
+
+  body.fft-standalone-viewer .fft-viewer-shellbar__title {
+    font-size: clamp(1.35rem, 7vw, 2rem) !important;
+  }
+
+  body.fft-standalone-viewer .fft-viewer-shellbar__subtitle {
+    font-size: 0.88rem !important;
+  }
+
+  body.fft-standalone-viewer .fft-viewer-shellbar__actions {
+    width: 100% !important;
+    justify-content: stretch !important;
+  }
+
+  body.fft-standalone-viewer .fft-viewer-shellbar__button {
+    flex: 1 1 0 !important;
+    min-height: 40px !important;
+    padding: 0 10px !important;
+    font-size: 0.84rem !important;
+  }
+
+  body.fft-standalone-viewer .viewer-main,
+  body.fft-standalone-viewer .viewer-content,
+  body.fft-standalone-viewer .book-section,
+  body.fft-standalone-viewer .book-viewer {
+    padding-top: 14px !important;
+    padding-bottom: 34px !important;
+  }
+
+  body.fft-standalone-viewer .controls,
+  body.fft-standalone-viewer .viewer-controls,
+  body.fft-standalone-viewer .book-controls,
+  body.fft-standalone-viewer .pagination {
+    gap: 6px !important;
+    padding-inline: 10px !important;
+  }
+
+  body.fft-standalone-viewer .controls button,
+  body.fft-standalone-viewer .viewer-controls button,
+  body.fft-standalone-viewer .book-controls button,
+  body.fft-standalone-viewer .pagination button,
+  body.fft-standalone-viewer .page-indicator,
+  body.fft-standalone-viewer .indicator,
+  body.fft-standalone-viewer [data-page-indicator] {
+    min-height: 36px !important;
+    padding-inline: 10px !important;
+    font-size: 0.78rem !important;
+  }
+}

@@ -62,3 +62,35 @@
     setTimeout(applyLanguage, 360);
   }, true);
 }());
+
+
+/* FFT_EBROCHURE_COVER_TO_DETAIL_20260528
+   Klik cover membuka halaman detail brosur.
+*/
+(function () {
+  "use strict";
+
+  var slugs = ["utama", "dosen", "pendaftaran", "program-studi"];
+
+  document.addEventListener("click", function (event) {
+    var item = event.target && event.target.closest
+      ? event.target.closest(".fft-cover-gallery__item")
+      : null;
+
+    if (!item) return;
+
+    var items = Array.from(document.querySelectorAll(".fft-cover-gallery__item"));
+    var index = Math.max(0, items.indexOf(item));
+    var slug = slugs[index] || "utama";
+
+    window.location.href = "brochure-viewer/brochure-viewer.html?brochure=" + encodeURIComponent(slug);
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".fft-cover-gallery__item").forEach(function (item) {
+      item.setAttribute("role", "link");
+      item.setAttribute("tabindex", "0");
+      item.style.cursor = "pointer";
+    });
+  });
+}());

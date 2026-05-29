@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E Brochure</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-area">
+        <div>
+          <h1>E Brochure</h1>
+          <p>Tampilan brosur digital yang sederhana, jelas, dan nyaman dibaca</p>
+        </div>
+      </div>
+
+      <a class="main-download" href="assets/brosur/uji-coba-brosur.pdf" download>
+        Download PDF
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-section">
+      <div class="hero-inner">
+        <span class="eyebrow">E Brochure</span>
+        <h2>Preview Brosur Digital</h2>
+        <p>Buka brosur dalam tampilan buku digital dan unduh file PDF jika diperlukan.</p>
+      </div>
+    </section>
+
+    <section class="brochure-section">
+      <div class="brochure-grid">
+</div>
+    </section>
+
+<section class="brochure-section">
+  <div class="brochure-grid" id="brochureGrid"></div>
+</section>
+</main>
+
+  <div class="modal" id="brochureModal" aria-hidden="true">
+    <div class="modal-backdrop" id="closeBackdrop"></div>
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h3>E Brochure</h3>
+          <p id="pageInfo">Halaman 1 dari 4</p>
+        </div>
+
+        <button class="close-button" id="closeModal" type="button">
+          Tutup
+        </button>
+      </div>
+
+      <div class="viewer-area">
+        <div id="viewerLoading" class="viewer-loading">Memuat brosur...</div>
+        <div id="book" class="book"></div>
+      </div>
+
+      <div class="viewer-controls">
+        <button id="prevBtn" type="button">Sebelumnya</button>
+        <button id="nextBtn" type="button">Berikutnya</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>E Brochure Viewer</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="data/brochures.js"></script>
+<script src="js/app.js?v=dynamic-card-only-final"></script>
+</body>
+</html>
