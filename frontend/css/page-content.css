@@ -1,4 +1,4 @@
-.page-content {
+﻿.page-content {
   min-height: calc(100vh - 150px);
   background:
     linear-gradient(180deg, rgba(255,255,255,0.98), rgba(252,248,247,0.98)),
@@ -2594,7 +2594,7 @@
 }
 
 .admission-flow-checklist li::before {
-  content: "✓";
+  content: "âœ“";
   position: absolute;
   left: 16px;
   color: #640b0b;
@@ -2667,7 +2667,7 @@
 }
 
 .admission-flow-faq-list details[open] summary::after {
-  content: "−";
+  content: "âˆ’";
 }
 
 .admission-flow-faq-list details p {
@@ -3380,7 +3380,7 @@
 }
 
 .offline-checklist li::before {
-  content: "✓";
+  content: "âœ“";
   position: absolute;
   left: 20px;
   top: 18px;
@@ -3842,7 +3842,7 @@ html[lang="en"] .offline-checkpoint__header > strong::before {
 }
 
 .offline-checkpoint__item.is-completed::after {
-  content: "✓";
+  content: "âœ“";
   display: grid;
   place-items: center;
   border-color: #640b0b;
@@ -4604,4 +4604,3 @@ body.ebrochure-modal-open {
 .ranking-kicker {
   padding-left: 0 !important;
 }
-

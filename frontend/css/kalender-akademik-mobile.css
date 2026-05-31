@@ -1,4 +1,4 @@
-/* FFT_KALENDER_AKADEMIK_MOBILE_POLISH_20260522
+﻿/* FFT_KALENDER_AKADEMIK_MOBILE_POLISH_20260522
    Redesign mobile untuk halaman Kalender Akademik Fakultas.
    Desktop tidak disentuh.
 */
@@ -411,7 +411,7 @@
   }
 
   body.fft-calendar-page .fft-calendar-mobile-search-box::before {
-    content: "⌕";
+    content: "âŒ•";
     position: absolute;
     left: 14px;
     top: 50%;
@@ -474,4 +474,3 @@
     transition: opacity 120ms ease;
   }
 }
-

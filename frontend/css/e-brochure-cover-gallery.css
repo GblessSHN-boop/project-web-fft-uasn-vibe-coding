@@ -1,4 +1,4 @@
-/* FFT_EBROCHURE_COVER_GALLERY_20260528
+﻿/* FFT_EBROCHURE_COVER_GALLERY_20260528
    Gallery cover kecil seperti katalog E Brochure. Hanya cover dan judul.
 */
 
@@ -187,5 +187,26 @@
     width: 170px;
     margin-left: auto;
     margin-right: auto;
+  }
+}
+
+/* FFT_EBROCHURE_PDF_COVER_PREVIEW_20260529
+   PDF cover tampil sebagai preview pada card e-brochure.
+*/
+
+.fft-ebrochure-pdf-cover-frame {
+  width: 100% !important;
+  min-height: 260px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  display: block !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+@media (max-width: 760px) {
+  .fft-ebrochure-pdf-cover-frame {
+    min-height: 240px !important;
   }
 }

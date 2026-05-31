@@ -94,3 +94,62 @@
     });
   });
 }());
+/* FFT_EBROCHURE_PDF_COVER_PREVIEW_20260529
+   Tampilkan cover PDF placeholder pada card cover e-brochure.
+*/
+(function () {
+  "use strict";
+
+  var coverPdf = "brochure-viewer/assets/brosur/konten-belum-tersedia-fft/cover.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH";
+
+  function replaceCoverImage(image) {
+    if (!image || image.dataset.fftPdfCoverReady === "1") {
+      return;
+    }
+
+    var src = image.getAttribute("src") || "";
+
+    if (!/cover-gallery-\d+\.svg/i.test(src)) {
+      return;
+    }
+
+    var frame = document.createElement("iframe");
+    var rect = image.getBoundingClientRect();
+
+    frame.className = "fft-ebrochure-pdf-cover-frame";
+    frame.src = coverPdf;
+    frame.title = image.getAttribute("alt") || "Cover PDF brosur";
+    frame.loading = "lazy";
+    frame.setAttribute("aria-label", frame.title);
+    frame.setAttribute("tabindex", "-1");
+
+    frame.style.width = "100%";
+    frame.style.border = "0";
+    frame.style.display = "block";
+    frame.style.background = "#ffffff";
+    frame.style.pointerEvents = "none";
+
+    if (rect.height > 40) {
+      frame.style.height = rect.height + "px";
+    } else {
+      frame.style.aspectRatio = "210 / 297";
+    }
+
+    image.dataset.fftPdfCoverReady = "1";
+    image.replaceWith(frame);
+  }
+
+  function bootPdfCoverPreview() {
+    Array.from(document.querySelectorAll("img")).forEach(replaceCoverImage);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootPdfCoverPreview);
+  } else {
+    bootPdfCoverPreview();
+  }
+
+  window.addEventListener("pageshow", bootPdfCoverPreview);
+  window.setTimeout(bootPdfCoverPreview, 300);
+  window.setTimeout(bootPdfCoverPreview, 900);
+}());

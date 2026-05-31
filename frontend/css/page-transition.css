@@ -1,4 +1,4 @@
-/* FFT_STABLE_CRIMSON_PUSH_WIPE_NO_FLICKER_20260519
+﻿/* FFT_STABLE_CRIMSON_PUSH_WIPE_NO_FLICKER_20260519
    Push-wipe transition stabil untuk inner pages.
    Memperbaiki kedip akhir transisi dan memakai logo kecil sebagai identitas visual.
    Tidak aktif di indexfft.html.
@@ -157,4 +157,3 @@ html.fft-page-transition-enabled body {
     height: clamp(168px, 42vw, 240px) !important;
   }
 }
-

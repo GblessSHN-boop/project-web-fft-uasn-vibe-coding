@@ -201,7 +201,7 @@
   }
 
   .fft-brand-mobile-nav-link::after {
-    content: "›" !important;
+    content: "\203A" !important;
     color: #740909 !important;
     font-size: 1.25rem !important;
     font-weight: 900 !important;
