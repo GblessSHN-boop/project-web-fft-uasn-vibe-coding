@@ -435,283 +435,655 @@
       </div>
     </header>
     <main>
-      <!-- FFT_ABOUT_FINAL_START -->
-<style>
-  /* FFT_ABOUT_FINAL_STYLE_20260531 */
-  .fft-about-final-wrap,
-  .fft-about-final-wrap * {
-    box-sizing: border-box;
-  }
+      <section class="hero">
+        <div class="hero-slider" aria-hidden="true">
+          <img src="../assets/images/gallery/1.png" class="slide active" alt="" />
+          <img src="../assets/images/gallery/2.png" class="slide" alt="" />
+          <img src="../assets/images/gallery/3.png" class="slide" alt="" />
+          <img src="../assets/images/gallery/4.png" class="slide" alt="" />
+          <img src="../assets/images/gallery/5.png" class="slide" alt="" />
+        </div>
 
-  .fft-about-final-wrap {
-    width: 100%;
-    background: #ffffff;
-    font-family: Arial, Helvetica, sans-serif;
-  }
+        <div class="hero-overlay"></div>
 
-  .fft-about-final-wrap .berita-header {
-    width: 100%;
-    background-color: #ffffff;
-    text-align: center;
-    padding-top: 24px;
-    padding-bottom: 36px;
-  }
+        <div class="hero-content">
+          <a href="alur-pendaftaran.html" class="view-more" data-i18n="view_more">
+            DAFTAR SEKARANG
+          </a>
+        </div>
+      </section>
 
-  .fft-about-final-wrap .berita-bar-top {
-    width: 100%;
-    height: 42px;
-    background-color: #5f0e0e;
-  }
+      <section class="fft-intro">
+        <a
+          href="https://www.instagram.com/himafftuasn01"
+          target="_blank"
+          class="fft-link">
+          <div class="fft-title">
+            <img src="../assets/images/site/fftkb.png" alt="Logo FFT" />
+            <h2 data-i18n="intro_title">FAKULTAS FILSAFAT TEOLOGI</h2>
+          </div>
+        </a>
+      </section>
 
-  .fft-about-final-wrap .berita-title-box {
-    position: relative;
-    z-index: 2;
-    width: min(820px, 88vw);
-    min-height: 98px;
-    margin: -28px auto 0;
-    padding: 10px 30px;
-    background-color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-  }
+      <section id="tentang-fft" class="fft-about fft-about-pro" aria-labelledby="aboutTitle">
+        <div class="fft-about-shell fft-about-content">
+          <div class="fft-about-copy">
+            <p class="fft-section-kicker" data-i18n="about_kicker">
+              Tentang FFT
+            </p>
 
-  .fft-about-final-wrap .berita-title-box h2 {
-    margin: 0;
-    font-size: clamp(34px, 4vw, 54px);
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: 1px;
-    color: #000000;
-    text-transform: uppercase;
-  }
+            <h2 id="aboutTitle" data-i18n="about_title">
+              Fakultas Filsafat Teologi
+            </h2>
 
-  .fft-about-final-wrap .berita-bar-bottom {
-    width: min(1120px, 92vw);
-    height: 28px;
-    margin: 14px auto 0;
-    background-color: #5f0e0e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+            <p class="fft-about-lead" data-i18n="about_intro">
+              Fakultas Filsafat Teologi (FFT) adalah fakultas yang berfokus pada pengkajian:
+            </p>
 
-  .fft-about-final-wrap .berita-bar-bottom span {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 7px;
-    text-transform: uppercase;
-    color: #ffffff;
-  }
+            <p class="fft-about-note" data-i18n="about_closing">
+              Karena berada di bawah institusi &ldquo;Advent&rdquo;, maka secara teologis fakultas ini berafiliasi dengan ajaran Gereja Masehi Advent Hari Ketujuh.
+            </p>
+          </div>
 
-  .fft-about-content-final {
-    width: 100%;
-    background: #ffffff;
-    padding: 18px 0 64px;
-    display: block;
-    visibility: visible;
-    opacity: 1;
-  }
+          <div class="fft-about-grid">
+            <article class="fft-about-card">
+              <span class="fft-about-number">01</span>
+              <h3 data-i18n="about_item_1">Ilmu Filsafat</h3>
+              <p data-i18n="about_desc_1">
+                Mengembangkan kemampuan berpikir reflektif, kritis, dan etis dalam memahami persoalan akademik, spiritual, dan sosial.
+              </p>
+            </article>
 
-  .fft-about-content-inner {
-    width: min(1120px, 92vw);
-    margin: 0 auto;
-    background: #ffffff;
-    border-left: 6px solid #5f0e0e;
-    padding: clamp(24px, 3vw, 42px);
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.08);
-  }
+            <article class="fft-about-card">
+              <span class="fft-about-number">02</span>
+              <h3 data-i18n="about_item_2">Ilmu Teologi (Ilmu Ketuhanan)</h3>
+              <p data-i18n="about_desc_2">
+                Mengkaji dasar iman Kristen, doktrin Alkitabiah, dan pemahaman teologis dalam ruang akademik yang terarah.
+              </p>
+            </article>
 
-  .fft-about-content-grid {
-    display: grid;
-    grid-template-columns: 1.35fr 0.65fr;
-    gap: clamp(24px, 4vw, 46px);
-    align-items: start;
-  }
+            <article class="fft-about-card">
+              <span class="fft-about-number">03</span>
+              <h3 data-i18n="about_item_3">Studi Alkitab dan kepemimpinan rohani</h3>
+              <p data-i18n="about_desc_3">
+                Membentuk literasi Alkitab, karakter pelayanan, dan kepemimpinan rohani untuk gereja serta masyarakat.
+              </p>
+            </article>
 
-  .fft-about-content-text p {
-    margin: 0 0 16px;
-    color: #252525;
-    font-size: clamp(15px, 1.15vw, 18px);
-    line-height: 1.72;
-    font-weight: 400;
-  }
+            <article class="fft-about-card">
+              <span class="fft-about-number">04</span>
+              <h3 data-i18n="about_item_4">Etika dan moralitas berbasis nilai Kristen Advent</h3>
+              <p data-i18n="about_desc_4">
+                Menanamkan kepekaan moral, integritas, dan tanggung jawab berdasarkan nilai-nilai Kristen Advent.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
 
-  .fft-about-side-card {
-    background: #5f0e0e;
-    color: #ffffff;
-    padding: 26px 24px;
-  }
+      <section id="program-studi" class="program-studi program-section-clean">
+        <div class="program-shell">
+          <p class="section-kicker" data-i18n="program_kicker">
+            Program Akademik
+          </p>
 
-  .fft-about-side-card h3 {
-    margin: 0 0 14px;
-    color: #ffffff;
-    font-size: 20px;
-    line-height: 1.2;
-    font-weight: 900;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
+          <h2 class="program-title" data-i18n="program_title">
+            Program Studi
+          </h2>
 
-  .fft-about-side-card p {
-    margin: 0;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 15px;
-    line-height: 1.7;
-  }
+          <p class="program-lead" data-i18n="program_lead">
+            Fakultas Filsafat Teologi menyediakan program studi yang berfokus pada pembentukan pemimpin rohani, pendidik, dan pelayan masyarakat yang memiliki dasar teologi, filsafat, dan karakter Kristiani.
+          </p>
 
-  .fft-about-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 24px;
-  }
+          <div class="program-card-grid">
+            <article class="program-card">
+              <div class="program-card-number">01</div>
+              <div class="program-card-body">
+                <p class="program-label" data-i18n="program_1_label">
+                  Sarjana
+                </p>
+                <h3 data-i18n="program_1_title">
+                  Program Studi Teologi
+                </h3>
+                <p data-i18n="program_1_desc">
+                  Program ini mempelajari teologi Kristen secara mendalam, meliputi doktrin Alkitab, kepemimpinan rohani, pelayanan gereja, dan pengembangan karakter spiritual.
+                </p>
+                <ul>
+                  <li data-i18n="program_1_point_1">Fokus pada pemahaman Alkitab dan pelayanan gereja.</li>
+                  <li data-i18n="program_1_point_2">Membentuk kepemimpinan rohani yang berintegritas.</li>
+                  <li data-i18n="program_1_point_3">Mempersiapkan lulusan untuk pelayanan dan pendidikan.</li>
+                </ul>
+              </div>
+            </article>
 
-  .fft-about-links a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 40px;
-    padding: 0 16px;
-    background: #5f0e0e;
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+            <article class="program-card">
+              <div class="program-card-number">02</div>
+              <div class="program-card-body">
+                <p class="program-label" data-i18n="program_2_label">
+                  Sarjana
+                </p>
+                <h3 data-i18n="program_2_title">
+                  Program Studi Filsafat Keagamaan
+                </h3>
+                <p data-i18n="program_2_desc">
+                  Program ini mempersiapkan mahasiswa menjadi pendidik agama Kristen yang kompeten dalam pengajaran, pembinaan iman, etika, dan pelayanan pendidikan.
+                </p>
+                <ul>
+                  <li data-i18n="program_2_point_1">Fokus pada filsafat, etika, dan pendidikan agama.</li>
+                  <li data-i18n="program_2_point_2">Mendukung pengembangan kemampuan berpikir kritis.</li>
+                  <li data-i18n="program_2_point_3">Mempersiapkan lulusan untuk sekolah, gereja, dan masyarakat.</li>
+                </ul>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
 
-  .fft-about-links a:hover {
-    background: #430808;
-  }
+      <div class="background-section">
+        <section id="latar-belakang" class="latar-belakang">
+          <div class="latar-card">
+            <div class="latar-container">
+              <h2 class="latar-title" data-i18n="background_title">
+                LATAR BELAKANG
+              </h2>
+              <p data-i18n="background_p1">
+                Fakultas Filsafat Teologi (FFT) Universitas Advent Surya Nusantara didirikan untuk mempersiapkan mahasiswa menjadi pemimpin rohani, pelayan gereja, serta pendidik yang memiliki pemahaman teologis yang mendalam dan berlandaskan nilai-nilai iman Kristen.
+              </p>
+              <p data-i18n="background_p2">
+                Dalam menghadapi perkembangan zaman, gereja dan masyarakat membutuhkan sumber daya manusia yang tidak hanya memiliki pengetahuan teologi, tetapi juga kemampuan berpikir kritis, kepemimpinan rohani, serta integritas moral yang kuat.
+              </p>
+              <p data-i18n="background_p3">
+                Oleh karena itu, FFT hadir sebagai wadah pendidikan yang memadukan kajian akademik, pembinaan spiritual, serta pengembangan karakter untuk mempersiapkan lulusan yang siap melayani di gereja, lembaga pendidikan, maupun masyarakat luas.
+              </p>
+            </div>
+          </div>
+        </section>
 
-  @media (max-width: 576px) {
-    .fft-about-final-wrap .berita-header {
-      padding-top: 18px;
-      padding-bottom: 28px;
-    }
+        <section id="visi-misi" class="visi-misi">
+          <div class="visi-card">
+            <h2 class="visi-title" data-i18n="vision_title">VISI</h2>
 
-    .fft-about-final-wrap .berita-bar-top {
-      height: 34px;
-    }
+            <p data-i18n="vision_text">
+              Menjadi fakultas yang unggul dalam pengembangan ilmu filsafat dan teologi yang berlandaskan nilai-nilai iman Kristen Advent serta menghasilkan lulusan yang berintegritas, berkarakter rohani, dan siap melayani gereja serta masyarakat.
+            </p>
 
-    .fft-about-final-wrap .berita-title-box {
-      min-height: 82px;
-      margin-top: -24px;
-      padding: 10px 20px;
-    }
+            <h2 class="misi-title" data-i18n="mission_title">MISI</h2>
 
-    .fft-about-final-wrap .berita-title-box h2 {
-      font-size: clamp(34px, 12vw, 46px);
-      letter-spacing: 1px;
-    }
+            <ul>
+              <li data-i18n="mission_1">
+                Menyelenggarakan pendidikan dan pengajaran di bidang filsafat dan teologi.
+              </li>
+              <li data-i18n="mission_2">
+                Mengembangkan pemahaman Alkitabiah yang mendalam bagi mahasiswa.
+              </li>
+              <li data-i18n="mission_3">
+                Membentuk kepemimpinan rohani yang berintegritas.
+              </li>
+              <li data-i18n="mission_4">
+                Mempersiapkan lulusan yang siap melayani gereja dan masyarakat.
+              </li>
+            </ul>
+          </div>
+        </section>
 
-    .fft-about-final-wrap .berita-bar-bottom {
-      height: 26px;
-      width: min(1120px, 92vw);
-    }
 
-    .fft-about-final-wrap .berita-bar-bottom span {
-      font-size: 9px;
-      letter-spacing: 4px;
-    }
+      </div>
 
+      <div class="popup-daftar" id="popupDaftar">
+        <div class="popup-content">
+          <p class="popup-eyebrow">FFT UASN</p>
+
+          <h2 data-i18n="popup_title">AYO GABUNG BERSAMA KAMI</h2>
+
+          <div class="popup-action-list">
+            <a
+              href="https://wa.me/6282273345200"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="popup-btn">
+              <span class="popup-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M6.62 10.79c1.44 2.83 3.76 5.15 6.59 6.59l2.2-2.2c.31-.31.77-.41 1.17-.27 1.29.43 2.67.66 4.08.66.63 0 1.14.51 1.14 1.14v3.49c0 .63-.51 1.14-1.14 1.14C10.24 21.84 2.16 13.76 2.16 3.34c0-.63.51-1.14 1.14-1.14h3.5c.63 0 1.14.51 1.14 1.14 0 1.41.23 2.79.66 4.08.13.4.04.86-.27 1.17l-2.21 2.2Z" />
+                </svg>
+              </span>
+              <span data-i18n="popup_dean">DEKAN</span>
+            </a>
+
+            <a
+              href="https://wa.me/6282129500506"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="popup-btn">
+              <span class="popup-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Zm-3 10H7v-2h10v2Zm0-3H7V7h10v2Z" />
+                </svg>
+              </span>
+              <span data-i18n="popup_secretary">SEKRETARIS</span>
+            </a>
+
+            <a
+              href="https://www.instagram.com/himafftuasn01"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="popup-btn">
+              <span class="popup-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M7.75 2h8.5A5.76 5.76 0 0 1 22 7.75v8.5A5.76 5.76 0 0 1 16.25 22h-8.5A5.76 5.76 0 0 1 2 16.25v-8.5A5.76 5.76 0 0 1 7.75 2Zm0 2A3.75 3.75 0 0 0 4 7.75v8.5A3.75 3.75 0 0 0 7.75 20h8.5A3.75 3.75 0 0 0 20 16.25v-8.5A3.75 3.75 0 0 0 16.25 4h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.25-2.2a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3Z" />
+                </svg>
+              </span>
+              <span>@himafftuasn</span>
+            </a>
+          </div>
+
+          <button class="popup-close" id="closePopup" data-i18n="popup_close">
+            Tutup
+          </button>
+        </div>
+      </div>
+
+      <section id="organisasi" class="organisasi-header">
+        <div class="org-bar-top"></div>
+
+        <div class="org-title-box">
+          <h2 data-i18n="organization_title">ORGANISASI</h2>
+        </div>
+
+        <div class="org-bar-bottom">
+          <span data-i18n="organization_subtitle">HIMPUNAN MAHASISWA</span>
+        </div>
+      </section>
+
+      <section id="organisasi-content" class="organisasi-content">
+        <div class="org-container">
+          <div class="org-inner">
+            <div class="org-image">
+              <div class="org-bg"></div>
+              <img
+                src="../assets/images/organization/3diconfft.png"
+                class="org-logo-left"
+                alt="Logo Organisasi Kiri"
+                data-i18n-alt="organization_left_alt"/>
+            </div>
+
+            <div class="org-text">
+              <span class="org-label" data-i18n="organization_label">HIMA</span>
+
+              <h3>
+                <span data-i18n="organization_heading">HIMPUNAN MAHASISWA</span>
+                <small data-i18n="organization_small">FAKULTAS FILSAFAT TEOLOGI</small>
+              </h3>
+
+              <p data-i18n="organization_text">
+                Himpunan Mahasiswa Fakultas Filsafat Teologi (HIMA FFT) adalah
+                organisasi kemahasiswaan yang menjadi wadah pengembangan
+                kepemimpinan, kebersamaan, dan pelayanan mahasiswa dalam
+                kegiatan akademik, rohani, dan sosial.
+              </p>
+
+              <a
+                href="https://www.instagram.com/himafftuasn01?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                class="org-link"
+                target="_blank"
+                rel="noopener noreferrer">
+                <span data-i18n="organization_more">Selengkapnya...</span>
+              </a>
+            </div>
+
+            <div class="org-image-right">
+              <img
+                src="../assets/images/organization/bgorganfft.png"
+                class="org-logo-right"
+                alt="Logo Organisasi Kanan"
+                data-i18n-alt="organization_right_alt" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="why-choose" class="why-choose-section">
+  <div class="why-choose-shell">
+    <div class="why-choose-main">
+      <span class="why-choose-kicker" data-i18n="why_kicker">WHY CHOOSE FFT</span>
+
+      <h2 class="why-choose-title" data-i18n="why_title">
+        Why Choose the Faculty Of Theology
+      </h2>
+
+      <p class="why-choose-subtitle" data-i18n="why_subtitle">
+        Universitas Advent Surya Nusantara
+      </p>
+
+      <p class="why-choose-desc" data-i18n="why_desc">
+        Content not available yet.
+      </p>
+    </div>
+
+    <figure class="why-choose-media why-choose-media-placeholder" aria-label="Why Choose FFT media placeholder">
+      <div class="why-choose-media-frame">
+        <span data-i18n="why_media_placeholder">Content Not Available Yet</span>
+      </div>
+    </figure>
+
+    <div class="why-choose-grid" aria-label="Why Choose FFT placeholder cards">
+      <article class="why-choose-card">
+        <span class="why-card-number">01</span>
+        <h3 data-i18n="why_card_1_title">Content Not Available Yet</h3>
+        <p data-i18n="why_card_1_desc">Content not available yet.</p>
+      </article>
+
+      <article class="why-choose-card">
+        <span class="why-card-number">02</span>
+        <h3 data-i18n="why_card_2_title">Content Not Available Yet</h3>
+        <p data-i18n="why_card_2_desc">Content not available yet.</p>
+      </article>
+
+      <article class="why-choose-card">
+        <span class="why-card-number">03</span>
+        <h3 data-i18n="why_card_3_title">Content Not Available Yet</h3>
+        <p data-i18n="why_card_3_desc">Content not available yet.</p>
+      </article>
+
+      <article class="why-choose-card">
+        <span class="why-card-number">04</span>
+        <h3 data-i18n="why_card_4_title">Content Not Available Yet</h3>
+        <p data-i18n="why_card_4_desc">Content not available yet.</p>
+      </article>
+
+      <article class="why-choose-card">
+        <span class="why-card-number">05</span>
+        <h3 data-i18n="why_card_5_title">Content Not Available Yet</h3>
+        <p data-i18n="why_card_5_desc">Content not available yet.</p>
+      </article>
+
+      <article class="why-choose-card">
+        <span class="why-card-number">06</span>
+        <h3 data-i18n="why_card_6_title">Content Not Available Yet</h3>
+        <p data-i18n="why_card_6_desc">Content not available yet.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="berita-wrapper">
+
+<section id="berita" class="berita-header">
+          <div class="berita-bar-top"></div>
+          <div class="berita-title-box">
+            <h2 data-i18n="news_title">BERITA</h2>
+          </div>
+          <div class="berita-bar-bottom">
+            <span data-i18n="news_subtitle">UNIVERSITAS ADVENT SURYA NUSANTARA</span>
+          </div>
+        </section>
+
+        <section class="berita-section">
+          <div class="berita-watermark">
+            <img src="../assets/images/organization/bgorganfft.png"
+            alt="Watermark HIMA FFT"
+            data-i18n-alt="news_watermark_alt" />
+          </div>
+
+          <div class="berita-banner">
+            <a
+              href="#"
+              class="berita-banner-link"
+              id="frontendBannerLink"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="display: none;">
+              <img
+                id="frontendBannerImage"
+                class="berita-banner-media"
+                alt="Banner Informasi"
+                style="display: none;" />
+
+              <video
+                id="frontendBannerVideo"
+                class="berita-banner-media"
+                autoplay
+                muted
+                loop
+                playsinline
+                style="display: none;"></video>
+
+              <div class="berita-banner-label">i</div>
+            </a>
+
+            <div id="frontendBannerEmpty" class="berita-banner-link fft-banner-empty-state" hidden aria-hidden="true" style="display: none;">
+              <div class="berita-banner-label" data-i18n="banner_empty">
+                BANNER INFORMASI BELUM TERSEDIA
+              </div>
+            </div>
+          </div>
+
+          <div class="berita-card">
+            <div class="berita-head-row">
+              <h3 data-i18n="trending_title">BERITA TERBARU</h3>
+
+              <div class="berita-search-box">
+                <div class="group">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
+                    <g>
+                      <path
+                        d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
+                    </g>
+                  </svg>
+
+                  <input
+                    id="beritaSearch"
+                    class="input"
+                    type="search"
+                    placeholder="Cari berita..."
+                    data-i18n-placeholder="news_search_placeholder" />
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="beritaEmptyState"
+              class="berita-empty-state"
+              style="display: none"
+              data-i18n="news_empty_state">
+              Tidak ada berita yang sesuai dengan pencarian Anda.
+            </div>
+
+            <div class="berita-layout">
+              <div id="beritaTrendingContainer" class="berita-featured-column"></div>
+
+              <div class="berita-divider"></div>
+
+              <div class="berita-grid-column-scroll">
+                <div id="beritaGridContainer" class="berita-grid-column"></div>
+              </div>
+            </div>
+
+            <div class="berita-footer-note">
+              <span data-i18n="news_footer_note">
+                Berita ini merupakan konten yang dilindungi hak cipta.
+              </span>
+              <a href="berita-ketentuan.html" class="berita-footer-legal-link">
+                <span data-i18n="news_legal">Ketentuan &amp; Pengaduan</span>
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
+    <!-- FFT_HOMEPAGE_SEO_CONTENT_20260531 -->
+    <section id="tentang" class="fft-about-source-header">
+  <div class="fft-about-source-bar-top"></div>
+
+  <div class="fft-about-source-title-box">
+    <h2>TENTANG</h2>
+  </div>
+
+  <div class="fft-about-source-bar-bottom">
+    <span>FAKULTAS FILSAFAT TEOLOGI</span>
+  </div>
+</section>
+<!-- FFT_ABOUT_CONTENT_START -->
+<section class="fft-about-content-final" aria-label="Tentang Fakultas Filsafat Teologi UASN">
+  <style>
     .fft-about-content-final {
-      padding: 12px 0 46px;
+      width: 100%;
+      background: #ffffff;
+      padding: 18px 0 64px;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     .fft-about-content-inner {
-      width: min(92vw, 520px);
-      border-left-width: 4px;
-      padding: 22px 18px;
+      width: min(1120px, 92vw);
+      margin: 0 auto;
+      background: #ffffff;
+      border-left: 6px solid #5f0e0e;
+      padding: clamp(24px, 3vw, 42px);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.08);
     }
 
     .fft-about-content-grid {
-      grid-template-columns: 1fr;
-      gap: 20px;
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: clamp(24px, 4vw, 46px);
+      align-items: start;
     }
 
     .fft-about-content-text p {
-      font-size: 14px;
-      line-height: 1.65;
+      margin: 0 0 16px;
+      color: #252525;
+      font-size: clamp(15px, 1.15vw, 18px);
+      line-height: 1.72;
+      font-weight: 400;
     }
 
     .fft-about-side-card {
-      padding: 20px 18px;
+      background: #5f0e0e;
+      color: #ffffff;
+      padding: 26px 24px;
     }
 
     .fft-about-side-card h3 {
-      font-size: 16px;
+      margin: 0 0 14px;
+      color: #ffffff;
+      font-size: 20px;
+      line-height: 1.2;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .fft-about-side-card p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 15px;
+      line-height: 1.7;
     }
 
     .fft-about-links {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
     }
 
     .fft-about-links a {
-      width: 100%;
-      min-height: 42px;
-      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 16px;
+      background: #5f0e0e;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
-  }
-</style>
 
-<div class="fft-about-final-wrap">
-  <section id="tentang" class="berita-header fft-about-header">
-    <div class="berita-bar-top"></div>
+    .fft-about-links a:hover {
+      background: #430808;
+    }
 
-    <div class="berita-title-box">
-      <h2 data-i18n="news_title">TENTANG</h2>
-    </div>
+    @media (max-width: 768px) {
+      .fft-about-content-final {
+        padding: 12px 0 46px;
+      }
 
-    <div class="berita-bar-bottom">
-      <span data-i18n="news_subtitle">FAKULTAS FILSAFAT TEOLOGI</span>
-    </div>
-  </section>
+      .fft-about-content-inner {
+        width: min(92vw, 520px);
+        border-left-width: 4px;
+        padding: 22px 18px;
+      }
 
-  <section class="fft-about-content-final" aria-label="Tentang Fakultas Filsafat Teologi UASN">
-    <div class="fft-about-content-inner">
-      <div class="fft-about-content-grid">
-        <div class="fft-about-content-text">
-          <p>
-            Fakultas Filsafat Teologi Universitas Advent Surya Nusantara merupakan unit akademik yang berfokus pada pendidikan filsafat, teologi, pelayanan, kepemimpinan rohani, dan pengembangan karakter mahasiswa.
-          </p>
+      .fft-about-content-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
 
-          <p>
-            Fakultas ini menyediakan lingkungan pembelajaran yang mendukung mahasiswa untuk memahami dasar teologi, pelayanan gerejawi, etika, kehidupan akademik, dan tanggung jawab pelayanan di tengah masyarakat.
-          </p>
+      .fft-about-content-text p {
+        font-size: 14px;
+        line-height: 1.65;
+      }
 
-          <p>
-            Melalui Program Studi Teologi UASN, mahasiswa diarahkan untuk mengembangkan pemahaman akademik, kedewasaan spiritual, kemampuan berpikir kritis, dan kesiapan melayani secara profesional.
-          </p>
+      .fft-about-side-card {
+        padding: 20px 18px;
+      }
 
-          <div class="fft-about-links" aria-label="Tautan informasi Fakultas Filsafat Teologi">
-            <a href="alur-pendaftaran.html">Alur Pendaftaran</a>
-            <a href="persyaratan.html">Persyaratan</a>
-            <a href="kurikulum.html">Kurikulum</a>
-            <a href="pimpinan-dosen.html">Pimpinan dan Dosen</a>
-            <a href="kalender-akademik.html">Kalender Akademik</a>
-            <a href="e-brochure.html">E Brochure</a>
-            <a href="kontak.html">Kontak</a>
-            <a href="testimoni.html">Testimoni</a>
-          </div>
+      .fft-about-side-card h3 {
+        font-size: 16px;
+      }
+
+      .fft-about-links {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .fft-about-links a {
+        width: 100%;
+        min-height: 42px;
+        font-size: 11px;
+      }
+    }
+  </style>
+
+  <div class="fft-about-content-inner">
+    <div class="fft-about-content-grid">
+      <div class="fft-about-content-text">
+        <p>
+          Fakultas Filsafat Teologi Universitas Advent Surya Nusantara merupakan unit akademik yang berfokus pada pendidikan filsafat, teologi, pelayanan, kepemimpinan rohani, dan pengembangan karakter mahasiswa.
+        </p>
+
+        <p>
+          Fakultas ini menyediakan lingkungan pembelajaran yang mendukung mahasiswa untuk memahami dasar teologi, pelayanan gerejawi, etika, kehidupan akademik, dan tanggung jawab pelayanan di tengah masyarakat.
+        </p>
+
+        <p>
+          Melalui Program Studi Teologi UASN, mahasiswa diarahkan untuk mengembangkan pemahaman akademik, kedewasaan spiritual, kemampuan berpikir kritis, dan kesiapan melayani secara profesional.
+        </p>
+
+        <div class="fft-about-links" aria-label="Tautan informasi Fakultas Filsafat Teologi">
+          <a href="alur-pendaftaran.html">Alur Pendaftaran</a>
+          <a href="persyaratan.html">Persyaratan</a>
+          <a href="kurikulum.html">Kurikulum</a>
+          <a href="pimpinan-dosen.html">Pimpinan dan Dosen</a>
+          <a href="kalender-akademik.html">Kalender Akademik</a>
+          <a href="e-brochure.html">E Brochure</a>
+          <a href="kontak.html">Kontak</a>
+          <a href="testimoni.html">Testimoni</a>
         </div>
-
-        <aside class="fft-about-side-card">
-          <h3>Fokus Pendidikan</h3>
-          <p>
-            Pendidikan teologi, pembinaan karakter, kepemimpinan rohani, pelayanan gerejawi, dan penguatan etika akademik menjadi arah utama pembelajaran di Fakultas Filsafat Teologi UASN.
-          </p>
-        </aside>
       </div>
+
+      <aside class="fft-about-side-card">
+        <h3>Fokus Pendidikan</h3>
+        <p>
+          Pendidikan teologi, pembinaan karakter, kepemimpinan rohani, pelayanan gerejawi, dan penguatan etika akademik menjadi arah utama pembelajaran di Fakultas Filsafat Teologi UASN.
+        </p>
+      </aside>
     </div>
-  </section>
-</div>
-<!-- FFT_ABOUT_FINAL_END -->
+  </div>
+</section>
+<!-- FFT_ABOUT_CONTENT_END -->
     <!-- /FFT_HOMEPAGE_SEO_CONTENT_20260531 -->
 </main>
 
