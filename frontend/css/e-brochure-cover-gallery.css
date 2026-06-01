@@ -279,7 +279,7 @@
   z-index: 20 !important;
   box-sizing: border-box !important;
   pointer-events: none !important;
-  border: 4px solid #78080d !important;
+  border: 4px solid var(--fft-ebrochure-cover-stroke-color, #78080d) !important;
   background: transparent !important;
   opacity: 0 !important;
   transform: scaleY(0) !important;
@@ -315,3 +315,15 @@
   }
 }
 /* /FFT_EBROCHURE_COVER_FINAL_HOVER_STROKE_20260601 */
+
+/* FFT_EBROCHURE_COVER_STROKE_COLOR_VARIABLE_20260601 */
+:root {
+  --fft-ebrochure-cover-stroke-color: #78080d;
+}
+
+/*
+  Backend bisa override warna stroke dengan variable ini:
+  style="--fft-ebrochure-cover-stroke-color: #1f8f3a;"
+  Bisa dipasang di body, section cover gallery, atau item cover tertentu.
+*/
+/* /FFT_EBROCHURE_COVER_STROKE_COLOR_VARIABLE_20260601 */
