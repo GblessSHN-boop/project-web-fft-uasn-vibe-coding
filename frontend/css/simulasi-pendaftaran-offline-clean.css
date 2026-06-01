@@ -1,4 +1,4 @@
-﻿/* FFT_SIMULASI_OFFLINE_REBUILD_CLEAN_20260527
+/* FFT_SIMULASI_OFFLINE_REBUILD_CLEAN_20260527
    Clean rebuild untuk page Simulasi Pendaftaran Offline.
 */
 
@@ -561,5 +561,19 @@ body .simulasi-offline-page .simulasi-hero__panel strong {
     font-weight: 780 !important;
     line-height: 1.1 !important;
     letter-spacing: -0.026em !important;
+  }
+}
+
+/* FFT_SIMULASI_OFFLINE_POSITION_ONLY_20260601
+   Hanya mengangkat posisi hero desktop.
+   Tidak mengubah font, warna, ukuran, background, atau style tombol.
+*/
+@media (min-width: 769px) {
+  body .simulasi-offline-page .simulasi-hero__content {
+    transform: translateY(-72px) !important;
+  }
+
+  body .simulasi-offline-page .simulasi-hero__panel {
+    transform: translateY(-72px) !important;
   }
 }
