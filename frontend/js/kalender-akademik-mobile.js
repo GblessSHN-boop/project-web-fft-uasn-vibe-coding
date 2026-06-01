@@ -793,3 +793,31 @@
   });
 }());
 
+/* FFT_KALENDER_SEARCH_GARBLE_FINAL_20260601 */
+(function fixCalendarSearchPlaceholder() {
+  function clean() {
+    var inputs = document.querySelectorAll(
+      'input[type="search"], input[placeholder*="Cari"], input[placeholder*="registrasi"], input[name*="search"], input[id*="search"], input[class*="search"]'
+    );
+
+    inputs.forEach(function(input) {
+      input.setAttribute("placeholder", "Cari registrasi, ujian, perkuliahan...");
+
+      if (/â|�|⌕|🔍/i.test(input.value || "")) {
+        input.value = "";
+      }
+
+      input.style.textIndent = "0";
+      input.style.paddingLeft = "14px";
+      input.style.backgroundImage = "none";
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", clean);
+  } else {
+    clean();
+  }
+
+  window.addEventListener("load", clean);
+})();

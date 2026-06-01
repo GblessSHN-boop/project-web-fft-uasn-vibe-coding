@@ -1,4 +1,4 @@
-﻿/* FFT_KALENDER_AKADEMIK_MOBILE_POLISH_20260522
+/* FFT_KALENDER_AKADEMIK_MOBILE_POLISH_20260522
    Redesign mobile untuk halaman Kalender Akademik Fakultas.
    Desktop tidak disentuh.
 */
@@ -473,4 +473,140 @@
     opacity: 1 !important;
     transition: opacity 120ms ease;
   }
+}
+
+/* FFT_KALENDER_TITLE_SEARCH_FIX_20260601 */
+body.fft-calendar-title-search-fix {
+  background: #ffffff !important;
+  overflow-x: hidden !important;
+}
+
+@media (min-width: 769px) {
+  body.fft-calendar-title-search-fix .academic-calendar-hero,
+  body.fft-calendar-title-search-fix .calendar-hero,
+  body.fft-calendar-title-search-fix .kalender-hero,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"] {
+    background: #ffffff !important;
+    padding-top: 96px !important;
+    padding-bottom: 76px !important;
+  }
+
+  body.fft-calendar-title-search-fix .academic-calendar-hero-grid,
+  body.fft-calendar-title-search-fix .calendar-hero-grid,
+  body.fft-calendar-title-search-fix .kalender-hero-grid,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"][class*="grid"] {
+    width: min(1120px, 92vw) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+  }
+
+  body.fft-calendar-title-search-fix .academic-calendar-hero-card,
+  body.fft-calendar-title-search-fix .calendar-hero-card,
+  body.fft-calendar-title-search-fix .kalender-hero-card {
+    display: none !important;
+  }
+
+  body.fft-calendar-title-search-fix .academic-calendar-hero h1,
+  body.fft-calendar-title-search-fix .academic-calendar-hero h2,
+  body.fft-calendar-title-search-fix .calendar-hero h1,
+  body.fft-calendar-title-search-fix .calendar-hero h2,
+  body.fft-calendar-title-search-fix .kalender-hero h1,
+  body.fft-calendar-title-search-fix .kalender-hero h2,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"] h1,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"] h2 {
+    max-width: 920px !important;
+    margin: 0 0 22px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    font-size: clamp(56px, 5.6vw, 76px) !important;
+    font-weight: 800 !important;
+    line-height: 1.05 !important;
+    letter-spacing: -1.2px !important;
+    color: #19191f !important;
+  }
+
+  body.fft-calendar-title-search-fix .academic-calendar-hero p,
+  body.fft-calendar-title-search-fix .calendar-hero p,
+  body.fft-calendar-title-search-fix .kalender-hero p,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"] p {
+    max-width: 760px !important;
+    margin: 0 !important;
+    font-size: 24px !important;
+    font-weight: 400 !important;
+    line-height: 1.55 !important;
+    letter-spacing: 0 !important;
+    color: #5b5b61 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body.fft-calendar-title-search-fix [class*="search"],
+  body.fft-calendar-title-search-fix [class*="filter"] {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  body.fft-calendar-title-search-fix input[type="search"],
+  body.fft-calendar-title-search-fix input[type="text"][placeholder*="Cari"],
+  body.fft-calendar-title-search-fix input[placeholder*="registrasi"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    padding: 13px 14px !important;
+    text-indent: 0 !important;
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+    letter-spacing: 0 !important;
+    color: #202020 !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(16, 16, 16, 0.14) !important;
+  }
+
+  body.fft-calendar-title-search-fix input[type="search"]::placeholder,
+  body.fft-calendar-title-search-fix input[type="text"][placeholder*="Cari"]::placeholder,
+  body.fft-calendar-title-search-fix input[placeholder*="registrasi"]::placeholder {
+    color: #777777 !important;
+    opacity: 1 !important;
+  }
+}
+
+/* FFT_KALENDER_SEARCH_GARBLE_FINAL_20260601 */
+body.fft-calendar-title-search-fix .calendar-search::before,
+body.fft-calendar-title-search-fix .calendar-search::after,
+body.fft-calendar-title-search-fix .agenda-search::before,
+body.fft-calendar-title-search-fix .agenda-search::after,
+body.fft-calendar-title-search-fix .search-box::before,
+body.fft-calendar-title-search-fix .search-box::after,
+body.fft-calendar-title-search-fix .search-field::before,
+body.fft-calendar-title-search-fix .search-field::after,
+body.fft-calendar-title-search-fix .search-input::before,
+body.fft-calendar-title-search-fix .search-input::after,
+body.fft-calendar-title-search-fix [class*="search"]::before,
+body.fft-calendar-title-search-fix [class*="search"]::after {
+  content: none !important;
+  display: none !important;
+}
+
+body.fft-calendar-title-search-fix input[type="search"],
+body.fft-calendar-title-search-fix input[type="text"][placeholder*="Cari"],
+body.fft-calendar-title-search-fix input[placeholder*="registrasi"] {
+  padding-left: 14px !important;
+  text-indent: 0 !important;
+  background-image: none !important;
+}
+
+body.fft-calendar-title-search-fix input[type="search"]::placeholder,
+body.fft-calendar-title-search-fix input[type="text"][placeholder*="Cari"]::placeholder,
+body.fft-calendar-title-search-fix input[placeholder*="registrasi"]::placeholder {
+  content: normal !important;
+  color: #777777 !important;
+  opacity: 1 !important;
 }
