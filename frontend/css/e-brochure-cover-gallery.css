@@ -1,4 +1,4 @@
-﻿/* FFT_EBROCHURE_COVER_GALLERY_20260528
+/* FFT_EBROCHURE_COVER_GALLERY_20260528
    Gallery cover kecil seperti katalog E Brochure. Hanya cover dan judul.
 */
 
@@ -210,3 +210,69 @@
     min-height: 240px !important;
   }
 }
+
+/* FFT_EBROCHURE_COVER_SHADOW_CLEAN_20260601 */
+.fft-cover-gallery .fft-cover-book {
+  position: relative !important;
+  aspect-ratio: 2550 / 3300 !important;
+  height: auto !important;
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+}
+
+.fft-cover-gallery .fft-cover-book__front {
+  position: relative !important;
+  z-index: 2 !important;
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 2550 / 3300 !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow:
+    0 18px 36px rgba(15, 15, 15, 0.16),
+    0 6px 14px rgba(15, 15, 15, 0.10) !important;
+}
+
+.fft-cover-gallery .fft-cover-book::before,
+.fft-cover-gallery .fft-cover-book::after,
+.fft-cover-gallery .fft-cover-book__front::before,
+.fft-cover-gallery .fft-cover-book__front::after,
+.fft-cover-gallery .fft-cover-book__back,
+.fft-cover-gallery .fft-cover-book__spine,
+.fft-cover-gallery .fft-cover-book__pages,
+.fft-cover-gallery .fft-cover-book__edge {
+  content: none !important;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+.fft-cover-gallery .fft-cover-book > *:not(.fft-cover-book__front) {
+  display: none !important;
+}
+
+.fft-cover-gallery .fft-cover-book__front img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: #ffffff !important;
+}
+
+.fft-cover-gallery .fft-cover-gallery__item {
+  overflow: visible !important;
+}
+/* /FFT_EBROCHURE_COVER_SHADOW_CLEAN_20260601 */
