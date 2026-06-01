@@ -2594,7 +2594,7 @@
 }
 
 .admission-flow-checklist li::before {
-  content: "âœ“";
+  content: "";
   position: absolute;
   left: 16px;
   color: #640b0b;
@@ -2667,7 +2667,7 @@
 }
 
 .admission-flow-faq-list details[open] summary::after {
-  content: "âˆ’";
+  content: "";
 }
 
 .admission-flow-faq-list details p {
@@ -3380,7 +3380,7 @@
 }
 
 .offline-checklist li::before {
-  content: "âœ“";
+  content: "";
   position: absolute;
   left: 20px;
   top: 18px;
@@ -3842,7 +3842,7 @@ html[lang="en"] .offline-checkpoint__header > strong::before {
 }
 
 .offline-checkpoint__item.is-completed::after {
-  content: "âœ“";
+  content: "";
   display: grid;
   place-items: center;
   border-color: #640b0b;
@@ -4603,104 +4603,4 @@ body.ebrochure-modal-open {
 .news-detail-kicker,
 .ranking-kicker {
   padding-left: 0 !important;
-}
-
-/* FFT_KURIKULUM_FONT_POLISH_20260601 */
-.curriculum-page {
-  font-family: "Inter", Arial, Helvetica, sans-serif;
-}
-
-.curriculum-page .curriculum-hero-title-wide {
-  font-weight: 780 !important;
-  line-height: 1.06 !important;
-  letter-spacing: -0.012em !important;
-  text-wrap: balance;
-}
-
-.curriculum-page .curriculum-hero-title-wide span {
-  letter-spacing: inherit !important;
-}
-
-.curriculum-page .curriculum-hero-title-wide span:first-child,
-.curriculum-page .curriculum-hero-title-wide span:last-child {
-  font-weight: inherit !important;
-  line-height: inherit !important;
-  letter-spacing: inherit !important;
-}
-
-.curriculum-page .curriculum-hero p,
-.curriculum-page .curriculum-hero-card p,
-.curriculum-page .curriculum-hero-card span {
-  font-family: "Open Sans", Arial, Helvetica, sans-serif !important;
-  font-weight: 400 !important;
-  line-height: 1.72 !important;
-  letter-spacing: 0 !important;
-}
-
-.curriculum-page .curriculum-hero-card h2,
-.curriculum-page .curriculum-hero-card h3,
-.curriculum-page .curriculum-section-title,
-.curriculum-page .curriculum-card-title {
-  font-weight: 760 !important;
-  line-height: 1.16 !important;
-  letter-spacing: 0.01em !important;
-}
-
-@media (max-width: 768px) {
-  .curriculum-page .curriculum-hero-title-wide {
-    font-weight: 760 !important;
-    line-height: 1.1 !important;
-    letter-spacing: -0.004em !important;
-  }
-
-  .curriculum-page .curriculum-hero p,
-  .curriculum-page .curriculum-hero-card p,
-  .curriculum-page .curriculum-hero-card span {
-    line-height: 1.66 !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .curriculum-page .curriculum-hero-title-wide {
-    font-weight: 740 !important;
-    line-height: 1.12 !important;
-    letter-spacing: 0 !important;
-  }
-}
-
-/* FFT_KURIKULUM_PROGRAM_TITLE_POLISH_20260601 */
-.curriculum-page h2,
-.curriculum-page .curriculum-section-title,
-.curriculum-page .curriculum-program-title,
-.curriculum-page .curriculum-program-heading,
-.curriculum-page .curriculum-study-title,
-.curriculum-page .curriculum-study-heading {
-  font-weight: 760 !important;
-  line-height: 1.22 !important;
-  letter-spacing: 0.018em !important;
-  word-spacing: 0.08em !important;
-}
-
-.curriculum-page h2 span,
-.curriculum-page .curriculum-section-title span,
-.curriculum-page .curriculum-program-title span,
-.curriculum-page .curriculum-program-heading span,
-.curriculum-page .curriculum-study-title span,
-.curriculum-page .curriculum-study-heading span {
-  letter-spacing: inherit !important;
-  word-spacing: inherit !important;
-}
-
-@media (max-width: 768px) {
-  .curriculum-page h2,
-  .curriculum-page .curriculum-section-title,
-  .curriculum-page .curriculum-program-title,
-  .curriculum-page .curriculum-program-heading,
-  .curriculum-page .curriculum-study-title,
-  .curriculum-page .curriculum-study-heading {
-    font-weight: 740 !important;
-    line-height: 1.26 !important;
-    letter-spacing: 0.012em !important;
-    word-spacing: 0.06em !important;
-  }
 }
