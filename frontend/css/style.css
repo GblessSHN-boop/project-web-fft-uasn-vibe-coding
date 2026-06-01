@@ -7218,8 +7218,8 @@ html.fft-header-flash-fallback .site-header {
 }
 
 /* FFT_TENTANG_SOURCE_FINAL_20260531
-   Header TENTANG mengikuti source final dari user.
-   Selector dibuat khusus agar tidak merusak section BERITA asli.
+   Header TENTANG mengikuti header BERITA.
+   Perbedaan hanya warna bar menjadi merah FFT.
 */
 .fft-about-source-header {
   width: 100%;
@@ -7274,6 +7274,31 @@ html.fft-header-flash-fallback .site-header {
   letter-spacing: 7px;
   text-transform: uppercase;
   color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .fft-about-source-title-box {
+    min-height: 84px;
+    padding: 10px 24px;
+  }
+
+  .fft-about-source-title-box h2 {
+    font-size: 28px;
+    letter-spacing: 1px;
+  }
+
+  .fft-about-source-bar-bottom {
+    width: 90%;
+    height: auto;
+    min-height: 24px;
+    padding: 4px 10px;
+  }
+
+  .fft-about-source-bar-bottom span {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-align: center;
+  }
 }
 
 @media (max-width: 576px) {
