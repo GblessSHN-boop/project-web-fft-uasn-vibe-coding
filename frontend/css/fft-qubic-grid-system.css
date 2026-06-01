@@ -1,0 +1,236 @@
+/* FFT_QUBIC_GRID_SYSTEM_20260601
+   Sistem tipografi lokal Qubic Grid.
+   Putih polos, bentuk tajam, tanpa sudut lengkung.
+*/
+
+@font-face {
+  font-family: "Qubic Grid";
+  src: url("../assets/fonts/qubic-grid/Qubic-Grid-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Qubic Grid";
+  src: url("../assets/fonts/qubic-grid/Qubic-Grid-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Qubic Grid";
+  src: url("../assets/fonts/qubic-grid/Qubic-Grid-Semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Qubic Grid";
+  src: url("../assets/fonts/qubic-grid/Qubic-Grid-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Qubic Grid";
+  src: url("../assets/fonts/qubic-grid/Qubic-Grid-Extrabold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Qubic Grid";
+  src: url("../assets/fonts/qubic-grid/Qubic-Grid-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --fft-font-main: "Qubic Grid", Arial, Helvetica, sans-serif;
+  --fft-bg: #ffffff;
+  --fft-text-strong: #101010;
+  --fft-text: #202020;
+  --fft-text-muted: #575757;
+  --fft-red: #5f0e0e;
+  --fft-red-dark: #430808;
+  --fft-line: rgba(16, 16, 16, 0.12);
+}
+
+.fft-redesign-page {
+  background: #ffffff !important;
+  color: var(--fft-text) !important;
+  font-family: var(--fft-font-main) !important;
+}
+
+.fft-redesign-page *,
+.fft-redesign-page *::before,
+.fft-redesign-page *::after {
+  border-radius: 0 !important;
+}
+
+.fft-redesign-page h1,
+.fft-redesign-page h2,
+.fft-redesign-page h3,
+.fft-redesign-page h4,
+.fft-redesign-page h5,
+.fft-redesign-page h6,
+.fft-redesign-page p,
+.fft-redesign-page a,
+.fft-redesign-page li,
+.fft-redesign-page span,
+.fft-redesign-page button,
+.fft-redesign-page input,
+.fft-redesign-page textarea,
+.fft-redesign-page select,
+.fft-redesign-page table,
+.fft-redesign-page th,
+.fft-redesign-page td {
+  font-family: var(--fft-font-main) !important;
+}
+
+.fft-redesign-page h2 {
+  font-size: clamp(40px, 4vw, 44px) !important;
+  font-weight: 700 !important;
+  line-height: 1.14 !important;
+  letter-spacing: -0.7px !important;
+  color: var(--fft-text-strong) !important;
+}
+
+.fft-redesign-page h3 {
+  font-size: clamp(22px, 2.2vw, 26px) !important;
+  font-weight: 600 !important;
+  line-height: 1.26 !important;
+  letter-spacing: -0.25px !important;
+  color: var(--fft-text-strong) !important;
+}
+
+.fft-redesign-page p,
+.fft-redesign-page li {
+  max-width: 760px;
+  font-size: 16.5px !important;
+  font-weight: 400 !important;
+  line-height: 1.66 !important;
+  letter-spacing: 0 !important;
+  color: var(--fft-text-muted) !important;
+}
+
+.fft-redesign-page a,
+.fft-redesign-page button {
+  font-size: 14.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.25px !important;
+}
+
+.fft-redesign-page .fft-page-shell {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+}
+
+.fft-redesign-page .fft-page-header {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+  padding: 84px 0 44px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--fft-line);
+}
+
+.fft-redesign-page .fft-page-kicker {
+  margin: 0 0 14px;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0.18px !important;
+  text-transform: uppercase;
+  color: var(--fft-red) !important;
+}
+
+.fft-redesign-page .fft-page-title {
+  margin: 0 0 14px;
+}
+
+.fft-redesign-page .fft-page-subtitle {
+  margin: 0;
+  max-width: 760px;
+  font-size: clamp(20px, 2vw, 22px) !important;
+  font-weight: 400 !important;
+  line-height: 1.48 !important;
+  letter-spacing: 0 !important;
+  color: var(--fft-text-muted) !important;
+}
+
+.fft-redesign-page .fft-page-section {
+  padding: 72px 0;
+  background: #ffffff;
+  border-bottom: 1px solid var(--fft-line);
+}
+
+.fft-redesign-page .fft-square-panel {
+  background: #ffffff;
+  border: 1px solid var(--fft-line);
+  border-top: 4px solid var(--fft-red);
+  padding: 28px;
+}
+
+.fft-redesign-page .fft-square-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--fft-red);
+  background: var(--fft-red);
+  color: #ffffff !important;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.fft-redesign-page .fft-square-button:hover {
+  background: var(--fft-red-dark);
+  border-color: var(--fft-red-dark);
+}
+
+@media (max-width: 768px) {
+  .fft-redesign-page h2 {
+    font-size: clamp(28px, 8vw, 32px) !important;
+    font-weight: 700 !important;
+    line-height: 1.18 !important;
+    letter-spacing: -0.4px !important;
+  }
+
+  .fft-redesign-page h3 {
+    font-size: clamp(20px, 6vw, 22px) !important;
+    font-weight: 600 !important;
+    line-height: 1.28 !important;
+    letter-spacing: -0.2px !important;
+  }
+
+  .fft-redesign-page p,
+  .fft-redesign-page li {
+    font-size: 15.5px !important;
+    line-height: 1.6 !important;
+  }
+
+  .fft-redesign-page .fft-page-header {
+    padding: 56px 0 34px;
+  }
+
+  .fft-redesign-page .fft-page-subtitle {
+    font-size: clamp(17px, 4.8vw, 18px) !important;
+    line-height: 1.45 !important;
+  }
+
+  .fft-redesign-page .fft-page-section {
+    padding: 52px 0;
+  }
+
+  .fft-redesign-page .fft-square-panel {
+    padding: 22px 18px;
+  }
+}
