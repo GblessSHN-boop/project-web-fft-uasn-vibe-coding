@@ -1,0 +1,197 @@
+/* FFT_PERSYARATAN_POLISH_20260601
+   Polish halaman Persyaratan.
+   Scope hanya untuk body.fft-requirements-polish.
+*/
+
+body.fft-requirements-polish {
+  background: #ffffff !important;
+  overflow-x: hidden !important;
+}
+
+body.fft-requirements-polish .registration-hero {
+  background: #ffffff !important;
+  padding: 86px 0 64px !important;
+  border-bottom: 1px solid rgba(15, 15, 15, 0.1) !important;
+}
+
+body.fft-requirements-polish .registration-hero-inner {
+  width: min(1120px, 92vw) !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 0 !important;
+  align-items: start !important;
+}
+
+body.fft-requirements-polish .registration-status-panel {
+  display: none !important;
+}
+
+body.fft-requirements-polish .registration-hero h1 {
+  max-width: 900px !important;
+  margin: 0 0 18px !important;
+  font-size: clamp(52px, 5.4vw, 76px) !important;
+  font-weight: 800 !important;
+  line-height: 1.04 !important;
+  letter-spacing: -1.1px !important;
+  color: #171717 !important;
+}
+
+body.fft-requirements-polish .registration-hero-copy > p {
+  max-width: 760px !important;
+  margin: 0 !important;
+  font-size: clamp(19px, 1.8vw, 22px) !important;
+  font-weight: 400 !important;
+  line-height: 1.56 !important;
+  letter-spacing: 0 !important;
+  color: #555555 !important;
+}
+
+body.fft-requirements-polish .registration-hero-copy strong,
+body.fft-requirements-polish .hero-kicker,
+body.fft-requirements-polish .hero-kicker span {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  color: #5f0e0e !important;
+}
+
+body.fft-requirements-polish .requirements-board,
+body.fft-requirements-polish .offline-card-grid {
+  width: min(1120px, 92vw) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+body.fft-requirements-polish .requirements-board {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 22px !important;
+}
+
+body.fft-requirements-polish .requirement-item,
+body.fft-requirements-polish .offline-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 15, 15, 0.12) !important;
+  border-top: 4px solid #5f0e0e !important;
+  box-shadow: none !important;
+}
+
+body.fft-requirements-polish .requirement-item,
+body.fft-requirements-polish .requirement-item *,
+body.fft-requirements-polish .offline-card,
+body.fft-requirements-polish .offline-card *,
+body.fft-requirements-polish .registration-hero *,
+body.fft-requirements-polish a,
+body.fft-requirements-polish button {
+  border-radius: 0 !important;
+}
+
+body.fft-requirements-polish .requirement-item {
+  padding: 26px 24px !important;
+}
+
+body.fft-requirements-polish .requirement-item > span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  margin-bottom: 18px !important;
+  background: #5f0e0e !important;
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+}
+
+body.fft-requirements-polish .requirement-item h3,
+body.fft-requirements-polish .offline-card h3 {
+  margin: 0 0 10px !important;
+  font-size: clamp(22px, 2.2vw, 26px) !important;
+  font-weight: 750 !important;
+  line-height: 1.22 !important;
+  letter-spacing: -0.2px !important;
+  color: #171717 !important;
+}
+
+body.fft-requirements-polish .requirement-item p,
+body.fft-requirements-polish .offline-card p {
+  max-width: 720px !important;
+  margin: 0 !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 1.64 !important;
+  letter-spacing: 0 !important;
+  color: #555555 !important;
+}
+
+body.fft-requirements-polish .offline-card-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 20px !important;
+}
+
+body.fft-requirements-polish .offline-card {
+  padding: 24px !important;
+}
+
+body.fft-requirements-polish a,
+body.fft-requirements-polish button {
+  font-weight: 750 !important;
+}
+
+@media (max-width: 980px) {
+  body.fft-requirements-polish .requirements-board,
+  body.fft-requirements-polish .offline-card-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 760px) {
+  body.fft-requirements-polish .registration-hero {
+    padding: 58px 0 42px !important;
+  }
+
+  body.fft-requirements-polish .registration-hero h1 {
+    max-width: 100% !important;
+    margin-bottom: 14px !important;
+    font-size: clamp(38px, 11vw, 48px) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.55px !important;
+  }
+
+  body.fft-requirements-polish .registration-hero-copy > p {
+    font-size: 16.5px !important;
+    line-height: 1.56 !important;
+  }
+
+  body.fft-requirements-polish .requirements-board {
+    gap: 16px !important;
+  }
+
+  body.fft-requirements-polish .requirement-item,
+  body.fft-requirements-polish .offline-card {
+    padding: 20px 18px !important;
+  }
+
+  body.fft-requirements-polish .requirement-item > span {
+    min-width: 38px !important;
+    min-height: 38px !important;
+    margin-bottom: 14px !important;
+    font-size: 15px !important;
+  }
+
+  body.fft-requirements-polish .requirement-item h3,
+  body.fft-requirements-polish .offline-card h3 {
+    font-size: clamp(20px, 6.3vw, 22px) !important;
+    line-height: 1.25 !important;
+  }
+
+  body.fft-requirements-polish .requirement-item p,
+  body.fft-requirements-polish .offline-card p {
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+  }
+}
