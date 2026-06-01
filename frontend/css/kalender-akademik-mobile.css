@@ -610,3 +610,180 @@ body.fft-calendar-title-search-fix input[placeholder*="registrasi"]::placeholder
   color: #777777 !important;
   opacity: 1 !important;
 }
+
+/* FFT_KALENDER_DESKTOP_HERO_POSITION_FIX_20260601 */
+@media (min-width: 769px) {
+  body.fft-calendar-title-search-fix .fft-calendar-hero,
+  body.fft-calendar-title-search-fix .academic-calendar-hero,
+  body.fft-calendar-title-search-fix .calendar-hero,
+  body.fft-calendar-title-search-fix .kalender-hero,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"] {
+    min-height: auto !important;
+    height: auto !important;
+    padding-top: 72px !important;
+    padding-bottom: 58px !important;
+    display: block !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    background: #ffffff !important;
+  }
+
+  body.fft-calendar-title-search-fix .fft-calendar-hero-inner,
+  body.fft-calendar-title-search-fix .fft-calendar-hero__inner,
+  body.fft-calendar-title-search-fix .academic-calendar-hero-grid,
+  body.fft-calendar-title-search-fix .calendar-hero-grid,
+  body.fft-calendar-title-search-fix .kalender-hero-grid,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"][class*="inner"],
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"][class*="grid"] {
+    width: min(1120px, 92vw) !important;
+    min-height: auto !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: block !important;
+    grid-template-columns: minmax(0, 880px) !important;
+    align-items: start !important;
+    justify-content: start !important;
+    gap: 0 !important;
+  }
+
+  body.fft-calendar-title-search-fix .fft-calendar-hero-copy,
+  body.fft-calendar-title-search-fix .fft-calendar-hero-content,
+  body.fft-calendar-title-search-fix .fft-calendar-hero__copy,
+  body.fft-calendar-title-search-fix .fft-calendar-hero__content,
+  body.fft-calendar-title-search-fix .academic-calendar-hero-copy,
+  body.fft-calendar-title-search-fix .calendar-hero-copy,
+  body.fft-calendar-title-search-fix .kalender-hero-copy,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"][class*="copy"],
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"][class*="content"] {
+    max-width: 880px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    align-self: start !important;
+    justify-self: start !important;
+  }
+
+  body.fft-calendar-title-search-fix .fft-calendar-kicker,
+  body.fft-calendar-title-search-fix .fft-calendar-hero-kicker,
+  body.fft-calendar-title-search-fix .fft-calendar-hero__kicker,
+  body.fft-calendar-title-search-fix .calendar-kicker,
+  body.fft-calendar-title-search-fix .hero-kicker,
+  body.fft-calendar-title-search-fix [class*="kicker"],
+  body.fft-calendar-title-search-fix [class*="eyebrow"] {
+    display: block !important;
+    width: fit-content !important;
+    margin: 0 0 18px !important;
+    padding: 0 !important;
+    position: static !important;
+    transform: none !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    line-height: 1.35 !important;
+    letter-spacing: 0.18em !important;
+    text-transform: uppercase !important;
+    color: #5f0e0e !important;
+  }
+
+  body.fft-calendar-title-search-fix .fft-calendar-hero h1,
+  body.fft-calendar-title-search-fix .fft-calendar-hero h2,
+  body.fft-calendar-title-search-fix .academic-calendar-hero h1,
+  body.fft-calendar-title-search-fix .academic-calendar-hero h2,
+  body.fft-calendar-title-search-fix .calendar-hero h1,
+  body.fft-calendar-title-search-fix .calendar-hero h2,
+  body.fft-calendar-title-search-fix .kalender-hero h1,
+  body.fft-calendar-title-search-fix .kalender-hero h2,
+  body.fft-calendar-title-search-fix .fft-calendar-title,
+  body.fft-calendar-title-search-fix .fft-calendar-heading,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"] h1,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"] h2,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="title"],
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="heading"] {
+    max-width: 920px !important;
+    margin: 0 0 20px !important;
+    padding: 0 !important;
+    position: static !important;
+    top: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    font-size: clamp(54px, 5.4vw, 78px) !important;
+    font-weight: 800 !important;
+    line-height: 1.05 !important;
+    letter-spacing: -1.1px !important;
+    color: #171717 !important;
+  }
+
+  body.fft-calendar-title-search-fix .fft-calendar-hero p,
+  body.fft-calendar-title-search-fix .academic-calendar-hero p,
+  body.fft-calendar-title-search-fix .calendar-hero p,
+  body.fft-calendar-title-search-fix .kalender-hero p,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"] p,
+  body.fft-calendar-title-search-fix .fft-calendar-lead {
+    max-width: 760px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    transform: none !important;
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    line-height: 1.58 !important;
+    letter-spacing: 0 !important;
+    color: #555555 !important;
+  }
+
+  body.fft-calendar-title-search-fix .fft-calendar-status-card,
+  body.fft-calendar-title-search-fix .fft-calendar-hero-card,
+  body.fft-calendar-title-search-fix .fft-calendar-hero__card,
+  body.fft-calendar-title-search-fix .academic-calendar-hero-card,
+  body.fft-calendar-title-search-fix .calendar-hero-card,
+  body.fft-calendar-title-search-fix .kalender-hero-card,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="status"][class*="card"],
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"][class*="card"],
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"][class*="aside"] {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body.fft-calendar-title-search-fix .fft-calendar-hero,
+  body.fft-calendar-title-search-fix .academic-calendar-hero,
+  body.fft-calendar-title-search-fix .calendar-hero,
+  body.fft-calendar-title-search-fix .kalender-hero,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"] {
+    min-height: auto !important;
+  }
+}
+
+/* FFT_KALENDER_LOWER_AGENDA_SECTION_20260601 */
+@media (min-width: 769px) {
+  body.fft-calendar-title-search-fix .fft-calendar-hero,
+  body.fft-calendar-title-search-fix .academic-calendar-hero,
+  body.fft-calendar-title-search-fix .calendar-hero,
+  body.fft-calendar-title-search-fix .kalender-hero,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"] {
+    padding-bottom: clamp(150px, 14vh, 220px) !important;
+  }
+
+  body.fft-calendar-title-search-fix .fft-calendar-hero + section,
+  body.fft-calendar-title-search-fix .academic-calendar-hero + section,
+  body.fft-calendar-title-search-fix .calendar-hero + section,
+  body.fft-calendar-title-search-fix .kalender-hero + section,
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="hero"] + section {
+    padding-top: 96px !important;
+  }
+
+  body.fft-calendar-title-search-fix .fft-calendar-agenda,
+  body.fft-calendar-title-search-fix .academic-calendar-agenda,
+  body.fft-calendar-title-search-fix .calendar-agenda,
+  body.fft-calendar-title-search-fix .kalender-agenda,
+  body.fft-calendar-title-search-fix [class*="agenda"][class*="section"],
+  body.fft-calendar-title-search-fix [class*="calendar"][class*="agenda"] {
+    padding-top: 96px !important;
+    margin-top: 0 !important;
+  }
+}
