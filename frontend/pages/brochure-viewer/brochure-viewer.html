@@ -225,7 +225,7 @@
 }
   </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 CSS -->
-  <link rel="stylesheet" href="fft-viewer-theme.css?v=viewer-boot-hide-old-theme-20260602">
+  <link rel="stylesheet" href="fft-viewer-theme.css?v=viewer-mobile-compact-dom-marker-20260602">
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_STYLE_START -->
 <style>
@@ -452,6 +452,258 @@
   }
 </style>
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_STYLE_END -->
+<!-- FFT_VIEWER_MOBILE_COMPACT_DOM_MARKER_20260602 -->
+<style>
+  @media (max-width: 760px) {
+    html.fft-mobile-compact-dom body {
+      overflow-x: hidden !important;
+    }
+
+    html.fft-mobile-compact-dom [data-fft-mobile-hero] {
+      padding: 6px 12px 8px !important;
+      margin: 0 !important;
+      min-height: 0 !important;
+      gap: 0 !important;
+    }
+
+    html.fft-mobile-compact-dom [data-fft-mobile-eyebrow] {
+      display: block !important;
+      margin: 0 0 3px !important;
+      font-size: 8.5px !important;
+      line-height: 1 !important;
+      letter-spacing: 0.2em !important;
+    }
+
+    html.fft-mobile-compact-dom [data-fft-mobile-title] {
+      margin: 0 0 4px !important;
+      max-width: 100% !important;
+      font-size: clamp(18px, 5.6vw, 21px) !important;
+      line-height: 0.98 !important;
+      letter-spacing: -0.04em !important;
+    }
+
+    html.fft-mobile-compact-dom [data-fft-mobile-desc] {
+      margin: 0 !important;
+      max-width: 100% !important;
+      font-size: 10.8px !important;
+      line-height: 1.22 !important;
+      color: rgba(38, 52, 71, 0.72) !important;
+      display: -webkit-box !important;
+      -webkit-line-clamp: 2 !important;
+      -webkit-box-orient: vertical !important;
+      overflow: hidden !important;
+    }
+
+    html.fft-mobile-compact-dom [data-fft-mobile-actions] {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 7px !important;
+      margin: 7px 0 0 !important;
+      padding: 0 !important;
+    }
+
+    html.fft-mobile-compact-dom [data-fft-mobile-action] {
+      min-height: 30px !important;
+      height: 30px !important;
+      padding: 0 8px !important;
+      border-radius: 0 !important;
+      font-size: 11px !important;
+      font-weight: 850 !important;
+      line-height: 1 !important;
+    }
+
+    html.fft-mobile-compact-dom [data-fft-mobile-stage] {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+      align-items: flex-start !important;
+      justify-content: flex-start !important;
+    }
+
+    html.fft-mobile-compact-dom [data-fft-mobile-book] {
+      margin-top: 0 !important;
+    }
+
+    html.fft-mobile-compact-dom .fft-dflip-toolbar {
+      bottom: 8px !important;
+    }
+  }
+
+  @media (max-width: 420px) {
+    html.fft-mobile-compact-dom [data-fft-mobile-hero] {
+      padding: 5px 10px 7px !important;
+    }
+
+    html.fft-mobile-compact-dom [data-fft-mobile-title] {
+      font-size: clamp(17px, 5.5vw, 20px) !important;
+      line-height: 0.97 !important;
+    }
+
+    html.fft-mobile-compact-dom [data-fft-mobile-desc] {
+      font-size: 10.4px !important;
+      line-height: 1.2 !important;
+    }
+
+    html.fft-mobile-compact-dom [data-fft-mobile-action] {
+      min-height: 29px !important;
+      height: 29px !important;
+      font-size: 10.8px !important;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  var markerClass = "fft-mobile-compact-dom";
+
+  function isMobile() {
+    return window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
+  }
+
+  function textOf(node) {
+    return (node && node.textContent ? node.textContent : "").replace(/\s+/g, " ").trim();
+  }
+
+  function hasActionButton(node) {
+    if (!node) {
+      return false;
+    }
+
+    return Array.prototype.slice.call(node.querySelectorAll("a, button")).some(function (item) {
+      return /Kembali|Download\s*PDF/i.test(textOf(item));
+    });
+  }
+
+  function commonAncestor(nodes) {
+    if (!nodes || nodes.length === 0) {
+      return null;
+    }
+
+    var first = nodes[0];
+
+    while (first && first !== document.body) {
+      var ok = nodes.every(function (node) {
+        return first.contains(node);
+      });
+
+      if (ok) {
+        return first;
+      }
+
+      first = first.parentElement;
+    }
+
+    return null;
+  }
+
+  function findHeroFromHeading(heading) {
+    var node = heading;
+
+    for (var i = 0; node && node !== document.body && i < 8; i += 1) {
+      if (hasActionButton(node)) {
+        return node;
+      }
+
+      node = node.parentElement;
+    }
+
+    return heading.closest("header, section, main > div, .viewer-title, .preview-title") || heading.parentElement;
+  }
+
+  function markHero() {
+    var headings = Array.prototype.slice.call(document.querySelectorAll("h1"));
+    var heading = headings.find(function (item) {
+      return /Brosur|Preview/i.test(textOf(item));
+    });
+
+    if (!heading) {
+      return;
+    }
+
+    var hero = findHeroFromHeading(heading);
+
+    if (!hero) {
+      return;
+    }
+
+    document.documentElement.classList.add(markerClass);
+
+    hero.setAttribute("data-fft-mobile-hero", "true");
+    heading.setAttribute("data-fft-mobile-title", "true");
+
+    Array.prototype.slice.call(hero.querySelectorAll("p")).forEach(function (paragraph) {
+      paragraph.setAttribute("data-fft-mobile-desc", "true");
+    });
+
+    Array.prototype.slice.call(hero.querySelectorAll("span, small, strong")).forEach(function (item) {
+      if (/E\s*-?\s*BROCHURE/i.test(textOf(item))) {
+        item.setAttribute("data-fft-mobile-eyebrow", "true");
+      }
+    });
+
+    var buttons = Array.prototype.slice.call(hero.querySelectorAll("a, button")).filter(function (item) {
+      return /Kembali|Download\s*PDF/i.test(textOf(item));
+    });
+
+    buttons.forEach(function (item) {
+      item.setAttribute("data-fft-mobile-action", "true");
+    });
+
+    var actions = commonAncestor(buttons);
+
+    if (actions) {
+      actions.setAttribute("data-fft-mobile-actions", "true");
+    }
+  }
+
+  function markViewerStage() {
+    var book = document.querySelector(".stf__parent, .stf__wrapper, .df-ui-wrapper, .dflip-wrapper, .dflip-book-wrapper, [class*='dflip'], [class*='flipbook']");
+
+    if (!book) {
+      return;
+    }
+
+    document.documentElement.classList.add(markerClass);
+    book.setAttribute("data-fft-mobile-book", "true");
+
+    var node = book.parentElement;
+
+    for (var i = 0; node && node !== document.body && i < 7; i += 1) {
+      node.setAttribute("data-fft-mobile-stage", "true");
+      node = node.parentElement;
+    }
+  }
+
+  function applyCompactMobile() {
+    if (!isMobile()) {
+      return;
+    }
+
+    markHero();
+    markViewerStage();
+  }
+
+  function boot() {
+    applyCompactMobile();
+    window.setTimeout(applyCompactMobile, 80);
+    window.setTimeout(applyCompactMobile, 300);
+    window.setTimeout(applyCompactMobile, 900);
+    window.setTimeout(applyCompactMobile, 1800);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot, { once: true });
+  } else {
+    boot();
+  }
+
+  window.addEventListener("load", function () {
+    window.setTimeout(applyCompactMobile, 200);
+  }, { once: true });
+
+  window.addEventListener("resize", applyCompactMobile);
+}());
+</script>
+<!-- /FFT_VIEWER_MOBILE_COMPACT_DOM_MARKER_20260602 -->
 </head>
 <body class="fft-standalone-viewer">
 
@@ -480,7 +732,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
-  <script src="data/brochures.js?v=viewer-boot-hide-old-theme-20260602"></script>
+  <script src="data/brochures.js?v=viewer-mobile-compact-dom-marker-20260602"></script>
 
   <script>
     /* FFT_VIEWER_BACKEND_READY_DATA_CONTRACT_20260602 */
@@ -795,7 +1047,7 @@ wrapper.appendChild(canvas);
 }());
 </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 JS -->
-  <script defer src="fft-viewer-theme.js?v=viewer-boot-hide-old-theme-20260602"></script>
+  <script defer src="fft-viewer-theme.js?v=viewer-mobile-compact-dom-marker-20260602"></script>
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_START -->
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_END -->
