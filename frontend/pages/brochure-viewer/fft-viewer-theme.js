@@ -2254,3 +2254,57 @@ function buildPanel() {
   }, true);
 }());
 /* /FFT_VIEWER_ACTION_MENU_PANEL_20260602 */
+
+/* FFT_VIEWER_RELEASE_BOOT_HIDE_OLD_THEME_20260602 */
+(function () {
+  var released = false;
+  var startedAt = Date.now();
+  var maxWait = 2600;
+
+  function releaseViewerBootLock() {
+    if (released) {
+      return;
+    }
+
+    released = true;
+
+    document.documentElement.classList.remove("fft-viewer-boot-lock");
+    document.documentElement.classList.add("fft-viewer-boot-ready");
+  }
+
+  function titleStillOld() {
+    var title = document.querySelector(".viewer-title h1, h1");
+
+    if (!title) {
+      return false;
+    }
+
+    return /^\s*Preview\s+E\s+Brochure\s*$/i.test(title.textContent || "");
+  }
+
+  function waitUntilThemeReady() {
+    var timeout = Date.now() - startedAt > maxWait;
+
+    if (!titleStillOld() || timeout) {
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(releaseViewerBootLock);
+      });
+      return;
+    }
+
+    window.setTimeout(waitUntilThemeReady, 80);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", waitUntilThemeReady, { once: true });
+  } else {
+    waitUntilThemeReady();
+  }
+
+  window.addEventListener("load", function () {
+    window.setTimeout(releaseViewerBootLock, 900);
+  }, { once: true });
+
+  window.setTimeout(releaseViewerBootLock, 3600);
+}());
+/* /FFT_VIEWER_RELEASE_BOOT_HIDE_OLD_THEME_20260602 */
