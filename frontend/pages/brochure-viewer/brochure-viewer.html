@@ -225,7 +225,7 @@
 }
   </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 CSS -->
-  <link rel="stylesheet" href="fft-viewer-theme.css?v=viewer-mobile-compact-dom-marker-20260602">
+  <link rel="stylesheet" href="fft-viewer-theme.css?v=viewer-zoom-icon-assets-20260602">
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_STYLE_START -->
 <style>
@@ -704,6 +704,547 @@
 }());
 </script>
 <!-- /FFT_VIEWER_MOBILE_COMPACT_DOM_MARKER_20260602 -->
+<!-- FFT_VIEWER_MOBILE_TOOLBAR_NO_MENU_ZOOM_SYNC_20260602 -->
+<style>
+  @media (max-width: 760px) {
+    html.fft-mobile-toolbar-compact body {
+      padding-bottom: 88px !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar] {
+      position: fixed !important;
+      left: 8px !important;
+      right: 8px !important;
+      bottom: calc(8px + env(safe-area-inset-bottom, 0px)) !important;
+      z-index: 2147483000 !important;
+      width: auto !important;
+      max-width: none !important;
+      min-width: 0 !important;
+      height: auto !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      display: grid !important;
+      grid-template-rows: 38px 36px !important;
+      background: #ffffff !important;
+      border: 1px solid rgba(15, 23, 42, 0.08) !important;
+      border-radius: 0 !important;
+      box-shadow: 0 16px 38px rgba(15, 23, 42, 0.14) !important;
+      overflow: hidden !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar][data-fft-mobile-toolbar-mode="no-share"] {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar][data-fft-mobile-toolbar-mode="with-share"] {
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar] > * {
+      min-width: 0 !important;
+      min-height: 0 !important;
+      width: auto !important;
+      height: auto !important;
+      margin: 0 !important;
+      padding: 0 5px !important;
+      border-radius: 0 !important;
+      border-top: 0 !important;
+      border-left: 0 !important;
+      border-right: 1px solid rgba(15, 23, 42, 0.07) !important;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.07) !important;
+      background: #ffffff !important;
+      color: #263447 !important;
+      font-size: 10px !important;
+      font-weight: 850 !important;
+      line-height: 1.08 !important;
+      text-align: center !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      white-space: normal !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      box-shadow: none !important;
+      touch-action: manipulation !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar] > *:active,
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar] > *:focus,
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar] > *:hover {
+      background: rgba(120, 8, 13, 0.055) !important;
+      color: #78080d !important;
+      outline: none !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-prev] {
+      grid-column: 1 !important;
+      grid-row: 1 !important;
+      color: rgba(120, 8, 13, 0.7) !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-page] {
+      grid-row: 1 !important;
+      font-size: 10.2px !important;
+      font-weight: 950 !important;
+      color: #263447 !important;
+      background: #f8fafc !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar-mode="no-share"] [data-fft-toolbar-page] {
+      grid-column: 2 !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar-mode="with-share"] [data-fft-toolbar-page] {
+      grid-column: 2 / 4 !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-next] {
+      grid-row: 1 !important;
+      color: #78080d !important;
+      border-right: 0 !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar-mode="no-share"] [data-fft-toolbar-next] {
+      grid-column: 3 !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar-mode="with-share"] [data-fft-toolbar-next] {
+      grid-column: 4 !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-zoom-in],
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-zoom-out],
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-fullscreen],
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-share] {
+      grid-row: 2 !important;
+      height: 36px !important;
+      font-size: 9.7px !important;
+      font-weight: 850 !important;
+      border-bottom: 0 !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-zoom-in] {
+      grid-column: 1 !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-zoom-out] {
+      grid-column: 2 !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar-mode="no-share"] [data-fft-toolbar-fullscreen] {
+      grid-column: 3 !important;
+      border-right: 0 !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar-mode="with-share"] [data-fft-toolbar-fullscreen] {
+      grid-column: 3 !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-share] {
+      grid-column: 4 !important;
+      border-right: 0 !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-menu] {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    html.fft-mobile-toolbar-compact .fft-viewer-action-menu,
+    html.fft-mobile-toolbar-compact .fft-dflip-more-menu,
+    html.fft-mobile-toolbar-compact .fft-dflip-page-menu {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    html.fft-mobile-device-zoom-active [data-fft-toolbar-zoom-in],
+    html.fft-mobile-device-zoom-active [data-fft-toolbar-zoom-out] {
+      background: rgba(120, 8, 13, 0.09) !important;
+      color: #78080d !important;
+      font-weight: 950 !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar] [disabled],
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar] .is-disabled {
+      opacity: 0.38 !important;
+      pointer-events: none !important;
+    }
+  }
+
+  @media (max-width: 390px) {
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar] {
+      left: 6px !important;
+      right: 6px !important;
+      grid-template-rows: 37px 34px !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-mobile-toolbar] > * {
+      font-size: 9.4px !important;
+      padding: 0 4px !important;
+    }
+
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-zoom-in],
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-zoom-out],
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-fullscreen],
+    html.fft-mobile-toolbar-compact [data-fft-toolbar-share] {
+      height: 34px !important;
+      font-size: 9px !important;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  var rootClass = "fft-mobile-toolbar-compact";
+  var zoomClass = "fft-mobile-device-zoom-active";
+  var pinchTimer = null;
+
+  function isMobile() {
+    return window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
+  }
+
+  function textOf(node) {
+    return (node && node.textContent ? node.textContent : "").replace(/\s+/g, " ").trim();
+  }
+
+  function setAttr(node, name) {
+    if (node) {
+      node.setAttribute(name, "true");
+    }
+  }
+
+  function findToolbar() {
+    var candidates = Array.prototype.slice.call(document.querySelectorAll(".fft-dflip-toolbar, [class*='toolbar'], [class*='Toolbar']"));
+
+    return candidates.find(function (node) {
+      var text = textOf(node);
+
+      return /Sebelumnya/i.test(text)
+        && /Berikutnya/i.test(text)
+        && /Perbesar/i.test(text)
+        && /Perkecil/i.test(text);
+    });
+  }
+
+  function clearItemAttrs(item) {
+    [
+      "data-fft-toolbar-prev",
+      "data-fft-toolbar-next",
+      "data-fft-toolbar-page",
+      "data-fft-toolbar-zoom-in",
+      "data-fft-toolbar-zoom-out",
+      "data-fft-toolbar-fullscreen",
+      "data-fft-toolbar-share",
+      "data-fft-toolbar-menu"
+    ].forEach(function (name) {
+      item.removeAttribute(name);
+    });
+  }
+
+  function markToolbar() {
+    if (!isMobile()) {
+      document.documentElement.classList.remove(rootClass);
+      document.documentElement.classList.remove(zoomClass);
+      return;
+    }
+
+    var toolbar = findToolbar();
+
+    if (!toolbar) {
+      return;
+    }
+
+    document.documentElement.classList.add(rootClass);
+    toolbar.setAttribute("data-fft-mobile-toolbar", "true");
+
+    var items = Array.prototype.slice.call(toolbar.children);
+    var hasShare = false;
+
+    items.forEach(function (item) {
+      var text = textOf(item);
+
+      clearItemAttrs(item);
+
+      if (/^Sebelumnya$/i.test(text)) {
+        setAttr(item, "data-fft-toolbar-prev");
+        return;
+      }
+
+      if (/^Berikutnya$/i.test(text)) {
+        setAttr(item, "data-fft-toolbar-next");
+        return;
+      }
+
+      if (/Halaman/i.test(text)) {
+        setAttr(item, "data-fft-toolbar-page");
+        return;
+      }
+
+      if (/^Perbesar$/i.test(text)) {
+        setAttr(item, "data-fft-toolbar-zoom-in");
+        return;
+      }
+
+      if (/^Perkecil$/i.test(text)) {
+        setAttr(item, "data-fft-toolbar-zoom-out");
+        return;
+      }
+
+      if (/Layar\s*Penuh/i.test(text)) {
+        setAttr(item, "data-fft-toolbar-fullscreen");
+        return;
+      }
+
+      if (/^Bagikan$/i.test(text)) {
+        setAttr(item, "data-fft-toolbar-share");
+        hasShare = true;
+        return;
+      }
+
+      if (/^Menu$/i.test(text)) {
+        setAttr(item, "data-fft-toolbar-menu");
+        item.setAttribute("aria-hidden", "true");
+        item.setAttribute("tabindex", "-1");
+      }
+    });
+
+    toolbar.setAttribute(
+      "data-fft-mobile-toolbar-mode",
+      hasShare ? "with-share" : "no-share"
+    );
+
+    syncMobileZoomState();
+  }
+
+  function getVisualScale() {
+    if (window.visualViewport && typeof window.visualViewport.scale === "number") {
+      return window.visualViewport.scale;
+    }
+
+    return 1;
+  }
+
+  function setZoomActive(active) {
+    document.documentElement.classList.toggle(zoomClass, !!active);
+
+    Array.prototype.slice.call(document.querySelectorAll("[data-fft-toolbar-zoom-in], [data-fft-toolbar-zoom-out]")).forEach(function (item) {
+      item.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  }
+
+  function syncMobileZoomState() {
+    if (!isMobile()) {
+      setZoomActive(false);
+      return;
+    }
+
+    var scale = getVisualScale();
+    setZoomActive(Math.abs(scale - 1) > 0.02);
+  }
+
+  function boot() {
+    markToolbar();
+    syncMobileZoomState();
+
+    window.setTimeout(markToolbar, 120);
+    window.setTimeout(markToolbar, 400);
+    window.setTimeout(markToolbar, 1000);
+    window.setTimeout(markToolbar, 2200);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot, { once: true });
+  } else {
+    boot();
+  }
+
+  window.addEventListener("load", function () {
+    window.setTimeout(markToolbar, 250);
+    window.setTimeout(syncMobileZoomState, 300);
+  }, { once: true });
+
+  window.addEventListener("resize", function () {
+    markToolbar();
+    syncMobileZoomState();
+  });
+
+  window.addEventListener("orientationchange", function () {
+    window.setTimeout(markToolbar, 320);
+    window.setTimeout(syncMobileZoomState, 360);
+  });
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", syncMobileZoomState);
+    window.visualViewport.addEventListener("scroll", syncMobileZoomState);
+  }
+
+  document.addEventListener("touchstart", function (event) {
+    if (!isMobile()) {
+      return;
+    }
+
+    if (event.touches && event.touches.length >= 2) {
+      window.clearTimeout(pinchTimer);
+      setZoomActive(true);
+    }
+  }, { passive: true });
+
+  document.addEventListener("touchend", function () {
+    if (!isMobile()) {
+      return;
+    }
+
+    window.clearTimeout(pinchTimer);
+
+    pinchTimer = window.setTimeout(function () {
+      syncMobileZoomState();
+    }, 700);
+  }, { passive: true });
+}());
+</script>
+<!-- /FFT_VIEWER_MOBILE_TOOLBAR_NO_MENU_ZOOM_SYNC_20260602 -->
+<!-- FFT_VIEWER_ZOOM_ICON_ASSETS_20260602 -->
+<style>
+  :root {
+    --fft-viewer-zoom-in-icon: url("assets/icons/viewer-zoom-in.svg?v=zoom-icon-assets-20260602");
+    --fft-viewer-zoom-out-icon: url("assets/icons/viewer-zoom-out.svg?v=zoom-icon-assets-20260602");
+  }
+
+  html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-in],
+  html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-out] {
+    position: relative !important;
+    font-size: 0 !important;
+    color: transparent !important;
+    gap: 0 !important;
+  }
+
+  html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-in]::before,
+  html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-out]::before {
+    content: "" !important;
+    display: block !important;
+    width: 24px !important;
+    height: 24px !important;
+    flex: 0 0 24px !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+  }
+
+  html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-in]::before {
+    background-image: var(--fft-viewer-zoom-in-icon) !important;
+  }
+
+  html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-out]::before {
+    background-image: var(--fft-viewer-zoom-out-icon) !important;
+  }
+
+  html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-in]:hover,
+  html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-in]:focus,
+  html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-in]:active,
+  html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-out]:hover,
+  html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-out]:focus,
+  html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-out]:active {
+    background: rgba(120, 8, 13, 0.055) !important;
+  }
+
+  @media (max-width: 760px) {
+    html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-in]::before,
+    html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-out]::before {
+      width: 18px !important;
+      height: 18px !important;
+      flex-basis: 18px !important;
+    }
+  }
+
+  @media (max-width: 390px) {
+    html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-in]::before,
+    html.fft-zoom-icon-toolbar [data-fft-toolbar-zoom-out]::before {
+      width: 17px !important;
+      height: 17px !important;
+      flex-basis: 17px !important;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  var rootClass = "fft-zoom-icon-toolbar";
+
+  function textOf(node) {
+    return (node && node.textContent ? node.textContent : "").replace(/\s+/g, " ").trim();
+  }
+
+  function markZoomButtons() {
+    var candidates = Array.prototype.slice.call(
+      document.querySelectorAll(
+        ".fft-dflip-toolbar > *, " +
+        "[data-fft-mobile-toolbar] > *, " +
+        "button, a, [role='button']"
+      )
+    );
+
+    var marked = 0;
+
+    candidates.forEach(function (item) {
+      var text = textOf(item);
+
+      if (/^Perbesar$/i.test(text)) {
+        item.setAttribute("data-fft-toolbar-zoom-in", "true");
+        item.setAttribute("data-fft-zoom-icon-ready", "true");
+        item.setAttribute("aria-label", "Perbesar");
+        item.setAttribute("title", "Perbesar");
+        marked += 1;
+        return;
+      }
+
+      if (/^Perkecil$/i.test(text)) {
+        item.setAttribute("data-fft-toolbar-zoom-out", "true");
+        item.setAttribute("data-fft-zoom-icon-ready", "true");
+        item.setAttribute("aria-label", "Perkecil");
+        item.setAttribute("title", "Perkecil");
+        marked += 1;
+      }
+    });
+
+    if (marked > 0) {
+      document.documentElement.classList.add(rootClass);
+    }
+  }
+
+  function bootZoomIconPatch() {
+    markZoomButtons();
+
+    window.setTimeout(markZoomButtons, 120);
+    window.setTimeout(markZoomButtons, 400);
+    window.setTimeout(markZoomButtons, 1000);
+    window.setTimeout(markZoomButtons, 2200);
+
+    if (document.body && window.MutationObserver) {
+      var observer = new MutationObserver(function () {
+        markZoomButtons();
+      });
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootZoomIconPatch, { once: true });
+  } else {
+    bootZoomIconPatch();
+  }
+
+  window.addEventListener("load", function () {
+    window.setTimeout(markZoomButtons, 250);
+  }, { once: true });
+}());
+</script>
+<!-- /FFT_VIEWER_ZOOM_ICON_ASSETS_20260602 -->
 </head>
 <body class="fft-standalone-viewer">
 
@@ -732,7 +1273,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
-  <script src="data/brochures.js?v=viewer-mobile-compact-dom-marker-20260602"></script>
+  <script src="data/brochures.js?v=viewer-zoom-icon-assets-20260602"></script>
 
   <script>
     /* FFT_VIEWER_BACKEND_READY_DATA_CONTRACT_20260602 */
@@ -1047,7 +1588,7 @@ wrapper.appendChild(canvas);
 }());
 </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 JS -->
-  <script defer src="fft-viewer-theme.js?v=viewer-mobile-compact-dom-marker-20260602"></script>
+  <script defer src="fft-viewer-theme.js?v=viewer-zoom-icon-assets-20260602"></script>
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_START -->
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_END -->
