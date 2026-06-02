@@ -225,7 +225,7 @@
 }
   </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 CSS -->
-  <link rel="stylesheet" href="fft-viewer-theme.css?v=viewer-zoom-icon-assets-20260602">
+  <link rel="stylesheet" href="fft-viewer-theme.css?v=viewer-nav-icon-assets-20260602">
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_STYLE_START -->
 <style>
@@ -1245,6 +1245,153 @@
 }());
 </script>
 <!-- /FFT_VIEWER_ZOOM_ICON_ASSETS_20260602 -->
+<!-- FFT_VIEWER_NAV_ICON_ASSETS_20260602 -->
+<style>
+  :root {
+    --fft-viewer-nav-next-icon: url("assets/icons/viewer-nav-next.svg?v=nav-icon-assets-20260602");
+    --fft-viewer-nav-prev-icon: url("assets/icons/viewer-nav-prev.svg?v=nav-icon-assets-20260602");
+  }
+
+  html.fft-nav-icon-toolbar [data-fft-toolbar-prev],
+  html.fft-nav-icon-toolbar [data-fft-toolbar-next] {
+    position: relative !important;
+    font-size: 0 !important;
+    color: transparent !important;
+    gap: 0 !important;
+  }
+
+  html.fft-nav-icon-toolbar [data-fft-toolbar-prev]::before,
+  html.fft-nav-icon-toolbar [data-fft-toolbar-next]::before {
+    content: "" !important;
+    display: block !important;
+    width: 26px !important;
+    height: 26px !important;
+    flex: 0 0 26px !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+  }
+
+  html.fft-nav-icon-toolbar [data-fft-toolbar-prev]::before {
+    background-image: var(--fft-viewer-nav-prev-icon) !important;
+  }
+
+  html.fft-nav-icon-toolbar [data-fft-toolbar-next]::before {
+    background-image: var(--fft-viewer-nav-next-icon) !important;
+  }
+
+  html.fft-nav-icon-toolbar [data-fft-toolbar-prev]:hover,
+  html.fft-nav-icon-toolbar [data-fft-toolbar-prev]:focus,
+  html.fft-nav-icon-toolbar [data-fft-toolbar-prev]:active,
+  html.fft-nav-icon-toolbar [data-fft-toolbar-next]:hover,
+  html.fft-nav-icon-toolbar [data-fft-toolbar-next]:focus,
+  html.fft-nav-icon-toolbar [data-fft-toolbar-next]:active {
+    background: rgba(120, 8, 13, 0.055) !important;
+  }
+
+  html.fft-nav-icon-toolbar [data-fft-toolbar-prev][disabled],
+  html.fft-nav-icon-toolbar [data-fft-toolbar-next][disabled],
+  html.fft-nav-icon-toolbar [data-fft-toolbar-prev][aria-disabled="true"],
+  html.fft-nav-icon-toolbar [data-fft-toolbar-next][aria-disabled="true"] {
+    opacity: 0.38 !important;
+  }
+
+  @media (max-width: 760px) {
+    html.fft-nav-icon-toolbar [data-fft-toolbar-prev]::before,
+    html.fft-nav-icon-toolbar [data-fft-toolbar-next]::before {
+      width: 18px !important;
+      height: 18px !important;
+      flex-basis: 18px !important;
+    }
+  }
+
+  @media (max-width: 390px) {
+    html.fft-nav-icon-toolbar [data-fft-toolbar-prev]::before,
+    html.fft-nav-icon-toolbar [data-fft-toolbar-next]::before {
+      width: 17px !important;
+      height: 17px !important;
+      flex-basis: 17px !important;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  var rootClass = "fft-nav-icon-toolbar";
+
+  function textOf(node) {
+    return (node && node.textContent ? node.textContent : "").replace(/\s+/g, " ").trim();
+  }
+
+  function markNavButtons() {
+    var candidates = Array.prototype.slice.call(
+      document.querySelectorAll(
+        ".fft-dflip-toolbar > *, " +
+        "[data-fft-mobile-toolbar] > *, " +
+        "button, a, [role='button']"
+      )
+    );
+
+    var marked = 0;
+
+    candidates.forEach(function (item) {
+      var text = textOf(item);
+
+      if (/^Sebelumnya$/i.test(text)) {
+        item.setAttribute("data-fft-toolbar-prev", "true");
+        item.setAttribute("data-fft-nav-icon-ready", "true");
+        item.setAttribute("aria-label", "Sebelumnya");
+        item.setAttribute("title", "Sebelumnya");
+        marked += 1;
+        return;
+      }
+
+      if (/^Berikutnya$/i.test(text)) {
+        item.setAttribute("data-fft-toolbar-next", "true");
+        item.setAttribute("data-fft-nav-icon-ready", "true");
+        item.setAttribute("aria-label", "Berikutnya");
+        item.setAttribute("title", "Berikutnya");
+        marked += 1;
+      }
+    });
+
+    if (marked > 0) {
+      document.documentElement.classList.add(rootClass);
+    }
+  }
+
+  function bootNavIconPatch() {
+    markNavButtons();
+
+    window.setTimeout(markNavButtons, 120);
+    window.setTimeout(markNavButtons, 400);
+    window.setTimeout(markNavButtons, 1000);
+    window.setTimeout(markNavButtons, 2200);
+
+    if (document.body && window.MutationObserver) {
+      var observer = new MutationObserver(function () {
+        markNavButtons();
+      });
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootNavIconPatch, { once: true });
+  } else {
+    bootNavIconPatch();
+  }
+
+  window.addEventListener("load", function () {
+    window.setTimeout(markNavButtons, 250);
+  }, { once: true });
+}());
+</script>
+<!-- /FFT_VIEWER_NAV_ICON_ASSETS_20260602 -->
 </head>
 <body class="fft-standalone-viewer">
 
@@ -1273,7 +1420,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
-  <script src="data/brochures.js?v=viewer-zoom-icon-assets-20260602"></script>
+  <script src="data/brochures.js?v=viewer-nav-icon-assets-20260602"></script>
 
   <script>
     /* FFT_VIEWER_BACKEND_READY_DATA_CONTRACT_20260602 */
@@ -1588,7 +1735,7 @@ wrapper.appendChild(canvas);
 }());
 </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 JS -->
-  <script defer src="fft-viewer-theme.js?v=viewer-zoom-icon-assets-20260602"></script>
+  <script defer src="fft-viewer-theme.js?v=viewer-nav-icon-assets-20260602"></script>
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_START -->
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_END -->
