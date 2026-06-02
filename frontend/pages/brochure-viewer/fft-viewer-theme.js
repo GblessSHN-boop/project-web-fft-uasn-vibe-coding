@@ -1570,6 +1570,9 @@ currentPanel.appendChild(title);
   var statusTimer = null;
   var autoReadTimer = null;
   var autoReadDirection = null;
+  var autoReadDelay = 5000;
+  /* FFT_VIEWER_MENU_NO_CLOSE_TIMER_MIN_1_20260602 */
+  /* /FFT_VIEWER_MENU_NO_CLOSE_TIMER_MIN_1_20260602 */
 
   function closestElement(target, selector) {
     return target && target.closest ? target.closest(selector) : null;
@@ -1755,14 +1758,14 @@ currentPanel.appendChild(title);
 
   /* FFT_VIEWER_ACTION_MENU_AUTOREAD_20260602 */
   function stopAutoRead(showMessage) {
-    if (autoReadTimer) {
-      window.clearInterval(autoReadTimer);
-      autoReadTimer = null;
-      autoReadDirection = null;
+    window.clearTimeout(autoReadTimer);
+    window.clearInterval(autoReadTimer);
 
-      if (showMessage) {
-        showStatus("Auto baca dihentikan");
-      }
+    autoReadTimer = null;
+    autoReadDirection = null;
+
+    if (showMessage) {
+      showStatus("Auto slide dihentikan");
     }
   }
 
@@ -1811,7 +1814,30 @@ currentPanel.appendChild(title);
     return Math.max(current - 2, 1);
   }
 
+
+  /* FFT_VIEWER_AUTO_SLIDE_DELAY_SEQUENCE_FIX_20260602 */
+  function scheduleAutoReadStep(direction, waitMs) {
+    var delay = parseInt(waitMs, 10);
+
+    if (!Number.isFinite(delay) || delay < 1000) {
+      delay = 1000;
+    }
+
+    window.clearTimeout(autoReadTimer);
+    window.clearInterval(autoReadTimer);
+
+    autoReadTimer = window.setTimeout(function () {
+      runAutoReadStep(direction);
+    }, delay);
+  }
+  /* /FFT_VIEWER_AUTO_SLIDE_DELAY_SEQUENCE_FIX_20260602 */
+
+
   function runAutoReadStep(direction) {
+    if (!autoReadDirection || autoReadDirection !== direction) {
+      return;
+    }
+
     var target = getAutoReadTarget(direction);
 
     if (!target) {
@@ -1821,26 +1847,39 @@ currentPanel.appendChild(title);
     }
 
     if (!jumpToPage(target)) {
-      stopAutoRead(false);
-      showStatus("Viewer belum siap");
+      scheduleAutoReadStep(direction, 900);
+      return;
     }
+
+    scheduleAutoReadStep(direction, autoReadDelay);
   }
 
   function startAutoRead(direction) {
     stopAutoRead(false);
 
+    if (typeof loadAutoReadDelay === "function") {
+      loadAutoReadDelay();
+    }
+
+    if (typeof updateAutoSlideTimerLabels === "function") {
+      updateAutoSlideTimerLabels();
+    }
+
     autoReadDirection = direction;
 
     closePanel();
-    showStatus(direction === "next" ? "Auto baca berikutnya aktif" : "Auto baca sebelumnya aktif");
 
-    window.setTimeout(function () {
-      runAutoReadStep(direction);
-    }, 160);
+    var seconds = typeof getAutoReadDelaySeconds === "function"
+      ? getAutoReadDelaySeconds()
+      : Math.max(1, Math.round(autoReadDelay / 1000));
 
-    autoReadTimer = window.setInterval(function () {
-      runAutoReadStep(direction);
-    }, 2800);
+    showStatus(
+      direction === "next"
+        ? "Auto slide berikutnya aktif. Mulai dalam " + seconds + " detik"
+        : "Auto slide sebelumnya aktif. Mulai dalam " + seconds + " detik"
+    );
+
+    scheduleAutoReadStep(direction, autoReadDelay);
   }
   /* /FFT_VIEWER_ACTION_MENU_AUTOREAD_20260602 */
 
@@ -1869,7 +1908,255 @@ currentPanel.appendChild(title);
     return button;
   }
 
-  function buildPanel() {
+
+  /* FFT_VIEWER_ACTION_MENU_TIMER_20260602 */
+  var autoSlideTimerCloseTimer = null;
+  var autoSlideTimerStorageKey = "FFT_VIEWER_AUTO_SLIDE_DELAY_SECONDS";
+
+  function getAutoReadDelaySeconds() {
+    return Math.max(1, Math.round(autoReadDelay / 1000));
+  }
+
+  function loadAutoReadDelay() {
+    try {
+      var saved = parseInt(window.localStorage.getItem(autoSlideTimerStorageKey), 10);
+
+      if (Number.isFinite(saved) && saved >= 1 && saved <= 30) {
+        autoReadDelay = saved * 1000;
+      }
+    } catch (error) {}
+  }
+
+  function updateAutoSlideTimerLabels() {
+    Array.prototype.slice.call(document.querySelectorAll(".fft-viewer-auto-slide-hotspot-label")).forEach(function (label) {
+      label.textContent = "Timer: " + getAutoReadDelaySeconds() + " detik";
+    });
+
+    Array.prototype.slice.call(document.querySelectorAll(".fft-viewer-auto-slide-timer input")).forEach(function (input) {
+      input.value = String(getAutoReadDelaySeconds());
+    });
+  }
+
+  function setAutoReadDelay(seconds) {
+    var value = parseInt(seconds, 10);
+
+    if (!Number.isFinite(value) || value < 1) {
+      value = 5;
+    }
+
+    if (value > 30) {
+      value = 30;
+    }
+
+    autoReadDelay = value * 1000;
+
+    try {
+      window.localStorage.setItem(autoSlideTimerStorageKey, String(value));
+    } catch (error) {}
+
+    updateAutoSlideTimerLabels();
+
+    if (autoReadTimer && autoReadDirection) {
+      scheduleAutoReadStep(autoReadDirection, autoReadDelay);
+    }
+
+    showStatus("Timer auto slide: " + value + " detik");
+  }
+
+  function openAutoSlideTimer(group) {
+    if (!group) {
+      return;
+    }
+
+    window.clearTimeout(autoSlideTimerCloseTimer);
+    group.classList.add("is-timer-open");
+
+    var hotspot = group.querySelector(".fft-viewer-auto-slide-hotspot");
+    if (hotspot) {
+      hotspot.setAttribute("aria-expanded", "true");
+    }
+  }
+
+  function closeAutoSlideTimer(group) {
+    if (!group) {
+      return;
+    }
+
+    group.classList.remove("is-timer-open");
+
+    var hotspot = group.querySelector(".fft-viewer-auto-slide-hotspot");
+    if (hotspot) {
+      hotspot.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  function scheduleCloseAutoSlideTimer(group) {
+    window.clearTimeout(autoSlideTimerCloseTimer);
+
+    autoSlideTimerCloseTimer = window.setTimeout(function () {
+      closeAutoSlideTimer(group);
+    }, 520);
+  }
+
+  function createTimerPanel(group) {
+    var wrap = document.createElement("div");
+    var title = document.createElement("strong");
+    var help = document.createElement("p");
+    var field = document.createElement("label");
+    var input = document.createElement("input");
+    var buttons = document.createElement("div");
+    var useButton = document.createElement("button");
+    var defaultButton = document.createElement("button");
+
+    wrap.className = "fft-viewer-auto-slide-timer";
+    wrap.setAttribute("aria-label", "Atur timer auto slide");
+
+    title.textContent = "Atur timer auto slide";
+    help.textContent = "Pilih durasi 1 sampai 30 detik, lalu tekan Auto Slide.";
+
+    field.textContent = "Manual, detik";
+    input.type = "number";
+    input.min = "1";
+    input.max = "30";
+    input.step = "1";
+    input.value = String(getAutoReadDelaySeconds());
+    input.setAttribute("aria-label", "Timer auto slide dalam detik");
+
+    field.appendChild(input);
+
+    input.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        setAutoReadDelay(input.value);
+        openAutoSlideTimer(group);
+      }
+
+      if (event.key === "Escape") {
+        closeAutoSlideTimer(group);
+      }
+    });
+
+    buttons.className = "fft-viewer-auto-slide-timer-actions";
+
+    useButton.type = "button";
+    useButton.textContent = "Gunakan Timer";
+    useButton.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      setAutoReadDelay(input.value);
+      openAutoSlideTimer(group);
+    });
+
+    defaultButton.type = "button";
+    defaultButton.textContent = "Default 5 Detik";
+    defaultButton.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      input.value = "5";
+      setAutoReadDelay(5);
+      openAutoSlideTimer(group);
+    });
+
+    buttons.appendChild(useButton);
+    buttons.appendChild(defaultButton);
+
+    wrap.appendChild(title);
+    wrap.appendChild(help);
+    wrap.appendChild(field);
+    wrap.appendChild(buttons);
+
+    wrap.addEventListener("mouseenter", function () {
+      openAutoSlideTimer(group);
+    });
+
+    wrap.addEventListener("mouseleave", function () {
+      scheduleCloseAutoSlideTimer(group);
+    });
+
+    wrap.addEventListener("click", function (event) {
+      event.stopPropagation();
+    });
+
+    return wrap;
+  }
+
+  /* FFT_VIEWER_AUTO_SLIDE_NEXT_FIRST_20260602 */
+  function createAutoSlideGroup() {
+    loadAutoReadDelay();
+
+    var group = document.createElement("div");
+    var timerHotspot = document.createElement("div");
+    var timerLabel = document.createElement("span");
+
+    group.className = "fft-viewer-auto-slide-group";
+
+    group.appendChild(createItem("Auto Slide Berikutnya", function () {
+      startAutoRead("next");
+    }));
+
+    timerHotspot.className = "fft-viewer-auto-slide-hotspot";
+    timerHotspot.setAttribute("role", "button");
+    timerHotspot.setAttribute("tabindex", "0");
+    timerHotspot.setAttribute("aria-haspopup", "true");
+    timerHotspot.setAttribute("aria-expanded", "false");
+
+    timerLabel.className = "fft-viewer-auto-slide-hotspot-label";
+    timerLabel.textContent = "Timer: " + getAutoReadDelaySeconds() + " detik";
+
+    timerHotspot.appendChild(timerLabel);
+    timerHotspot.appendChild(createTimerPanel(group));
+
+    timerHotspot.addEventListener("mouseenter", function () {
+      openAutoSlideTimer(group);
+    });
+
+    timerHotspot.addEventListener("focus", function () {
+      openAutoSlideTimer(group);
+    });
+
+    timerHotspot.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (group.classList.contains("is-timer-open")) {
+        closeAutoSlideTimer(group);
+      } else {
+        openAutoSlideTimer(group);
+      }
+    });
+
+    timerHotspot.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        timerHotspot.click();
+      }
+
+      if (event.key === "Escape") {
+        closeAutoSlideTimer(group);
+      }
+    });
+
+    group.addEventListener("mouseenter", function () {
+      openAutoSlideTimer(group);
+    });
+
+    group.addEventListener("mouseleave", function () {
+      scheduleCloseAutoSlideTimer(group);
+    });
+
+    group.appendChild(timerHotspot);
+
+    group.appendChild(createItem("Auto Slide Sebelumnya", function () {
+      startAutoRead("prev");
+    }));
+
+    return group;
+  }
+  /* /FFT_VIEWER_AUTO_SLIDE_NEXT_FIRST_20260602 */
+  /* /FFT_VIEWER_ACTION_MENU_TIMER_20260602 */
+
+
+function buildPanel() {
     var panel = ensurePanel();
 
     panel.innerHTML = "";
@@ -1893,25 +2180,15 @@ currentPanel.appendChild(title);
       openPageChooser();
     }));
 
-    panel.appendChild(createItem("Auto Baca Sebelumnya", function () {
-      startAutoRead("prev");
-    }));
-
-    panel.appendChild(createItem("Auto Baca Berikutnya", function () {
-      startAutoRead("next");
-    }));
+    panel.appendChild(createAutoSlideGroup());
 
     if (autoReadTimer) {
-      panel.appendChild(createItem("Hentikan Auto Baca", function () {
+      panel.appendChild(createItem("Hentikan Auto Slide", function () {
         closePanel();
         stopAutoRead(true);
       }));
     }
-
-    panel.appendChild(createItem("Tutup Menu", function () {
-      closePanel();
-    }));
-  }
+}
 
   function openPanel(button) {
     menuButton = button;
