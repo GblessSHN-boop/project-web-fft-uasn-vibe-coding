@@ -110,7 +110,11 @@ async function loadBook() {
     });
 
     pageFlip.loadFromHTML(document.querySelectorAll(".page"));
-    pageFlip.on("flip", updatePageInfo);
+    pageFlip.on("flip", function () {
+      updatePageInfo();
+      window.dispatchEvent(new CustomEvent("fftViewerChange", { detail: getViewerState() }));
+    });
+    registerViewerPublicApi();
 
     updatePageInfo();
   } catch (error) {
@@ -118,6 +122,118 @@ async function loadBook() {
     console.error(error);
   }
 }
+
+/* FFT_VIEWER_PUBLIC_API_20260602 */
+function getViewerTotalPages() {
+  return brochure && Array.isArray(brochure.pages) ? brochure.pages.length : 1;
+}
+
+function normalizeViewerSpread(page) {
+  const total = Math.max(1, getViewerTotalPages());
+  let target = Math.max(1, Math.min(total, Number(page) || 1));
+
+  if (target <= 1) {
+    return 1;
+  }
+
+  if (target >= total) {
+    return total % 2 === 0 ? total - 1 : total;
+  }
+
+  return target % 2 === 0 ? target - 1 : target;
+}
+
+function getViewerCurrentPage() {
+  if (!pageFlip) {
+    return 1;
+  }
+
+  return pageFlip.getCurrentPageIndex() + 1;
+}
+
+function getViewerState() {
+  const total = getViewerTotalPages();
+  const current = normalizeViewerSpread(getViewerCurrentPage());
+
+  return {
+    current: current,
+    total: total,
+    spreadStart: current,
+    spreadEnd: Math.min(total, current + 1),
+    isFirst: current <= 1,
+    isLast: current >= normalizeViewerSpread(total)
+  };
+}
+
+function goViewerPrevious() {
+  if (!pageFlip) {
+    return false;
+  }
+
+  pageFlip.flipPrev();
+  return true;
+}
+
+function goViewerNext() {
+  if (!pageFlip) {
+    return false;
+  }
+
+  pageFlip.flipNext();
+  return true;
+}
+
+function goViewerFirst() {
+  if (!pageFlip) {
+    return false;
+  }
+
+  const state = getViewerState();
+
+  if (state.isFirst) {
+    updatePageInfo();
+    window.dispatchEvent(new CustomEvent("fftViewerChange", { detail: getViewerState() }));
+    return true;
+  }
+
+  pageFlip.flipPrev();
+  window.setTimeout(goViewerFirst, 520);
+  return true;
+}
+
+function goViewerLast() {
+  if (!pageFlip) {
+    return false;
+  }
+
+  const state = getViewerState();
+
+  if (state.isLast) {
+    updatePageInfo();
+    window.dispatchEvent(new CustomEvent("fftViewerChange", { detail: getViewerState() }));
+    return true;
+  }
+
+  pageFlip.flipNext();
+  window.setTimeout(goViewerLast, 520);
+  return true;
+}
+
+function registerViewerPublicApi() {
+  window.FFTBrochureViewer = {
+    isReady: function () {
+      return Boolean(pageFlip);
+    },
+    getState: getViewerState,
+    previous: goViewerPrevious,
+    next: goViewerNext,
+    first: goViewerFirst,
+    last: goViewerLast
+  };
+
+  window.dispatchEvent(new CustomEvent("fftViewerReady", { detail: getViewerState() }));
+}
+/* /FFT_VIEWER_PUBLIC_API_20260602 */
 
 function updatePageInfo() {
   if (!pageFlip) {
