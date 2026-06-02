@@ -726,3 +726,96 @@ main.viewer-main {
 }
 
 /* /FFT_VIEWER_DESKTOP_INTERNAL_SCROLL_POLISH_20260602 */
+
+/* FFT_VIEWER_ZOOM_PAN_RESET_CSS_20260602 */
+
+body.fft-viewer-zoom-active {
+  user-select: none !important;
+}
+
+body.fft-viewer-zoom-active .stf__parent,
+body.fft-viewer-zoom-active .stf__wrapper,
+body.fft-viewer-zoom-active .viewer-book,
+body.fft-viewer-zoom-active .brochure-viewer-book,
+body.fft-viewer-zoom-active .book-container,
+body.fft-viewer-zoom-active #book,
+body.fft-viewer-zoom-active .book {
+  will-change: transform !important;
+  touch-action: none !important;
+}
+
+.fft-dflip-zoom-reset {
+  position: absolute !important;
+  left: 50% !important;
+  bottom: calc(100% + 10px) !important;
+  transform: translateX(-50%) translateY(8px) !important;
+  z-index: 10002 !important;
+  min-width: 132px !important;
+  min-height: 42px !important;
+  padding: 10px 16px !important;
+  border: 1px solid rgba(120, 8, 13, 0.24) !important;
+  border-radius: 0 !important;
+  background: #78080d !important;
+  color: #ffffff !important;
+  font-size: 0.78rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.01em !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18) !important;
+  transition: opacity 160ms ease, visibility 160ms ease, transform 160ms ease !important;
+}
+
+.fft-dflip-zoom-reset.is-visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translateX(-50%) translateY(0) !important;
+}
+
+.fft-dflip-zoom-reset:hover {
+  background: #5f070b !important;
+}
+
+body.fft-viewer-zoom-active .fft-dflip-zoomin,
+body.fft-viewer-zoom-active .fft-dflip-zoomout {
+  color: #78080d !important;
+  background: rgba(120, 8, 13, 0.06) !important;
+}
+
+body.fft-viewer-zoom-active .fft-dflip-toolbar::after {
+  content: "Tekan tahan pada brosur untuk geser zoom" !important;
+  position: absolute !important;
+  left: 50% !important;
+  bottom: calc(100% + 58px) !important;
+  transform: translateX(-50%) !important;
+  z-index: 10001 !important;
+  padding: 8px 12px !important;
+  background: rgba(15, 23, 42, 0.88) !important;
+  color: #ffffff !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
+}
+
+@media (max-width: 760px) {
+  .fft-dflip-zoom-reset {
+    min-width: 116px !important;
+    min-height: 38px !important;
+    padding: 9px 12px !important;
+    font-size: 0.7rem !important;
+    bottom: calc(100% + 8px) !important;
+  }
+
+  body.fft-viewer-zoom-active .fft-dflip-toolbar::after {
+    bottom: calc(100% + 52px) !important;
+    font-size: 0.66rem !important;
+  }
+}
+
+/* /FFT_VIEWER_ZOOM_PAN_RESET_CSS_20260602 */

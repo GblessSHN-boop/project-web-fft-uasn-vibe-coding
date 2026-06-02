@@ -874,3 +874,331 @@ function boot() {
   window.addEventListener("pageshow", boot);
   window.setInterval(syncToolbar, 800);
 }());
+
+/* FFT_VIEWER_ZOOM_PAN_RESET_20260602 */
+(function () {
+  var MIN_ZOOM = 1;
+  var MAX_ZOOM = 2.6;
+  var ZOOM_STEP = 0.18;
+
+  var zoomState = {
+    zoom: 1,
+    x: 0,
+    y: 0,
+    isPanning: false,
+    pointerId: null,
+    startX: 0,
+    startY: 0,
+    baseX: 0,
+    baseY: 0,
+    baseTransform: ""
+  };
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function ready(callback) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", callback, { once: true });
+    } else {
+      callback();
+    }
+  }
+
+  function getText(element) {
+    return (element && element.textContent ? element.textContent : "").trim().toLowerCase();
+  }
+
+  function findToolbar() {
+    return document.querySelector(".fft-dflip-toolbar");
+  }
+
+  function findToolbarWrap() {
+    return document.querySelector(".fft-dflip-toolbar-wrap") || findToolbar();
+  }
+
+  function findButton(className, words) {
+    var direct = document.querySelector(className);
+    if (direct) {
+      return direct;
+    }
+
+    var buttons = Array.prototype.slice.call(document.querySelectorAll("button, .fft-dflip-btn"));
+    return buttons.find(function (button) {
+      var text = getText(button);
+      return words.some(function (word) {
+        return text.indexOf(word) !== -1;
+      });
+    }) || null;
+  }
+
+  function findBookTarget() {
+    return (
+      document.querySelector(".stf__parent") ||
+      document.querySelector(".stf__wrapper") ||
+      document.querySelector(".viewer-book") ||
+      document.querySelector(".brochure-viewer-book") ||
+      document.querySelector(".book-container") ||
+      document.querySelector("#book") ||
+      document.querySelector(".book")
+    );
+  }
+
+  function ensureResetButton() {
+    var toolbarWrap = findToolbarWrap();
+
+    if (!toolbarWrap) {
+      return null;
+    }
+
+    var button = toolbarWrap.querySelector(".fft-dflip-zoom-reset");
+
+    if (!button) {
+      button = document.createElement("button");
+      button.type = "button";
+      button.className = "fft-dflip-zoom-reset";
+      button.textContent = "Reset Zoom";
+      button.setAttribute("aria-label", "Reset zoom preview brosur");
+      toolbarWrap.appendChild(button);
+    }
+
+    if (!button.dataset.fftZoomResetBound) {
+      button.dataset.fftZoomResetBound = "true";
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        resetZoom();
+      }, true);
+    }
+
+    return button;
+  }
+
+  function getBookTarget() {
+    var target = findBookTarget();
+
+    if (!target) {
+      return null;
+    }
+
+    if (!target.dataset.fftZoomBaseTransform) {
+      var computedTransform = window.getComputedStyle(target).transform;
+      target.dataset.fftZoomBaseTransform = computedTransform && computedTransform !== "none" ? computedTransform : "";
+    }
+
+    zoomState.baseTransform = target.dataset.fftZoomBaseTransform || "";
+
+    return target;
+  }
+
+  function setResetVisible(isVisible) {
+    var resetButton = ensureResetButton();
+
+    if (!resetButton) {
+      return;
+    }
+
+    resetButton.classList.toggle("is-visible", isVisible);
+    resetButton.setAttribute("aria-hidden", isVisible ? "false" : "true");
+  }
+
+  function applyZoom() {
+    var target = getBookTarget();
+
+    if (!target) {
+      return;
+    }
+
+    var isZoomed = zoomState.zoom > 1.001;
+    var transformParts = [];
+
+    if (zoomState.baseTransform) {
+      transformParts.push(zoomState.baseTransform);
+    }
+
+    if (isZoomed) {
+      transformParts.push("translate3d(" + zoomState.x + "px, " + zoomState.y + "px, 0)");
+      transformParts.push("scale(" + zoomState.zoom.toFixed(3) + ")");
+    }
+
+    target.style.setProperty("transform", transformParts.join(" "), "important");
+    target.style.setProperty("transform-origin", "center center", "important");
+    target.style.setProperty("transition", zoomState.isPanning ? "none" : "transform 180ms ease", "important");
+    target.style.setProperty("cursor", isZoomed ? (zoomState.isPanning ? "grabbing" : "grab") : "", "important");
+    target.style.setProperty("touch-action", isZoomed ? "none" : "", "important");
+
+    document.body.classList.toggle("fft-viewer-zoom-active", isZoomed);
+    setResetVisible(isZoomed);
+  }
+
+  function setZoom(nextZoom) {
+    var oldZoom = zoomState.zoom;
+    zoomState.zoom = clamp(nextZoom, MIN_ZOOM, MAX_ZOOM);
+
+    if (zoomState.zoom <= 1.001) {
+      zoomState.zoom = 1;
+      zoomState.x = 0;
+      zoomState.y = 0;
+    } else if (oldZoom <= 1.001) {
+      zoomState.x = 0;
+      zoomState.y = 0;
+    }
+
+    applyZoom();
+  }
+
+  function resetZoom() {
+    zoomState.zoom = 1;
+    zoomState.x = 0;
+    zoomState.y = 0;
+    zoomState.isPanning = false;
+    zoomState.pointerId = null;
+    applyZoom();
+  }
+
+  function bindZoomButtons() {
+    var zoomInButton = findButton(".fft-dflip-zoomin", ["perbesar", "zoom in", "+"]);
+    var zoomOutButton = findButton(".fft-dflip-zoomout", ["perkecil", "zoom out", "-"]);
+
+    if (zoomInButton && !zoomInButton.dataset.fftZoomPanBound) {
+      zoomInButton.dataset.fftZoomPanBound = "true";
+      zoomInButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        setZoom(zoomState.zoom + ZOOM_STEP);
+      }, true);
+    }
+
+    if (zoomOutButton && !zoomOutButton.dataset.fftZoomPanBound) {
+      zoomOutButton.dataset.fftZoomPanBound = "true";
+      zoomOutButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        setZoom(zoomState.zoom - ZOOM_STEP);
+      }, true);
+    }
+
+    ensureResetButton();
+    applyZoom();
+
+    return Boolean(zoomInButton && zoomOutButton);
+  }
+
+  function shouldIgnorePan(event) {
+    return Boolean(
+      event.target.closest("button") ||
+      event.target.closest("a") ||
+      event.target.closest(".fft-dflip-toolbar") ||
+      event.target.closest(".fft-dflip-toolbar-wrap") ||
+      event.target.closest(".fft-dflip-page-menu") ||
+      event.target.closest(".fft-dflip-more-menu")
+    );
+  }
+
+  function bindPan() {
+    var target = getBookTarget();
+
+    if (!target || target.dataset.fftZoomPanPointerBound) {
+      return Boolean(target);
+    }
+
+    target.dataset.fftZoomPanPointerBound = "true";
+
+    target.addEventListener("pointerdown", function (event) {
+      if (zoomState.zoom <= 1.001 || shouldIgnorePan(event)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      zoomState.isPanning = true;
+      zoomState.pointerId = event.pointerId;
+      zoomState.startX = event.clientX;
+      zoomState.startY = event.clientY;
+      zoomState.baseX = zoomState.x;
+      zoomState.baseY = zoomState.y;
+
+      try {
+        target.setPointerCapture(event.pointerId);
+      } catch (error) {}
+
+      applyZoom();
+    }, true);
+
+    target.addEventListener("pointermove", function (event) {
+      if (!zoomState.isPanning || zoomState.pointerId !== event.pointerId) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      zoomState.x = zoomState.baseX + event.clientX - zoomState.startX;
+      zoomState.y = zoomState.baseY + event.clientY - zoomState.startY;
+
+      applyZoom();
+    }, true);
+
+    function stopPan(event) {
+      if (!zoomState.isPanning || zoomState.pointerId !== event.pointerId) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      zoomState.isPanning = false;
+      zoomState.pointerId = null;
+
+      try {
+        target.releasePointerCapture(event.pointerId);
+      } catch (error) {}
+
+      applyZoom();
+    }
+
+    target.addEventListener("pointerup", stopPan, true);
+    target.addEventListener("pointercancel", stopPan, true);
+    target.addEventListener("lostpointercapture", function () {
+      if (zoomState.isPanning) {
+        zoomState.isPanning = false;
+        zoomState.pointerId = null;
+        applyZoom();
+      }
+    }, true);
+
+    return true;
+  }
+
+  function boot() {
+    var tries = 0;
+
+    function attempt() {
+      tries += 1;
+
+      var buttonsReady = bindZoomButtons();
+      var panReady = bindPan();
+
+      if ((!buttonsReady || !panReady) && tries < 40) {
+        window.setTimeout(attempt, 250);
+      }
+    }
+
+    attempt();
+
+    var observer = new MutationObserver(function () {
+      bindZoomButtons();
+      bindPan();
+    });
+
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  ready(boot);
+})();
+/* /FFT_VIEWER_ZOOM_PAN_RESET_20260602 */
