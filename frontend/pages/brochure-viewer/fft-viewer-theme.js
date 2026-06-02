@@ -298,6 +298,14 @@
   }
 
   function createToolbar() {
+
+  /* FFT_VIEWER_SINGLE_SOURCE_TOOLBAR_20260602 */
+  var existingToolbar = document.querySelector(".fft-dflip-toolbar-wrap");
+  if (existingToolbar) {
+    return existingToolbar;
+  }
+  /* /FFT_VIEWER_SINGLE_SOURCE_TOOLBAR_20260602 */
+
     var existing = document.querySelector(".fft-dflip-toolbar-wrap");
 
     if (existing) {
@@ -419,6 +427,18 @@
     toolbar.appendChild(moreButton);
     toolbar.appendChild(pageMenu);
     toolbar.appendChild(moreMenu);
+
+  /* FFT_VIEWER_SINGLE_SOURCE_TOOLBAR_20260602 */
+  Array.prototype.slice.call(moreMenu.querySelectorAll(".fft-dflip-menu-item, button, a, [role='menuitem']")).forEach(function (item) {
+    var text = (item.textContent || "").trim().toLowerCase();
+    var label = ((item.getAttribute("aria-label") || "") + " " + (item.getAttribute("title") || "")).toLowerCase();
+
+    if (text.indexOf("sound") !== -1 || label.indexOf("sound") !== -1) {
+      item.remove();
+    }
+  });
+  /* /FFT_VIEWER_SINGLE_SOURCE_TOOLBAR_20260602 */
+
 
     var toast = document.createElement("div");
     toast.className = "fft-dflip-toast";
