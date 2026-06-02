@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Preview Brosur Digital FFT UASN | E Brochure</title>
+  <title>Preview Brosur Digital | E Brochure</title>
 
   <style>
     * {
@@ -164,7 +164,7 @@
       }
     }
   </style>
-  <meta name="description" content="Preview brosur digital FFT UASN dalam tampilan buku digital yang rapi, ringan, dan mudah digunakan di desktop maupun mobile.">
+  <meta name="description" content="Preview brosur digital dalam tampilan buku interaktif yang rapi, ringan, dan mudah digunakan di desktop maupun mobile.">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="https://fft.uasn.ac.id/pages/brochure-viewer/brochure-viewer.html">
 <!-- FFT_BROCHURE_VIEWER_THEME_20260529 JSONLD -->
@@ -172,8 +172,8 @@
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "Preview Brosur Digital FFT UASN",
-  "description": "Preview brosur digital Fakultas Filsafat Teologi UASN dalam tampilan buku digital.",
+  "name": "Preview Brosur Digital",
+  "description": "Preview brosur digital dalam tampilan buku interaktif.",
   "inLanguage": [
     "id-ID",
     "en"
@@ -423,7 +423,7 @@
   <header class="viewer-header">
     <div class="viewer-title">
       <h1>Preview E Brochure</h1>
-      <p>Baca brosur dalam halaman khusus dengan tampilan buku digital</p>
+<p>Baca brosur digital dalam tampilan buku interaktif.</p>
     </div>
 
     <div class="viewer-actions">
@@ -483,7 +483,10 @@
     }
 
     async function renderPdfPage(pdfFile, scaleValue) {
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2.5);
+      /* FFT_VIEWER_MOBILE_SAFE_RENDER_WEIGHT_20260602 */
+      const isMobileRenderQuality = window.matchMedia("(max-width: 760px)").matches;
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, isMobileRenderQuality ? 1.18 : 1.85);
+      /* /FFT_VIEWER_MOBILE_SAFE_RENDER_WEIGHT_20260602 */
       const pdf = await pdfjsLib.getDocument(encodeURI(pdfFile)).promise;
       const page = await pdf.getPage(1);
       const viewport = page.getViewport({ scale: scaleValue * pixelRatio });
@@ -506,7 +509,19 @@
         viewport: viewport
       }).promise;
 
-      wrapper.appendChild(canvas);
+
+      /* FFT_VIEWER_MOBILE_SAFE_RENDER_WEIGHT_20260602 */
+      try {
+        if (page && typeof page.cleanup === "function") {
+          page.cleanup();
+        }
+
+        if (pdf && typeof pdf.cleanup === "function") {
+          await pdf.cleanup();
+        }
+      } catch (cleanupError) {}
+      /* /FFT_VIEWER_MOBILE_SAFE_RENDER_WEIGHT_20260602 */
+wrapper.appendChild(canvas);
       return wrapper;
     }
 
@@ -518,7 +533,12 @@
       try {
         const metric = await getPageMetric(brochurePages[0]);
 
-        const targetHeight = Math.min(820, Math.max(680, window.innerHeight - 150));
+        /* FFT_VIEWER_MOBILE_SAFE_RENDER_WEIGHT_20260602 */
+        const isMobileViewerSize = window.matchMedia("(max-width: 760px)").matches;
+        const targetHeight = isMobileViewerSize
+          ? Math.min(500, Math.max(380, window.innerHeight - 270))
+          : Math.min(820, Math.max(680, window.innerHeight - 150));
+        /* /FFT_VIEWER_MOBILE_SAFE_RENDER_WEIGHT_20260602 */
         const scaleValue = targetHeight / metric.baseHeight;
 
         pageHeight = Math.round(metric.baseHeight * scaleValue);
@@ -634,7 +654,7 @@
 }());
 </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 JS -->
-  <script defer src="fft-viewer-theme.js?v=dflip-toolbar-hard-reset-20260529"></script>
+  <script defer src="fft-viewer-theme.js?v=viewer-neutral-description-20260602"></script>
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_START -->
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_END -->

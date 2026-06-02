@@ -269,7 +269,7 @@
       '<div class="fft-viewer-shellbar__text">',
         '<p class="fft-viewer-shellbar__eyebrow">E-BROCHURE</p>',
         '<h1 class="fft-viewer-shellbar__title">Preview Brosur Digital</h1>',
-        '<p class="fft-viewer-shellbar__subtitle">Baca brosur Fakultas Filsafat Teologi UASN dalam tampilan buku digital.</p>',
+        '<p class="fft-viewer-shellbar__subtitle">Baca brosur digital dalam tampilan buku interaktif.</p>',
       '</div>',
       '<nav class="fft-viewer-shellbar__actions" aria-label="Aksi preview brosur">',
         '<a class="fft-viewer-shellbar__button fft-viewer-shellbar__button--ghost" href="../e-brochure.html">Kembali</a>',
