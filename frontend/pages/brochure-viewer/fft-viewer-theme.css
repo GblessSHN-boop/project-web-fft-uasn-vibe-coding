@@ -329,3 +329,123 @@ body.fft-standalone-viewer .fft-viewer-clean-control-bar {
     grid-template-columns: repeat(3, 1fr) !important;
   }
 }
+
+/* FFT_VIEWER_SPREAD_TOOLBAR_CSS_20260602 */
+.fft-dflip-spread-toolbar {
+  max-width: min(860px, calc(100vw - 32px)) !important;
+}
+
+.fft-dflip-spread-btn {
+  width: 230px !important;
+  min-width: 230px !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+}
+
+.fft-dflip-spread-menu {
+  width: 292px !important;
+  grid-template-columns: 1fr !important;
+}
+
+.fft-dflip-spread-choice {
+  min-height: 42px !important;
+  justify-content: flex-start !important;
+  padding: 0 14px !important;
+  text-align: left !important;
+}
+
+.fft-dflip-prev,
+.fft-dflip-next {
+  font-size: 1.65rem !important;
+  line-height: 1 !important;
+}
+
+@media (max-width: 760px) {
+  .fft-dflip-spread-btn {
+    width: 190px !important;
+    min-width: 190px !important;
+    font-size: 0.76rem !important;
+  }
+
+  .fft-dflip-spread-menu {
+    width: 250px !important;
+  }
+}
+/* /FFT_VIEWER_SPREAD_TOOLBAR_CSS_20260602 */
+
+/* FFT_VIEWER_SPREAD_TOOLBAR_SAFE_CSS_20260602 */
+.fft-dflip-spread-toolbar .fft-dflip-btn {
+  min-width: 74px !important;
+  padding: 0 14px !important;
+  font-size: 0.78rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.fft-dflip-spread-toolbar .fft-dflip-spread-btn {
+  min-width: 250px !important;
+  width: 250px !important;
+}
+
+@media (max-width: 760px) {
+  .fft-dflip-spread-toolbar .fft-dflip-btn {
+    min-width: 66px !important;
+    padding: 0 10px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .fft-dflip-spread-toolbar .fft-dflip-spread-btn {
+    min-width: 210px !important;
+    width: 210px !important;
+  }
+}
+/* /FFT_VIEWER_SPREAD_TOOLBAR_SAFE_CSS_20260602 */
+
+/* FFT_VIEWER_SPREAD_TOOLBAR_TEXT_CSS_20260602 */
+.fft-dflip-spread-toolbar {
+  gap: 0 !important;
+}
+
+.fft-dflip-spread-toolbar .fft-dflip-btn {
+  min-width: 92px !important;
+  height: 54px !important;
+  padding: 0 12px !important;
+  font-size: 0.72rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.01em !important;
+  text-transform: none !important;
+}
+
+.fft-dflip-spread-toolbar .fft-dflip-spread-btn {
+  min-width: 280px !important;
+  width: 280px !important;
+  font-size: 0.78rem !important;
+}
+
+.fft-dflip-spread-toolbar .fft-dflip-prev,
+.fft-dflip-spread-toolbar .fft-dflip-next {
+  min-width: 112px !important;
+}
+
+.fft-dflip-spread-toolbar .is-disabled {
+  opacity: 0.42 !important;
+  pointer-events: none !important;
+}
+
+@media (max-width: 900px) {
+  .fft-dflip-spread-toolbar .fft-dflip-btn {
+    min-width: 74px !important;
+    font-size: 0.66rem !important;
+  }
+
+  .fft-dflip-spread-toolbar .fft-dflip-prev,
+  .fft-dflip-spread-toolbar .fft-dflip-next {
+    min-width: 86px !important;
+  }
+
+  .fft-dflip-spread-toolbar .fft-dflip-spread-btn {
+    min-width: 230px !important;
+    width: 230px !important;
+  }
+}
+/* /FFT_VIEWER_SPREAD_TOOLBAR_TEXT_CSS_20260602 */
