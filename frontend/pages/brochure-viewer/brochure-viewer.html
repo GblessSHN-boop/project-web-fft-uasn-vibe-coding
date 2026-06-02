@@ -225,7 +225,7 @@
 }
   </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 CSS -->
-  <link rel="stylesheet" href="fft-viewer-theme.css?v=viewer-nav-icon-assets-20260602">
+  <link rel="stylesheet" href="fft-viewer-theme.css?v=viewer-mobile-surgical-ui-fix-20260602">
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_STYLE_START -->
 <style>
@@ -1392,6 +1392,1002 @@
 }());
 </script>
 <!-- /FFT_VIEWER_NAV_ICON_ASSETS_20260602 -->
+<!-- FFT_VIEWER_MOBILE_MENU_JUMP_PANEL_20260602 -->
+<style>
+  @media (max-width: 760px) {
+    html.fft-mobile-menu-jump-panel [data-fft-mobile-menu-jump-trigger] {
+      color: #78080d !important;
+      background: rgba(120, 8, 13, 0.035) !important;
+    }
+
+    html.fft-mobile-menu-jump-panel [data-fft-mobile-menu-jump-trigger]:active {
+      background: rgba(120, 8, 13, 0.09) !important;
+    }
+
+    body > .fft-mobile-page-jump-panel {
+      position: fixed !important;
+      left: 10px !important;
+      right: 10px !important;
+      bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+      z-index: 2147483500 !important;
+      display: none !important;
+      max-height: 52vh !important;
+      overflow: auto !important;
+      background: #ffffff !important;
+      border: 1px solid rgba(120, 8, 13, 0.18) !important;
+      box-shadow: 0 18px 44px rgba(15, 23, 42, 0.2) !important;
+      padding: 10px !important;
+    }
+
+    body > .fft-mobile-page-jump-panel.is-open {
+      display: block !important;
+    }
+
+    .fft-mobile-page-jump-panel__head {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 10px !important;
+      padding: 8px 8px 10px !important;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+      margin-bottom: 10px !important;
+    }
+
+    .fft-mobile-page-jump-panel__title {
+      margin: 0 !important;
+      color: #78080d !important;
+      font-size: 13px !important;
+      font-weight: 950 !important;
+      letter-spacing: 0.06em !important;
+      text-transform: uppercase !important;
+    }
+
+    .fft-mobile-page-jump-panel__close {
+      width: 34px !important;
+      height: 34px !important;
+      border: 1px solid rgba(120, 8, 13, 0.22) !important;
+      background: #ffffff !important;
+      color: #78080d !important;
+      font-size: 18px !important;
+      font-weight: 900 !important;
+      line-height: 1 !important;
+    }
+
+    .fft-mobile-page-jump-panel__list {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 8px !important;
+    }
+
+    .fft-mobile-page-jump-panel__choice {
+      min-height: 44px !important;
+      width: 100% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 10px !important;
+      padding: 10px 12px !important;
+      border: 1px solid rgba(15, 23, 42, 0.10) !important;
+      background: #ffffff !important;
+      color: #263447 !important;
+      text-align: left !important;
+      font-size: 13px !important;
+      font-weight: 900 !important;
+    }
+
+    .fft-mobile-page-jump-panel__choice.is-current {
+      background: #78080d !important;
+      border-color: #78080d !important;
+      color: #ffffff !important;
+    }
+
+    .fft-mobile-page-jump-panel__choice.is-current::after {
+      content: "Aktif" !important;
+      font-size: 10px !important;
+      font-weight: 900 !important;
+      opacity: 0.95 !important;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  var rootClass = "fft-mobile-menu-jump-panel";
+  var panelId = "fft-mobile-page-jump-panel";
+  var lastTapAt = 0;
+
+  function isMobile() {
+    return window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
+  }
+
+  function textOf(node) {
+    return (node && node.textContent ? node.textContent : "").replace(/\s+/g, " ").trim();
+  }
+
+  function findToolbar() {
+    var candidates = Array.prototype.slice.call(
+      document.querySelectorAll(
+        "[data-fft-mobile-toolbar], .fft-dflip-toolbar, [class*='toolbar'], [class*='Toolbar']"
+      )
+    );
+
+    return candidates.find(function (node) {
+      var text = textOf(node);
+      return /Halaman\s+\d+/i.test(text) && /Menu/i.test(text);
+    }) || null;
+  }
+
+  function findMenuButton(toolbar) {
+    if (!toolbar) {
+      return null;
+    }
+
+    var items = Array.prototype.slice.call(
+      toolbar.querySelectorAll("[data-fft-mobile-menu-jump-trigger], [data-fft-toolbar-menu], button, a, [role='button'], *")
+    );
+
+    return items.find(function (item) {
+      var text = textOf(item);
+      var label = item.getAttribute("aria-label") || "";
+      var title = item.getAttribute("title") || "";
+
+      return item.hasAttribute("data-fft-mobile-menu-jump-trigger")
+        || item.hasAttribute("data-fft-toolbar-menu")
+        || /^Menu$/i.test(text)
+        || /^Menu$/i.test(label)
+        || /^Menu$/i.test(title)
+        || /Lompat halaman/i.test(label)
+        || /Lompat halaman/i.test(title);
+    }) || null;
+  }
+
+  function getToolbarText() {
+    var toolbar = findToolbar();
+    return textOf(toolbar || document.body);
+  }
+
+  function getTotalPages() {
+    var text = getToolbarText();
+    var match = text.match(/Halaman\s+\d+(?:\s+sampai\s+\d+)?\s+dari\s+(\d+)/i);
+
+    if (match && match[1]) {
+      return Math.max(1, parseInt(match[1], 10) || 1);
+    }
+
+    var pages = document.querySelectorAll(".page").length;
+
+    if (pages > 0) {
+      return pages;
+    }
+
+    return 1;
+  }
+
+  function getCurrentStart() {
+    var text = getToolbarText();
+    var match = text.match(/Halaman\s+(\d+)/i);
+
+    if (match && match[1]) {
+      return Math.max(1, parseInt(match[1], 10) || 1);
+    }
+
+    return 1;
+  }
+
+  function makeLabel(start, total) {
+    var end = Math.min(total, start + 1);
+
+    if (start === end) {
+      return "Halaman " + start;
+    }
+
+    return "Halaman " + start + " sampai " + end;
+  }
+
+  function getPanel() {
+    var panel = document.getElementById(panelId);
+
+    if (panel) {
+      return panel;
+    }
+
+    panel = document.createElement("div");
+    panel.id = panelId;
+    panel.className = "fft-mobile-page-jump-panel";
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-label", "Lompat halaman");
+    document.body.appendChild(panel);
+
+    return panel;
+  }
+
+  function closePanel() {
+    var panel = document.getElementById(panelId);
+
+    if (panel) {
+      panel.classList.remove("is-open");
+    }
+  }
+
+  function jumpToSpread(start) {
+    var jumped = false;
+
+    try {
+      if (typeof window.FFTBrochureViewerJumpToSpread === "function") {
+        window.FFTBrochureViewerJumpToSpread(start);
+        jumped = true;
+      }
+    } catch (error) {}
+
+    try {
+      if (!jumped && typeof window.FFTBrochureViewerJumpToPage === "function") {
+        window.FFTBrochureViewerJumpToPage(start);
+        jumped = true;
+      }
+    } catch (error) {}
+
+    if (!jumped) {
+      var label = makeLabel(start, getTotalPages());
+      var choices = Array.prototype.slice.call(
+        document.querySelectorAll(".fft-dflip-spread-choice, .fft-dflip-page-choice, .fft-page-jump-clone-choice")
+      );
+
+      var nativeChoice = choices.find(function (item) {
+        return textOf(item).indexOf(label) !== -1;
+      });
+
+      if (nativeChoice && typeof nativeChoice.click === "function") {
+        nativeChoice.click();
+        jumped = true;
+      }
+    }
+
+    closePanel();
+
+    window.setTimeout(markMenuButton, 120);
+    window.setTimeout(renderPanelIfOpen, 350);
+
+    return jumped;
+  }
+
+  function renderPanel() {
+    var total = getTotalPages();
+    var current = getCurrentStart();
+    var panel = getPanel();
+
+    panel.innerHTML = "";
+
+    var head = document.createElement("div");
+    head.className = "fft-mobile-page-jump-panel__head";
+
+    var title = document.createElement("p");
+    title.className = "fft-mobile-page-jump-panel__title";
+    title.textContent = "Lompat halaman";
+
+    var close = document.createElement("button");
+    close.type = "button";
+    close.className = "fft-mobile-page-jump-panel__close";
+    close.setAttribute("aria-label", "Tutup");
+    close.textContent = "?";
+    close.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      closePanel();
+    });
+
+    head.appendChild(title);
+    head.appendChild(close);
+    panel.appendChild(head);
+
+    var list = document.createElement("div");
+    list.className = "fft-mobile-page-jump-panel__list";
+
+    for (var start = 1; start <= total; start += 2) {
+      var button = document.createElement("button");
+      var label = makeLabel(start, total);
+
+      button.type = "button";
+      button.className = "fft-mobile-page-jump-panel__choice";
+      button.textContent = label;
+      button.setAttribute("data-start", String(start));
+
+      if (current >= start && current <= Math.min(total, start + 1)) {
+        button.classList.add("is-current");
+      }
+
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var targetStart = parseInt(this.getAttribute("data-start"), 10) || 1;
+        jumpToSpread(targetStart);
+      });
+
+      list.appendChild(button);
+    }
+
+    panel.appendChild(list);
+  }
+
+  function renderPanelIfOpen() {
+    var panel = document.getElementById(panelId);
+
+    if (panel && panel.classList.contains("is-open")) {
+      renderPanel();
+      panel.classList.add("is-open");
+    }
+  }
+
+  function openPanel() {
+    var panel = getPanel();
+
+    if (panel.classList.contains("is-open")) {
+      closePanel();
+      return;
+    }
+
+    renderPanel();
+    panel.classList.add("is-open");
+  }
+
+  function markMenuButton() {
+    if (!isMobile()) {
+      return;
+    }
+
+    var toolbar = findToolbar();
+    var menuButton = findMenuButton(toolbar);
+
+    if (!menuButton) {
+      return;
+    }
+
+    document.documentElement.classList.add(rootClass);
+
+    menuButton.setAttribute("data-fft-mobile-menu-jump-trigger", "true");
+    menuButton.setAttribute("aria-label", "Lompat halaman");
+    menuButton.setAttribute("title", "Lompat halaman");
+  }
+
+  function isMenuTarget(target) {
+    if (!isMobile() || !target || !target.closest) {
+      return false;
+    }
+
+    var item = target.closest("[data-fft-mobile-menu-jump-trigger], [data-fft-toolbar-menu], button, a, [role='button']");
+
+    if (!item) {
+      return false;
+    }
+
+    var toolbar = item.closest("[data-fft-mobile-toolbar], .fft-dflip-toolbar, [class*='toolbar'], [class*='Toolbar']");
+
+    if (!toolbar) {
+      return false;
+    }
+
+    return item.hasAttribute("data-fft-mobile-menu-jump-trigger")
+      || item.hasAttribute("data-fft-toolbar-menu")
+      || /^Menu$/i.test(textOf(item))
+      || /Lompat halaman/i.test(item.getAttribute("aria-label") || "")
+      || /Lompat halaman/i.test(item.getAttribute("title") || "");
+  }
+
+  function stopEvent(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (typeof event.stopImmediatePropagation === "function") {
+      event.stopImmediatePropagation();
+    }
+  }
+
+  function handleMenu(event) {
+    if (!isMenuTarget(event.target)) {
+      return;
+    }
+
+    var now = Date.now();
+
+    if (now - lastTapAt < 260) {
+      stopEvent(event);
+      return;
+    }
+
+    lastTapAt = now;
+
+    stopEvent(event);
+    markMenuButton();
+    openPanel();
+  }
+
+  function handleOutside(event) {
+    if (!isMobile()) {
+      return;
+    }
+
+    var panel = document.getElementById(panelId);
+
+    if (!panel || !panel.classList.contains("is-open")) {
+      return;
+    }
+
+    if (panel.contains(event.target)) {
+      return;
+    }
+
+    if (isMenuTarget(event.target)) {
+      return;
+    }
+
+    closePanel();
+  }
+
+  function boot() {
+    markMenuButton();
+
+    window.setTimeout(markMenuButton, 120);
+    window.setTimeout(markMenuButton, 400);
+    window.setTimeout(markMenuButton, 1000);
+    window.setTimeout(markMenuButton, 2200);
+
+    document.addEventListener("pointerup", handleMenu, true);
+    document.addEventListener("touchend", handleMenu, true);
+    document.addEventListener("click", handleMenu, true);
+    document.addEventListener("click", handleOutside, true);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot, { once: true });
+  } else {
+    boot();
+  }
+
+  window.addEventListener("load", function () {
+    window.setTimeout(markMenuButton, 250);
+  }, { once: true });
+
+  window.addEventListener("resize", function () {
+    markMenuButton();
+    closePanel();
+  });
+
+  window.addEventListener("orientationchange", function () {
+    window.setTimeout(markMenuButton, 300);
+    closePanel();
+  });
+}());
+</script>
+<!-- /FFT_VIEWER_MOBILE_MENU_JUMP_PANEL_20260602 -->
+<!-- FFT_VIEWER_MOBILE_PAGE_LABEL_STATIC_20260602 -->
+<style>
+  @media (max-width: 760px) {
+    html.fft-mobile-page-label-static [data-fft-toolbar-page] {
+      cursor: default !important;
+      user-select: none !important;
+      background: #f8fafc !important;
+      color: #263447 !important;
+    }
+
+    html.fft-mobile-page-label-static [data-fft-toolbar-page]:hover,
+    html.fft-mobile-page-label-static [data-fft-toolbar-page]:focus,
+    html.fft-mobile-page-label-static [data-fft-toolbar-page]:active {
+      background: #f8fafc !important;
+      color: #263447 !important;
+      outline: none !important;
+    }
+
+    html.fft-mobile-page-label-static [data-fft-toolbar-page]::after {
+      content: "" !important;
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  var rootClass = "fft-mobile-page-label-static";
+
+  function isMobile() {
+    return window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
+  }
+
+  function textOf(node) {
+    return (node && node.textContent ? node.textContent : "").replace(/\s+/g, " ").trim();
+  }
+
+  function findToolbar() {
+    var candidates = Array.prototype.slice.call(
+      document.querySelectorAll(
+        "[data-fft-mobile-toolbar], .fft-dflip-toolbar, [class*='toolbar'], [class*='Toolbar']"
+      )
+    );
+
+    return candidates.find(function (node) {
+      var text = textOf(node);
+      return /Halaman\s+\d+/i.test(text) && /Sebelumnya|Berikutnya/i.test(text);
+    }) || null;
+  }
+
+  function findPageLabel(toolbar) {
+    if (!toolbar) {
+      return null;
+    }
+
+    var items = Array.prototype.slice.call(
+      toolbar.querySelectorAll("[data-fft-toolbar-page], button, a, [role='button'], *")
+    );
+
+    return items.find(function (item) {
+      return item.hasAttribute("data-fft-toolbar-page") || /Halaman\s+\d+/i.test(textOf(item));
+    }) || null;
+  }
+
+  function markPageLabelStatic() {
+    if (!isMobile()) {
+      return;
+    }
+
+    var toolbar = findToolbar();
+    var pageLabel = findPageLabel(toolbar);
+
+    if (!pageLabel) {
+      return;
+    }
+
+    document.documentElement.classList.add(rootClass);
+
+    pageLabel.setAttribute("data-fft-mobile-page-label-static", "true");
+    pageLabel.setAttribute("aria-label", textOf(pageLabel));
+    pageLabel.setAttribute("title", "");
+  }
+
+  function isPageLabelTarget(target) {
+    if (!isMobile() || !target || !target.closest) {
+      return false;
+    }
+
+    var item = target.closest("[data-fft-mobile-page-label-static], [data-fft-toolbar-page], button, a, [role='button']");
+
+    if (!item) {
+      return false;
+    }
+
+    var toolbar = item.closest("[data-fft-mobile-toolbar], .fft-dflip-toolbar, [class*='toolbar'], [class*='Toolbar']");
+
+    if (!toolbar) {
+      return false;
+    }
+
+    return item.hasAttribute("data-fft-mobile-page-label-static")
+      || item.hasAttribute("data-fft-toolbar-page")
+      || /Halaman\s+\d+/i.test(textOf(item));
+  }
+
+  function stopPageLabelEvent(event) {
+    if (!isPageLabelTarget(event.target)) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (typeof event.stopImmediatePropagation === "function") {
+      event.stopImmediatePropagation();
+    }
+  }
+
+  function boot() {
+    markPageLabelStatic();
+
+    window.setTimeout(markPageLabelStatic, 120);
+    window.setTimeout(markPageLabelStatic, 400);
+    window.setTimeout(markPageLabelStatic, 1000);
+    window.setTimeout(markPageLabelStatic, 2200);
+
+    document.addEventListener("pointerdown", stopPageLabelEvent, true);
+    document.addEventListener("pointerup", stopPageLabelEvent, true);
+    document.addEventListener("touchstart", stopPageLabelEvent, true);
+    document.addEventListener("touchend", stopPageLabelEvent, true);
+    document.addEventListener("click", stopPageLabelEvent, true);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot, { once: true });
+  } else {
+    boot();
+  }
+
+  window.addEventListener("load", function () {
+    window.setTimeout(markPageLabelStatic, 250);
+  }, { once: true });
+
+  window.addEventListener("resize", markPageLabelStatic);
+  window.addEventListener("orientationchange", function () {
+    window.setTimeout(markPageLabelStatic, 300);
+  });
+}());
+</script>
+<!-- /FFT_VIEWER_MOBILE_PAGE_LABEL_STATIC_20260602 -->
+<!-- FFT_VIEWER_MOBILE_MENU_ICON_AND_CARET_CLEAN_20260602 -->
+<style>
+  :root {
+    --fft-viewer-mobile-menu-icon: url("assets/icons/viewer-mobile-menu-icon.svg?v=mobile-menu-icon-20260602");
+  }
+
+  @media (max-width: 760px) {
+    html.fft-mobile-menu-icon-caret-clean [data-fft-toolbar-menu],
+    html.fft-mobile-menu-icon-caret-clean [data-fft-mobile-menu-jump-trigger] {
+      position: relative !important;
+      font-size: 0 !important;
+      color: transparent !important;
+      gap: 0 !important;
+    }
+
+    html.fft-mobile-menu-icon-caret-clean [data-fft-toolbar-menu]::before,
+    html.fft-mobile-menu-icon-caret-clean [data-fft-mobile-menu-jump-trigger]::before {
+      content: "" !important;
+      display: block !important;
+      width: 18px !important;
+      height: 18px !important;
+      flex: 0 0 18px !important;
+      background-image: var(--fft-viewer-mobile-menu-icon) !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+      background-size: contain !important;
+    }
+
+    html.fft-mobile-menu-icon-caret-clean [data-fft-toolbar-page],
+    html.fft-mobile-menu-icon-caret-clean [data-fft-mobile-page-label-static] {
+      cursor: default !important;
+      user-select: none !important;
+      background: #f8fafc !important;
+      color: #263447 !important;
+      font-weight: 900 !important;
+      text-align: center !important;
+    }
+
+    html.fft-mobile-menu-icon-caret-clean [data-fft-toolbar-page]::before,
+    html.fft-mobile-menu-icon-caret-clean [data-fft-toolbar-page]::after,
+    html.fft-mobile-menu-icon-caret-clean [data-fft-mobile-page-label-static]::before,
+    html.fft-mobile-menu-icon-caret-clean [data-fft-mobile-page-label-static]::after {
+      content: none !important;
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    html.fft-mobile-menu-icon-caret-clean [data-fft-page-label-caret-hidden] {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      width: 0 !important;
+      max-width: 0 !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      pointer-events: none !important;
+    }
+
+    html.fft-mobile-menu-icon-caret-clean [data-fft-toolbar-page]:hover,
+    html.fft-mobile-menu-icon-caret-clean [data-fft-toolbar-page]:focus,
+    html.fft-mobile-menu-icon-caret-clean [data-fft-toolbar-page]:active,
+    html.fft-mobile-menu-icon-caret-clean [data-fft-mobile-page-label-static]:hover,
+    html.fft-mobile-menu-icon-caret-clean [data-fft-mobile-page-label-static]:focus,
+    html.fft-mobile-menu-icon-caret-clean [data-fft-mobile-page-label-static]:active {
+      background: #f8fafc !important;
+      color: #263447 !important;
+      outline: none !important;
+    }
+  }
+
+  @media (max-width: 390px) {
+    html.fft-mobile-menu-icon-caret-clean [data-fft-toolbar-menu]::before,
+    html.fft-mobile-menu-icon-caret-clean [data-fft-mobile-menu-jump-trigger]::before {
+      width: 17px !important;
+      height: 17px !important;
+      flex-basis: 17px !important;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  var rootClass = "fft-mobile-menu-icon-caret-clean";
+  var caretTexts = ["v", "V", "?", "?", "?", "?", "?", "^", "?", "?"];
+
+  function isMobile() {
+    return window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
+  }
+
+  function textOf(node) {
+    return (node && node.textContent ? node.textContent : "").replace(/\s+/g, " ").trim();
+  }
+
+  function isCaretText(text) {
+    return caretTexts.indexOf(String(text || "").trim()) !== -1;
+  }
+
+  function findToolbar() {
+    var candidates = Array.prototype.slice.call(
+      document.querySelectorAll(
+        "[data-fft-mobile-toolbar], .fft-dflip-toolbar, [class*='toolbar'], [class*='Toolbar']"
+      )
+    );
+
+    return candidates.find(function (node) {
+      var text = textOf(node);
+      return /Halaman\s+\d+/i.test(text) && /Sebelumnya|Berikutnya/i.test(text);
+    }) || null;
+  }
+
+  function findMenuButton(toolbar) {
+    if (!toolbar) {
+      return null;
+    }
+
+    var items = Array.prototype.slice.call(
+      toolbar.querySelectorAll("[data-fft-mobile-menu-jump-trigger], [data-fft-toolbar-menu], button, a, [role='button'], *")
+    );
+
+    return items.find(function (item) {
+      var text = textOf(item);
+      var label = item.getAttribute("aria-label") || "";
+      var title = item.getAttribute("title") || "";
+
+      return item.hasAttribute("data-fft-mobile-menu-jump-trigger")
+        || item.hasAttribute("data-fft-toolbar-menu")
+        || /^Menu$/i.test(text)
+        || /Lompat halaman/i.test(label)
+        || /Lompat halaman/i.test(title);
+    }) || null;
+  }
+
+  function findPageLabel(toolbar) {
+    if (!toolbar) {
+      return null;
+    }
+
+    var items = Array.prototype.slice.call(
+      toolbar.querySelectorAll("[data-fft-mobile-page-label-static], [data-fft-toolbar-page], button, a, [role='button'], *")
+    );
+
+    return items.find(function (item) {
+      return item.hasAttribute("data-fft-mobile-page-label-static")
+        || item.hasAttribute("data-fft-toolbar-page")
+        || /Halaman\s+\d+/i.test(textOf(item));
+    }) || null;
+  }
+
+  function hideCaretChildren(label) {
+    if (!label) {
+      return;
+    }
+
+    Array.prototype.slice.call(label.querySelectorAll("*")).forEach(function (child) {
+      var text = textOf(child);
+      var meta = [
+        child.getAttribute("aria-label") || "",
+        child.getAttribute("title") || "",
+        String(child.className || "")
+      ].join(" ");
+
+      var namedAsCaret = /caret|chevron|arrow|dropdown/i.test(meta);
+
+      if (isCaretText(text) || (namedAsCaret && text.length <= 3)) {
+        child.setAttribute("data-fft-page-label-caret-hidden", "true");
+        child.setAttribute("aria-hidden", "true");
+      }
+    });
+  }
+
+  function stripTextCaret(label) {
+    if (!label) {
+      return;
+    }
+
+    Array.prototype.slice.call(label.childNodes).forEach(function (node) {
+      if (node.nodeType !== 3) {
+        return;
+      }
+
+      var value = node.nodeValue || "";
+      node.nodeValue = value.replace(/\s+[vV\^]\s*$/g, "");
+    });
+  }
+
+  function applyMobileToolbarPolish() {
+    if (!isMobile()) {
+      return;
+    }
+
+    var toolbar = findToolbar();
+
+    if (!toolbar) {
+      return;
+    }
+
+    document.documentElement.classList.add(rootClass);
+
+    var menuButton = findMenuButton(toolbar);
+
+    if (menuButton) {
+      menuButton.setAttribute("data-fft-mobile-menu-jump-trigger", "true");
+      menuButton.setAttribute("aria-label", "Lompat halaman");
+      menuButton.setAttribute("title", "Lompat halaman");
+    }
+
+    var pageLabel = findPageLabel(toolbar);
+
+    if (pageLabel) {
+      pageLabel.setAttribute("data-fft-mobile-page-label-static", "true");
+      pageLabel.setAttribute("title", "");
+      pageLabel.setAttribute("aria-label", textOf(pageLabel).replace(/\s+[vV\^]\s*$/g, ""));
+      hideCaretChildren(pageLabel);
+      stripTextCaret(pageLabel);
+    }
+  }
+
+  function boot() {
+    applyMobileToolbarPolish();
+
+    window.setTimeout(applyMobileToolbarPolish, 120);
+    window.setTimeout(applyMobileToolbarPolish, 400);
+    window.setTimeout(applyMobileToolbarPolish, 1000);
+    window.setTimeout(applyMobileToolbarPolish, 2200);
+
+    if (document.body && window.MutationObserver) {
+      var timer = null;
+
+      var observer = new MutationObserver(function () {
+        window.clearTimeout(timer);
+        timer = window.setTimeout(applyMobileToolbarPolish, 80);
+      });
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        characterData: true
+      });
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot, { once: true });
+  } else {
+    boot();
+  }
+
+  window.addEventListener("load", function () {
+    window.setTimeout(applyMobileToolbarPolish, 250);
+  }, { once: true });
+
+  window.addEventListener("resize", applyMobileToolbarPolish);
+  window.addEventListener("orientationchange", function () {
+    window.setTimeout(applyMobileToolbarPolish, 300);
+  });
+}());
+</script>
+<!-- /FFT_VIEWER_MOBILE_MENU_ICON_AND_CARET_CLEAN_20260602 -->
+<!-- FFT_VIEWER_MOBILE_SURGICAL_UI_FIX_20260602 -->
+<style>
+  @media (max-width: 760px) {
+    /* header mobile jangan melebar dan jangan center aneh */
+    [data-fft-mobile-hero],
+    .viewer-header,
+    .viewer-hero {
+      text-align: left !important;
+      align-items: flex-start !important;
+      overflow: hidden !important;
+    }
+
+    [data-fft-mobile-title],
+    .viewer-title {
+      width: 100% !important;
+      max-width: 100% !important;
+      text-align: left !important;
+      align-items: flex-start !important;
+      box-sizing: border-box !important;
+    }
+
+    [data-fft-mobile-title] h1,
+    .viewer-title h1,
+    [data-fft-mobile-title] p,
+    .viewer-title p {
+      text-align: left !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+
+    [data-fft-mobile-actions],
+    .viewer-actions {
+      width: 100% !important;
+      max-width: 100% !important;
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+      gap: 8px !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+    }
+
+    [data-fft-mobile-action],
+    .viewer-actions a,
+    .viewer-actions button {
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+
+    /* hilangkan caret v asli dari tombol halaman mobile */
+    .fft-dflip-toolbar .fft-dflip-spread-btn::after,
+    .fft-dflip-toolbar .fft-dflip-spread-btn[aria-expanded]::after,
+    .fft-dflip-toolbar [data-fft-toolbar-page]::after,
+    .fft-dflip-toolbar [data-fft-mobile-page-label-static]::after {
+      content: none !important;
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .fft-dflip-toolbar .fft-dflip-spread-btn,
+    .fft-dflip-toolbar [data-fft-toolbar-page],
+    .fft-dflip-toolbar [data-fft-mobile-page-label-static] {
+      padding-right: 6px !important;
+      cursor: default !important;
+      user-select: none !important;
+    }
+
+    /* rapikan baris bawah tanpa ubah fungsi */
+    [data-fft-mobile-toolbar] > *,
+    .fft-dflip-toolbar > * {
+      box-sizing: border-box !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+    }
+
+    [data-fft-toolbar-zoom-in]::before,
+    [data-fft-toolbar-zoom-out]::before,
+    [data-fft-toolbar-menu]::before,
+    [data-fft-mobile-menu-jump-trigger]::before {
+      width: 18px !important;
+      height: 18px !important;
+      flex-basis: 18px !important;
+    }
+
+    [data-fft-toolbar-fullscreen] {
+      font-size: 9px !important;
+      line-height: 1.08 !important;
+      font-weight: 850 !important;
+      white-space: normal !important;
+    }
+  }
+
+  @media (max-width: 390px) {
+    [data-fft-toolbar-zoom-in]::before,
+    [data-fft-toolbar-zoom-out]::before,
+    [data-fft-toolbar-menu]::before,
+    [data-fft-mobile-menu-jump-trigger]::before {
+      width: 17px !important;
+      height: 17px !important;
+      flex-basis: 17px !important;
+    }
+
+    [data-fft-toolbar-fullscreen] {
+      font-size: 8.6px !important;
+    }
+  }
+</style>
+<!-- /FFT_VIEWER_MOBILE_SURGICAL_UI_FIX_20260602 -->
 </head>
 <body class="fft-standalone-viewer">
 
@@ -1420,7 +2416,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
-  <script src="data/brochures.js?v=viewer-nav-icon-assets-20260602"></script>
+  <script src="data/brochures.js?v=viewer-mobile-surgical-ui-fix-20260602"></script>
 
   <script>
     /* FFT_VIEWER_BACKEND_READY_DATA_CONTRACT_20260602 */
@@ -1543,7 +2539,6 @@
         viewport: viewport
       }).promise;
 
-
       /* FFT_VIEWER_MOBILE_SAFE_RENDER_WEIGHT_20260602 */
       try {
         if (page && typeof page.cleanup === "function") {
@@ -1654,7 +2649,6 @@ wrapper.appendChild(canvas);
     window.FFTBrochureViewerJumpToSpread = window.FFTBrochureViewerJumpToPage;
     /* /FFT_VIEWER_DIRECT_SPREAD_JUMP_API_20260602 */
 
-
         updatePageInfo();
       } catch (error) {
         viewerLoading.textContent = "Brosur gagal dimuat. Cek nama file PDF.";
@@ -1735,7 +2729,7 @@ wrapper.appendChild(canvas);
 }());
 </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 JS -->
-  <script defer src="fft-viewer-theme.js?v=viewer-nav-icon-assets-20260602"></script>
+  <script defer src="fft-viewer-theme.js?v=viewer-mobile-surgical-ui-fix-20260602"></script>
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_START -->
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_END -->
