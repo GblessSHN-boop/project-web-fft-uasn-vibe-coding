@@ -6,7 +6,55 @@
 
   var fallbackTotal = 8;
   var zoom = 1;
-  var downloadPdf = "assets/brosur/konten-belum-tersedia-fft/konten-belum-tersedia-fft.pdf";
+  /* FFT_VIEWER_BACKEND_READY_THEME_DATA_20260602 */
+  var fallbackDownloadPdf = "assets/brosur/konten-belum-tersedia-fft/konten-belum-tersedia-fft.pdf";
+
+  function getActiveBrochureData() {
+    var slug = new URLSearchParams(window.location.search).get("brochure") || "utama";
+    var store = window.FFT_BROCHURE_DATA || window.BROCHURES || {};
+
+    return (
+      window.FFT_ACTIVE_BROCHURE ||
+      store[slug] ||
+      store.utama ||
+      {}
+    );
+  }
+
+  function getBrochureTitle() {
+    var data = getActiveBrochureData();
+    return data.title || "Preview Brosur Digital";
+  }
+
+  function getBrochureDescription() {
+    var data = getActiveBrochureData();
+    return data.description || "Baca brosur digital dalam tampilan buku interaktif.";
+  }
+
+  function getDownloadPdf() {
+    var data = getActiveBrochureData();
+
+    return (
+      data.downloadUrl ||
+      data.download ||
+      data.pdfUrl ||
+      data.pdf ||
+      data.source ||
+      fallbackDownloadPdf
+    );
+  }
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  var downloadPdf = getDownloadPdf();
+  /* /FFT_VIEWER_BACKEND_READY_THEME_DATA_20260602 */
   var toastTimer = null;
 
   function textOf(element) {
@@ -268,12 +316,12 @@
     header.innerHTML = [
       '<div class="fft-viewer-shellbar__text">',
         '<p class="fft-viewer-shellbar__eyebrow">E-BROCHURE</p>',
-        '<h1 class="fft-viewer-shellbar__title">Preview Brosur Digital</h1>',
-        '<p class="fft-viewer-shellbar__subtitle">Baca brosur digital dalam tampilan buku interaktif.</p>',
+        '<h1 class="fft-viewer-shellbar__title">' + escapeHtml(getBrochureTitle()) + '</h1>',
+        '<p class="fft-viewer-shellbar__subtitle">' + escapeHtml(getBrochureDescription()) + '</p>',
       '</div>',
       '<nav class="fft-viewer-shellbar__actions" aria-label="Aksi preview brosur">',
         '<a class="fft-viewer-shellbar__button fft-viewer-shellbar__button--ghost" href="../e-brochure.html">Kembali</a>',
-        '<a class="fft-viewer-shellbar__button" href="' + downloadPdf + '" target="_blank" rel="noopener">Download PDF</a>',
+        '<a class="fft-viewer-shellbar__button" href="' + getDownloadPdf() + '" target="_blank" rel="noopener">Download PDF</a>',
       '</nav>'
     ].join("");
   }
@@ -637,11 +685,11 @@ function createToolbar() {
 
   moreMenu.className = "fft-dflip-more-menu";
   moreMenu.setAttribute("role", "menu");
+  /* FFT_VIEWER_CLEAN_NATIVE_MORE_MENU_20260602 */
   moreMenu.innerHTML = [
-    '<button type="button" class="fft-dflip-menu-item" data-action="download">Download PDF</button>',
-    '<button type="button" class="fft-dflip-menu-item" data-action="first">Ke halaman awal</button>',
-    '<button type="button" class="fft-dflip-menu-item" data-action="last">Ke halaman akhir</button>'
+    '<button type="button" class="fft-dflip-menu-item" data-action="download">Download PDF</button>'
   ].join("");
+  /* /FFT_VIEWER_CLEAN_NATIVE_MORE_MENU_20260602 */
 
   toast.className = "fft-dflip-toast";
   toast.textContent = "Siap";
@@ -1202,3 +1250,730 @@ function boot() {
   ready(boot);
 })();
 /* /FFT_VIEWER_ZOOM_PAN_RESET_20260602 */
+
+/* FFT_VIEWER_PAGE_JUMPER_CLONE_PANEL_20260602 */
+(function () {
+  "use strict";
+
+  var nativeClick = false;
+  var panel = null;
+  var lastButton = null;
+
+  function closestElement(target, selector) {
+    return target && target.closest ? target.closest(selector) : null;
+  }
+
+  function getPageButton() {
+    return document.querySelector(".fft-dflip-spread-btn, .fft-dflip-page-btn");
+  }
+
+  function getNativeMenu() {
+    var menus = Array.prototype.slice.call(
+      document.querySelectorAll(".fft-dflip-spread-menu, .fft-dflip-page-menu")
+    );
+
+    return menus.filter(function (menu) {
+      return !menu.classList.contains("fft-page-jump-clone-panel");
+    })[0] || null;
+  }
+
+  function getNativeChoices() {
+    var menu = getNativeMenu();
+
+    if (!menu) {
+      return [];
+    }
+
+    return Array.prototype.slice.call(
+      menu.querySelectorAll(".fft-dflip-spread-choice, .fft-dflip-page-choice")
+    );
+  }
+
+  function ensurePanel() {
+    if (panel && panel.parentElement === document.body) {
+      return panel;
+    }
+
+    panel = document.createElement("div");
+    panel.className = "fft-page-jump-clone-panel";
+    panel.setAttribute("role", "menu");
+    panel.setAttribute("aria-label", "Pilih halaman brosur");
+    panel.style.display = "none";
+
+    document.body.appendChild(panel);
+
+    return panel;
+  }
+
+  function closeNativeMenu() {
+    var menu = getNativeMenu();
+
+    if (menu) {
+      menu.classList.remove("is-open");
+      menu.style.display = "none";
+      menu.style.visibility = "hidden";
+      menu.style.pointerEvents = "none";
+    }
+  }
+
+  function closePanel() {
+    var pageButton = getPageButton();
+
+    if (panel) {
+      panel.classList.remove("is-open");
+      panel.style.display = "none";
+    }
+
+    if (pageButton) {
+      pageButton.setAttribute("aria-expanded", "false");
+    }
+
+    closeNativeMenu();
+  }
+
+  function positionPanel(button) {
+    if (!panel || !button) {
+      return;
+    }
+
+    var rect = button.getBoundingClientRect();
+    var toolbar = button.closest(".fft-dflip-toolbar");
+    var toolbarRect = toolbar ? toolbar.getBoundingClientRect() : null;
+    var bottom = toolbarRect
+      ? Math.max(86, Math.round(window.innerHeight - toolbarRect.top + 14))
+      : 110;
+
+    panel.style.left = Math.round(rect.left + (rect.width / 2)) + "px";
+    panel.style.bottom = bottom + "px";
+    panel.style.transform = "translateX(-50%)";
+  }
+
+  function findNativeChoice(spreadStart, label) {
+    var choices = getNativeChoices();
+
+    for (var index = 0; index < choices.length; index += 1) {
+      if (choices[index].dataset && choices[index].dataset.spreadStart === spreadStart) {
+        return choices[index];
+      }
+    }
+
+    for (var textIndex = 0; textIndex < choices.length; textIndex += 1) {
+      if ((choices[textIndex].textContent || "").trim() === label) {
+        return choices[textIndex];
+      }
+    }
+
+    return null;
+  }
+
+
+  /* FFT_VIEWER_PAGE_JUMPER_DIRECT_CLICK_20260602 */
+  function getLivePageFlip() {
+    try {
+      return (new Function("return typeof pageFlip !== 'undefined' ? pageFlip : null;"))();
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function jumpToSpreadDirect(spreadStart) {
+    var targetPage = parseInt(spreadStart, 10);
+
+    if (!targetPage || !isFinite(targetPage) || targetPage < 1) {
+      return false;
+    }
+
+    if (typeof window.FFTBrochureViewerJumpToSpread === "function") {
+      return window.FFTBrochureViewerJumpToSpread(targetPage) !== false;
+    }
+
+    if (typeof window.FFTBrochureViewerJumpToPage === "function") {
+      return window.FFTBrochureViewerJumpToPage(targetPage) !== false;
+    }
+
+    var viewer = window.FFTBrochureViewer || window.fftBrochureViewer || null;
+
+    if (viewer) {
+      if (typeof viewer.jumpToSpread === "function") {
+        return viewer.jumpToSpread(targetPage) !== false;
+      }
+
+      if (typeof viewer.goToPage === "function") {
+        return viewer.goToPage(targetPage) !== false;
+      }
+
+      if (typeof viewer.jumpToPage === "function") {
+        return viewer.jumpToPage(targetPage) !== false;
+      }
+    }
+
+    var livePageFlip = getLivePageFlip();
+
+    if (!livePageFlip) {
+      return false;
+    }
+
+    var targetIndex = targetPage - 1;
+
+    if (typeof livePageFlip.turnToPage === "function") {
+      livePageFlip.turnToPage(targetIndex);
+      return true;
+    }
+
+    if (typeof livePageFlip.flip === "function") {
+      livePageFlip.flip(targetIndex);
+      return true;
+    }
+
+    return false;
+  }
+  /* /FFT_VIEWER_PAGE_JUMPER_DIRECT_CLICK_20260602 */
+
+
+  function buildPanelFromNativeChoices() {
+    var choices = getNativeChoices();
+    var currentPanel = ensurePanel();
+
+    currentPanel.innerHTML = "";
+
+    var title = document.createElement("div");
+    title.className = "fft-page-jump-clone-title";
+    title.textContent = "Lompat halaman";
+currentPanel.appendChild(title);
+
+    if (!choices.length) {
+      var empty = document.createElement("div");
+      empty.className = "fft-page-jump-clone-empty";
+      empty.textContent = "Daftar halaman belum siap.";
+      currentPanel.appendChild(empty);
+      return false;
+    }
+
+    choices.forEach(function (choice) {
+      var label = (choice.textContent || "").trim();
+      var spreadStart = choice.dataset ? choice.dataset.spreadStart : "";
+
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "fft-page-jump-clone-choice";
+      button.textContent = label;
+      button.dataset.spreadStart = spreadStart;
+
+      if (
+        choice.classList.contains("is-current") ||
+        choice.classList.contains("is-active")
+      ) {
+        button.classList.add("is-current");
+      }
+
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var jumped = jumpToSpreadDirect(spreadStart);
+        var nativeChoice = findNativeChoice(spreadStart, label);
+
+        closePanel();
+
+        if (!jumped && nativeChoice) {
+          nativeChoice.click();
+        }
+      });
+
+      currentPanel.appendChild(button);
+    });
+
+    return true;
+  }
+
+  function openPanel(button) {
+    lastButton = button;
+
+    nativeClick = true;
+    button.dispatchEvent(new MouseEvent("click", {
+      bubbles: true,
+      cancelable: true,
+      view: window
+    }));
+    nativeClick = false;
+
+    window.setTimeout(function () {
+      var currentPanel = ensurePanel();
+
+      buildPanelFromNativeChoices();
+      closeNativeMenu();
+      positionPanel(button);
+
+      currentPanel.style.display = "grid";
+      currentPanel.classList.add("is-open");
+      button.setAttribute("aria-expanded", "true");
+    }, 0);
+  }
+
+  function togglePanel(button) {
+    if (panel && panel.classList.contains("is-open")) {
+      closePanel();
+      return;
+    }
+
+    openPanel(button);
+  }
+
+  document.addEventListener("click", function (event) {
+    if (nativeClick) {
+      return;
+    }
+
+    var pageButton = closestElement(event.target, ".fft-dflip-spread-btn, .fft-dflip-page-btn");
+
+    if (pageButton) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (typeof event.stopImmediatePropagation === "function") {
+        event.stopImmediatePropagation();
+      }
+
+      togglePanel(pageButton);
+      return;
+    }
+
+    if (
+      panel &&
+      panel.classList.contains("is-open") &&
+      !closestElement(event.target, ".fft-page-jump-clone-panel")
+    ) {
+      closePanel();
+    }
+  }, true);
+
+  window.addEventListener("resize", function () {
+    if (panel && panel.classList.contains("is-open") && lastButton) {
+      positionPanel(lastButton);
+    }
+  });
+
+  window.addEventListener("scroll", function () {
+    if (panel && panel.classList.contains("is-open") && lastButton) {
+      positionPanel(lastButton);
+    }
+  }, true);
+}());
+/* /FFT_VIEWER_PAGE_JUMPER_CLONE_PANEL_20260602 */
+
+/* FFT_VIEWER_ACTION_MENU_PANEL_20260602 */
+(function () {
+  "use strict";
+
+  var menuPanel = null;
+  var menuButton = null;
+  var statusTimer = null;
+  var autoReadTimer = null;
+  var autoReadDirection = null;
+
+  function closestElement(target, selector) {
+    return target && target.closest ? target.closest(selector) : null;
+  }
+
+  function normalizeText(value) {
+    return String(value || "").replace(/\s+/g, " ").trim().toLowerCase();
+  }
+
+  function isMenuButton(target) {
+    var control = closestElement(target, "button, a, [role='button']");
+
+    if (!control || !closestElement(control, ".fft-dflip-toolbar")) {
+      return null;
+    }
+
+    var text = normalizeText(control.textContent);
+    var label = normalizeText(control.getAttribute("aria-label"));
+    var title = normalizeText(control.getAttribute("title"));
+    var className = normalizeText(control.className);
+
+    if (
+      text === "menu" ||
+      label === "menu" ||
+      title === "menu" ||
+      className.indexOf("menu") !== -1 ||
+      className.indexOf("more") !== -1
+    ) {
+      return control;
+    }
+
+    return null;
+  }
+
+  function getStore() {
+    return window.FFT_BROCHURE_DATA || window.BROCHURES || window.brochureData || {};
+  }
+
+  function getCurrentSlug() {
+    return (
+      window.FFT_ACTIVE_BROCHURE_SLUG ||
+      new URLSearchParams(window.location.search).get("brochure") ||
+      "utama"
+    );
+  }
+
+  function getActiveBrochure() {
+    var store = getStore();
+    var slug = getCurrentSlug();
+
+    return (
+      window.FFT_ACTIVE_BROCHURE ||
+      store[slug] ||
+      store.utama ||
+      {}
+    );
+  }
+
+  function getDownloadUrl() {
+    var data = getActiveBrochure();
+
+    return (
+      data.downloadUrl ||
+      data.download ||
+      data.pdfUrl ||
+      data.pdf ||
+      data.source ||
+      "assets/brosur/konten-belum-tersedia-fft/konten-belum-tersedia-fft.pdf"
+    );
+  }
+
+  function getPageCount() {
+    var data = getActiveBrochure();
+
+    if (typeof data.pageCount === "number" && data.pageCount > 0) {
+      return data.pageCount;
+    }
+
+    if (typeof data.totalPages === "number" && data.totalPages > 0) {
+      return data.totalPages;
+    }
+
+    if (Array.isArray(window.FFT_ACTIVE_BROCHURE_PAGES)) {
+      return window.FFT_ACTIVE_BROCHURE_PAGES.length;
+    }
+
+    if (Array.isArray(data.pages)) {
+      return data.pages.length;
+    }
+
+    return document.querySelectorAll(".page").length;
+  }
+
+  function showStatus(message) {
+    var status = document.querySelector(".fft-viewer-action-menu-status");
+
+    if (!status) {
+      status = document.createElement("div");
+      status.className = "fft-viewer-action-menu-status";
+      document.body.appendChild(status);
+    }
+
+    status.textContent = message;
+    status.classList.add("is-visible");
+
+    window.clearTimeout(statusTimer);
+    statusTimer = window.setTimeout(function () {
+      status.classList.remove("is-visible");
+    }, 1600);
+  }
+
+  function closeNativeMenu() {
+    Array.prototype.slice.call(document.querySelectorAll(".fft-dflip-more-menu")).forEach(function (menu) {
+      menu.classList.remove("is-open");
+      menu.style.display = "none";
+      menu.style.visibility = "hidden";
+      menu.style.pointerEvents = "none";
+    });
+  }
+
+  function ensurePanel() {
+    if (menuPanel && menuPanel.parentElement === document.body) {
+      return menuPanel;
+    }
+
+    menuPanel = document.createElement("div");
+    menuPanel.className = "fft-viewer-action-menu";
+    menuPanel.setAttribute("role", "menu");
+    menuPanel.setAttribute("aria-label", "Menu viewer brosur");
+    menuPanel.style.display = "none";
+
+    document.body.appendChild(menuPanel);
+
+    return menuPanel;
+  }
+
+  function positionPanel() {
+    if (!menuPanel || !menuButton) {
+      return;
+    }
+
+    var rect = menuButton.getBoundingClientRect();
+    var toolbar = menuButton.closest(".fft-dflip-toolbar");
+    var toolbarRect = toolbar ? toolbar.getBoundingClientRect() : null;
+
+    var bottom = toolbarRect
+      ? Math.max(86, Math.round(window.innerHeight - toolbarRect.top + 12))
+      : 110;
+
+    var right = Math.max(16, Math.round(window.innerWidth - rect.right));
+
+    menuPanel.style.right = right + "px";
+    menuPanel.style.left = "auto";
+    menuPanel.style.bottom = bottom + "px";
+    menuPanel.style.transform = "none";
+  }
+
+  function closePanel() {
+    if (menuPanel) {
+      menuPanel.classList.remove("is-open");
+      menuPanel.style.display = "none";
+    }
+
+    if (menuButton) {
+      menuButton.setAttribute("aria-expanded", "false");
+    }
+
+    closeNativeMenu();
+  }
+
+  function jumpToPage(pageNumber) {
+    if (typeof window.FFTBrochureViewerJumpToPage === "function") {
+      return window.FFTBrochureViewerJumpToPage(pageNumber) !== false;
+    }
+
+    if (typeof window.FFTBrochureViewerJumpToSpread === "function") {
+      return window.FFTBrochureViewerJumpToSpread(pageNumber) !== false;
+    }
+
+    return false;
+  }
+
+
+  /* FFT_VIEWER_ACTION_MENU_AUTOREAD_20260602 */
+  function stopAutoRead(showMessage) {
+    if (autoReadTimer) {
+      window.clearInterval(autoReadTimer);
+      autoReadTimer = null;
+      autoReadDirection = null;
+
+      if (showMessage) {
+        showStatus("Auto baca dihentikan");
+      }
+    }
+  }
+
+  function getCurrentSpreadStart() {
+    var pageButton = document.querySelector(".fft-dflip-spread-btn, .fft-dflip-page-btn");
+    var label = pageButton ? pageButton.textContent : "";
+    var match = label.match(/halaman\s+(\d+)/i);
+
+    if (match) {
+      return parseInt(match[1], 10) || 1;
+    }
+
+    return 1;
+  }
+
+  function getLastSpreadStart() {
+    var total = getPageCount();
+
+    if (!total || total < 1) {
+      return 1;
+    }
+
+    if (total > 1 && total % 2 === 0) {
+      return total - 1;
+    }
+
+    return total;
+  }
+
+  function getAutoReadTarget(direction) {
+    var current = getCurrentSpreadStart();
+    var lastStart = getLastSpreadStart();
+
+    if (direction === "next") {
+      if (current >= lastStart) {
+        return null;
+      }
+
+      return Math.min(current + 2, lastStart);
+    }
+
+    if (current <= 1) {
+      return null;
+    }
+
+    return Math.max(current - 2, 1);
+  }
+
+  function runAutoReadStep(direction) {
+    var target = getAutoReadTarget(direction);
+
+    if (!target) {
+      stopAutoRead(false);
+      showStatus(direction === "next" ? "Sudah di halaman akhir" : "Sudah di halaman awal");
+      return;
+    }
+
+    if (!jumpToPage(target)) {
+      stopAutoRead(false);
+      showStatus("Viewer belum siap");
+    }
+  }
+
+  function startAutoRead(direction) {
+    stopAutoRead(false);
+
+    autoReadDirection = direction;
+
+    closePanel();
+    showStatus(direction === "next" ? "Auto baca berikutnya aktif" : "Auto baca sebelumnya aktif");
+
+    window.setTimeout(function () {
+      runAutoReadStep(direction);
+    }, 160);
+
+    autoReadTimer = window.setInterval(function () {
+      runAutoReadStep(direction);
+    }, 2800);
+  }
+  /* /FFT_VIEWER_ACTION_MENU_AUTOREAD_20260602 */
+
+
+  function openPageChooser() {
+    var pageButton = document.querySelector(".fft-dflip-spread-btn, .fft-dflip-page-btn");
+
+    closePanel();
+
+    if (!pageButton) {
+      showStatus("Pilihan halaman belum siap");
+      return;
+    }
+
+    window.setTimeout(function () {
+      pageButton.click();
+    }, 80);
+  }
+
+  function createItem(label, onClick) {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "fft-viewer-action-menu-item";
+    button.textContent = label;
+    button.addEventListener("click", onClick);
+    return button;
+  }
+
+  function buildPanel() {
+    var panel = ensurePanel();
+
+    panel.innerHTML = "";
+
+    panel.appendChild(createItem("Download PDF", function () {
+      stopAutoRead(false);
+
+      var url = getDownloadUrl();
+
+      closePanel();
+
+      if (url) {
+        window.open(url, "_blank", "noopener");
+      } else {
+        showStatus("File PDF belum tersedia");
+      }
+    }));
+
+    panel.appendChild(createItem("Pilih Halaman", function () {
+      stopAutoRead(false);
+      openPageChooser();
+    }));
+
+    panel.appendChild(createItem("Auto Baca Sebelumnya", function () {
+      startAutoRead("prev");
+    }));
+
+    panel.appendChild(createItem("Auto Baca Berikutnya", function () {
+      startAutoRead("next");
+    }));
+
+    if (autoReadTimer) {
+      panel.appendChild(createItem("Hentikan Auto Baca", function () {
+        closePanel();
+        stopAutoRead(true);
+      }));
+    }
+
+    panel.appendChild(createItem("Tutup Menu", function () {
+      closePanel();
+    }));
+  }
+
+  function openPanel(button) {
+    menuButton = button;
+
+    buildPanel();
+    closeNativeMenu();
+    positionPanel();
+
+    menuPanel.style.display = "grid";
+    menuPanel.classList.add("is-open");
+    menuButton.setAttribute("aria-expanded", "true");
+  }
+
+  function togglePanel(button) {
+    if (menuPanel && menuPanel.classList.contains("is-open")) {
+      closePanel();
+      return;
+    }
+
+    openPanel(button);
+  }
+
+  document.addEventListener("click", function (event) {
+    var button = isMenuButton(event.target);
+
+    if (button) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (typeof event.stopImmediatePropagation === "function") {
+        event.stopImmediatePropagation();
+      }
+
+      togglePanel(button);
+      return;
+    }
+
+    if (
+      menuPanel &&
+      menuPanel.classList.contains("is-open") &&
+      !closestElement(event.target, ".fft-viewer-action-menu")
+    ) {
+      closePanel();
+    }
+  }, true);
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closePanel();
+    }
+  });
+
+  window.addEventListener("resize", function () {
+    if (menuPanel && menuPanel.classList.contains("is-open")) {
+      positionPanel();
+    }
+  });
+
+  window.addEventListener("scroll", function () {
+    if (menuPanel && menuPanel.classList.contains("is-open")) {
+      positionPanel();
+    }
+  }, true);
+}());
+/* /FFT_VIEWER_ACTION_MENU_PANEL_20260602 */

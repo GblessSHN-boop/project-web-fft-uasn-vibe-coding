@@ -190,7 +190,7 @@
 }
   </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 CSS -->
-  <link rel="stylesheet" href="fft-viewer-theme.css?v=dflip-toolbar-hard-reset-20260529">
+  <link rel="stylesheet" href="fft-viewer-theme.css?v=viewer-action-menu-autoread-20260602">
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_STYLE_START -->
 <style>
@@ -428,7 +428,7 @@
 
     <div class="viewer-actions">
       <a href="../e-brochure.html">Kembali</a>
-      <a href="assets/brosur/konten-belum-tersedia-fft/konten-belum-tersedia-fft.pdf" download>Download PDF</a>
+      <a id="downloadPdfLink" href="assets/brosur/konten-belum-tersedia-fft/konten-belum-tersedia-fft.pdf" download>Download PDF</a>
     </div>
   </header>
 
@@ -445,24 +445,83 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
+  <script src="data/brochures.js?v=viewer-action-menu-autoread-20260602"></script>
 
   <script>
-    const brochurePages = [
-      "assets/brosur/konten-belum-tersedia-fft/cover.pdf",
-      "assets/brosur/konten-belum-tersedia-fft/hal-1.pdf",
-      "assets/brosur/konten-belum-tersedia-fft/hal-2.pdf",
-      "assets/brosur/konten-belum-tersedia-fft/hal-3.pdf",
-      "assets/brosur/konten-belum-tersedia-fft/hal-4.pdf",
-      "assets/brosur/konten-belum-tersedia-fft/hal-5.pdf",
-      "assets/brosur/konten-belum-tersedia-fft/hal-6.pdf",
-      "assets/brosur/konten-belum-tersedia-fft/back-cover.pdf"
-    ];
+    /* FFT_VIEWER_BACKEND_READY_DATA_CONTRACT_20260602 */
+    const brochureParams = new URLSearchParams(window.location.search);
+    const brochureSlug = brochureParams.get("brochure") || "utama";
+    const brochureStore = window.FFT_BROCHURE_DATA || window.BROCHURES || {};
+    const activeBrochure =
+      brochureStore[brochureSlug] ||
+      brochureStore.utama ||
+      Object.values(brochureStore)[0] ||
+      {};
+
+    function normalizeBrochurePages(data) {
+      if (!data) {
+        return [];
+      }
+
+      const candidates = [
+        data.pages,
+        data.pageFiles,
+        data.pdfPages,
+        data.files
+      ];
+
+      for (const candidate of candidates) {
+        if (Array.isArray(candidate) && candidate.length) {
+          return candidate.slice();
+        }
+      }
+
+      return [];
+    }
+
+    const brochurePages = normalizeBrochurePages(activeBrochure);
+    const brochureDownload =
+      activeBrochure.downloadUrl ||
+      activeBrochure.download ||
+      activeBrochure.pdfUrl ||
+      activeBrochure.pdf ||
+      activeBrochure.source ||
+      "";
+
+    window.FFT_ACTIVE_BROCHURE = activeBrochure;
+    window.FFT_ACTIVE_BROCHURE_SLUG = brochureSlug;
+    window.FFT_ACTIVE_BROCHURE_PAGES = brochurePages;
+    /* /FFT_VIEWER_BACKEND_READY_DATA_CONTRACT_20260602 */
 
     const bookElement = document.getElementById("book");
     const viewerLoading = document.getElementById("viewerLoading");
     const pageInfo = document.getElementById("pageInfo");
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
+
+    const downloadPdfLink = document.getElementById("downloadPdfLink");
+
+    function applyBrochureDataToPage() {
+      const title = activeBrochure.title || "Preview Brosur Digital";
+      const description = activeBrochure.description || "Baca brosur digital dalam tampilan buku interaktif.";
+
+      document.title = title + " | E Brochure";
+
+      const headerTitle = document.querySelector(".viewer-title h1");
+      const headerDescription = document.querySelector(".viewer-title p");
+
+      if (headerTitle) {
+        headerTitle.textContent = title;
+      }
+
+      if (headerDescription) {
+        headerDescription.textContent = description;
+      }
+
+      if (downloadPdfLink && brochureDownload) {
+        downloadPdfLink.href = brochureDownload;
+      }
+    }
 
     let pageFlip = null;
     let pageWidth = 420;
@@ -531,6 +590,10 @@ wrapper.appendChild(canvas);
       bookElement.innerHTML = "";
 
       try {
+        if (!brochurePages.length) {
+          throw new Error("Daftar halaman brosur kosong.");
+        }
+
         const metric = await getPageMetric(brochurePages[0]);
 
         /* FFT_VIEWER_MOBILE_SAFE_RENDER_WEIGHT_20260602 */
@@ -575,6 +638,48 @@ wrapper.appendChild(canvas);
         pageFlip.loadFromHTML(document.querySelectorAll(".page"));
         pageFlip.on("flip", updatePageInfo);
 
+    /* FFT_VIEWER_DIRECT_SPREAD_JUMP_API_20260602 */
+    window.FFTBrochureViewerJumpToPage = function (pageNumber) {
+      var targetPage = Number(pageNumber);
+
+      if (!targetPage || !isFinite(targetPage) || !pageFlip) {
+        return false;
+      }
+
+      var pageCount = 0;
+
+      if (typeof pageFlip.getPageCount === "function") {
+        pageCount = pageFlip.getPageCount();
+      }
+
+      if (!pageCount) {
+        pageCount = document.querySelectorAll(".page").length;
+      }
+
+      targetPage = Math.round(targetPage);
+      targetPage = Math.max(1, Math.min(pageCount || targetPage, targetPage));
+
+      var targetIndex = targetPage - 1;
+
+      if (typeof pageFlip.turnToPage === "function") {
+        pageFlip.turnToPage(targetIndex);
+      } else if (typeof pageFlip.flip === "function") {
+        pageFlip.flip(targetIndex);
+      } else {
+        return false;
+      }
+
+      if (typeof updatePageInfo === "function") {
+        window.setTimeout(updatePageInfo, 0);
+      }
+
+      return true;
+    };
+
+    window.FFTBrochureViewerJumpToSpread = window.FFTBrochureViewerJumpToPage;
+    /* /FFT_VIEWER_DIRECT_SPREAD_JUMP_API_20260602 */
+
+
         updatePageInfo();
       } catch (error) {
         viewerLoading.textContent = "Brosur gagal dimuat. Cek nama file PDF.";
@@ -610,6 +715,7 @@ wrapper.appendChild(canvas);
       }
     });
 
+    applyBrochureDataToPage();
     loadBook();
   </script>
 
@@ -654,7 +760,7 @@ wrapper.appendChild(canvas);
 }());
 </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 JS -->
-  <script defer src="fft-viewer-theme.js?v=viewer-neutral-description-20260602"></script>
+  <script defer src="fft-viewer-theme.js?v=viewer-action-menu-autoread-20260602"></script>
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_START -->
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_END -->
