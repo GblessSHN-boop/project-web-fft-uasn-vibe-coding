@@ -2315,24 +2315,29 @@ function buildPanel() {
   var shareSheet = null;
   var shareToast = null;
   var busy = false;
+  var NL = String.fromCharCode(10);
 
   var platforms = [
     { id: "whatsapp", label: "WhatsApp", badge: "WA", mode: "url" },
-    { id: "whatsappStatus", label: "Status WA", badge: "ST", mode: "copyOpen" },
+    { id: "whatsappBusiness", label: "WhatsApp Business", badge: "WB", mode: "url" },
     { id: "x", label: "X", badge: "X", mode: "url" },
-    { id: "instagram", label: "Instagram", badge: "IG", mode: "copyOpen" },
-    { id: "igStory", label: "Cerita IG", badge: "IG", mode: "copyOpen" },
-    { id: "tiktok", label: "TikTok", badge: "TT", mode: "copyOpen" },
-    { id: "telegram", label: "Telegram", badge: "TG", mode: "url" },
-    { id: "discord", label: "Discord", badge: "DC", mode: "copyOpen" },
+    { id: "linkedin", label: "LinkedIn", badge: "IN", mode: "url" },
     { id: "teams", label: "Teams", badge: "TM", mode: "url" },
-    { id: "slack", label: "Slack", badge: "SL", mode: "copyOpen" },
-    { id: "email", label: "Email", badge: "@", mode: "url" },
-    { id: "copy", label: "Salin Link", badge: "?", mode: "copy" }
+    { id: "mail", label: "Mail", badge: "@", mode: "url" },
+    { id: "gmail", label: "Gmail", badge: "GM", mode: "url" },
+    { id: "facebook", label: "Facebook", badge: "FB", mode: "url" },
+    { id: "instagram", label: "Instagram", badge: "IG", mode: "copyOpen" },
+    { id: "telegram", label: "Telegram", badge: "TG", mode: "url" },
+    { id: "copy", label: "Salin", badge: "CL", mode: "copy" },
+    { id: "more", label: "Lainnya", badge: "...", mode: "native" }
   ];
 
   function isMobile() {
     return window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
+  }
+
+  function isAndroid() {
+    return /Android/i.test(navigator.userAgent || "");
   }
 
   function textOf(node) {
@@ -2371,7 +2376,7 @@ function buildPanel() {
   }
 
   function getMessage(data) {
-    return data.title + "\n" + data.text + "\n" + data.url;
+    return data.title + NL + data.text + NL + data.url;
   }
 
   function enc(value) {
@@ -2385,35 +2390,35 @@ function buildPanel() {
       case "whatsapp":
         return "https://wa.me/?text=" + enc(message);
 
-      case "x":
-        return "https://twitter.com/intent/tweet?text=" + enc(data.title + "\n" + data.text) + "&url=" + enc(data.url);
+      case "whatsappBusiness":
+        if (isAndroid()) {
+          return "intent://send?text=" + enc(message) + "#Intent;scheme=whatsapp;package=com.whatsapp.w4b;end";
+        }
+        return "https://wa.me/?text=" + enc(message);
 
-      case "telegram":
-        return "https://t.me/share/url?url=" + enc(data.url) + "&text=" + enc(data.title + "\n" + data.text);
+      case "x":
+        return "https://twitter.com/intent/tweet?text=" + enc(data.title + NL + data.text) + "&url=" + enc(data.url);
+
+      case "linkedin":
+        return "https://www.linkedin.com/sharing/share-offsite/?url=" + enc(data.url);
 
       case "teams":
-        return "https://teams.microsoft.com/share?href=" + enc(data.url) + "&msgText=" + enc(data.title + "\n" + data.text);
+        return "https://teams.microsoft.com/share?href=" + enc(data.url) + "&msgText=" + enc(data.title + NL + data.text);
 
-      case "email":
+      case "mail":
         return "mailto:?subject=" + enc(data.title) + "&body=" + enc(message);
 
-      case "whatsappStatus":
-        return "whatsapp://status";
+      case "gmail":
+        return "https://mail.google.com/mail/?view=cm&su=" + enc(data.title) + "&body=" + enc(message);
+
+      case "facebook":
+        return "https://www.facebook.com/sharer/sharer.php?u=" + enc(data.url);
 
       case "instagram":
         return "https://www.instagram.com/direct/inbox/";
 
-      case "igStory":
-        return "instagram://story-camera";
-
-      case "tiktok":
-        return "https://www.tiktok.com/upload";
-
-      case "discord":
-        return "https://discord.com/channels/@me";
-
-      case "slack":
-        return "slack://open";
+      case "telegram":
+        return "https://t.me/share/url?url=" + enc(data.url) + "&text=" + enc(data.title + NL + data.text);
 
       default:
         return data.url;
@@ -2513,7 +2518,7 @@ function buildPanel() {
             '<h2 class="fft-mobile-share-sheet__title">Bagikan brosur</h2>' +
             '<p class="fft-mobile-share-sheet__desc">Pilih platform untuk membagikan link e-brochure.</p>' +
           '</div>' +
-          '<button type="button" class="fft-mobile-share-sheet__close" aria-label="Tutup">?</button>' +
+          '<button type="button" class="fft-mobile-share-sheet__close" aria-label="Tutup">x</button>' +
         '</div>' +
         '<div class="fft-mobile-share-sheet__grid">' +
           items +
@@ -2576,13 +2581,32 @@ function buildPanel() {
         return;
       }
 
+      if (platform.mode === "native") {
+        closeShareSheet();
+
+        if (navigator.share) {
+          await navigator.share({
+            title: data.title,
+            text: data.text,
+            url: data.url
+          });
+          return;
+        }
+
+        await copyShareLink(data, false);
+        showToast("Link disalin. Bagikan lewat aplikasi lain.");
+        return;
+      }
+
       if (platform.mode === "copyOpen") {
         await copyShareLink(data, true);
         showToast("Link disalin. Tempel di " + platform.label + ".");
         closeShareSheet();
+
         window.setTimeout(function () {
           openExternal(buildShareUrl(platform.id, data));
         }, 120);
+
         return;
       }
 
@@ -2590,7 +2614,14 @@ function buildPanel() {
       openExternal(buildShareUrl(platform.id, data));
     } catch (error) {
       console.warn(PATCH_ID, error);
-      showToast("Bagikan belum tersedia");
+
+      try {
+        await copyShareLink(data, false);
+      } catch (copyError) {
+        console.warn(PATCH_ID + "_COPY_FALLBACK", copyError);
+      }
+
+      showToast("Bagikan belum tersedia. Link disalin.");
     } finally {
       window.setTimeout(function () {
         busy = false;
