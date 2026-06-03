@@ -1517,3 +1517,142 @@ body > .fft-viewer-action-menu.is-open {
   }
 }
 /* /FFT_VIEWER_MOBILE_SHARE_ICON_BUTTON_20260603 */
+
+/* FFT_VIEWER_MOBILE_SHARE_SHEET_UI_20260603 */
+@media (max-width: 760px) {
+  .fft-mobile-share-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.38);
+    padding: 14px;
+    box-sizing: border-box;
+  }
+
+  .fft-mobile-share-sheet.is-open {
+    display: flex;
+  }
+
+  .fft-mobile-share-sheet__panel {
+    width: min(100%, 420px);
+    max-height: min(76vh, 620px);
+    overflow: auto;
+    background: #ffffff;
+    border: 1px solid rgba(127, 29, 29, 0.16);
+    box-shadow: 0 26px 70px rgba(15, 23, 42, 0.26);
+    border-radius: 18px 18px 14px 14px;
+  }
+
+  .fft-mobile-share-sheet__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 15px 16px 12px;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+  }
+
+  .fft-mobile-share-sheet__title {
+    margin: 0;
+    color: #7f0d12;
+    font-size: 14px;
+    font-weight: 950;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .fft-mobile-share-sheet__desc {
+    margin: 4px 0 0;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 750;
+    line-height: 1.35;
+  }
+
+  .fft-mobile-share-sheet__close {
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(127, 29, 29, 0.22);
+    background: #fff7f7;
+    color: #7f0d12;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .fft-mobile-share-sheet__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    padding: 6px;
+  }
+
+  .fft-mobile-share-sheet__item {
+    min-height: 74px;
+    border: 0;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #1f2937;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-size: 10px;
+    font-weight: 850;
+    text-align: center;
+  }
+
+  .fft-mobile-share-sheet__item:active {
+    background: #fff1f2;
+    transform: scale(0.98);
+  }
+
+  .fft-mobile-share-sheet__badge {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: #f8fafc;
+    border: 1px solid rgba(148, 163, 184, 0.32);
+    color: #111827;
+    font-size: 12px;
+    font-weight: 950;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="copy"] .fft-mobile-share-sheet__badge {
+    background: #7f0d12;
+    border-color: #7f0d12;
+    color: #ffffff;
+  }
+
+  .fft-mobile-share-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 96px;
+    z-index: 1000000;
+    transform: translateX(-50%);
+    max-width: calc(100vw - 32px);
+    padding: 10px 13px;
+    border-radius: 11px;
+    background: rgba(15, 23, 42, 0.94);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 850;
+    line-height: 1.25;
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.22);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+  }
+
+  .fft-mobile-share-toast.is-visible {
+    opacity: 1;
+  }
+}
+/* /FFT_VIEWER_MOBILE_SHARE_SHEET_UI_20260603 */

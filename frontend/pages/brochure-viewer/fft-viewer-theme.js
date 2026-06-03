@@ -2308,3 +2308,317 @@ function buildPanel() {
   window.setTimeout(releaseViewerBootLock, 3600);
 }());
 /* /FFT_VIEWER_RELEASE_BOOT_HIDE_OLD_THEME_20260602 */
+
+/* FFT_VIEWER_MOBILE_SHARE_SHEET_20260603 */
+(function () {
+  var PATCH_ID = "FFT_VIEWER_MOBILE_SHARE_SHEET_20260603";
+  var shareSheet = null;
+  var shareToast = null;
+  var busy = false;
+
+  var platforms = [
+    { id: "whatsapp", label: "WhatsApp", badge: "WA", mode: "url" },
+    { id: "whatsappStatus", label: "Status WA", badge: "ST", mode: "copyOpen" },
+    { id: "x", label: "X", badge: "X", mode: "url" },
+    { id: "instagram", label: "Instagram", badge: "IG", mode: "copyOpen" },
+    { id: "igStory", label: "Cerita IG", badge: "IG", mode: "copyOpen" },
+    { id: "tiktok", label: "TikTok", badge: "TT", mode: "copyOpen" },
+    { id: "telegram", label: "Telegram", badge: "TG", mode: "url" },
+    { id: "discord", label: "Discord", badge: "DC", mode: "copyOpen" },
+    { id: "teams", label: "Teams", badge: "TM", mode: "url" },
+    { id: "slack", label: "Slack", badge: "SL", mode: "copyOpen" },
+    { id: "email", label: "Email", badge: "@", mode: "url" },
+    { id: "copy", label: "Salin Link", badge: "?", mode: "copy" }
+  ];
+
+  function isMobile() {
+    return window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
+  }
+
+  function textOf(node) {
+    return (node && (node.innerText || node.textContent) || "").replace(/\s+/g, " ").trim();
+  }
+
+  function isInsideMobileToolbar(node) {
+    return !!(
+      node &&
+      node.closest &&
+      node.closest('.fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] .fft-dflip-toolbar.fft-dflip-spread-toolbar')
+    );
+  }
+
+  function getShareTitle() {
+    var titleNode = document.querySelector("[data-brochure-title], .fft-viewer-shellbar__title, h1");
+    return textOf(titleNode) || document.title || "E-Brochure";
+  }
+
+  function getShareText() {
+    var subtitleNode = document.querySelector("[data-brochure-description], .fft-viewer-shellbar__subtitle");
+    return textOf(subtitleNode) || "Lihat e-brochure ini.";
+  }
+
+  function getShareUrl() {
+    var canonical = document.querySelector('link[rel="canonical"]');
+    return canonical && canonical.href ? canonical.href : window.location.href;
+  }
+
+  function getShareData() {
+    return {
+      title: getShareTitle(),
+      text: getShareText(),
+      url: getShareUrl()
+    };
+  }
+
+  function getMessage(data) {
+    return data.title + "\n" + data.text + "\n" + data.url;
+  }
+
+  function enc(value) {
+    return encodeURIComponent(value || "");
+  }
+
+  function buildShareUrl(platformId, data) {
+    var message = getMessage(data);
+
+    switch (platformId) {
+      case "whatsapp":
+        return "https://wa.me/?text=" + enc(message);
+
+      case "x":
+        return "https://twitter.com/intent/tweet?text=" + enc(data.title + "\n" + data.text) + "&url=" + enc(data.url);
+
+      case "telegram":
+        return "https://t.me/share/url?url=" + enc(data.url) + "&text=" + enc(data.title + "\n" + data.text);
+
+      case "teams":
+        return "https://teams.microsoft.com/share?href=" + enc(data.url) + "&msgText=" + enc(data.title + "\n" + data.text);
+
+      case "email":
+        return "mailto:?subject=" + enc(data.title) + "&body=" + enc(message);
+
+      case "whatsappStatus":
+        return "whatsapp://status";
+
+      case "instagram":
+        return "https://www.instagram.com/direct/inbox/";
+
+      case "igStory":
+        return "instagram://story-camera";
+
+      case "tiktok":
+        return "https://www.tiktok.com/upload";
+
+      case "discord":
+        return "https://discord.com/channels/@me";
+
+      case "slack":
+        return "slack://open";
+
+      default:
+        return data.url;
+    }
+  }
+
+  function ensureToast() {
+    if (shareToast) {
+      return shareToast;
+    }
+
+    shareToast = document.createElement("div");
+    shareToast.className = "fft-mobile-share-toast";
+    document.body.appendChild(shareToast);
+
+    return shareToast;
+  }
+
+  function showToast(message) {
+    var toast = ensureToast();
+
+    toast.textContent = message;
+    toast.classList.add("is-visible");
+
+    window.clearTimeout(toast._fftTimer);
+    toast._fftTimer = window.setTimeout(function () {
+      toast.classList.remove("is-visible");
+    }, 1800);
+  }
+
+  async function copyShareLink(data, silent) {
+    var value = data.url;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(value);
+    } else {
+      var input = document.createElement("input");
+      input.value = value;
+      input.setAttribute("readonly", "readonly");
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      document.body.removeChild(input);
+    }
+
+    if (!silent) {
+      showToast("Link berhasil disalin");
+    }
+  }
+
+  function openExternal(url) {
+    if (!url) {
+      return;
+    }
+
+    var anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.target = "_blank";
+    anchor.rel = "noopener noreferrer";
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+  }
+
+  function closeShareSheet() {
+    if (shareSheet) {
+      shareSheet.classList.remove("is-open");
+      shareSheet.setAttribute("aria-hidden", "true");
+    }
+  }
+
+  function createShareSheet() {
+    if (shareSheet) {
+      return shareSheet;
+    }
+
+    shareSheet = document.createElement("div");
+    shareSheet.className = "fft-mobile-share-sheet";
+    shareSheet.id = "fft-mobile-share-sheet";
+    shareSheet.setAttribute("aria-hidden", "true");
+
+    var items = platforms.map(function (platform) {
+      return (
+        '<button type="button" class="fft-mobile-share-sheet__item" data-share-target="' + platform.id + '">' +
+          '<span class="fft-mobile-share-sheet__badge">' + platform.badge + '</span>' +
+          '<span>' + platform.label + '</span>' +
+        '</button>'
+      );
+    }).join("");
+
+    shareSheet.innerHTML =
+      '<div class="fft-mobile-share-sheet__panel" role="dialog" aria-modal="true" aria-label="Bagikan brosur">' +
+        '<div class="fft-mobile-share-sheet__head">' +
+          '<div>' +
+            '<h2 class="fft-mobile-share-sheet__title">Bagikan brosur</h2>' +
+            '<p class="fft-mobile-share-sheet__desc">Pilih platform untuk membagikan link e-brochure.</p>' +
+          '</div>' +
+          '<button type="button" class="fft-mobile-share-sheet__close" aria-label="Tutup">?</button>' +
+        '</div>' +
+        '<div class="fft-mobile-share-sheet__grid">' +
+          items +
+        '</div>' +
+      '</div>';
+
+    document.body.appendChild(shareSheet);
+
+    shareSheet.addEventListener("click", function (event) {
+      if (event.target === shareSheet || event.target.closest(".fft-mobile-share-sheet__close")) {
+        closeShareSheet();
+        return;
+      }
+
+      var item = event.target.closest(".fft-mobile-share-sheet__item");
+      if (!item) {
+        return;
+      }
+
+      handlePlatformClick(item.getAttribute("data-share-target"));
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeShareSheet();
+      }
+    });
+
+    return shareSheet;
+  }
+
+  function openShareSheet() {
+    var sheet = createShareSheet();
+
+    sheet.classList.add("is-open");
+    sheet.setAttribute("aria-hidden", "false");
+  }
+
+  async function handlePlatformClick(platformId) {
+    if (busy) {
+      return;
+    }
+
+    busy = true;
+
+    var platform = platforms.find(function (item) {
+      return item.id === platformId;
+    });
+
+    var data = getShareData();
+
+    try {
+      if (!platform) {
+        return;
+      }
+
+      if (platform.mode === "copy") {
+        await copyShareLink(data, false);
+        closeShareSheet();
+        return;
+      }
+
+      if (platform.mode === "copyOpen") {
+        await copyShareLink(data, true);
+        showToast("Link disalin. Tempel di " + platform.label + ".");
+        closeShareSheet();
+        window.setTimeout(function () {
+          openExternal(buildShareUrl(platform.id, data));
+        }, 120);
+        return;
+      }
+
+      closeShareSheet();
+      openExternal(buildShareUrl(platform.id, data));
+    } catch (error) {
+      console.warn(PATCH_ID, error);
+      showToast("Bagikan belum tersedia");
+    } finally {
+      window.setTimeout(function () {
+        busy = false;
+      }, 350);
+    }
+  }
+
+  function handleToolbarShareClick(event) {
+    if (!isMobile()) {
+      return;
+    }
+
+    var button = event.target && event.target.closest ? event.target.closest(".fft-dflip-share") : null;
+
+    if (!button || !isInsideMobileToolbar(button)) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (event.stopImmediatePropagation) {
+      event.stopImmediatePropagation();
+    }
+
+    openShareSheet();
+  }
+
+  document.addEventListener("click", handleToolbarShareClick, true);
+}());
+/* /FFT_VIEWER_MOBILE_SHARE_SHEET_20260603 */
