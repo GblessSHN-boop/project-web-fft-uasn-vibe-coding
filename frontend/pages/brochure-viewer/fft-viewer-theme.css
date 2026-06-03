@@ -1700,3 +1700,208 @@ body > .fft-viewer-action-menu.is-open {
   }
 }
 /* /FFT_VIEWER_MOBILE_MORE_MENU_ICON_FIX_20260603 */
+
+/* FFT_VIEWER_MOBILE_SHARE_SHEET_PLATFORM_ICONS_20260603 */
+:root {
+  --fft-viewer-share-icon-copy: url("assets/icons/viewer-share-copy.svg?v=share-platform-icons-20260603");
+  --fft-viewer-share-icon-telegram: url("assets/icons/viewer-share-telegram.svg?v=share-platform-icons-20260603");
+  --fft-viewer-share-icon-instagram: url("assets/icons/viewer-share-instagram.svg?v=share-platform-icons-20260603");
+  --fft-viewer-share-icon-facebook: url("assets/icons/viewer-share-facebook.svg?v=share-platform-icons-20260603");
+  --fft-viewer-share-icon-gmail: url("assets/icons/viewer-share-gmail.svg?v=share-platform-icons-20260603");
+  --fft-viewer-share-icon-mail: url("assets/icons/viewer-share-mail.svg?v=share-platform-icons-20260603");
+  --fft-viewer-share-icon-teams: url("assets/icons/viewer-share-teams.svg?v=share-platform-icons-20260603");
+  --fft-viewer-share-icon-linkedin: url("assets/icons/viewer-share-linkedin.svg?v=share-platform-icons-20260603");
+  --fft-viewer-share-icon-x: url("assets/icons/viewer-share-x.svg?v=share-platform-icons-20260603");
+  --fft-viewer-share-icon-whatsapp-business: url("assets/icons/viewer-share-whatsapp-business.svg?v=share-platform-icons-20260603");
+}
+
+@media (max-width: 760px) {
+
+  .fft-mobile-share-sheet__item[data-share-target="copy"] .fft-mobile-share-sheet__badge {
+    font-size: 0 !important;
+    color: transparent !important;
+    background: #f8fafc !important;
+    border-color: rgba(148, 163, 184, 0.32) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="copy"] .fft-mobile-share-sheet__badge::before {
+    content: "" !important;
+    display: block !important;
+    width: 21px !important;
+    height: 21px !important;
+    background-image: var(--fft-viewer-share-icon-copy) !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="telegram"] .fft-mobile-share-sheet__badge {
+    font-size: 0 !important;
+    color: transparent !important;
+    background: #f8fafc !important;
+    border-color: rgba(148, 163, 184, 0.32) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="telegram"] .fft-mobile-share-sheet__badge::before {
+    content: "" !important;
+    display: block !important;
+    width: 21px !important;
+    height: 21px !important;
+    background-image: var(--fft-viewer-share-icon-telegram) !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="instagram"] .fft-mobile-share-sheet__badge {
+    font-size: 0 !important;
+    color: transparent !important;
+    background: #f8fafc !important;
+    border-color: rgba(148, 163, 184, 0.32) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="instagram"] .fft-mobile-share-sheet__badge::before {
+    content: "" !important;
+    display: block !important;
+    width: 21px !important;
+    height: 21px !important;
+    background-image: var(--fft-viewer-share-icon-instagram) !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="facebook"] .fft-mobile-share-sheet__badge {
+    font-size: 0 !important;
+    color: transparent !important;
+    background: #f8fafc !important;
+    border-color: rgba(148, 163, 184, 0.32) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="facebook"] .fft-mobile-share-sheet__badge::before {
+    content: "" !important;
+    display: block !important;
+    width: 21px !important;
+    height: 21px !important;
+    background-image: var(--fft-viewer-share-icon-facebook) !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="gmail"] .fft-mobile-share-sheet__badge {
+    font-size: 0 !important;
+    color: transparent !important;
+    background: #f8fafc !important;
+    border-color: rgba(148, 163, 184, 0.32) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="gmail"] .fft-mobile-share-sheet__badge::before {
+    content: "" !important;
+    display: block !important;
+    width: 21px !important;
+    height: 21px !important;
+    background-image: var(--fft-viewer-share-icon-gmail) !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="mail"] .fft-mobile-share-sheet__badge {
+    font-size: 0 !important;
+    color: transparent !important;
+    background: #f8fafc !important;
+    border-color: rgba(148, 163, 184, 0.32) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="mail"] .fft-mobile-share-sheet__badge::before {
+    content: "" !important;
+    display: block !important;
+    width: 21px !important;
+    height: 21px !important;
+    background-image: var(--fft-viewer-share-icon-mail) !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="teams"] .fft-mobile-share-sheet__badge {
+    font-size: 0 !important;
+    color: transparent !important;
+    background: #f8fafc !important;
+    border-color: rgba(148, 163, 184, 0.32) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="teams"] .fft-mobile-share-sheet__badge::before {
+    content: "" !important;
+    display: block !important;
+    width: 21px !important;
+    height: 21px !important;
+    background-image: var(--fft-viewer-share-icon-teams) !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="linkedin"] .fft-mobile-share-sheet__badge {
+    font-size: 0 !important;
+    color: transparent !important;
+    background: #f8fafc !important;
+    border-color: rgba(148, 163, 184, 0.32) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="linkedin"] .fft-mobile-share-sheet__badge::before {
+    content: "" !important;
+    display: block !important;
+    width: 21px !important;
+    height: 21px !important;
+    background-image: var(--fft-viewer-share-icon-linkedin) !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="x"] .fft-mobile-share-sheet__badge {
+    font-size: 0 !important;
+    color: transparent !important;
+    background: #f8fafc !important;
+    border-color: rgba(148, 163, 184, 0.32) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="x"] .fft-mobile-share-sheet__badge::before {
+    content: "" !important;
+    display: block !important;
+    width: 21px !important;
+    height: 21px !important;
+    background-image: var(--fft-viewer-share-icon-x) !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="whatsappBusiness"] .fft-mobile-share-sheet__badge {
+    font-size: 0 !important;
+    color: transparent !important;
+    background: #f8fafc !important;
+    border-color: rgba(148, 163, 184, 0.32) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="whatsappBusiness"] .fft-mobile-share-sheet__badge::before {
+    content: "" !important;
+    display: block !important;
+    width: 21px !important;
+    height: 21px !important;
+    background-image: var(--fft-viewer-share-icon-whatsapp-business) !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .fft-mobile-share-sheet__badge::before {
+    width: 20px !important;
+    height: 20px !important;
+  }
+}
+/* /FFT_VIEWER_MOBILE_SHARE_SHEET_PLATFORM_ICONS_20260603 */
