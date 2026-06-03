@@ -1213,3 +1213,140 @@ body > .fft-viewer-action-menu.is-open {
   }
 }
 /* /FFT_VIEWER_ACTION_MENU_TIMER_CSS_20260602 */
+
+/* FFT_VIEWER_MOBILE_BOTTOM_TOOLBAR_SPECIFIC_20260603 */
+@media (max-width: 760px) {
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-rows: 52px 52px !important;
+    gap: 0 !important;
+    align-items: stretch !important;
+    justify-items: stretch !important;
+    overflow: hidden !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 4px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-prev {
+    grid-column: 1 / 2 !important;
+    grid-row: 1 / 2 !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-page-btn {
+    grid-column: 2 / 4 !important;
+    grid-row: 1 / 2 !important;
+    background: #f8fafc !important;
+    color: #263447 !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-next {
+    grid-column: 4 / 5 !important;
+    grid-row: 1 / 2 !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-zoomin {
+    grid-column: 1 / 2 !important;
+    grid-row: 2 / 3 !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-zoomout {
+    grid-column: 2 / 3 !important;
+    grid-row: 2 / 3 !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-fullscreen {
+    grid-column: 3 / 4 !important;
+    grid-row: 2 / 3 !important;
+    font-size: 8.8px !important;
+    line-height: 1.08 !important;
+    font-weight: 850 !important;
+    white-space: normal !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-more {
+    grid-column: 4 / 5 !important;
+    grid-row: 2 / 3 !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-share {
+    display: none !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-zoomin::before,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-zoomout::before,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-more::before {
+    width: 18px !important;
+    height: 18px !important;
+    flex: 0 0 18px !important;
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar {
+    grid-template-rows: 50px 50px !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-fullscreen {
+    font-size: 8.3px !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-zoomin::before,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-zoomout::before,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-more::before {
+    width: 17px !important;
+    height: 17px !important;
+    flex-basis: 17px !important;
+  }
+}
+/* /FFT_VIEWER_MOBILE_BOTTOM_TOOLBAR_SPECIFIC_20260603 */
