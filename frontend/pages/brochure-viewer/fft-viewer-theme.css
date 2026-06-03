@@ -1905,3 +1905,36 @@ body > .fft-viewer-action-menu.is-open {
   }
 }
 /* /FFT_VIEWER_MOBILE_SHARE_SHEET_PLATFORM_ICONS_20260603 */
+
+/* FFT_VIEWER_MOBILE_SHARE_SHEET_WHATSAPP_ICON_20260603 */
+:root {
+  --fft-viewer-share-icon-whatsapp: url("assets/icons/viewer-share-whatsapp.svg?v=share-whatsapp-icon-20260603");
+}
+
+@media (max-width: 760px) {
+  .fft-mobile-share-sheet__item[data-share-target="whatsapp"] .fft-mobile-share-sheet__badge {
+    font-size: 0 !important;
+    color: transparent !important;
+    background: #f8fafc !important;
+    border-color: rgba(148, 163, 184, 0.32) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="whatsapp"] .fft-mobile-share-sheet__badge::before {
+    content: "" !important;
+    display: block !important;
+    width: 21px !important;
+    height: 21px !important;
+    background-image: var(--fft-viewer-share-icon-whatsapp) !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .fft-mobile-share-sheet__item[data-share-target="whatsapp"] .fft-mobile-share-sheet__badge::before {
+    width: 20px !important;
+    height: 20px !important;
+  }
+}
+/* /FFT_VIEWER_MOBILE_SHARE_SHEET_WHATSAPP_ICON_20260603 */
