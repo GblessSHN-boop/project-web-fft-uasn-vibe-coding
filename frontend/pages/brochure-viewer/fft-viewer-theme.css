@@ -2431,3 +2431,45 @@ body > .fft-viewer-action-menu.is-open {
   }
 }
 /* /FFT_VIEWER_MOBILE_NO_ANIMATION_SWITCH_UI_20260603 */
+
+/* FFT_VIEWER_MOBILE_PDF_POSITION_TIGHT_UI_20260603 */
+@media (max-width: 760px) {
+  html.fft-mobile-pdf-position-tight,
+  body.fft-mobile-pdf-position-tight {
+    overflow-x: hidden !important;
+  }
+
+  body.fft-mobile-pdf-position-tight .fft-mobile-pdf-tight-root,
+  body.fft-mobile-pdf-position-tight .fft-mobile-pdf-tight-outer,
+  body.fft-mobile-pdf-position-tight .fft-mobile-pdf-tight-shell {
+    align-items: flex-start !important;
+    align-content: flex-start !important;
+    justify-content: flex-start !important;
+    place-items: start center !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  #book[data-fft-mobile-single-slide="true"].fft-mobile-pdf-tight-book {
+    margin-top: var(--fft-mobile-pdf-tight-lift, 0px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-bottom: 0 !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+
+  #book[data-fft-mobile-single-slide="true"].fft-mobile-pdf-tight-book,
+  #book[data-fft-mobile-single-slide="true"].fft-mobile-pdf-tight-book .stf__wrapper,
+  #book[data-fft-mobile-single-slide="true"].fft-mobile-pdf-tight-book .stf__block,
+  #book[data-fft-mobile-single-slide="true"].fft-mobile-pdf-tight-book .stf__item {
+    top: auto !important;
+  }
+
+  #book[data-fft-mobile-single-slide="true"].fft-mobile-pdf-tight-book canvas,
+  #book[data-fft-mobile-single-slide="true"].fft-mobile-pdf-tight-book img {
+    display: block !important;
+  }
+}
+/* /FFT_VIEWER_MOBILE_PDF_POSITION_TIGHT_UI_20260603 */

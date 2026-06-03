@@ -2716,3 +2716,115 @@ function buildPanel() {
   document.addEventListener("click", handleToolbarShareClick, true);
 }());
 /* /FFT_VIEWER_MOBILE_SHARE_SHEET_20260603 */
+
+/* FFT_VIEWER_MOBILE_PDF_POSITION_TIGHT_20260603 */
+(function () {
+  var QUERY = "(max-width: 760px)";
+  var attempts = 0;
+  var timer = null;
+
+  function isMobile() {
+    return !!(
+      window.matchMedia &&
+      window.matchMedia(QUERY).matches
+    );
+  }
+
+  function addClass(node, className) {
+    if (!node || node === document.body || node === document.documentElement) {
+      return;
+    }
+
+    node.classList.add(className);
+  }
+
+  function removeClasses() {
+    document.documentElement.classList.remove("fft-mobile-pdf-position-tight");
+    document.body.classList.remove("fft-mobile-pdf-position-tight");
+
+    document.querySelectorAll(
+      ".fft-mobile-pdf-tight-root, .fft-mobile-pdf-tight-outer, .fft-mobile-pdf-tight-shell, .fft-mobile-pdf-tight-book"
+    ).forEach(function (node) {
+      node.classList.remove(
+        "fft-mobile-pdf-tight-root",
+        "fft-mobile-pdf-tight-outer",
+        "fft-mobile-pdf-tight-shell",
+        "fft-mobile-pdf-tight-book"
+      );
+
+      if (node.style && node.style.removeProperty) {
+        node.style.removeProperty("--fft-mobile-pdf-tight-lift");
+      }
+    });
+  }
+
+  function apply() {
+    var book = document.getElementById("book");
+
+    if (!book || !isMobile() || book.dataset.fftMobileSingleSlide !== "true") {
+      return;
+    }
+
+    var shell = book.parentElement;
+    var outer = shell && shell.parentElement;
+    var root = outer && outer.parentElement;
+
+    document.documentElement.classList.add("fft-mobile-pdf-position-tight");
+    document.body.classList.add("fft-mobile-pdf-position-tight");
+
+    book.classList.add("fft-mobile-pdf-tight-book");
+    addClass(shell, "fft-mobile-pdf-tight-shell");
+    addClass(outer, "fft-mobile-pdf-tight-outer");
+    addClass(root, "fft-mobile-pdf-tight-root");
+
+    window.requestAnimationFrame(function () {
+      var bookRect = book.getBoundingClientRect();
+      var shellRect = shell ? shell.getBoundingClientRect() : null;
+
+      if (!shellRect || !bookRect.width || !bookRect.height) {
+        return;
+      }
+
+      var gap = Math.round(bookRect.top - shellRect.top);
+      var desiredGap = 10;
+      var lift = 0;
+
+      if (gap > 26 && gap < 260) {
+        lift = Math.max(-140, -1 * (gap - desiredGap));
+      }
+
+      book.style.setProperty("--fft-mobile-pdf-tight-lift", lift + "px");
+    });
+  }
+
+  function schedule() {
+    if (!isMobile()) {
+      removeClasses();
+      return;
+    }
+
+    apply();
+
+    window.clearInterval(timer);
+    attempts = 0;
+
+    timer = window.setInterval(function () {
+      attempts += 1;
+      apply();
+
+      if (attempts >= 10) {
+        window.clearInterval(timer);
+      }
+    }, 180);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", schedule);
+  } else {
+    schedule();
+  }
+
+  window.addEventListener("resize", schedule, { passive: true });
+  window.addEventListener("orientationchange", schedule, { passive: true });
+}());
+/* /FFT_VIEWER_MOBILE_PDF_POSITION_TIGHT_20260603 */
