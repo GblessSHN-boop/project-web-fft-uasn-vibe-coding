@@ -2261,3 +2261,143 @@ body > .fft-viewer-action-menu.is-open {
   }
 }
 /* /FFT_VIEWER_DESKTOP_SHARE_BUTTON_ICON_20260603 */
+
+/* FFT_VIEWER_MOBILE_BOTTOM_TOOLBAR_REORDER_20260603 */
+@media (max-width: 760px) {
+  /*
+    Urutan mobile bawah:
+    1. Out / Perkecil
+    2. Slide / Menu layer
+    3. Slide Show / Layar penuh
+    4. Share
+    5. Zoom / Perbesar
+  */
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-zoom-out,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-zoomout,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [aria-label*="Perkecil" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [title*="Perkecil" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [aria-label*="Zoom Out" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [title*="Zoom Out" i] {
+    order: 31 !important;
+    grid-row: 2 !important;
+    grid-column: 1 !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-more,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-layer,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-layers,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [aria-label*="Menu" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [title*="Menu" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [aria-label*="Layer" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [title*="Layer" i] {
+    order: 32 !important;
+    grid-row: 2 !important;
+    grid-column: 2 !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-fullscreen,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-full-screen,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-screen,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-expand,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [aria-label*="Layar" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [title*="Layar" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [aria-label*="Fullscreen" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [title*="Fullscreen" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [aria-label*="Slide Show" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [title*="Slide Show" i] {
+    order: 33 !important;
+    grid-row: 2 !important;
+    grid-column: 3 !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-share,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [aria-label*="Bagikan" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [title*="Bagikan" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [aria-label*="Share" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [title*="Share" i] {
+    order: 34 !important;
+    grid-row: 2 !important;
+    grid-column: 4 !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-zoom-in,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-zoomin,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [aria-label*="Perbesar" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [title*="Perbesar" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [aria-label*="Zoom In" i],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > [title*="Zoom In" i] {
+    order: 35 !important;
+    grid-row: 2 !important;
+    grid-column: 5 !important;
+  }
+}
+/* /FFT_VIEWER_MOBILE_BOTTOM_TOOLBAR_REORDER_20260603 */
