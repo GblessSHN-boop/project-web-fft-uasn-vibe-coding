@@ -1656,3 +1656,47 @@ body > .fft-viewer-action-menu.is-open {
   }
 }
 /* /FFT_VIEWER_MOBILE_SHARE_SHEET_UI_20260603 */
+
+/* FFT_VIEWER_MOBILE_MORE_MENU_ICON_FIX_20260603 */
+:root {
+  --fft-viewer-mobile-more-menu-icon: url("assets/icons/viewer-mobile-menu-icon.svg?v=mobile-more-menu-icon-fix-20260603");
+}
+
+@media (max-width: 760px) {
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-more {
+    font-size: 0 !important;
+    color: transparent !important;
+    line-height: 0 !important;
+    gap: 0 !important;
+    text-indent: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-more::before {
+    content: "" !important;
+    display: block !important;
+    width: 18px !important;
+    height: 18px !important;
+    flex: 0 0 18px !important;
+    margin: 0 !important;
+    background-image: var(--fft-viewer-mobile-more-menu-icon) !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-more::before {
+    width: 17px !important;
+    height: 17px !important;
+    flex-basis: 17px !important;
+  }
+}
+/* /FFT_VIEWER_MOBILE_MORE_MENU_ICON_FIX_20260603 */

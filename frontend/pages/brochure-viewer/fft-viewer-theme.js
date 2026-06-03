@@ -2329,7 +2329,6 @@ function buildPanel() {
     { id: "instagram", label: "Instagram", badge: "IG", mode: "copyOpen" },
     { id: "telegram", label: "Telegram", badge: "TG", mode: "url" },
     { id: "copy", label: "Salin", badge: "CL", mode: "copy" },
-    { id: "more", label: "Lainnya", badge: "...", mode: "native" }
   ];
 
   function isMobile() {
@@ -2593,8 +2592,7 @@ function buildPanel() {
           return;
         }
 
-        await copyShareLink(data, false);
-        showToast("Link disalin. Bagikan lewat aplikasi lain.");
+        showToast("Menu Lainnya belum tersedia di browser ini.");
         return;
       }
 
