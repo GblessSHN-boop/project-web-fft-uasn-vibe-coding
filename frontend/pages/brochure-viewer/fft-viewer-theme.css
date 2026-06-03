@@ -1938,3 +1938,72 @@ body > .fft-viewer-action-menu.is-open {
   }
 }
 /* /FFT_VIEWER_MOBILE_SHARE_SHEET_WHATSAPP_ICON_20260603 */
+
+/* FFT_VIEWER_MOBILE_SHARE_ICONS_NO_RING_20260603 */
+@media (max-width: 760px) {
+  .fft-mobile-share-sheet
+    .fft-mobile-share-sheet__item {
+    min-height: 70px !important;
+    gap: 6px !important;
+  }
+
+  .fft-mobile-share-sheet
+    .fft-mobile-share-sheet__item[data-share-target]
+    .fft-mobile-share-sheet__badge {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    flex: 0 0 30px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-color: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+    font-size: 0 !important;
+    color: transparent !important;
+  }
+
+  .fft-mobile-share-sheet
+    .fft-mobile-share-sheet__item[data-share-target]
+    .fft-mobile-share-sheet__badge::before {
+    width: 25px !important;
+    height: 25px !important;
+    flex: 0 0 25px !important;
+    margin: 0 !important;
+    background-size: contain !important;
+  }
+
+  .fft-mobile-share-sheet
+    .fft-mobile-share-sheet__item[data-share-target]:active
+    .fft-mobile-share-sheet__badge {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .fft-mobile-share-sheet
+    .fft-mobile-share-sheet__item[data-share-target]
+    .fft-mobile-share-sheet__badge {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    flex-basis: 28px !important;
+  }
+
+  .fft-mobile-share-sheet
+    .fft-mobile-share-sheet__item[data-share-target]
+    .fft-mobile-share-sheet__badge::before {
+    width: 24px !important;
+    height: 24px !important;
+    flex-basis: 24px !important;
+  }
+}
+/* /FFT_VIEWER_MOBILE_SHARE_ICONS_NO_RING_20260603 */
