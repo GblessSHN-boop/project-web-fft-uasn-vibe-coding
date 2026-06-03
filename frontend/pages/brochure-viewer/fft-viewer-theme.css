@@ -2007,3 +2007,206 @@ body > .fft-viewer-action-menu.is-open {
   }
 }
 /* /FFT_VIEWER_MOBILE_SHARE_ICONS_NO_RING_20260603 */
+
+/* FFT_VIEWER_DESKTOP_SHARE_SHEET_MATCH_MOBILE_20260603 */
+@media (min-width: 761px) {
+  .fft-mobile-share-sheet {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 999999 !important;
+    display: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(15, 23, 42, 0.38) !important;
+    padding: 24px !important;
+    box-sizing: border-box !important;
+  }
+
+  .fft-mobile-share-sheet.is-open {
+    display: flex !important;
+  }
+
+  .fft-mobile-share-sheet__panel {
+    width: min(520px, calc(100vw - 48px)) !important;
+    max-height: min(82vh, 680px) !important;
+    overflow: auto !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(127, 29, 29, 0.16) !important;
+    box-shadow: 0 28px 78px rgba(15, 23, 42, 0.28) !important;
+    border-radius: 18px !important;
+  }
+
+  .fft-mobile-share-sheet__head {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+    padding: 18px 20px 14px !important;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.95) !important;
+  }
+
+  .fft-mobile-share-sheet__title {
+    margin: 0 !important;
+    color: #7f0d12 !important;
+    font-size: 15px !important;
+    font-weight: 950 !important;
+    letter-spacing: 0.09em !important;
+    text-transform: uppercase !important;
+    text-align: left !important;
+  }
+
+  .fft-mobile-share-sheet__desc {
+    margin: 6px 0 0 !important;
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-weight: 750 !important;
+    line-height: 1.35 !important;
+    text-align: left !important;
+  }
+
+  .fft-mobile-share-sheet__close {
+    width: 38px !important;
+    height: 38px !important;
+    border: 1px solid rgba(127, 29, 29, 0.22) !important;
+    background: #fff7f7 !important;
+    color: #7f0d12 !important;
+    border-radius: 12px !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+  }
+
+  .fft-mobile-share-sheet__grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 6px 10px !important;
+    padding: 16px 18px 18px !important;
+  }
+
+  .fft-mobile-share-sheet__item {
+    min-height: 86px !important;
+    border: 0 !important;
+    border-radius: 14px !important;
+    background: transparent !important;
+    color: #1f2937 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    font-size: 12px !important;
+    font-weight: 850 !important;
+    text-align: center !important;
+    cursor: pointer !important;
+  }
+
+  .fft-mobile-share-sheet__item:hover {
+    background: #fff7f7 !important;
+  }
+
+  .fft-mobile-share-sheet__item:active {
+    background: #fff1f2 !important;
+    transform: scale(0.98) !important;
+  }
+
+  .fft-mobile-share-sheet__badge {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    flex: 0 0 34px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-color: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+    font-size: 0 !important;
+    color: transparent !important;
+  }
+
+  .fft-mobile-share-sheet__badge::before {
+    content: "" !important;
+    display: block !important;
+    width: 28px !important;
+    height: 28px !important;
+    flex: 0 0 28px !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="whatsapp"] .fft-mobile-share-sheet__badge::before {
+    background-image: var(--fft-viewer-share-icon-whatsapp) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="whatsappBusiness"] .fft-mobile-share-sheet__badge::before {
+    background-image: var(--fft-viewer-share-icon-whatsapp-business) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="x"] .fft-mobile-share-sheet__badge::before {
+    background-image: var(--fft-viewer-share-icon-x) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="linkedin"] .fft-mobile-share-sheet__badge::before {
+    background-image: var(--fft-viewer-share-icon-linkedin) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="teams"] .fft-mobile-share-sheet__badge::before {
+    background-image: var(--fft-viewer-share-icon-teams) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="mail"] .fft-mobile-share-sheet__badge::before {
+    background-image: var(--fft-viewer-share-icon-mail) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="gmail"] .fft-mobile-share-sheet__badge::before {
+    background-image: var(--fft-viewer-share-icon-gmail) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="facebook"] .fft-mobile-share-sheet__badge::before {
+    background-image: var(--fft-viewer-share-icon-facebook) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="instagram"] .fft-mobile-share-sheet__badge::before {
+    background-image: var(--fft-viewer-share-icon-instagram) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="telegram"] .fft-mobile-share-sheet__badge::before {
+    background-image: var(--fft-viewer-share-icon-telegram) !important;
+  }
+
+  .fft-mobile-share-sheet__item[data-share-target="copy"] .fft-mobile-share-sheet__badge::before {
+    background-image: var(--fft-viewer-share-icon-copy) !important;
+  }
+
+  .fft-mobile-share-toast {
+    position: fixed !important;
+    left: 50% !important;
+    bottom: 42px !important;
+    z-index: 1000000 !important;
+    transform: translateX(-50%) !important;
+    max-width: calc(100vw - 48px) !important;
+    padding: 11px 14px !important;
+    border-radius: 11px !important;
+    background: rgba(15, 23, 42, 0.94) !important;
+    color: #ffffff !important;
+    font-size: 12px !important;
+    font-weight: 850 !important;
+    line-height: 1.25 !important;
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.22) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.18s ease !important;
+  }
+
+  .fft-mobile-share-toast.is-visible {
+    opacity: 1 !important;
+  }
+}
+/* /FFT_VIEWER_DESKTOP_SHARE_SHEET_MATCH_MOBILE_20260603 */

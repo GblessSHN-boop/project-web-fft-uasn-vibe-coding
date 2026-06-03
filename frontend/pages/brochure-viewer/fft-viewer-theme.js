@@ -2627,14 +2627,56 @@ function buildPanel() {
     }
   }
 
+  function findToolbarShareButton(target) {
+    if (!target || !target.closest) {
+      return null;
+    }
+
+    var direct = target.closest(
+      '.fft-dflip-share, [data-fft-toolbar-share], [data-action="share"], [data-fft-action="share"]'
+    );
+
+    if (direct && !direct.closest(".fft-mobile-share-sheet")) {
+      return direct;
+    }
+
+    var candidate = target.closest('button, a, [role="button"]');
+
+    if (!candidate || candidate.closest(".fft-mobile-share-sheet")) {
+      return null;
+    }
+
+    var meta = [
+      candidate.innerText || candidate.textContent || "",
+      candidate.getAttribute("aria-label") || "",
+      candidate.getAttribute("title") || "",
+      candidate.getAttribute("data-action") || "",
+      candidate.getAttribute("data-fft-action") || "",
+      String(candidate.className || "")
+    ].join(" ").toLowerCase();
+
+    if (
+      (meta.indexOf("bagikan") >= 0 || meta.indexOf("share") >= 0) &&
+      candidate.closest(".fft-dflip-toolbar, .fft-dflip-toolbar-wrap, .df-ui-wrapper, .df-ui-controls")
+    ) {
+      return candidate;
+    }
+
+    return null;
+  }
+
   function handleToolbarShareClick(event) {
-    if (!isMobile()) {
+    var button = findToolbarShareButton(event.target);
+
+    if (!button) {
       return;
     }
 
-    var button = event.target && event.target.closest ? event.target.closest(".fft-dflip-share") : null;
+    var shouldHandle = isMobile()
+      ? isInsideMobileToolbar(button)
+      : !isInsideMobileToolbar(button);
 
-    if (!button || !isInsideMobileToolbar(button)) {
+    if (!shouldHandle) {
       return;
     }
 
