@@ -350,6 +350,31 @@
 
 
   /* FFT_VIEWER_SPREAD_TOOLBAR_REBUILD_20260602 */
+/* FFT_VIEWER_MOBILE_SINGLE_SLIDE_TOOLBAR_LITE_20260603 */
+function isMobileSingleSlideLite() {
+  return !!(
+    window.matchMedia &&
+    window.matchMedia("(max-width: 760px)").matches
+  );
+}
+
+function getSpreadStep() {
+  return isMobileSingleSlideLite() ? 1 : 2;
+}
+
+function getSpreadMenuLabel(spreadStart, total) {
+  var start = Math.max(1, parseInt(spreadStart, 10) || 1);
+  var end = Math.min(Math.max(1, parseInt(total, 10) || start), start + 1);
+
+  if (isMobileSingleSlideLite()) {
+    return "Halaman " + start;
+  }
+
+  return start === end
+    ? "Halaman " + start
+    : "Halaman " + start + " sampai " + end;
+}
+/* /FFT_VIEWER_MOBILE_SINGLE_SLIDE_TOOLBAR_LITE_20260603 */
 function getViewerApi() {
   return window.FFTBrochureViewer || null;
 }
@@ -379,35 +404,35 @@ function getSpreadToolbarState() {
     current: current,
     total: total,
     spreadStart: start,
-    spreadEnd: Math.min(total, start + 1),
+    spreadEnd: isMobileSingleSlideLite() ? start : Math.min(total, start + 1),
     isFirst: start <= 1,
     isLast: start >= normalizeSpreadStart(total, total)
   };
 }
 
 function normalizeSpreadStart(page, total) {
-  var max = Math.max(1, Number(total) || 1);
-  var target = Math.max(1, Math.min(max, Number(page) || 1));
+  var safeTotal = Math.max(1, parseInt(total, 10) || 1);
+  var safePage = Math.max(1, Math.min(safeTotal, parseInt(page, 10) || 1));
 
-  if (target <= 1) {
-    return 1;
+  if (isMobileSingleSlideLite()) {
+    return safePage;
   }
 
-  if (target >= max) {
-    return max % 2 === 0 ? max - 1 : max;
-  }
-
-  return target % 2 === 0 ? target - 1 : target;
+  return safePage % 2 === 0 ? Math.max(1, safePage - 1) : safePage;
 }
 
 function getSpreadLabel(start, total) {
-  var end = Math.min(total, start + 1);
+  var safeTotal = Math.max(1, parseInt(total, 10) || 1);
+  var safeStart = normalizeSpreadStart(start, safeTotal);
+  var safeEnd = Math.min(safeTotal, safeStart + 1);
 
-  if (start === end) {
-    return "Halaman " + start + " dari " + total;
+  if (isMobileSingleSlideLite()) {
+    return "Halaman " + safeStart + " dari " + safeTotal;
   }
 
-  return "Halaman " + start + " sampai " + end + " dari " + total;
+  return safeStart === safeEnd
+    ? "Halaman " + safeStart + " dari " + safeTotal
+    : "Halaman " + safeStart + " sampai " + safeEnd + " dari " + safeTotal;
 }
 
 function showSpreadToolbarToast(message) {
@@ -498,13 +523,11 @@ function rebuildSpreadMenu(pageMenu) {
   for (var start = 1; start <= total; start += 2) {
     (function (spreadStart) {
       var button = document.createElement("button");
-      var spreadEnd = Math.min(total, spreadStart + 1);
+      var spreadEnd = isMobileSingleSlideLite() ? spreadStart : Math.min(total, spreadStart + 1);
 
       button.type = "button";
       button.className = "fft-dflip-page-choice fft-dflip-spread-choice";
-      button.textContent = spreadStart === spreadEnd
-        ? "Halaman " + spreadStart
-        : "Halaman " + spreadStart + " sampai " + spreadEnd;
+      button.textContent = getSpreadMenuLabel(spreadStart, total);
       button.dataset.spreadStart = String(spreadStart);
 
       if (spreadStart === currentStart) {

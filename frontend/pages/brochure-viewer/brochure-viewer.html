@@ -2577,7 +2577,14 @@ wrapper.appendChild(canvas);
         pageHeight = Math.round(metric.baseHeight * scaleValue);
         pageWidth = Math.round(metric.baseWidth * scaleValue);
 
-        bookElement.style.width = (pageWidth * 2) + "px";
+        /* FFT_VIEWER_MOBILE_SINGLE_SLIDE_PAGEFLIP_LITE_20260603 */
+        const isMobileSingleSlide = window.matchMedia &&
+          window.matchMedia("(max-width: 760px)").matches;
+        const bookDisplayWidth = isMobileSingleSlide ? pageWidth : (pageWidth * 2);
+
+        bookElement.dataset.fftMobileSingleSlide = isMobileSingleSlide ? "true" : "false";
+        bookElement.style.width = bookDisplayWidth + "px";
+        /* /FFT_VIEWER_MOBILE_SINGLE_SLIDE_PAGEFLIP_LITE_20260603 */
         bookElement.style.height = pageHeight + "px";
 
         for (const file of brochurePages) {
@@ -2588,7 +2595,7 @@ wrapper.appendChild(canvas);
         bookElement.style.display = "block";
         viewerLoading.style.display = "none";
 
-        pageFlip = new St.PageFlip(bookElement, {
+        const pageFlipOptions = {
           width: pageWidth,
           height: pageHeight,
           size: "fixed",
@@ -2603,7 +2610,20 @@ wrapper.appendChild(canvas);
           maxShadowOpacity: 0.25,
           drawShadow: true,
           autoSize: false
-        });
+        };
+
+        /* FFT_VIEWER_MOBILE_SINGLE_SLIDE_PAGEFLIP_LITE_20260603_OPTIONS */
+        if (isMobileSingleSlide) {
+          pageFlipOptions.width = pageWidth;
+          pageFlipOptions.minWidth = pageWidth;
+          pageFlipOptions.maxWidth = pageWidth;
+          pageFlipOptions.usePortrait = true;
+          pageFlipOptions.showCover = false;
+          pageFlipOptions.mobileScrollSupport = true;
+        }
+        /* /FFT_VIEWER_MOBILE_SINGLE_SLIDE_PAGEFLIP_LITE_20260603_OPTIONS */
+
+        pageFlip = new St.PageFlip(bookElement, pageFlipOptions);
 
         pageFlip.loadFromHTML(document.querySelectorAll(".page"));
         pageFlip.on("flip", updatePageInfo);
@@ -2729,7 +2749,7 @@ wrapper.appendChild(canvas);
 }());
 </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 JS -->
-  <script defer src="fft-viewer-theme.js?v=viewer-desktop-share-sheet-20260603"></script>
+  <script defer src="fft-viewer-theme.js?v=viewer-mobile-single-slide-lite-20260603-reapply"></script>
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_START -->
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_END -->
