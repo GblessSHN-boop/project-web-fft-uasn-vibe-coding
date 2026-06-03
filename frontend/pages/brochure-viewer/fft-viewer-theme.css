@@ -2210,3 +2210,54 @@ body > .fft-viewer-action-menu.is-open {
   }
 }
 /* /FFT_VIEWER_DESKTOP_SHARE_SHEET_MATCH_MOBILE_20260603 */
+
+/* FFT_VIEWER_DESKTOP_SHARE_BUTTON_ICON_20260603 */
+:root {
+  --fft-viewer-desktop-toolbar-share-icon: url("assets/icons/viewer-toolbar-share-icon.svg?v=desktop-toolbar-share-icon-20260603");
+}
+
+@media (min-width: 761px) {
+  .fft-dflip-toolbar-wrap:not([data-fft-mobile-book="true"])
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-share,
+  .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-share {
+    font-size: 0 !important;
+    color: transparent !important;
+    line-height: 0 !important;
+    text-indent: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    gap: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .fft-dflip-toolbar-wrap:not([data-fft-mobile-book="true"])
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-share::before,
+  .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-share::before {
+    content: "" !important;
+    display: block !important;
+    width: 22px !important;
+    height: 22px !important;
+    flex: 0 0 22px !important;
+    margin: 0 !important;
+    background-image: var(--fft-viewer-desktop-toolbar-share-icon) !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+
+  .fft-dflip-toolbar-wrap:not([data-fft-mobile-book="true"])
+    > .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-share > *,
+  .fft-dflip-toolbar.fft-dflip-spread-toolbar
+    > .fft-dflip-share > * {
+    font-size: 0 !important;
+    color: transparent !important;
+  }
+}
+/* /FFT_VIEWER_DESKTOP_SHARE_BUTTON_ICON_20260603 */
