@@ -2401,3 +2401,33 @@ body > .fft-viewer-action-menu.is-open {
   }
 }
 /* /FFT_VIEWER_MOBILE_BOTTOM_TOOLBAR_REORDER_20260603 */
+
+/* FFT_VIEWER_MOBILE_NO_ANIMATION_SWITCH_UI_20260603 */
+@media (max-width: 760px) {
+  #book[data-fft-mobile-single-slide="true"] {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  #book[data-fft-mobile-single-slide="true"] *,
+  #book[data-fft-mobile-single-slide="true"] *::before,
+  #book[data-fft-mobile-single-slide="true"] *::after {
+    animation-duration: 0ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  #book[data-fft-mobile-single-slide="true"] .stf__shadow,
+  #book[data-fft-mobile-single-slide="true"] .stf__outerShadow,
+  #book[data-fft-mobile-single-slide="true"] .stf__hardShadow,
+  #book[data-fft-mobile-single-slide="true"] .stf__foldingShadow {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    display: none !important;
+  }
+}
+/* /FFT_VIEWER_MOBILE_NO_ANIMATION_SWITCH_UI_20260603 */

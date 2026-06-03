@@ -225,7 +225,7 @@
 }
   </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 CSS -->
-  <link rel="stylesheet" href="fft-viewer-theme.css?v=viewer-mobile-bottom-toolbar-reorder-20260603">
+  <link rel="stylesheet" href="fft-viewer-theme.css?v=viewer-mobile-no-animation-switch-20260603">
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_STYLE_START -->
 <style>
@@ -2620,6 +2620,11 @@ wrapper.appendChild(canvas);
           pageFlipOptions.usePortrait = true;
           pageFlipOptions.showCover = false;
           pageFlipOptions.mobileScrollSupport = true;
+          /* FFT_VIEWER_MOBILE_NO_ANIMATION_PAGEFLIP_20260603 */
+          pageFlipOptions.drawShadow = false;
+          pageFlipOptions.maxShadowOpacity = 0;
+          pageFlipOptions.flippingTime = 1;
+          /* /FFT_VIEWER_MOBILE_NO_ANIMATION_PAGEFLIP_20260603 */
         }
         /* /FFT_VIEWER_MOBILE_SINGLE_SLIDE_PAGEFLIP_LITE_20260603_OPTIONS */
 
@@ -2749,7 +2754,7 @@ wrapper.appendChild(canvas);
 }());
 </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 JS -->
-  <script defer src="fft-viewer-theme.js?v=viewer-mobile-single-slide-lite-20260603-reapply"></script>
+  <script defer src="fft-viewer-theme.js?v=viewer-mobile-no-animation-switch-20260603"></script>
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_START -->
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_END -->
