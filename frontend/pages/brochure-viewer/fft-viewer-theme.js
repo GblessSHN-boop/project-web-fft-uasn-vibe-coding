@@ -2828,3 +2828,1426 @@ function buildPanel() {
   window.addEventListener("orientationchange", schedule, { passive: true });
 }());
 /* /FFT_VIEWER_MOBILE_PDF_POSITION_TIGHT_20260603 */
+
+/* FFT_VIEWER_MOBILE_ZOOM_DRAG_PAN_20260604 */
+(function () {
+  var QUERY = "(max-width: 760px)";
+  var zoomSteps = 0;
+  var panX = 0;
+  var panY = 0;
+  var baseX = 0;
+  var baseY = 0;
+  var startX = 0;
+  var startY = 0;
+  var pointerId = null;
+  var dragging = false;
+  var settleTimers = [];
+
+  function isMobile() {
+    return !!(
+      window.matchMedia &&
+      window.matchMedia(QUERY).matches
+    );
+  }
+
+  function getBook() {
+    return document.getElementById("book");
+  }
+
+  function getShell() {
+    var book = getBook();
+
+    if (!book || book.dataset.fftMobileSingleSlide !== "true") {
+      return null;
+    }
+
+    return (
+      book.closest(".fft-mobile-pdf-tight-shell") ||
+      book.parentElement
+    );
+  }
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function readNativeZoom() {
+    var zoom = Number(window.__fftSpreadToolbarZoom);
+
+    if (!Number.isFinite(zoom) || zoom <= 0) {
+      return null;
+    }
+
+    return zoom;
+  }
+
+  function getZoomLevel() {
+    var nativeZoom = readNativeZoom();
+
+    if (nativeZoom && nativeZoom > 1.01) {
+      return nativeZoom;
+    }
+
+    if (zoomSteps > 0) {
+      return 1 + (zoomSteps * 0.25);
+    }
+
+    return 1;
+  }
+
+  function isZoomActive() {
+    return getZoomLevel() > 1.01;
+  }
+
+  function clearSettleTimers() {
+    settleTimers.forEach(function (timer) {
+      window.clearTimeout(timer);
+    });
+
+    settleTimers = [];
+  }
+
+  function schedule(callback, delay) {
+    settleTimers.push(window.setTimeout(callback, delay));
+  }
+
+  function getBounds() {
+    var zoom = getZoomLevel();
+    var width = Math.max(320, window.innerWidth || 360);
+    var height = Math.max(560, window.innerHeight || 720);
+    var factor = Math.max(1, Math.round((zoom - 1) * 4));
+
+    return {
+      minX: -1 * clamp(Math.round(width * 0.78 * factor), 170, 980),
+      maxX: clamp(Math.round(width * 0.78 * factor), 170, 980),
+      minY: -1 * clamp(Math.round(height * 0.38 * factor), 140, 840),
+      maxY: clamp(Math.round(height * 0.18 * factor), 80, 420)
+    };
+  }
+
+  function applyPan(x, y) {
+    var shell = getShell();
+
+    if (!shell || !isMobile()) {
+      return;
+    }
+
+    var bounds = getBounds();
+
+    panX = clamp(Math.round(x), bounds.minX, bounds.maxX);
+    panY = clamp(Math.round(y), bounds.minY, bounds.maxY);
+
+    shell.style.setProperty("--fft-mobile-zoom-pan-x", panX + "px");
+    shell.style.setProperty("--fft-mobile-zoom-pan-y", panY + "px");
+  }
+
+  function enablePan() {
+    var shell = getShell();
+    var book = getBook();
+
+    if (
+      !isMobile() ||
+      !shell ||
+      !book ||
+      book.dataset.fftMobileSingleSlide !== "true" ||
+      !isZoomActive()
+    ) {
+      return;
+    }
+
+    document.documentElement.classList.add("fft-mobile-zoom-drag-pan-active");
+    document.body.classList.add("fft-mobile-zoom-drag-pan-active");
+
+    shell.classList.add("fft-mobile-zoom-drag-pan-shell");
+
+    applyPan(panX, panY);
+  }
+
+  function hardResetPan() {
+    var shell = getShell();
+
+    zoomSteps = 0;
+    panX = 0;
+    panY = 0;
+    baseX = 0;
+    baseY = 0;
+    dragging = false;
+    pointerId = null;
+
+    clearSettleTimers();
+
+    document.documentElement.classList.remove("fft-mobile-zoom-drag-pan-active");
+    document.body.classList.remove("fft-mobile-zoom-drag-pan-active");
+
+    if (shell) {
+      shell.classList.remove("fft-mobile-zoom-drag-pan-shell", "is-dragging");
+      shell.style.removeProperty("--fft-mobile-zoom-pan-x");
+      shell.style.removeProperty("--fft-mobile-zoom-pan-y");
+    }
+  }
+
+  function softenPanAfterZoomOut() {
+    panX = Math.round(panX * 0.52);
+    panY = Math.round(panY * 0.52);
+    applyPan(panX, panY);
+  }
+
+  function settleAfterZoomIn() {
+    clearSettleTimers();
+
+    schedule(enablePan, 100);
+    schedule(enablePan, 240);
+    schedule(enablePan, 460);
+  }
+
+  function settleAfterZoomOut() {
+    var softened = false;
+
+    clearSettleTimers();
+
+    [80, 180, 340, 620].forEach(function (delay) {
+      schedule(function () {
+        if (!isMobile()) {
+          hardResetPan();
+          return;
+        }
+
+        if (!isZoomActive() || zoomSteps <= 0) {
+          hardResetPan();
+          return;
+        }
+
+        enablePan();
+
+        if (!softened) {
+          softened = true;
+          softenPanAfterZoomOut();
+          return;
+        }
+
+        applyPan(panX, panY);
+      }, delay);
+    });
+  }
+
+  function readMeta(button) {
+    return [
+      button.innerText || button.textContent || "",
+      button.getAttribute("aria-label") || "",
+      button.getAttribute("title") || "",
+      String(button.className || "")
+    ].join(" ").toLowerCase();
+  }
+
+  function getToolbarFromTarget(target) {
+    if (!target || !target.closest) {
+      return null;
+    }
+
+    return target.closest('.fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]');
+  }
+
+  function getButton(target) {
+    if (!target || !target.closest) {
+      return null;
+    }
+
+    return target.closest("button, a, [role='button'], .fft-dflip-btn");
+  }
+
+  function detectByPosition(toolbar, button) {
+    var buttons = Array.prototype.slice.call(
+      toolbar.querySelectorAll("button, a, [role='button'], .fft-dflip-btn")
+    ).filter(function (item) {
+      var rect = item.getBoundingClientRect();
+
+      return rect.width > 20 && rect.height > 20;
+    });
+
+    if (!buttons.length) {
+      return "";
+    }
+
+    var toolbarRect = toolbar.getBoundingClientRect();
+
+    var bottomRow = buttons.filter(function (item) {
+      var rect = item.getBoundingClientRect();
+
+      return rect.top >= toolbarRect.top + (toolbarRect.height * 0.42);
+    });
+
+    if (bottomRow.length < 2) {
+      bottomRow = buttons.slice(-5);
+    }
+
+    bottomRow.sort(function (a, b) {
+      return a.getBoundingClientRect().left - b.getBoundingClientRect().left;
+    });
+
+    var first = bottomRow[0];
+    var last = bottomRow[bottomRow.length - 1];
+
+    if (button === first || first.contains(button)) {
+      return "zoom-out";
+    }
+
+    if (button === last || last.contains(button)) {
+      return "zoom-in";
+    }
+
+    return "";
+  }
+
+  function getAction(target) {
+    if (!isMobile()) {
+      return "";
+    }
+
+    var toolbar = getToolbarFromTarget(target);
+    var button = getButton(target);
+
+    if (!toolbar || !button || !toolbar.contains(button)) {
+      return "";
+    }
+
+    if (
+      button.closest(".fft-dflip-page-menu") ||
+      button.closest(".fft-page-jump-clone-panel") ||
+      button.closest(".fft-mobile-share-sheet")
+    ) {
+      return "";
+    }
+
+    var meta = readMeta(button);
+
+    if (
+      button.classList.contains("fft-dflip-zoomin") ||
+      button.classList.contains("fft-dflip-zoom-in") ||
+      meta.indexOf("zoom-in") >= 0 ||
+      meta.indexOf("zoomin") >= 0 ||
+      meta.indexOf("zoom in") >= 0 ||
+      meta.indexOf("perbesar") >= 0
+    ) {
+      return "zoom-in";
+    }
+
+    if (
+      button.classList.contains("fft-dflip-zoomout") ||
+      button.classList.contains("fft-dflip-zoom-out") ||
+      meta.indexOf("zoom-out") >= 0 ||
+      meta.indexOf("zoomout") >= 0 ||
+      meta.indexOf("zoom out") >= 0 ||
+      meta.indexOf("perkecil") >= 0
+    ) {
+      return "zoom-out";
+    }
+
+    if (
+      button.classList.contains("fft-dflip-prev") ||
+      button.classList.contains("fft-dflip-next") ||
+      meta.indexOf("sebelum") >= 0 ||
+      meta.indexOf("berikut") >= 0 ||
+      meta.indexOf("prev") >= 0 ||
+      meta.indexOf("next") >= 0
+    ) {
+      return "page-change";
+    }
+
+    return detectByPosition(toolbar, button);
+  }
+
+  function handleToolbarClick(event) {
+    var action = getAction(event.target);
+
+    if (!action) {
+      return;
+    }
+
+    if (action === "zoom-in") {
+      zoomSteps = Math.min(8, zoomSteps + 1);
+      settleAfterZoomIn();
+      return;
+    }
+
+    if (action === "zoom-out") {
+      zoomSteps = Math.max(0, zoomSteps - 1);
+      settleAfterZoomOut();
+      return;
+    }
+
+    if (action === "page-change") {
+      window.setTimeout(hardResetPan, 90);
+      window.setTimeout(hardResetPan, 240);
+    }
+  }
+
+  function isInsideToolbar(target) {
+    return !!(
+      target &&
+      target.closest &&
+      target.closest('.fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]')
+    );
+  }
+
+  function handlePointerDown(event) {
+    var book = getBook();
+    var shell = getShell();
+
+    if (
+      !isMobile() ||
+      isInsideToolbar(event.target) ||
+      !book ||
+      !shell ||
+      book.dataset.fftMobileSingleSlide !== "true" ||
+      !isZoomActive() ||
+      !event.target.closest ||
+      !event.target.closest("#book")
+    ) {
+      return;
+    }
+
+    clearSettleTimers();
+    enablePan();
+
+    dragging = true;
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startY = event.clientY;
+    baseX = panX;
+    baseY = panY;
+
+    shell.classList.add("is-dragging");
+
+    try {
+      shell.setPointerCapture(event.pointerId);
+    } catch (error) {}
+
+    event.preventDefault();
+  }
+
+  function handlePointerMove(event) {
+    if (!dragging || pointerId !== event.pointerId) {
+      return;
+    }
+
+    applyPan(
+      baseX + (event.clientX - startX),
+      baseY + (event.clientY - startY)
+    );
+
+    event.preventDefault();
+  }
+
+  function stopDragging(event) {
+    var shell = getShell();
+
+    if (!dragging) {
+      return;
+    }
+
+    dragging = false;
+    pointerId = null;
+
+    if (shell) {
+      shell.classList.remove("is-dragging");
+
+      try {
+        if (event && event.pointerId !== undefined) {
+          shell.releasePointerCapture(event.pointerId);
+        }
+      } catch (error) {}
+    }
+  }
+
+  document.addEventListener("click", handleToolbarClick, true);
+
+  document.addEventListener("pointerdown", handlePointerDown, true);
+  document.addEventListener("pointermove", handlePointerMove, { capture: true, passive: false });
+  document.addEventListener("pointerup", stopDragging, true);
+  document.addEventListener("pointercancel", stopDragging, true);
+
+  window.addEventListener("resize", function () {
+    if (!isMobile()) {
+      hardResetPan();
+      return;
+    }
+
+    if (isZoomActive()) {
+      enablePan();
+      applyPan(panX, panY);
+    }
+  }, { passive: true });
+
+  window.addEventListener("orientationchange", function () {
+    window.setTimeout(hardResetPan, 160);
+  }, { passive: true });
+
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+      stopDragging();
+    }
+  }, false);
+}());
+/* /FFT_VIEWER_MOBILE_ZOOM_DRAG_PAN_20260604 */
+
+/* FFT_VIEWER_MOBILE_DESKTOP_RESET_BRIDGE_20260604 */
+(function () {
+  var QUERY = "(max-width: 760px)";
+  var scanTimer = null;
+  var scanCount = 0;
+
+  function isMobile() {
+    return !!(
+      window.matchMedia &&
+      window.matchMedia(QUERY).matches
+    );
+  }
+
+  function getMeta(element) {
+    return [
+      element.id || "",
+      element.getAttribute("class") || "",
+      element.getAttribute("aria-label") || "",
+      element.getAttribute("title") || "",
+      element.textContent || ""
+    ].join(" ").toLowerCase();
+  }
+
+  function isResetZoomButton(element) {
+    if (!element || element.nodeType !== 1) {
+      return false;
+    }
+
+    var meta = getMeta(element);
+
+    if (meta.indexOf("share") >= 0 || meta.indexOf("menu") >= 0) {
+      return false;
+    }
+
+    return (
+      meta.indexOf("reset zoom") >= 0 ||
+      meta.indexOf("reset-zoom") >= 0 ||
+      meta.indexOf("zoom-reset") >= 0 ||
+      meta.indexOf("reset zoom preview brosur") >= 0 ||
+      element.classList.contains("fft-dflip-zoom-reset")
+    );
+  }
+
+  function collectResetButtons() {
+    var selector = [
+      "button",
+      "a",
+      "[role='button']",
+      ".fft-dflip-btn",
+      ".fft-dflip-zoom-reset",
+      "[class*='reset-zoom']",
+      "[class*='zoom-reset']",
+      "[aria-label*='Reset zoom']",
+      "[aria-label*='reset zoom']",
+      "[title*='Reset zoom']",
+      "[title*='reset zoom']"
+    ].join(",");
+
+    return Array.prototype.slice.call(document.querySelectorAll(selector))
+      .filter(isResetZoomButton);
+  }
+
+  function clearMobilePanLayer() {
+    var shells = Array.prototype.slice.call(
+      document.querySelectorAll(".fft-mobile-zoom-drag-pan-shell, .fft-mobile-pdf-tight-shell")
+    );
+
+    document.documentElement.classList.remove("fft-mobile-zoom-drag-pan-active");
+    document.body.classList.remove("fft-mobile-zoom-drag-pan-active");
+
+    shells.forEach(function (shell) {
+      shell.classList.remove("fft-mobile-zoom-drag-pan-shell", "is-dragging");
+      shell.style.removeProperty("--fft-mobile-zoom-pan-x");
+      shell.style.removeProperty("--fft-mobile-zoom-pan-y");
+    });
+  }
+
+  function decorateResetButton(button) {
+    if (!button || button.dataset.fftMobileDesktopReset === "true") {
+      return;
+    }
+
+    button.dataset.fftMobileDesktopReset = "true";
+    button.classList.add("fft-mobile-desktop-reset-button");
+
+    if (!button.textContent || !button.textContent.trim()) {
+      button.textContent = "Reset Zoom";
+    }
+
+    if (!button.getAttribute("aria-label")) {
+      button.setAttribute("aria-label", "Reset zoom preview brosur");
+    }
+
+    if (!button.getAttribute("title")) {
+      button.setAttribute("title", "Reset Zoom");
+    }
+
+    button.addEventListener("click", function () {
+      window.setTimeout(clearMobilePanLayer, 80);
+      window.setTimeout(clearMobilePanLayer, 220);
+      window.setTimeout(clearMobilePanLayer, 480);
+    }, true);
+  }
+
+  function scanResetButtons() {
+    if (!isMobile()) {
+      return;
+    }
+
+    collectResetButtons().forEach(decorateResetButton);
+  }
+
+  function limitedScan() {
+    scanResetButtons();
+
+    window.clearInterval(scanTimer);
+    scanCount = 0;
+
+    scanTimer = window.setInterval(function () {
+      scanCount += 1;
+      scanResetButtons();
+
+      if (scanCount >= 16) {
+        window.clearInterval(scanTimer);
+      }
+    }, 250);
+  }
+
+  function isZoomToolbarAction(target) {
+    if (!target || !target.closest) {
+      return false;
+    }
+
+    var toolbar = target.closest('.fft-dflip-toolbar-wrap[data-fft-mobile-book="true"]');
+    var button = target.closest("button, a, [role='button'], .fft-dflip-btn");
+
+    if (!toolbar || !button) {
+      return false;
+    }
+
+    var meta = getMeta(button);
+
+    return (
+      meta.indexOf("zoom") >= 0 ||
+      button.classList.contains("fft-dflip-zoomin") ||
+      button.classList.contains("fft-dflip-zoomout") ||
+      button.classList.contains("fft-dflip-zoom-in") ||
+      button.classList.contains("fft-dflip-zoom-out")
+    );
+  }
+
+  document.addEventListener("click", function (event) {
+    if (!isMobile()) {
+      return;
+    }
+
+    if (isResetZoomButton(event.target.closest ? event.target.closest("button, a, [role='button'], .fft-dflip-btn") : null)) {
+      window.setTimeout(clearMobilePanLayer, 80);
+      window.setTimeout(clearMobilePanLayer, 220);
+      window.setTimeout(clearMobilePanLayer, 480);
+      return;
+    }
+
+    if (isZoomToolbarAction(event.target)) {
+      window.setTimeout(limitedScan, 120);
+    }
+  }, true);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", limitedScan);
+  } else {
+    limitedScan();
+  }
+
+  window.addEventListener("resize", limitedScan, { passive: true });
+  window.addEventListener("orientationchange", function () {
+    window.setTimeout(limitedScan, 180);
+  }, { passive: true });
+}());
+/* /FFT_VIEWER_MOBILE_DESKTOP_RESET_BRIDGE_20260604 */
+
+/* FFT_VIEWER_BACKEND_LOADING_BRIDGE_20260604 */
+(function () {
+  var PATCH_ID = "FFT_VIEWER_BACKEND_LOADING_BRIDGE_20260604";
+  var MIN_PROGRESS = 8;
+  var MAX_BEFORE_READY = 94;
+  var hideTimer = null;
+  var fallbackTimer = null;
+  var monitorTimer = null;
+  var monitorCount = 0;
+
+  var state = {
+    status: "loading",
+    progress: MIN_PROGRESS,
+    title: "Menyiapkan brosur",
+    message: "Menghubungkan data brosur dan memuat file PDF.",
+    hidden: false,
+    source: PATCH_ID
+  };
+
+  function clamp(value, min, max) {
+    value = Number(value);
+
+    if (!Number.isFinite(value)) {
+      value = min;
+    }
+
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function safeText(value, fallback) {
+    if (value === undefined || value === null) {
+      return fallback || "";
+    }
+
+    var text = String(value).replace(/\s+/g, " ").trim();
+
+    return text || fallback || "";
+  }
+
+  function getCurrentBrochureTitle() {
+    var brochure = window.FFT_CURRENT_BROCHURE || {};
+    var title = safeText(brochure.title || brochure.seoTitle || "", "");
+
+    if (title) {
+      return title;
+    }
+
+    title = safeText(document.title, "");
+
+    if (title) {
+      return title.replace(/\s*\|\s*Fakultas Filsafat Teologi UASN\s*$/i, "");
+    }
+
+    return "Brosur Fakultas Filsafat Teologi";
+  }
+
+  function getElements() {
+    var root = document.getElementById("fftBrochureLoading");
+
+    if (!root && document.body) {
+      root = document.createElement("div");
+      root.id = "fftBrochureLoading";
+      root.className = "fft-brochure-loading";
+      root.setAttribute("role", "status");
+      root.setAttribute("aria-live", "polite");
+      root.setAttribute("aria-atomic", "true");
+      root.setAttribute("aria-busy", "true");
+      root.innerHTML = [
+        '<div class="fft-brochure-loading__panel">',
+        '<div class="fft-brochure-loading__topline">FFT UASN</div>',
+        '<div class="fft-brochure-loading__spinner" aria-hidden="true"><span></span></div>',
+        '<h2 class="fft-brochure-loading__title" data-fft-loading-title>Menyiapkan brosur</h2>',
+        '<p class="fft-brochure-loading__message" data-fft-loading-message>Menghubungkan data brosur dan memuat file PDF.</p>',
+        '<div class="fft-brochure-loading__bar" aria-hidden="true"><span data-fft-loading-bar></span></div>',
+        '<div class="fft-brochure-loading__meta" data-fft-loading-meta>0%</div>',
+        '</div>'
+      ].join("");
+      document.body.appendChild(root);
+    }
+
+    if (!root) {
+      return null;
+    }
+
+    return {
+      root: root,
+      title: root.querySelector("[data-fft-loading-title]"),
+      message: root.querySelector("[data-fft-loading-message]"),
+      bar: root.querySelector("[data-fft-loading-bar]"),
+      meta: root.querySelector("[data-fft-loading-meta]")
+    };
+  }
+
+  function render() {
+    var elements = getElements();
+
+    if (!elements) {
+      return;
+    }
+
+    var progress = clamp(state.progress, 0, 100);
+
+    elements.root.classList.toggle("is-hidden", !!state.hidden);
+    elements.root.setAttribute("aria-busy", state.hidden ? "false" : "true");
+
+    if (document.body) {
+      document.body.classList.toggle("fft-brochure-loading-active", !state.hidden);
+    }
+
+    if (elements.title) {
+      elements.title.textContent = state.title;
+    }
+
+    if (elements.message) {
+      elements.message.textContent = state.message;
+    }
+
+    if (elements.bar) {
+      elements.bar.style.setProperty("--fft-brochure-loading-progress", Math.round(progress) + "%");
+    }
+
+    if (elements.meta) {
+      elements.meta.textContent = Math.round(progress) + "%";
+    }
+  }
+
+  function update(input) {
+    input = input || {};
+
+    if (input.status) {
+      state.status = safeText(input.status, state.status);
+    }
+
+    if (input.title) {
+      state.title = safeText(input.title, state.title);
+    }
+
+    if (input.message) {
+      state.message = safeText(input.message, state.message);
+    }
+
+    if (input.source) {
+      state.source = safeText(input.source, state.source);
+    }
+
+    if (input.progress !== undefined) {
+      var max = state.status === "ready" ? 100 : MAX_BEFORE_READY;
+      state.progress = clamp(input.progress, 0, max);
+    }
+
+    if (state.status === "backend") {
+      state.title = safeText(input.title, "Mengambil data brosur");
+      state.message = safeText(input.message, "Menghubungkan data dari admin dashboard.");
+    }
+
+    if (state.status === "pdf") {
+      state.title = safeText(input.title, getCurrentBrochureTitle());
+      state.message = safeText(input.message, "Memuat halaman PDF dan menyiapkan tampilan brosur.");
+    }
+
+    if (state.status === "error") {
+      state.title = safeText(input.title, "Brosur belum bisa dimuat");
+      state.message = safeText(input.message, "Periksa koneksi atau data brosur dari backend.");
+      state.progress = clamp(input.progress === undefined ? 100 : input.progress, 0, 100);
+    }
+
+    if (state.status === "ready") {
+      state.title = safeText(input.title, getCurrentBrochureTitle());
+      state.message = safeText(input.message, "Brosur siap dibaca.");
+      state.progress = 100;
+      render();
+
+      window.clearTimeout(hideTimer);
+      hideTimer = window.setTimeout(hide, input.delay === undefined ? 260 : Number(input.delay));
+      return;
+    }
+
+    state.hidden = false;
+    render();
+  }
+
+  function show(input) {
+    state.hidden = false;
+    update(input || {
+      status: "loading",
+      progress: state.progress || MIN_PROGRESS
+    });
+  }
+
+  function hide() {
+    state.hidden = true;
+    state.progress = 100;
+    render();
+  }
+
+  function ready(input) {
+    update(Object.assign({
+      status: "ready",
+      progress: 100
+    }, input || {}));
+  }
+
+  function error(input) {
+    update(Object.assign({
+      status: "error",
+      progress: 100
+    }, input || {}));
+  }
+
+  function setProgress(progress, message) {
+    update({
+      status: state.status || "loading",
+      progress: progress,
+      message: message || state.message
+    });
+  }
+
+  function bindPromise(promiseOrFactory, options) {
+    options = options || {};
+
+    show({
+      status: options.status || "backend",
+      title: options.title || "Mengambil data brosur",
+      message: options.message || "Menghubungkan data dari admin dashboard.",
+      progress: options.progress || 18,
+      source: "backend"
+    });
+
+    var promise = typeof promiseOrFactory === "function"
+      ? promiseOrFactory()
+      : promiseOrFactory;
+
+    return Promise.resolve(promise)
+      .then(function (result) {
+        setProgress(options.doneProgress || 48, options.doneMessage || "Data brosur diterima. Menyiapkan file PDF.");
+        return result;
+      })
+      .catch(function (err) {
+        error({
+          message: options.errorMessage || "Data brosur belum berhasil dimuat dari backend.",
+          source: "backend"
+        });
+
+        throw err;
+      });
+  }
+
+  function hasVisiblePdfPage() {
+    var book = document.getElementById("book");
+
+    if (!book) {
+      return false;
+    }
+
+    var candidates = book.querySelectorAll("canvas, img, .page, .df-page, .stf__item");
+
+    for (var index = 0; index < candidates.length; index += 1) {
+      var item = candidates[index];
+      var rect = item.getBoundingClientRect();
+
+      if (rect.width > 80 && rect.height > 120) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function startMonitor() {
+    window.clearInterval(monitorTimer);
+    monitorCount = 0;
+
+    monitorTimer = window.setInterval(function () {
+      monitorCount += 1;
+
+      if (state.hidden) {
+        window.clearInterval(monitorTimer);
+        return;
+      }
+
+      if (monitorCount === 2) {
+        setProgress(20, "Menyiapkan data brosur.");
+      }
+
+      if (monitorCount === 5) {
+        setProgress(38, "Mengambil file PDF brosur.");
+      }
+
+      if (monitorCount === 9) {
+        setProgress(62, "Merender halaman brosur.");
+      }
+
+      if (monitorCount === 14) {
+        setProgress(82, "Merapikan tampilan viewer.");
+      }
+
+      if (hasVisiblePdfPage()) {
+        ready({
+          message: "Brosur siap dibaca.",
+          delay: 220
+        });
+        window.clearInterval(monitorTimer);
+        return;
+      }
+
+      if (monitorCount >= 44) {
+        ready({
+          message: "Viewer siap. PDF akan terus diproses jika jaringan lambat.",
+          delay: 340
+        });
+        window.clearInterval(monitorTimer);
+      }
+    }, 250);
+  }
+
+  function applyBackendInitialState() {
+    var backendState = window.FFT_BROCHURE_BACKEND_LOADING || window.FFT_BROCHURE_LOADING_STATE;
+
+    if (backendState && typeof backendState === "object") {
+      update(Object.assign({
+        source: "backend"
+      }, backendState));
+      return;
+    }
+
+    show({
+      status: "backend",
+      title: "Menyiapkan brosur",
+      message: "Menghubungkan data brosur dan memuat file PDF.",
+      progress: MIN_PROGRESS
+    });
+  }
+
+  window.FFT_BROCHURE_LOADING_BRIDGE = {
+    version: PATCH_ID,
+    schema: {
+      status: "loading | backend | pdf | ready | error",
+      progress: "0 sampai 100",
+      title: "Judul loading",
+      message: "Pesan loading",
+      source: "backend | viewer | admin"
+    },
+    show: show,
+    hide: hide,
+    ready: ready,
+    error: error,
+    update: update,
+    setLoading: update,
+    setProgress: setProgress,
+    bindPromise: bindPromise,
+    getState: function () {
+      return Object.assign({}, state);
+    }
+  };
+
+  document.addEventListener("fft:brochure-resolved", function (event) {
+    var brochure = event.detail && event.detail.brochure;
+
+    update({
+      status: "pdf",
+      title: brochure && brochure.title ? brochure.title : getCurrentBrochureTitle(),
+      message: "Data brosur siap. Memuat halaman PDF.",
+      progress: 46,
+      source: "seo-bridge"
+    });
+  });
+
+  document.addEventListener("fft:brochure-loading", function (event) {
+    update(Object.assign({
+      status: "loading",
+      source: "event"
+    }, event.detail || {}));
+  });
+
+  document.addEventListener("fft:brochure-progress", function (event) {
+    event = event || {};
+    setProgress(
+      event.detail && event.detail.progress,
+      event.detail && event.detail.message
+    );
+  });
+
+  document.addEventListener("fft:brochure-ready", function (event) {
+    ready(event.detail || {});
+  });
+
+  document.addEventListener("fft:brochure-error", function (event) {
+    error(event.detail || {});
+  });
+
+  function boot() {
+    applyBackendInitialState();
+    render();
+    startMonitor();
+
+    window.clearTimeout(fallbackTimer);
+    fallbackTimer = window.setTimeout(function () {
+      if (!state.hidden) {
+        ready({
+          message: "Viewer siap. Menyelesaikan tampilan brosur.",
+          delay: 360
+        });
+      }
+    }, 14000);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+
+  window.addEventListener("load", function () {
+    if (!state.hidden) {
+      setProgress(Math.max(state.progress, 72), "Menyelesaikan tampilan brosur.");
+    }
+
+    window.setTimeout(function () {
+      if (hasVisiblePdfPage()) {
+        ready({
+          delay: 220
+        });
+      }
+    }, 300);
+  }, { passive: true });
+}());
+/* /FFT_VIEWER_BACKEND_LOADING_BRIDGE_20260604 */
+
+/* FFT_VIEWER_BACKEND_LOADING_READY_GATE_20260604 */
+(function () {
+  var PATCH_ID = "FFT_VIEWER_BACKEND_LOADING_READY_GATE_20260604";
+  var monitorTimer = null;
+  var monitorCount = 0;
+  var bridgePatched = false;
+
+  function getRoot() {
+    return document.getElementById("fftBrochureLoading");
+  }
+
+  function getBook() {
+    return document.getElementById("book");
+  }
+
+  function isVisibleElement(element) {
+    if (!element || !element.getBoundingClientRect) {
+      return false;
+    }
+
+    var rect = element.getBoundingClientRect();
+
+    if (rect.width < 80 || rect.height < 120) {
+      return false;
+    }
+
+    var style = window.getComputedStyle ? window.getComputedStyle(element) : null;
+
+    if (style && (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) === 0)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  function hasRenderedPdfContent() {
+    var book = getBook();
+
+    if (!book) {
+      return false;
+    }
+
+    var canvasList = Array.prototype.slice.call(book.querySelectorAll("canvas"));
+
+    for (var canvasIndex = 0; canvasIndex < canvasList.length; canvasIndex += 1) {
+      var canvas = canvasList[canvasIndex];
+
+      if (
+        isVisibleElement(canvas) &&
+        (canvas.width || 0) > 120 &&
+        (canvas.height || 0) > 160
+      ) {
+        return true;
+      }
+    }
+
+    var imageList = Array.prototype.slice.call(book.querySelectorAll("img"));
+
+    for (var imageIndex = 0; imageIndex < imageList.length; imageIndex += 1) {
+      var image = imageList[imageIndex];
+
+      if (
+        isVisibleElement(image) &&
+        ((image.naturalWidth || 0) > 120 || (image.width || 0) > 120) &&
+        ((image.naturalHeight || 0) > 160 || (image.height || 0) > 160)
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function setLoadingText(title, message, progress) {
+    var root = getRoot();
+
+    if (!root) {
+      return;
+    }
+
+    var titleNode = root.querySelector("[data-fft-loading-title]");
+    var messageNode = root.querySelector("[data-fft-loading-message]");
+    var barNode = root.querySelector("[data-fft-loading-bar]");
+    var metaNode = root.querySelector("[data-fft-loading-meta]");
+
+    if (titleNode) {
+      titleNode.textContent = title || "Menyiapkan halaman brosur";
+    }
+
+    if (messageNode) {
+      messageNode.textContent = message || "Halaman PDF sedang dirender. Loading tetap aktif sampai brosur benar-benar siap.";
+    }
+
+    if (barNode) {
+      barNode.style.setProperty("--fft-brochure-loading-progress", Math.round(progress || 94) + "%");
+    }
+
+    if (metaNode) {
+      metaNode.textContent = Math.round(progress || 94) + "%";
+    }
+  }
+
+  function showManagedLoading() {
+    var root = getRoot();
+
+    document.documentElement.classList.add("fft-brochure-loading-managed");
+
+    if (document.body) {
+      document.body.classList.add("fft-brochure-loading-managed");
+      document.body.classList.add("fft-brochure-loading-active");
+    }
+
+    if (!root) {
+      return;
+    }
+
+    root.classList.add("is-gated");
+    root.classList.remove("is-hidden");
+    root.setAttribute("aria-busy", "true");
+
+    setLoadingText(
+      "Menyiapkan halaman brosur",
+      "Halaman PDF sedang dirender. Loading tetap aktif sampai brosur benar-benar siap.",
+      94
+    );
+  }
+
+  function hideManagedLoading() {
+    var root = getRoot();
+
+    if (root) {
+      root.classList.remove("is-gated");
+      root.classList.add("is-hidden");
+      root.setAttribute("aria-busy", "false");
+    }
+
+    if (document.body) {
+      document.body.classList.remove("fft-brochure-loading-active");
+    }
+  }
+
+  function shouldHideNativeNode(element) {
+    if (!element || element.nodeType !== 1) {
+      return false;
+    }
+
+    var root = getRoot();
+    var book = getBook();
+
+    if (root && (element === root || root.contains(element))) {
+      return false;
+    }
+
+    if (element === document.body || element === document.documentElement) {
+      return false;
+    }
+
+    if (element.tagName && /^(SCRIPT|STYLE|LINK|META)$/i.test(element.tagName)) {
+      return false;
+    }
+
+    if (book && element === book) {
+      return false;
+    }
+
+    var text = "";
+
+    Array.prototype.slice.call(element.childNodes || []).forEach(function (node) {
+      if (node.nodeType === 3) {
+        text += " " + node.nodeValue;
+      }
+    });
+
+    text = text.replace(/\s+/g, " ").trim().toLowerCase();
+
+    if (!text) {
+      return false;
+    }
+
+    return (
+      text.indexOf("memuat brosur") >= 0 ||
+      text.indexOf("memuat brochure") >= 0 ||
+      text.indexOf("loading brochure") >= 0 ||
+      text.indexOf("loading brosur") >= 0
+    );
+  }
+
+  function hideNativeLoadingText() {
+    var selectors = [
+      "#loading",
+      "[data-viewer-loading]",
+      ".viewer-loading",
+      ".brochure-loading",
+      ".dflip-loading",
+      ".df-loading",
+      ".loading"
+    ];
+
+    selectors.forEach(function (selector) {
+      Array.prototype.slice.call(document.querySelectorAll(selector)).forEach(function (node) {
+        var root = getRoot();
+
+        if (root && (node === root || root.contains(node))) {
+          return;
+        }
+
+        node.setAttribute("data-fft-native-loading-hidden", "true");
+      });
+    });
+
+    Array.prototype.slice.call(document.querySelectorAll("body *")).forEach(function (node) {
+      if (shouldHideNativeNode(node)) {
+        node.setAttribute("data-fft-native-loading-hidden", "true");
+      }
+    });
+  }
+
+  function gateLoading() {
+    hideNativeLoadingText();
+
+    if (hasRenderedPdfContent()) {
+      hideManagedLoading();
+      return true;
+    }
+
+    showManagedLoading();
+    return false;
+  }
+
+  function patchBridge() {
+    var bridge = window.FFT_BROCHURE_LOADING_BRIDGE;
+
+    if (!bridge || bridgePatched || bridge.__fftReadyGatePatched === PATCH_ID) {
+      return;
+    }
+
+    bridgePatched = true;
+    bridge.__fftReadyGatePatched = PATCH_ID;
+
+    var originalReady = bridge.ready;
+    var originalHide = bridge.hide;
+
+    bridge.ready = function (input) {
+      input = input || {};
+
+      if (input.force === true || hasRenderedPdfContent()) {
+        return originalReady.call(bridge, input);
+      }
+
+      showManagedLoading();
+
+      if (typeof bridge.update === "function") {
+        bridge.update({
+          status: "pdf",
+          progress: 94,
+          title: input.title || "Menyiapkan halaman brosur",
+          message: input.message || "Halaman PDF sedang dirender. Loading tetap aktif sampai brosur benar-benar siap.",
+          source: PATCH_ID
+        });
+      }
+
+      return bridge.getState ? bridge.getState() : null;
+    };
+
+    bridge.hide = function (input) {
+      input = input || {};
+
+      if (input.force === true || hasRenderedPdfContent()) {
+        return originalHide.call(bridge);
+      }
+
+      showManagedLoading();
+
+      return bridge.getState ? bridge.getState() : null;
+    };
+  }
+
+  function startMonitor() {
+    window.clearInterval(monitorTimer);
+    monitorCount = 0;
+
+    monitorTimer = window.setInterval(function () {
+      monitorCount += 1;
+
+      patchBridge();
+
+      var ready = gateLoading();
+
+      if (ready) {
+        window.clearInterval(monitorTimer);
+        return;
+      }
+
+      if (monitorCount === 12) {
+        setLoadingText(
+          "Merender halaman brosur",
+          "File PDF sudah diproses. Viewer sedang menyiapkan halaman pertama.",
+          88
+        );
+      }
+
+      if (monitorCount === 28) {
+        setLoadingText(
+          "Menyelesaikan tampilan brosur",
+          "Loading tetap ditahan agar tidak kembali ke teks bawaan viewer.",
+          94
+        );
+      }
+
+      if (monitorCount >= 240) {
+        setLoadingText(
+          "Brosur masih diproses",
+          "Koneksi atau file PDF lambat. Loading tetap aktif sampai halaman benar-benar tampil.",
+          94
+        );
+      }
+    }, 250);
+  }
+
+  document.addEventListener("fft:brochure-ready", function () {
+    window.setTimeout(gateLoading, 40);
+    window.setTimeout(gateLoading, 180);
+    window.setTimeout(gateLoading, 420);
+  }, true);
+
+  document.addEventListener("fft:brochure-resolved", function () {
+    window.setTimeout(gateLoading, 80);
+  }, true);
+
+  window.addEventListener("load", function () {
+    window.setTimeout(gateLoading, 120);
+    window.setTimeout(gateLoading, 420);
+  }, { passive: true });
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () {
+      patchBridge();
+      startMonitor();
+    });
+  } else {
+    patchBridge();
+    startMonitor();
+  }
+
+  window.FFT_BROCHURE_LOADING_READY_GATE = {
+    version: PATCH_ID,
+    hasRenderedPdfContent: hasRenderedPdfContent,
+    gate: gateLoading,
+    hideNativeLoadingText: hideNativeLoadingText
+  };
+}());
+/* /FFT_VIEWER_BACKEND_LOADING_READY_GATE_20260604 */

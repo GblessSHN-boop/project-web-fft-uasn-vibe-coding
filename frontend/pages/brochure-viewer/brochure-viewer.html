@@ -225,7 +225,7 @@
 }
   </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 CSS -->
-  <link rel="stylesheet" href="fft-viewer-theme.css?v=viewer-mobile-pdf-position-tight-20260603">
+  <link rel="stylesheet" href="fft-viewer-theme.css?v=viewer-backend-loading-ready-gate-20260604">
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_STYLE_START -->
 <style>
@@ -2390,6 +2390,41 @@
 <!-- /FFT_VIEWER_MOBILE_SURGICAL_UI_FIX_20260602 -->
 </head>
 <body class="fft-standalone-viewer">
+<!-- FFT_VIEWER_BACKEND_LOADING_SHELL_20260604 -->
+<div
+  id="fftBrochureLoading"
+  class="fft-brochure-loading"
+  role="status"
+  aria-live="polite"
+  aria-atomic="true"
+  aria-busy="true"
+>
+  <div class="fft-brochure-loading__panel">
+    <div class="fft-brochure-loading__topline">FFT UASN</div>
+
+    <div class="fft-brochure-loading__spinner" aria-hidden="true">
+      <span></span>
+    </div>
+
+    <h2 class="fft-brochure-loading__title" data-fft-loading-title>
+      Menyiapkan brosur
+    </h2>
+
+    <p class="fft-brochure-loading__message" data-fft-loading-message>
+      Menghubungkan data brosur dan memuat file PDF.
+    </p>
+
+    <div class="fft-brochure-loading__bar" aria-hidden="true">
+      <span data-fft-loading-bar></span>
+    </div>
+
+    <div class="fft-brochure-loading__meta" data-fft-loading-meta>
+      0%
+    </div>
+  </div>
+</div>
+<!-- /FFT_VIEWER_BACKEND_LOADING_SHELL_20260604 -->
+
 
   <header class="viewer-header">
     <div class="viewer-title">
@@ -2754,7 +2789,472 @@ wrapper.appendChild(canvas);
 }());
 </script>
   <!-- FFT_DFLIP_VIEWER_TOOLBAR_HARD_RESET_20260529 JS -->
-  <script defer src="fft-viewer-theme.js?v=viewer-mobile-pdf-position-tight-20260603"></script>
+<script>
+/* FFT_VIEWER_BACKEND_SEO_BRIDGE_20260604 */
+(function () {
+  var PATCH_ID = "FFT_VIEWER_BACKEND_SEO_BRIDGE_20260604";
+  var DEFAULT_BRAND = "Fakultas Filsafat Teologi UASN";
+  var DEFAULT_ID = "utama";
+
+  var DEFAULT_BROCHURE = {
+    id: "utama",
+    slug: "utama",
+    title: "Brosur Utama Fakultas Filsafat Teologi",
+    seoTitle: "Brosur Utama Fakultas Filsafat Teologi UASN",
+    description: "Konten brosur ini sedang disiapkan dan akan diperbarui melalui backend atau admin dashboard.",
+    seoDescription: "Baca brosur utama Fakultas Filsafat Teologi UASN berisi profil fakultas, informasi akademik, dan informasi pendaftaran.",
+    type: "brochure",
+    pdfUrl: "",
+    downloadUrl: "",
+    coverImage: "",
+    updatedAt: ""
+  };
+
+  function safeText(value, fallback) {
+    if (value === undefined || value === null) {
+      return fallback || "";
+    }
+
+    var text = String(value).replace(/\s+/g, " ").trim();
+
+    return text || fallback || "";
+  }
+
+  function truncate(text, max) {
+    text = safeText(text, "");
+
+    if (!max || text.length <= max) {
+      return text;
+    }
+
+    return text.slice(0, max - 1).trim() + "?";
+  }
+
+  function lower(value) {
+    return safeText(value, "").toLowerCase();
+  }
+
+  function getSearchParam(name) {
+    try {
+      return new URLSearchParams(window.location.search).get(name);
+    } catch (error) {
+      return "";
+    }
+  }
+
+  function absoluteUrl(value) {
+    var text = safeText(value, "");
+
+    if (!text) {
+      return "";
+    }
+
+    try {
+      return new URL(text, window.location.href).href;
+    } catch (error) {
+      return text;
+    }
+  }
+
+  function currentCanonicalUrl(brochure) {
+    try {
+      var url = new URL(window.location.href);
+      var slug = brochure && (brochure.slug || brochure.id);
+
+      if (slug) {
+        url.searchParams.set("brochure", slug);
+      }
+
+      url.searchParams.delete("clean");
+
+      return url.href;
+    } catch (error) {
+      return window.location.href;
+    }
+  }
+
+  function normalize(raw, key) {
+    raw = raw || {};
+
+    var id = safeText(
+      raw.id || raw.slug || raw.key || raw.code || key,
+      DEFAULT_BROCHURE.id
+    );
+
+    var title = safeText(
+      raw.title || raw.name || raw.brochureTitle || raw.heading,
+      DEFAULT_BROCHURE.title
+    );
+
+    var description = safeText(
+      raw.description || raw.summary || raw.subtitle || raw.excerpt,
+      DEFAULT_BROCHURE.description
+    );
+
+    return {
+      id: id,
+      slug: safeText(raw.slug || raw.id || id, id),
+      title: title,
+      seoTitle: safeText(
+        raw.seoTitle || raw.seo_title || raw.metaTitle || raw.meta_title || raw.ogTitle || raw.og_title,
+        title
+      ),
+      description: description,
+      seoDescription: safeText(
+        raw.seoDescription || raw.seo_description || raw.metaDescription || raw.meta_description || raw.ogDescription || raw.og_description,
+        description
+      ),
+      type: safeText(raw.type || raw.category, DEFAULT_BROCHURE.type),
+      pdfUrl: absoluteUrl(raw.pdfUrl || raw.pdf_url || raw.pdf || raw.fileUrl || raw.file_url || raw.file || ""),
+      downloadUrl: absoluteUrl(raw.downloadUrl || raw.download_url || raw.download || raw.pdfUrl || raw.pdf_url || raw.pdf || ""),
+      coverImage: absoluteUrl(raw.coverImage || raw.cover_image || raw.thumbnail || raw.image || raw.ogImage || raw.og_image || ""),
+      updatedAt: safeText(raw.updatedAt || raw.updated_at || raw.modifiedAt || raw.modified_at || raw.publishedAt || raw.published_at, "")
+    };
+  }
+
+  function looksLikeBrochure(record) {
+    if (!record || typeof record !== "object" || Array.isArray(record)) {
+      return false;
+    }
+
+    return !!(
+      record.id ||
+      record.slug ||
+      record.title ||
+      record.name ||
+      record.seoTitle ||
+      record.seo_title ||
+      record.pdfUrl ||
+      record.pdf_url ||
+      record.pdf
+    );
+  }
+
+  function toList(source) {
+    if (!source) {
+      return [];
+    }
+
+    if (Array.isArray(source)) {
+      return source;
+    }
+
+    if (looksLikeBrochure(source)) {
+      return [source];
+    }
+
+    if (Array.isArray(source.items)) {
+      return source.items;
+    }
+
+    if (Array.isArray(source.brochures)) {
+      return source.brochures;
+    }
+
+    if (Array.isArray(source.data)) {
+      return source.data;
+    }
+
+    if (source.current && looksLikeBrochure(source.current)) {
+      return [source.current];
+    }
+
+    if (typeof source === "object") {
+      return Object.keys(source).map(function (key) {
+        var value = source[key];
+
+        if (value && typeof value === "object") {
+          value.__fftKey = key;
+          return value;
+        }
+
+        return null;
+      }).filter(Boolean);
+    }
+
+    return [];
+  }
+
+  function getDataSources() {
+    return [
+      window.FFT_BROCHURE_BACKEND_DATA,
+      window.FFT_BROCHURE_VIEWER_BACKEND_DATA,
+      window.FFT_VIEWER_BROCHURE_DATA,
+      window.FFT_BROCHURE_DATA,
+      window.FFT_BROCHURES,
+      window.FFT_VIEWER_BROCHURES,
+      window.FFT_BROCHURE_LIST,
+      window.brochures,
+      window.BROCHURES
+    ];
+  }
+
+  function resolveBrochure(id) {
+    var target = lower(
+      id ||
+      getSearchParam("brochure") ||
+      getSearchParam("slug") ||
+      getSearchParam("id") ||
+      DEFAULT_ID
+    );
+
+    var records = [];
+
+    getDataSources().forEach(function (source) {
+      records = records.concat(toList(source));
+    });
+
+    var normalized = records.map(function (record) {
+      return normalize(record, record.__fftKey);
+    });
+
+    var match = normalized.find(function (item) {
+      return lower(item.id) === target || lower(item.slug) === target;
+    });
+
+    if (!match && normalized.length === 1) {
+      match = normalized[0];
+    }
+
+    return match || normalize(DEFAULT_BROCHURE);
+  }
+
+  function ensureMetaByName(name) {
+    var meta = document.querySelector('meta[name="' + name + '"]');
+
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", name);
+      document.head.appendChild(meta);
+    }
+
+    meta.setAttribute("data-fft-brochure-seo", "true");
+
+    return meta;
+  }
+
+  function ensureMetaByProperty(property) {
+    var meta = document.querySelector('meta[property="' + property + '"]');
+
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("property", property);
+      document.head.appendChild(meta);
+    }
+
+    meta.setAttribute("data-fft-brochure-seo", "true");
+
+    return meta;
+  }
+
+  function ensureCanonical() {
+    var link = document.querySelector('link[rel="canonical"]');
+
+    if (!link) {
+      link = document.createElement("link");
+      link.setAttribute("rel", "canonical");
+      document.head.appendChild(link);
+    }
+
+    link.setAttribute("data-fft-brochure-seo", "true");
+
+    return link;
+  }
+
+  function setText(selectors, text) {
+    text = safeText(text, "");
+
+    if (!text) {
+      return false;
+    }
+
+    for (var index = 0; index < selectors.length; index += 1) {
+      var element = document.querySelector(selectors[index]);
+
+      if (element) {
+        element.textContent = text;
+        element.setAttribute("data-fft-backend-managed", "true");
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function applyBrochureDom(brochure) {
+    setText([
+      "[data-fft-brochure-title]",
+      "[data-brochure-title]",
+      ".fft-brochure-viewer__title",
+      ".fft-viewer-title",
+      ".brochure-viewer-title",
+      "h1"
+    ], brochure.title);
+
+    setText([
+      "[data-fft-brochure-description]",
+      "[data-brochure-description]",
+      ".fft-brochure-viewer__description",
+      ".fft-viewer-description",
+      ".brochure-viewer-description"
+    ], brochure.description);
+
+    document.documentElement.setAttribute("data-fft-brochure-id", brochure.id);
+    document.documentElement.setAttribute("data-fft-brochure-slug", brochure.slug);
+
+    if (document.body) {
+      document.body.setAttribute("data-fft-brochure-id", brochure.id);
+      document.body.setAttribute("data-fft-brochure-slug", brochure.slug);
+    }
+  }
+
+  function applySeo(brochure) {
+    var canonicalUrl = currentCanonicalUrl(brochure);
+    var seoTitle = safeText(brochure.seoTitle, brochure.title);
+    var fullTitle = seoTitle.indexOf(DEFAULT_BRAND) >= 0
+      ? seoTitle
+      : seoTitle + " | " + DEFAULT_BRAND;
+
+    var seoDescription = truncate(
+      safeText(brochure.seoDescription, brochure.description),
+      160
+    );
+
+    document.title = fullTitle;
+
+    ensureMetaByName("description").setAttribute("content", seoDescription);
+    ensureMetaByName("robots").setAttribute("content", "index, follow");
+    ensureMetaByName("twitter:card").setAttribute("content", brochure.coverImage ? "summary_large_image" : "summary");
+    ensureMetaByName("twitter:title").setAttribute("content", fullTitle);
+    ensureMetaByName("twitter:description").setAttribute("content", seoDescription);
+
+    ensureMetaByProperty("og:type").setAttribute("content", "website");
+    ensureMetaByProperty("og:title").setAttribute("content", fullTitle);
+    ensureMetaByProperty("og:description").setAttribute("content", seoDescription);
+    ensureMetaByProperty("og:url").setAttribute("content", canonicalUrl);
+    ensureMetaByProperty("og:site_name").setAttribute("content", DEFAULT_BRAND);
+
+    if (brochure.coverImage) {
+      ensureMetaByProperty("og:image").setAttribute("content", brochure.coverImage);
+      ensureMetaByName("twitter:image").setAttribute("content", brochure.coverImage);
+    }
+
+    if (brochure.updatedAt) {
+      ensureMetaByProperty("article:modified_time").setAttribute("content", brochure.updatedAt);
+    }
+
+    ensureCanonical().setAttribute("href", canonicalUrl);
+
+    applyJsonLd(brochure, fullTitle, seoDescription, canonicalUrl);
+  }
+
+  function applyJsonLd(brochure, fullTitle, seoDescription, canonicalUrl) {
+    var script = document.getElementById("fftBrochureSeoJsonLd");
+
+    if (!script) {
+      script = document.createElement("script");
+      script.id = "fftBrochureSeoJsonLd";
+      script.type = "application/ld+json";
+      document.head.appendChild(script);
+    }
+
+    var data = {
+      "@context": "https://schema.org",
+      "@type": "DigitalDocument",
+      "name": brochure.title,
+      "headline": fullTitle,
+      "description": seoDescription,
+      "url": canonicalUrl,
+      "inLanguage": "id-ID",
+      "isAccessibleForFree": true,
+      "publisher": {
+        "@type": "Organization",
+        "name": DEFAULT_BRAND
+      }
+    };
+
+    if (brochure.pdfUrl || brochure.downloadUrl) {
+      data.encodingFormat = "application/pdf";
+      data.associatedMedia = {
+        "@type": "MediaObject",
+        "contentUrl": brochure.pdfUrl || brochure.downloadUrl,
+        "encodingFormat": "application/pdf"
+      };
+    }
+
+    if (brochure.coverImage) {
+      data.image = brochure.coverImage;
+    }
+
+    if (brochure.updatedAt) {
+      data.dateModified = brochure.updatedAt;
+    }
+
+    script.textContent = JSON.stringify(data);
+  }
+
+  function applyAll(id) {
+    var brochure = resolveBrochure(id);
+
+    window.FFT_CURRENT_BROCHURE = brochure;
+
+    applyBrochureDom(brochure);
+    applySeo(brochure);
+
+    document.dispatchEvent(new CustomEvent("fft:brochure-resolved", {
+      detail: {
+        brochure: brochure,
+        source: PATCH_ID
+      }
+    }));
+
+    return brochure;
+  }
+
+  window.FFT_BROCHURE_BACKEND_BRIDGE = {
+    version: PATCH_ID,
+    schema: {
+      id: "utama",
+      slug: "utama",
+      title: "Judul tampil di viewer",
+      seoTitle: "Judul SEO browser dan meta",
+      description: "Deskripsi tampil di viewer",
+      seoDescription: "Meta description SEO",
+      pdfUrl: "URL PDF untuk viewer",
+      downloadUrl: "URL download PDF",
+      coverImage: "URL gambar preview atau OG image",
+      updatedAt: "Tanggal update ISO"
+    },
+    setData: function (data) {
+      window.FFT_BROCHURE_BACKEND_DATA = data;
+      return applyAll();
+    },
+    resolve: resolveBrochure,
+    apply: applyAll,
+    applySeo: applySeo
+  };
+
+  function boot() {
+    try {
+      applyAll();
+    } catch (error) {
+      console.warn(PATCH_ID, error);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+
+  window.setTimeout(boot, 180);
+  window.setTimeout(boot, 650);
+}());
+/* /FFT_VIEWER_BACKEND_SEO_BRIDGE_20260604 */
+</script>
+
+  <script defer src="fft-viewer-theme.js?v=viewer-backend-loading-ready-gate-20260604"></script>
 
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_START -->
 <!-- FFT_INLINE_DFLIP_TOOLBAR_FINAL_20260531_SCRIPT_END -->

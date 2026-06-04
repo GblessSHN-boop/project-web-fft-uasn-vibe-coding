@@ -2473,3 +2473,289 @@ body > .fft-viewer-action-menu.is-open {
   }
 }
 /* /FFT_VIEWER_MOBILE_PDF_POSITION_TIGHT_UI_20260603 */
+
+/* FFT_VIEWER_MOBILE_TOOLBAR_NO_RED_ACTIVE_20260604 */
+@media (max-width: 760px) {
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] button,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] .fft-dflip-btn,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] [role="button"] {
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] button,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] button:hover,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] button:focus,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] button:focus-visible,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] button:active,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] .fft-dflip-btn,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] .fft-dflip-btn:hover,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] .fft-dflip-btn:focus,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] .fft-dflip-btn:focus-visible,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] .fft-dflip-btn:active {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] button.is-active,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] button[aria-pressed="true"],
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] .fft-dflip-btn.is-active,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] .fft-dflip-btn[aria-pressed="true"] {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+  }
+
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] button:active svg,
+  .fft-dflip-toolbar-wrap[data-fft-mobile-book="true"] .fft-dflip-btn:active svg {
+    transform: none !important;
+  }
+}
+/* /FFT_VIEWER_MOBILE_TOOLBAR_NO_RED_ACTIVE_20260604 */
+
+/* FFT_VIEWER_MOBILE_ZOOM_DRAG_PAN_UI_20260604 */
+@media (max-width: 760px) {
+  html.fft-mobile-zoom-drag-pan-active,
+  body.fft-mobile-zoom-drag-pan-active {
+    overflow-x: hidden !important;
+  }
+
+  body.fft-mobile-zoom-drag-pan-active .fft-mobile-pdf-tight-root,
+  body.fft-mobile-zoom-drag-pan-active .fft-mobile-pdf-tight-outer {
+    overflow: visible !important;
+  }
+
+  body.fft-mobile-zoom-drag-pan-active
+    .fft-mobile-pdf-tight-shell.fft-mobile-zoom-drag-pan-shell {
+    transform:
+      translate3d(
+        var(--fft-mobile-zoom-pan-x, 0px),
+        var(--fft-mobile-zoom-pan-y, 0px),
+        0
+      ) !important;
+    transition: none !important;
+    will-change: transform !important;
+    touch-action: none !important;
+    cursor: grab !important;
+    overflow: visible !important;
+    z-index: 40 !important;
+  }
+
+  body.fft-mobile-zoom-drag-pan-active
+    .fft-mobile-pdf-tight-shell.fft-mobile-zoom-drag-pan-shell.is-dragging {
+    cursor: grabbing !important;
+  }
+
+  body:not(.fft-mobile-zoom-drag-pan-active)
+    .fft-mobile-pdf-tight-shell {
+    --fft-mobile-zoom-pan-x: 0px;
+    --fft-mobile-zoom-pan-y: 0px;
+  }
+
+  body.fft-mobile-zoom-drag-pan-active #book[data-fft-mobile-single-slide="true"],
+  body.fft-mobile-zoom-drag-pan-active #book[data-fft-mobile-single-slide="true"] canvas,
+  body.fft-mobile-zoom-drag-pan-active #book[data-fft-mobile-single-slide="true"] img {
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -webkit-user-drag: none !important;
+  }
+}
+/* /FFT_VIEWER_MOBILE_ZOOM_DRAG_PAN_UI_20260604 */
+
+/* FFT_VIEWER_MOBILE_DESKTOP_RESET_UI_20260604 */
+@media (max-width: 760px) {
+  .fft-mobile-desktop-reset-button {
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  .fft-mobile-desktop-reset-button,
+  .fft-mobile-desktop-reset-button:hover,
+  .fft-mobile-desktop-reset-button:focus,
+  .fft-mobile-desktop-reset-button:focus-visible,
+  .fft-mobile-desktop-reset-button:active {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid rgba(17, 24, 39, 0.16) !important;
+    box-shadow: none !important;
+    outline: none !important;
+    font-size: 11px !important;
+    font-weight: 850 !important;
+    line-height: 1 !important;
+    text-align: center !important;
+  }
+}
+/* /FFT_VIEWER_MOBILE_DESKTOP_RESET_UI_20260604 */
+
+/* FFT_VIEWER_BACKEND_LOADING_UI_20260604 */
+.fft-brochure-loading {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 999999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 22px !important;
+  background:
+    radial-gradient(circle at 50% 32%, rgba(126, 13, 18, 0.08), transparent 34%),
+    rgba(248, 250, 252, 0.96) !important;
+  color: #111827 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transition:
+    opacity 220ms ease,
+    visibility 220ms ease !important;
+}
+
+.fft-brochure-loading.is-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.fft-brochure-loading__panel {
+  width: min(420px, calc(100vw - 36px)) !important;
+  padding: 24px 22px !important;
+  border: 1px solid rgba(126, 13, 18, 0.12) !important;
+  border-radius: 22px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.14) !important;
+  text-align: center !important;
+}
+
+.fft-brochure-loading__topline {
+  margin-bottom: 14px !important;
+  color: #7e0d12 !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+}
+
+.fft-brochure-loading__spinner {
+  width: 50px !important;
+  height: 50px !important;
+  margin: 0 auto 16px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(126, 13, 18, 0.16) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.fft-brochure-loading__spinner span {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 999px !important;
+  border: 3px solid rgba(126, 13, 18, 0.16) !important;
+  border-top-color: #7e0d12 !important;
+  animation: fftBrochureLoadingSpin 780ms linear infinite !important;
+}
+
+.fft-brochure-loading__title {
+  margin: 0 !important;
+  color: #111827 !important;
+  font-size: clamp(17px, 4.6vw, 22px) !important;
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+}
+
+.fft-brochure-loading__message {
+  margin: 9px auto 16px !important;
+  max-width: 340px !important;
+  color: rgba(17, 24, 39, 0.68) !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  line-height: 1.45 !important;
+}
+
+.fft-brochure-loading__bar {
+  width: 100% !important;
+  height: 8px !important;
+  overflow: hidden !important;
+  border-radius: 999px !important;
+  background: rgba(126, 13, 18, 0.1) !important;
+}
+
+.fft-brochure-loading__bar span {
+  display: block !important;
+  width: var(--fft-brochure-loading-progress, 8%) !important;
+  height: 100% !important;
+  border-radius: inherit !important;
+  background: linear-gradient(90deg, #7e0d12, #a9151c) !important;
+  transition: width 220ms ease !important;
+}
+
+.fft-brochure-loading__meta {
+  margin-top: 10px !important;
+  color: rgba(17, 24, 39, 0.56) !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+}
+
+body.fft-brochure-loading-active {
+  overflow: hidden !important;
+}
+
+body:not(.fft-brochure-loading-active) .fft-brochure-loading {
+  pointer-events: none !important;
+}
+
+@keyframes fftBrochureLoadingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 760px) {
+  .fft-brochure-loading {
+    align-items: center !important;
+    padding: 18px !important;
+  }
+
+  .fft-brochure-loading__panel {
+    padding: 22px 18px !important;
+    border-radius: 20px !important;
+  }
+
+  .fft-brochure-loading__message {
+    font-size: 12.5px !important;
+  }
+}
+/* /FFT_VIEWER_BACKEND_LOADING_UI_20260604 */
+
+/* FFT_VIEWER_BACKEND_LOADING_NO_NATIVE_TEXT_UI_20260604 */
+html.fft-brochure-loading-managed #loading:not(#fftBrochureLoading),
+body.fft-brochure-loading-managed #loading:not(#fftBrochureLoading),
+body.fft-brochure-loading-managed [data-viewer-loading]:not(#fftBrochureLoading):not(.fft-brochure-loading),
+body.fft-brochure-loading-managed .viewer-loading:not(.fft-brochure-loading),
+body.fft-brochure-loading-managed .brochure-loading:not(.fft-brochure-loading),
+body.fft-brochure-loading-managed .dflip-loading:not(.fft-brochure-loading),
+body.fft-brochure-loading-managed .df-loading:not(.fft-brochure-loading),
+body.fft-brochure-loading-managed .loading:not(.fft-brochure-loading) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+[data-fft-native-loading-hidden="true"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.fft-brochure-loading.is-gated {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+body.fft-brochure-loading-active .fft-brochure-loading.is-hidden.is-gated {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+/* /FFT_VIEWER_BACKEND_LOADING_NO_NATIVE_TEXT_UI_20260604 */
