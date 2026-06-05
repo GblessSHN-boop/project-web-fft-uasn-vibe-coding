@@ -460,3 +460,547 @@ document.addEventListener("DOMContentLoaded", function () {
 
   loadRanking();
 });
+
+/* FFT_RANKING_BOARD_TIE_ROTATOR_20260605
+   Tie ranking rotator.
+   Siap backend:
+   window.FFTRankingData = {
+     semester1: [{ rank: 1, entries: [{ name: "Nama", gpa: "4.00", photo: "" }] }],
+     semester2: [{ rank: 1, entries: [{ name: "Nama", gpa: "4.00", photo: "" }] }]
+   };
+   Setelah data backend masuk, panggil:
+   window.FFTRankingRefresh();
+*/
+(function () {
+  "use strict";
+
+  var ROTATE_MS = 2800;
+  var applying = false;
+  var observerReady = false;
+  var observerTimer = null;
+
+  function ready(callback) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", callback, { once: true });
+      return;
+    }
+
+    callback();
+  }
+
+  function asText(value, fallback) {
+    if (value === null || value === undefined || value === "") {
+      return fallback;
+    }
+
+    return String(value).trim();
+  }
+
+  function cleanGpa(value) {
+    var text = asText(value, "-");
+    if (text === "-") {
+      return "-";
+    }
+
+    text = text.replace(",", ".");
+    var number = Number(text);
+
+    if (!Number.isNaN(number) && Number.isFinite(number)) {
+      return number.toFixed(2);
+    }
+
+    return text;
+  }
+
+  function normalizeEntry(item, sharedGpa) {
+    if (typeof item === "string") {
+      return {
+        name: item,
+        gpa: cleanGpa(sharedGpa),
+        photo: ""
+      };
+    }
+
+    item = item || {};
+
+    return {
+      name: asText(
+        item.name ||
+        item.fullName ||
+        item.nama ||
+        item.nama_lengkap ||
+        item.student_name ||
+        item.mahasiswa,
+        "NAMA LENGKAP"
+      ),
+      gpa: cleanGpa(
+        item.gpa ||
+        item.ipk ||
+        item.score ||
+        item.nilai ||
+        sharedGpa
+      ),
+      photo: asText(
+        item.photo ||
+        item.photoUrl ||
+        item.photo_url ||
+        item.foto ||
+        item.image ||
+        item.imageUrl ||
+        item.image_url,
+        ""
+      )
+    };
+  }
+
+  function resolveRows(raw) {
+    if (!raw) {
+      return [];
+    }
+
+    if (Array.isArray(raw)) {
+      return raw;
+    }
+
+    return (
+      raw.ranks ||
+      raw.groups ||
+      raw.rows ||
+      raw.items ||
+      raw.data ||
+      raw.rankings ||
+      []
+    );
+  }
+
+  function normalizeBoard(raw) {
+    var rows = resolveRows(raw);
+    var byRank = {};
+
+    rows.forEach(function (row, index) {
+      row = row || {};
+
+      var rank = parseInt(
+        row.rank ||
+        row.position ||
+        row.no ||
+        row.urutan ||
+        index + 1,
+        10
+      );
+
+      if (!rank || rank < 1) {
+        rank = index + 1;
+      }
+
+      var sharedGpa = row.gpa || row.ipk || row.score || row.nilai || "-";
+      var entries = row.entries || row.students || row.participants || row.people || row.items || row.names;
+
+      if (!Array.isArray(entries)) {
+        entries = [row];
+      }
+
+      if (!byRank[rank]) {
+        byRank[rank] = {
+          rank: rank,
+          entries: []
+        };
+      }
+
+      entries.forEach(function (entry) {
+        byRank[rank].entries.push(normalizeEntry(entry, sharedGpa));
+      });
+    });
+
+    return Object.keys(byRank)
+      .map(function (rank) {
+        return byRank[rank];
+      })
+      .sort(function (a, b) {
+        return a.rank - b.rank;
+      });
+  }
+
+  function demoBoard(label) {
+    return [
+      {
+        rank: 1,
+        entries: [
+          { name: "NAMA", gpa: "4.00", photo: "" },
+          { name: "NAMA LENGKAP", gpa: "4.00", photo: "" }
+        ]
+      },
+      {
+        rank: 2,
+        entries: [
+          { name: "NAMA LENGKAP", gpa: "3.98" },
+          { name: "NAMA LENGKAP 2", gpa: "3.98" }
+        ]
+      },
+      { rank: 3, entries: [{ name: "NAMA LENGKAP", gpa: "3.96" }] },
+      { rank: 4, entries: [{ name: "NAMA LENGKAP", gpa: "3.94" }] },
+      { rank: 5, entries: [{ name: "NAMA LENGKAP", gpa: "3.92" }] },
+      { rank: 6, entries: [{ name: "NAMA LENGKAP", gpa: "3.90" }] },
+      { rank: 7, entries: [{ name: "NAMA LENGKAP", gpa: "3.88" }] },
+      { rank: 8, entries: [{ name: "NAMA LENGKAP", gpa: "3.86" }] }
+    ];
+  }
+
+  function getSourceData() {
+    var source =
+      window.FFTRankingData ||
+      window.fftRankingData ||
+      window.rankingBoardData ||
+      null;
+
+    if (!source) {
+      return {
+        semester1: demoBoard("semester1"),
+        semester2: demoBoard("semester2")
+      };
+    }
+
+    var boards = source.boards || source;
+
+    return {
+      semester1: normalizeBoard(
+        boards.semester1 ||
+        boards.gpaSemester1 ||
+        boards.gpa_semester_1 ||
+        boards["GPA Semester 1"] ||
+        boards[0]
+      ),
+      semester2: normalizeBoard(
+        boards.semester2 ||
+        boards.gpaSemester2 ||
+        boards.gpa_semester_2 ||
+        boards["GPA Semester 2"] ||
+        boards[1]
+      )
+    };
+  }
+
+  function makePlaceholderEntry(rank) {
+    return {
+      rank: rank,
+      entries: [
+        {
+          name: "NAMA LENGKAP",
+          gpa: "-",
+          photo: ""
+        }
+      ]
+    };
+  }
+
+  function getGroup(groups, rank) {
+    var found = groups.find(function (group) {
+      return Number(group.rank) === Number(rank);
+    });
+
+    return found || makePlaceholderEntry(rank);
+  }
+
+  function getPosterRoot() {
+    return document.getElementById("rankingBoard") || document.querySelector(".ranking-poster");
+  }
+
+  function getTopCard(column) {
+    if (!column) {
+      return null;
+    }
+
+    return (
+      column.querySelector(".ranking-top-card") ||
+      Array.prototype.find.call(column.children, function (child) {
+        return child.querySelector && child.querySelector(".ranking-top-rank");
+      }) ||
+      null
+    );
+  }
+
+  function clearElement(element) {
+    while (element && element.firstChild) {
+      element.removeChild(element.firstChild);
+    }
+  }
+
+  function createSlide(className, active) {
+    var slide = document.createElement("div");
+    slide.className = className + (active ? " is-active" : "");
+    return slide;
+  }
+
+  function renderTopInfo(info, group) {
+    if (!info) {
+      return;
+    }
+
+    clearElement(info);
+
+    var slot = document.createElement("div");
+    slot.className = "ranking-tie-slot ranking-top-tie-slot";
+    slot.setAttribute("data-fft-ranking-tie-slot", "top");
+
+    group.entries.forEach(function (entry, index) {
+      var slide = createSlide("ranking-slide", index === 0);
+
+      var name = document.createElement("h4");
+      name.textContent = entry.name;
+
+      var line = document.createElement("div");
+      line.className = "ranking-top-line";
+
+      var gpa = document.createElement("div");
+      gpa.className = "ranking-top-subname";
+      gpa.textContent = "IPK " + entry.gpa;
+
+      slide.appendChild(name);
+      slide.appendChild(line);
+      slide.appendChild(gpa);
+      slot.appendChild(slide);
+    });
+
+    info.appendChild(slot);
+
+    if (group.entries.length > 1) {
+      var count = document.createElement("div");
+      count.className = "ranking-tie-count";
+      count.textContent = group.entries.length + " peserta dengan IPK sama";
+      info.appendChild(count);
+    }
+  }
+
+  function renderTopPhoto(photoBox, entries) {
+    if (!photoBox) {
+      return;
+    }
+
+    clearElement(photoBox);
+
+    var stage = document.createElement("div");
+    stage.className = "ranking-photo-stage";
+    stage.setAttribute("data-fft-ranking-tie-slot", "photo");
+
+    entries.forEach(function (entry, index) {
+      var slide = createSlide("ranking-photo-slide", index === 0);
+
+      if (entry.photo) {
+        var img = document.createElement("img");
+        img.src = entry.photo;
+        img.alt = entry.name;
+        img.loading = "lazy";
+        slide.appendChild(img);
+      } else {
+        var placeholder = document.createElement("div");
+        placeholder.className = "ranking-photo-placeholder";
+        placeholder.textContent = "FOTO";
+        slide.appendChild(placeholder);
+      }
+
+      stage.appendChild(slide);
+    });
+
+    photoBox.appendChild(stage);
+  }
+
+  function renderTopCard(column, group) {
+    var topCard = getTopCard(column);
+
+    if (!topCard) {
+      return;
+    }
+
+    topCard.classList.add("ranking-tie-enabled");
+
+    var rankNumber = topCard.querySelector(".ranking-top-rank-number");
+    if (rankNumber) {
+      rankNumber.textContent = "#" + group.rank;
+    }
+
+    renderTopInfo(topCard.querySelector(".ranking-top-info"), group);
+    renderTopPhoto(topCard.querySelector(".ranking-photo-box"), group.entries);
+  }
+
+  function renderRow(row, group) {
+    clearElement(row);
+
+    row.classList.add("ranking-tie-row");
+
+    var position = document.createElement("div");
+    position.className = "ranking-position";
+    position.textContent = group.rank;
+
+    var nameWrap = document.createElement("div");
+    nameWrap.className = "ranking-name";
+
+    var slot = document.createElement("div");
+    slot.className = "ranking-tie-slot ranking-row-tie-slot";
+    slot.setAttribute("data-fft-ranking-tie-slot", "row");
+
+    group.entries.forEach(function (entry, index) {
+      var slide = createSlide("ranking-row-slide", index === 0);
+
+      var person = document.createElement("div");
+      person.className = "ranking-row-person";
+
+      var name = document.createElement("strong");
+      name.textContent = entry.name;
+
+      var gpa = document.createElement("small");
+      gpa.textContent = "IPK " + entry.gpa;
+
+      person.appendChild(name);
+      person.appendChild(gpa);
+      slide.appendChild(person);
+      slot.appendChild(slide);
+    });
+
+    nameWrap.appendChild(slot);
+
+    if (group.entries.length > 1) {
+      var count = document.createElement("span");
+      count.className = "ranking-row-tie-count";
+      count.textContent = group.entries.length + " peserta";
+      nameWrap.appendChild(count);
+    }
+
+    row.appendChild(position);
+    row.appendChild(nameWrap);
+  }
+
+  function renderRows(column, groups) {
+    var list = column.querySelector(".ranking-list");
+
+    if (!list) {
+      return;
+    }
+
+    for (var rank = 2; rank <= 8; rank += 1) {
+      var row = list.querySelector('.ranking-row[data-fft-rank="' + rank + '"]') || list.children[rank - 2];
+
+      if (!row) {
+        row = document.createElement("div");
+        row.className = "ranking-row";
+        list.appendChild(row);
+      }
+
+      row.setAttribute("data-fft-rank", String(rank));
+      renderRow(row, getGroup(groups, rank));
+    }
+  }
+
+  function renderColumn(column, groups) {
+    if (!column) {
+      return;
+    }
+
+    var safeGroups = Array.isArray(groups) && groups.length ? groups : demoBoard("fallback");
+
+    renderTopCard(column, getGroup(safeGroups, 1));
+    renderRows(column, safeGroups);
+  }
+
+  function rotateSlots(root) {
+    var slots = root.querySelectorAll("[data-fft-ranking-tie-slot]");
+
+    slots.forEach(function (slot) {
+      var slides = slot.querySelectorAll(".ranking-slide, .ranking-photo-slide, .ranking-row-slide");
+
+      if (slides.length < 2) {
+        return;
+      }
+
+      var activeIndex = 0;
+
+      slides.forEach(function (slide, index) {
+        if (slide.classList.contains("is-active")) {
+          activeIndex = index;
+        }
+      });
+
+      slides[activeIndex].classList.remove("is-active");
+      slides[(activeIndex + 1) % slides.length].classList.add("is-active");
+    });
+  }
+
+  function startRotator(root) {
+    if (!root || root.getAttribute("data-fft-ranking-rotator-started") === "1") {
+      return;
+    }
+
+    root.setAttribute("data-fft-ranking-rotator-started", "1");
+
+    window.setInterval(function () {
+      rotateSlots(root);
+    }, ROTATE_MS);
+  }
+
+  function enhanceRankingBoard() {
+    var root = getPosterRoot();
+
+    if (!root || applying) {
+      return;
+    }
+
+    var data = getSourceData();
+    var hash = JSON.stringify(data);
+
+    if (
+      root.getAttribute("data-fft-ranking-tie-hash") === hash &&
+      root.querySelector("[data-fft-ranking-tie-slot]")
+    ) {
+      return;
+    }
+
+    applying = true;
+
+    try {
+      root.setAttribute("data-fft-ranking-tie-hash", hash);
+
+      var columns = root.querySelectorAll(".ranking-column");
+
+      renderColumn(columns[0], data.semester1);
+      renderColumn(columns[1], data.semester2);
+      startRotator(root);
+    } finally {
+      applying = false;
+    }
+  }
+
+  function observeRankingBoard() {
+    if (observerReady) {
+      return;
+    }
+
+    var target = document.querySelector(".ranking-board") || document.body;
+
+    if (!target || !window.MutationObserver) {
+      return;
+    }
+
+    observerReady = true;
+
+    var observer = new MutationObserver(function () {
+      if (applying) {
+        return;
+      }
+
+      window.clearTimeout(observerTimer);
+      observerTimer = window.setTimeout(enhanceRankingBoard, 140);
+    });
+
+    observer.observe(target, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  window.FFTRankingRefresh = enhanceRankingBoard;
+
+  ready(function () {
+    window.setTimeout(enhanceRankingBoard, 180);
+    window.setTimeout(enhanceRankingBoard, 700);
+    observeRankingBoard();
+  });
+})();

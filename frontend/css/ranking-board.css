@@ -1,4 +1,4 @@
-﻿.ranking-board {
+.ranking-board {
   padding: clamp(28px, 4vw, 46px);
 }
 
@@ -373,3 +373,1146 @@
     padding: 18px;
   }
 }
+
+/* FFT_RANKING_BOARD_MOBILE_STACK_UI_20260604 */
+@media (max-width: 760px) {
+  .page-content-body .ranking-board {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .page-content-body .ranking-tools {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    align-items: stretch !important;
+    gap: 18px !important;
+    width: 100% !important;
+    margin: 0 0 18px !important;
+    padding: 22px 18px !important;
+    background: #050505 !important;
+    color: #ffffff !important;
+    box-sizing: border-box !important;
+  }
+
+  .page-content-body .ranking-tool-group {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: grid !important;
+    gap: 10px !important;
+  }
+
+  .page-content-body .ranking-tool-group p {
+    margin: 0 !important;
+    color: rgba(255, 255, 255, 0.72) !important;
+    font-size: 11px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.18em !important;
+    line-height: 1 !important;
+  }
+
+  .page-content-body .ranking-tool-inline {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .page-content-body .ranking-year-select,
+  .page-content-body .ranking-format-select {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 52px !important;
+    padding: 0 16px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    color: #430808 !important;
+    font-size: 16px !important;
+    font-weight: 850 !important;
+    box-sizing: border-box !important;
+  }
+
+  .page-content-body .ranking-download-button {
+    width: fit-content !important;
+    min-width: 154px !important;
+    min-height: 46px !important;
+    padding: 0 16px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    color: #430808 !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    box-sizing: border-box !important;
+  }
+
+  .page-content-body .ranking-active-label,
+  .page-content-body .ranking-model-note {
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-size: 13px !important;
+    line-height: 1.55 !important;
+  }
+
+  .page-content-body .ranking-error,
+  .page-content-body .ranking-loading,
+  .page-content-body .ranking-empty {
+    width: 100% !important;
+    margin: 14px 0 18px !important;
+    padding: 14px 16px !important;
+    border-radius: 0 !important;
+    box-sizing: border-box !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+  }
+
+  .page-content-body .ranking-export-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+
+  .page-content-body .ranking-poster {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+  }
+
+  .page-content-body .ranking-poster,
+  .page-content-body .ranking-poster * {
+    box-sizing: border-box !important;
+  }
+
+  .page-content-body .ranking-title-header {
+    grid-template-columns: 38px minmax(0, 1fr) 38px !important;
+    gap: 8px !important;
+    padding: 12px 8px 8px !important;
+  }
+
+  .page-content-body .ranking-corner-logo {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .page-content-body .ranking-title-center {
+    min-width: 0 !important;
+    gap: 3px !important;
+  }
+
+  .page-content-body .ranking-title-image {
+    width: 100% !important;
+    max-width: 172px !important;
+    max-height: 42px !important;
+    object-fit: contain !important;
+  }
+
+  .page-content-body .ranking-year {
+    font-size: clamp(28px, 9vw, 40px) !important;
+    line-height: 0.9 !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  .page-content-body .ranking-subtitle {
+    width: 100% !important;
+    font-size: clamp(6.5px, 2vw, 10px) !important;
+    letter-spacing: 0.28em !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+  }
+
+  .page-content-body .ranking-dual-board {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    background: #ffffff !important;
+  }
+
+  .page-content-body .ranking-column {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .page-content-body .ranking-column + .ranking-column {
+    border-left: 0 !important;
+    border-top: 28px solid #050505 !important;
+  }
+
+  .page-content-body .ranking-column-title {
+    min-height: 42px !important;
+    padding: 0 8px !important;
+    font-size: clamp(24px, 8.2vw, 34px) !important;
+    line-height: 1 !important;
+    letter-spacing: 0.02em !important;
+    text-align: center !important;
+  }
+
+  .page-content-body .ranking-column > *:has(.ranking-top-rank) {
+    display: grid !important;
+    grid-template-columns: 76px minmax(0, 1fr) 82px !important;
+    min-height: 126px !important;
+    width: 100% !important;
+    border-bottom: 1px solid #d2d2d2 !important;
+    background: #ffffff !important;
+  }
+
+  .page-content-body .ranking-top-rank {
+    gap: 5px !important;
+    min-width: 0 !important;
+  }
+
+  .page-content-body .ranking-top-rank-number {
+    font-size: clamp(56px, 18vw, 76px) !important;
+    line-height: 0.82 !important;
+  }
+
+  .page-content-body .ranking-achievement-badge {
+    width: 68px !important;
+    gap: 4px !important;
+    font-size: 7px !important;
+    line-height: 1.05 !important;
+  }
+
+  .page-content-body .ranking-achievement-badge img,
+  .page-content-body [class*="ranking-achievement"] img {
+    width: 15px !important;
+    height: 15px !important;
+    object-fit: contain !important;
+  }
+
+  .page-content-body .ranking-top-info {
+    min-width: 0 !important;
+    padding: 12px 6px !important;
+    justify-content: center !important;
+  }
+
+  .page-content-body .ranking-top-info h4 {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    font-size: clamp(25px, 8.4vw, 36px) !important;
+    line-height: 0.92 !important;
+    letter-spacing: 0.04em !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .page-content-body .ranking-top-l {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 8px !important;
+  }
+
+  .page-content-body .ranking-top-subname {
+    margin-top: 6px !important;
+    font-size: clamp(9px, 2.8vw, 13px) !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .page-content-body .ranking-photo-box {
+    min-width: 0 !important;
+    padding: 8px 6px 8px 0 !important;
+    align-items: center !important;
+    justify-items: center !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-photo-placeholder {
+    width: 66px !important;
+    height: 86px !important;
+    margin: 0 !important;
+    border-width: 2px !important;
+    font-size: 22px !important;
+  }
+
+  .page-content-body .ranking-row {
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+    min-height: 40px !important;
+    width: 100% !important;
+    align-items: center !important;
+  }
+
+  .page-content-body .ranking-position {
+    padding-left: 8px !important;
+    font-size: clamp(24px, 7.5vw, 34px) !important;
+    line-height: 1 !important;
+  }
+
+  .page-content-body .ranking-row > *:last-child {
+    min-width: 0 !important;
+    padding-right: 8px !important;
+    color: #000000 !important;
+    font-family: Impact, "Arial Black", sans-serif !important;
+    font-size: clamp(24px, 7.2vw, 34px) !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .page-content-body .ranking-column > *:has(.ranking-top-rank) {
+    grid-template-columns: 70px minmax(0, 1fr) 74px !important;
+    min-height: 118px !important;
+  }
+
+  .page-content-body .ranking-photo-placeholder {
+    width: 58px !important;
+    height: 78px !important;
+    font-size: 19px !important;
+  }
+
+  .page-content-body .ranking-achievement-badge {
+    width: 62px !important;
+    font-size: 6.5px !important;
+  }
+}
+/* /FFT_RANKING_BOARD_MOBILE_STACK_UI_20260604 */
+
+/* FFT_RANKING_BOARD_MOBILE_FIT_V2_UI_20260604 */
+@media (max-width: 760px) {
+  .page-content-body {
+    overflow-x: hidden !important;
+  }
+
+  .page-content-body .ranking-board,
+  .page-content-body .ranking-export-shell,
+  .page-content-body #rankingBoard {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .page-content-body .ranking-poster {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+  }
+
+  .page-content-body .ranking-title-header {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 32px minmax(0, 1fr) 32px !important;
+    align-items: end !important;
+    gap: 6px !important;
+    padding: 10px 6px 7px !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-corner-logo {
+    width: 28px !important;
+    height: 28px !important;
+    object-fit: contain !important;
+  }
+
+  .page-content-body .ranking-title-center {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    display: grid !important;
+    justify-items: center !important;
+    gap: 2px !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-title-image {
+    width: 52px !important;
+    max-width: 52px !important;
+    height: auto !important;
+    max-height: 34px !important;
+    object-fit: contain !important;
+  }
+
+  .page-content-body .ranking-year {
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    font-size: clamp(24px, 8vw, 34px) !important;
+    line-height: 0.92 !important;
+    letter-spacing: 0.08em !important;
+    white-space: nowrap !important;
+  }
+
+  .page-content-body .ranking-subtitle {
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    font-size: clamp(5.4px, 1.72vw, 8px) !important;
+    letter-spacing: 0.24em !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-dual-board {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-column {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-column-title {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 6px !important;
+    overflow: hidden !important;
+    text-align: center !important;
+    color: #000000 !important;
+    font-family: Impact, "Arial Black", sans-serif !important;
+    font-size: clamp(20px, 6.25vw, 28px) !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.01em !important;
+    white-space: nowrap !important;
+    text-overflow: clip !important;
+  }
+
+  .page-content-body .ranking-column + .ranking-column {
+    margin-top: 0 !important;
+    border-top: 26px solid #050505 !important;
+  }
+
+  .page-content-body .ranking-column > *:has(.ranking-top-rank) {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    grid-template-columns: 62px minmax(0, 1fr) 66px !important;
+    min-height: 104px !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-top-rank {
+    width: 62px !important;
+    min-width: 0 !important;
+    padding-left: 4px !important;
+    align-content: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-top-rank-number {
+    font-size: clamp(44px, 14vw, 58px) !important;
+    line-height: 0.86 !important;
+    letter-spacing: -0.04em !important;
+  }
+
+  .page-content-body .ranking-achievement-badge {
+    width: 58px !important;
+    max-width: 58px !important;
+    font-size: 5.8px !important;
+    line-height: 1.04 !important;
+    gap: 2px !important;
+  }
+
+  .page-content-body .ranking-achievement-badge img,
+  .page-content-body [class*="ranking-achievement"] img {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .page-content-body .ranking-top-info {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding: 9px 4px !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-top-info h4 {
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: clamp(22px, 7vw, 30px) !important;
+    line-height: 0.92 !important;
+    letter-spacing: 0.03em !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+  }
+
+  .page-content-body .ranking-top-l {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 6px !important;
+  }
+
+  .page-content-body .ranking-top-subname {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 5px !important;
+    font-size: clamp(7px, 2.2vw, 10px) !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-photo-box {
+    width: 66px !important;
+    min-width: 0 !important;
+    max-width: 66px !important;
+    padding: 6px 5px 6px 0 !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-photo-placeholder {
+    width: 54px !important;
+    height: 72px !important;
+    font-size: 17px !important;
+    border-width: 2px !important;
+  }
+
+  .page-content-body .ranking-row {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    grid-template-columns: 34px minmax(0, 1fr) !important;
+    min-height: 34px !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-position {
+    min-width: 0 !important;
+    padding-left: 7px !important;
+    font-size: clamp(19px, 6vw, 26px) !important;
+    line-height: 1 !important;
+  }
+
+  .page-content-body .ranking-row > *:last-child {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding-right: 8px !important;
+    font-size: clamp(19px, 5.9vw, 26px) !important;
+    line-height: 1 !important;
+    letter-spacing: 0.04em !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+  }
+
+  .page-content-body .ranking-model-note {
+    margin-top: 14px !important;
+    font-size: 11.5px !important;
+    line-height: 1.45 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .page-content-body .ranking-column-title {
+    font-size: clamp(18px, 5.8vw, 24px) !important;
+  }
+
+  .page-content-body .ranking-column > *:has(.ranking-top-rank) {
+    grid-template-columns: 58px minmax(0, 1fr) 60px !important;
+    min-height: 98px !important;
+  }
+
+  .page-content-body .ranking-top-rank {
+    width: 58px !important;
+  }
+
+  .page-content-body .ranking-top-rank-number {
+    font-size: clamp(40px, 13vw, 52px) !important;
+  }
+
+  .page-content-body .ranking-photo-box {
+    width: 60px !important;
+    max-width: 60px !important;
+  }
+
+  .page-content-body .ranking-photo-placeholder {
+    width: 49px !important;
+    height: 66px !important;
+    font-size: 15px !important;
+  }
+}
+/* /FFT_RANKING_BOARD_MOBILE_FIT_V2_UI_20260604 */
+
+
+/* FFT_RANKING_BOARD_MOBILE_POSTER_POLISH_20260605
+   Polish mobile Papan Peringkat.
+   Scope aman: hanya ranking board dalam page-content-body.
+*/
+@media (max-width: 760px) {
+  .page-content-body .ranking-board {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .page-content-body .ranking-tools {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 18px !important;
+    box-sizing: border-box !important;
+  }
+
+  .page-content-body .ranking-active-label,
+  .page-content-body .ranking-model-note {
+    font-size: 13.5px !important;
+    line-height: 1.58 !important;
+  }
+
+  .page-content-body .ranking-error,
+  .page-content-body .ranking-loading,
+  .page-content-body .ranking-empty {
+    margin: 14px 0 20px !important;
+    padding: 15px 16px !important;
+    font-size: 13.5px !important;
+    line-height: 1.42 !important;
+  }
+
+  .page-content-body .ranking-export-shell,
+  .page-content-body #rankingBoard {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .page-content-body .ranking-poster {
+    width: min(100%, 430px) !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 auto !important;
+    background: #ffffff !important;
+    border: 1px solid #d7d7d7 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+  }
+
+  .page-content-body .ranking-poster,
+  .page-content-body .ranking-poster * {
+    box-sizing: border-box !important;
+  }
+
+  .page-content-body .ranking-title-header {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 42px minmax(0, 1fr) 42px !important;
+    align-items: center !important;
+    gap: 7px !important;
+    padding: 12px 8px 9px !important;
+    border-bottom: 1px solid #d2d2d2 !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-corner-logo {
+    width: 34px !important;
+    height: 34px !important;
+    object-fit: contain !important;
+    justify-self: center !important;
+  }
+
+  .page-content-body .ranking-title-center {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    display: grid !important;
+    justify-items: center !important;
+    gap: 3px !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-title-image {
+    width: clamp(58px, 18vw, 76px) !important;
+    max-width: 76px !important;
+    height: auto !important;
+    max-height: 42px !important;
+    object-fit: contain !important;
+  }
+
+  .page-content-body .ranking-year {
+    width: 100% !important;
+    max-width: 100% !important;
+    color: #000000 !important;
+    text-align: center !important;
+    font-family: Impact, "Arial Black", sans-serif !important;
+    font-size: clamp(30px, 9.2vw, 40px) !important;
+    line-height: 0.92 !important;
+    letter-spacing: 0.055em !important;
+    white-space: nowrap !important;
+  }
+
+  .page-content-body .ranking-subtitle {
+    width: 100% !important;
+    max-width: 100% !important;
+    color: #000000 !important;
+    text-align: center !important;
+    font-family: "Arial Black", Arial, sans-serif !important;
+    font-size: clamp(5.8px, 1.65vw, 7.8px) !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0.18em !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+  }
+
+  .page-content-body .ranking-dual-board {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+  }
+
+  .page-content-body .ranking-column {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-column + .ranking-column {
+    border-left: 0 !important;
+    border-top: 24px solid #050505 !important;
+  }
+
+  .page-content-body .ranking-column-title {
+    width: 100% !important;
+    min-height: 40px !important;
+    padding: 0 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #000000 !important;
+    font-family: Impact, "Arial Black", sans-serif !important;
+    font-size: clamp(21px, 6.6vw, 28px) !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: 0 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-column .ranking-top-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 118px !important;
+    display: grid !important;
+    grid-template-columns: 68px minmax(0, 1fr) 70px !important;
+    border-bottom: 1px solid #d2d2d2 !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+  }
+
+  .page-content-body .ranking-top-rank {
+    width: 68px !important;
+    min-width: 0 !important;
+    gap: 4px !important;
+    padding-left: 4px !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-top-rank-number {
+    color: #430808 !important;
+    font-family: Impact, "Arial Black", sans-serif !important;
+    font-size: clamp(48px, 14.4vw, 62px) !important;
+    line-height: 0.84 !important;
+    letter-spacing: -0.045em !important;
+  }
+
+  .page-content-body .ranking-achievement-badge {
+    width: 58px !important;
+    max-width: 58px !important;
+    gap: 2px !important;
+    color: #a9a9a9 !important;
+    font-size: 5.8px !important;
+    line-height: 1.05 !important;
+    font-weight: 800 !important;
+  }
+
+  .page-content-body .ranking-achievement-badge img,
+  .page-content-body [class*="ranking-achievement"] img {
+    width: 12px !important;
+    height: 12px !important;
+    object-fit: contain !important;
+  }
+
+  .page-content-body .ranking-top-info {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding: 10px 4px !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-top-info h4 {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    color: #000000 !important;
+    font-family: Impact, "Arial Black", sans-serif !important;
+    font-size: clamp(20px, 6.2vw, 27px) !important;
+    line-height: 0.94 !important;
+    letter-spacing: 0.035em !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+  }
+
+  .page-content-body .ranking-top-line {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 2px !important;
+    margin-top: 7px !important;
+  }
+
+  .page-content-body .ranking-top-subname {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 6px !important;
+    color: #a9a9a9 !important;
+    font-family: "Arial Black", Arial, sans-serif !important;
+    font-size: clamp(8px, 2.4vw, 11px) !important;
+    line-height: 1.05 !important;
+    letter-spacing: 0.025em !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .page-content-body .ranking-photo-box {
+    min-width: 0 !important;
+    padding: 7px 5px 7px 0 !important;
+    display: grid !important;
+    align-items: center !important;
+    justify-items: center !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-photo-placeholder {
+    width: 58px !important;
+    height: 78px !important;
+    margin: 0 !important;
+    border-width: 2px !important;
+    font-size: 18px !important;
+    letter-spacing: 0.06em !important;
+  }
+
+  .page-content-body .ranking-list {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-row {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: 36px minmax(0, 1fr) !important;
+    align-items: center !important;
+    min-height: 39px !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-position {
+    min-width: 0 !important;
+    padding-left: 8px !important;
+    color: #430808 !important;
+    font-family: Impact, "Arial Black", sans-serif !important;
+    font-size: clamp(21px, 6.4vw, 28px) !important;
+    line-height: 1 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .page-content-body .ranking-name {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding-right: 8px !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body .ranking-row > *:last-child,
+  .page-content-body .ranking-name h3 {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    color: #000000 !important;
+    font-family: Impact, "Arial Black", sans-serif !important;
+    font-size: clamp(17px, 5.2vw, 22px) !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.045em !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .page-content-body .ranking-name h3.is-tie {
+    font-size: clamp(15px, 4.6vw, 19px) !important;
+    letter-spacing: 0.035em !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .page-content-body .ranking-poster {
+    width: 100% !important;
+  }
+
+  .page-content-body .ranking-title-header {
+    grid-template-columns: 38px minmax(0, 1fr) 38px !important;
+    gap: 6px !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  .page-content-body .ranking-corner-logo {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .page-content-body .ranking-column .ranking-top-card {
+    grid-template-columns: 62px minmax(0, 1fr) 64px !important;
+    min-height: 110px !important;
+  }
+
+  .page-content-body .ranking-top-rank {
+    width: 62px !important;
+  }
+
+  .page-content-body .ranking-photo-placeholder {
+    width: 52px !important;
+    height: 72px !important;
+    font-size: 17px !important;
+  }
+
+  .page-content-body .ranking-achievement-badge {
+    width: 52px !important;
+    max-width: 52px !important;
+    font-size: 5.2px !important;
+  }
+
+  .page-content-body .ranking-row {
+    grid-template-columns: 34px minmax(0, 1fr) !important;
+    min-height: 38px !important;
+  }
+}
+/* /FFT_RANKING_BOARD_MOBILE_POSTER_POLISH_20260605 */
+
+/* FFT_RANKING_BOARD_TIE_ROTATOR_UI_20260605
+   UI untuk peserta dengan IPK sama.
+   Rank 1 tampil nama, IPK, dan foto.
+   Rank 2 sampai 8 tampil nama dan IPK tanpa foto.
+*/
+.ranking-tie-slot {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.ranking-slide,
+.ranking-photo-slide,
+.ranking-row-slide {
+  display: none;
+  width: 100%;
+  min-width: 0;
+}
+
+.ranking-slide.is-active,
+.ranking-photo-slide.is-active,
+.ranking-row-slide.is-active {
+  display: block;
+  animation: fftRankingTieFade 260ms ease both;
+}
+
+.ranking-photo-slide.is-active {
+  display: grid;
+  align-items: end;
+  justify-items: center;
+}
+
+.ranking-photo-stage {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: end;
+  justify-items: center;
+}
+
+.ranking-photo-slide img {
+  width: 118px;
+  height: 132px;
+  margin-bottom: 8px;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  border: 2px solid #e4e4e4;
+  background: #f3f3f3;
+}
+
+.ranking-tie-count,
+.ranking-row-tie-count {
+  display: block;
+  margin-top: 6px;
+  color: #430808;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ranking-row-person {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
+.ranking-row-person strong {
+  display: block;
+  min-width: 0;
+  color: #000000;
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: 27px;
+  line-height: 1;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ranking-row-person small {
+  display: block;
+  color: #430808;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@keyframes fftRankingTieFade {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 760px) {
+  .page-content-body .ranking-top-info .ranking-tie-slot {
+    min-height: 48px !important;
+  }
+
+  .page-content-body .ranking-top-info h4 {
+    font-size: clamp(20px, 6.2vw, 27px) !important;
+  }
+
+  .page-content-body .ranking-tie-count {
+    margin-top: 5px !important;
+    font-size: 7.4px !important;
+    letter-spacing: 0.06em !important;
+    line-height: 1.1 !important;
+  }
+
+  .page-content-body .ranking-photo-stage {
+    align-items: center !important;
+    justify-items: center !important;
+  }
+
+  .page-content-body .ranking-photo-slide img {
+    width: 58px !important;
+    height: 78px !important;
+    margin: 0 !important;
+  }
+
+  .page-content-body .ranking-row .ranking-name {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding-right: 8px !important;
+    overflow: hidden !important;
+    font-size: initial !important;
+    line-height: normal !important;
+    letter-spacing: normal !important;
+  }
+
+  .page-content-body .ranking-row .ranking-row-person {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 6px !important;
+  }
+
+  .page-content-body .ranking-row .ranking-row-person strong {
+    font-size: clamp(16px, 4.8vw, 21px) !important;
+    line-height: 1 !important;
+    letter-spacing: 0.045em !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .page-content-body .ranking-row .ranking-row-person small {
+    font-size: clamp(7px, 2.1vw, 9px) !important;
+    line-height: 1 !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  .page-content-body .ranking-row-tie-count {
+    margin-top: 3px !important;
+    font-size: 6.8px !important;
+    letter-spacing: 0.05em !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .page-content-body .ranking-row .ranking-row-person strong {
+    font-size: clamp(15px, 4.6vw, 19px) !important;
+  }
+
+  .page-content-body .ranking-row .ranking-row-person small {
+    font-size: 7px !important;
+  }
+}
+/* /FFT_RANKING_BOARD_TIE_ROTATOR_UI_20260605 */
