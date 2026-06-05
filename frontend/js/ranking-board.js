@@ -622,30 +622,33 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function demoBoard(label) {
-    return [
-      {
-        rank: 1,
-        entries: [
-          { name: "NAMA", gpa: "4.00", photo: "" },
-          { name: "NAMA LENGKAP", gpa: "4.00", photo: "" }
-        ]
-      },
-      {
-        rank: 2,
-        entries: [
-          { name: "NAMA LENGKAP", gpa: "3.98" },
-          { name: "NAMA LENGKAP 2", gpa: "3.98" }
-        ]
-      },
-      { rank: 3, entries: [{ name: "NAMA LENGKAP", gpa: "3.96" }] },
-      { rank: 4, entries: [{ name: "NAMA LENGKAP", gpa: "3.94" }] },
-      { rank: 5, entries: [{ name: "NAMA LENGKAP", gpa: "3.92" }] },
-      { rank: 6, entries: [{ name: "NAMA LENGKAP", gpa: "3.90" }] },
-      { rank: 7, entries: [{ name: "NAMA LENGKAP", gpa: "3.88" }] },
-      { rank: 8, entries: [{ name: "NAMA LENGKAP", gpa: "3.86" }] }
-    ];
-  }
+    /* FFT_RANKING_BOARD_DUMMY_ALL_ANIMATE_20260605
+       Data dummy sementara.
+       Semua rank dibuat punya 2 slide agar animasi terlihat di semua posisi.
+       Nanti bagian ini aman diganti oleh data backend admin dashboard.
+    */
+    var rows = [];
 
+    for (var rank = 1; rank <= 8; rank += 1) {
+      rows.push({
+        rank: rank,
+        entries: [
+          {
+            name: "NAMA LENGKAP",
+            gpa: "4.00",
+            photo: ""
+          },
+          {
+            name: "KOSONG",
+            gpa: "0.00",
+            photo: ""
+          }
+        ]
+      });
+    }
+
+    return rows;
+  }
   function getSourceData() {
     var source =
       window.FFTRankingData ||
@@ -1002,5 +1005,75 @@ document.addEventListener("DOMContentLoaded", function () {
     window.setTimeout(enhanceRankingBoard, 180);
     window.setTimeout(enhanceRankingBoard, 700);
     observeRankingBoard();
+  });
+})();
+
+/* FFT_RANKING_BOARD_CONCEPT_MODE_DUMMY_OVERRIDE_20260605
+   Mode konsep sementara.
+   Memaksa semua rank memakai 2 slide:
+   - NAMA LENGKAP | IPK 4.00
+   - KOSONG | IPK 0.00
+   Nanti saat backend admin dashboard siap, blok ini bisa dinonaktifkan.
+*/
+(function () {
+  "use strict";
+
+  function makeConceptRows() {
+    var rows = [];
+
+    for (var rank = 1; rank <= 8; rank += 1) {
+      rows.push({
+        rank: rank,
+        entries: [
+          {
+            name: "NAMA LENGKAP",
+            gpa: "4.00",
+            photo: ""
+          },
+          {
+            name: "KOSONG",
+            gpa: "0.00",
+            photo: ""
+          }
+        ]
+      });
+    }
+
+    return rows;
+  }
+
+  function applyConceptData() {
+    window.FFTRankingConceptMode = true;
+    window.FFTRankingData = {
+      semester1: makeConceptRows(),
+      semester2: makeConceptRows()
+    };
+
+    var root = document.getElementById("rankingBoard") || document.querySelector(".ranking-poster");
+
+    if (root) {
+      root.removeAttribute("data-fft-ranking-tie-hash");
+      root.setAttribute("data-fft-ranking-concept-mode", "1");
+    }
+
+    if (typeof window.FFTRankingRefresh === "function") {
+      window.FFTRankingRefresh();
+    }
+  }
+
+  function ready(callback) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", callback, { once: true });
+      return;
+    }
+
+    callback();
+  }
+
+  ready(function () {
+    applyConceptData();
+    window.setTimeout(applyConceptData, 250);
+    window.setTimeout(applyConceptData, 750);
+    window.setTimeout(applyConceptData, 1500);
   });
 })();
