@@ -1516,3 +1516,36 @@
   }
 }
 /* /FFT_RANKING_BOARD_TIE_ROTATOR_UI_20260605 */
+
+/* FFT_RANKING_BOARD_NAME_WEIGHT_SOFTEN_20260606
+   Kurangi ketebalan font bagian nama agar tidak terlalu berat.
+   Fokus ke nama rank #1 dan nama rank 2-8.
+*/
+.page-content-body .ranking-top-info h4,
+.page-content-body .ranking-row-person strong,
+.page-content-body .ranking-row > *:last-child,
+.page-content-body .ranking-name h3 {
+  font-family: "Arial Narrow", "Helvetica Neue", Arial, sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.01em !important;
+}
+
+.page-content-body .ranking-top-info h4 {
+  line-height: 0.98 !important;
+}
+
+.page-content-body .ranking-row-person strong,
+.page-content-body .ranking-row > *:last-child,
+.page-content-body .ranking-name h3 {
+  line-height: 0.98 !important;
+}
+
+@media (max-width: 760px) {
+  .page-content-body .ranking-top-info h4,
+  .page-content-body .ranking-row-person strong,
+  .page-content-body .ranking-row > *:last-child,
+  .page-content-body .ranking-name h3 {
+    letter-spacing: 0 !important;
+  }
+}
+/* /FFT_RANKING_BOARD_NAME_WEIGHT_SOFTEN_20260606 */
