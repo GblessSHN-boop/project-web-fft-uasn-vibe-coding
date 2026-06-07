@@ -1309,3 +1309,279 @@ document.addEventListener("DOMContentLoaded", function () {
   window.FFTRenderGpaExactConcept = renderGpaLeaderboard;
 })();
 /* /FFT_RANKING_BOARD_GPA_EXACT_CONCEPT_REPLACEMENT_20260607 */
+
+/* FFT_RANKING_BOARD_EXPORT_WEBP_SVG_SAFE_20260607
+   Extra export untuk WEBP dan SVG.
+   Format lama tetap memakai logic download asli.
+*/
+(function () {
+  "use strict";
+
+  function ready(callback) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", callback, { once: true });
+      return;
+    }
+
+    callback();
+  }
+
+  function getFormatSelect() {
+    var candidates = Array.from(document.querySelectorAll("select"));
+
+    return candidates.find(function (select) {
+      return Array.from(select.options || []).some(function (option) {
+        var value = String(option.value || "").toLowerCase();
+        return value === "webp" || value === "svg" || value === "pdf" || value === "png";
+      });
+    }) || document.querySelector("#rankingFormat, #rankingDownloadFormat, [data-ranking-format]");
+  }
+
+  function getDownloadButton() {
+    return document.querySelector("[data-ranking-download], #rankingDownloadButton, #downloadRankingBoard, .ranking-download-button") ||
+      Array.from(document.querySelectorAll("button, a")).find(function (element) {
+        return /download\s+papan|download\s+board|unduh\s+papan/i.test(element.textContent || "");
+      });
+  }
+
+  function getExportTarget() {
+    return document.getElementById("rankingBoard") ||
+      document.getElementById("rankingExportPoster") ||
+      document.querySelector(".ranking-poster");
+  }
+
+  function getYearValue() {
+    var yearSelect = document.querySelector("#rankingYear, #rankingAcademicYear, [data-ranking-year]");
+
+    if (yearSelect && yearSelect.value) {
+      return String(yearSelect.value).trim();
+    }
+
+    var yearText = document.querySelector(".ranking-year");
+
+    if (yearText && yearText.textContent.trim()) {
+      return yearText.textContent.trim();
+    }
+
+    return "2025-2026";
+  }
+
+  function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    window.setTimeout(function () {
+      URL.revokeObjectURL(url);
+    }, 1200);
+  }
+
+  function waitForImages(root) {
+    var images = Array.from(root.querySelectorAll("img"));
+
+    return Promise.all(images.map(function (image) {
+      if (image.complete) {
+        return Promise.resolve();
+      }
+
+      return new Promise(function (resolve) {
+        image.addEventListener("load", resolve, { once: true });
+        image.addEventListener("error", resolve, { once: true });
+      });
+    }));
+  }
+
+  function canvasToBlob(canvas, type, quality) {
+    return new Promise(function (resolve, reject) {
+      canvas.toBlob(function (blob) {
+        if (!blob) {
+          reject(new Error("Canvas gagal dibuat menjadi " + type));
+          return;
+        }
+
+        resolve(blob);
+      }, type, quality);
+    });
+  }
+
+  async function targetToCanvas() {
+    var target = getExportTarget();
+
+    if (!target) {
+      throw new Error("Area papan peringkat tidak ditemukan.");
+    }
+
+    if (typeof window.html2canvas !== "function") {
+      throw new Error("html2canvas belum tersedia.");
+    }
+
+    await waitForImages(target);
+
+    return window.html2canvas(target, {
+      backgroundColor: null,
+      scale: Math.max(2, Math.min(3, window.devicePixelRatio || 2)),
+      useCORS: true,
+      allowTaint: true,
+      logging: false,
+      scrollX: 0,
+      scrollY: -window.scrollY,
+      windowWidth: document.documentElement.scrollWidth,
+      windowHeight: document.documentElement.scrollHeight
+    });
+  }
+
+  function inlineComputedStyles(source, target) {
+    if (!source || !target || source.nodeType !== 1 || target.nodeType !== 1) {
+      return;
+    }
+
+    var computed = window.getComputedStyle(source);
+
+    for (var i = 0; i < computed.length; i += 1) {
+      var property = computed[i];
+
+      target.style.setProperty(
+        property,
+        computed.getPropertyValue(property),
+        computed.getPropertyPriority(property)
+      );
+    }
+
+    var sourceChildren = Array.from(source.children);
+    var targetChildren = Array.from(target.children);
+
+    sourceChildren.forEach(function (sourceChild, index) {
+      inlineComputedStyles(sourceChild, targetChildren[index]);
+    });
+  }
+
+  function blobToDataUrl(blob) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+
+      reader.onload = function () {
+        resolve(reader.result);
+      };
+
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  async function inlineImages(clone) {
+    var images = Array.from(clone.querySelectorAll("img"));
+
+    await Promise.all(images.map(async function (image) {
+      var src = image.getAttribute("src");
+
+      if (!src || src.indexOf("data:") === 0) {
+        return;
+      }
+
+      try {
+        var absoluteUrl = new URL(src, window.location.href).href;
+        var response = await fetch(absoluteUrl, { cache: "force-cache" });
+        var blob = await response.blob();
+        var dataUrl = await blobToDataUrl(blob);
+        image.setAttribute("src", dataUrl);
+      } catch (error) {
+        image.removeAttribute("src");
+      }
+    }));
+  }
+
+  async function targetToSvgBlob() {
+    var target = getExportTarget();
+
+    if (!target) {
+      throw new Error("Area papan peringkat tidak ditemukan.");
+    }
+
+    await waitForImages(target);
+
+    var clone = target.cloneNode(true);
+    await inlineImages(clone);
+    inlineComputedStyles(target, clone);
+
+    var rect = target.getBoundingClientRect();
+    var width = Math.ceil(rect.width);
+    var height = Math.ceil(rect.height);
+
+    clone.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+    clone.style.width = width + "px";
+    clone.style.minWidth = width + "px";
+    clone.style.maxWidth = width + "px";
+    clone.style.height = height + "px";
+    clone.style.margin = "0";
+    clone.style.position = "relative";
+    clone.style.transform = "none";
+
+    var serialized = new XMLSerializer().serializeToString(clone);
+
+    var svg = [
+      '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '" viewBox="0 0 ' + width + ' ' + height + '">',
+      '<foreignObject width="100%" height="100%">',
+      serialized,
+      '</foreignObject>',
+      '</svg>'
+    ].join("");
+
+    return new Blob([svg], {
+      type: "image/svg+xml;charset=utf-8"
+    });
+  }
+
+  async function downloadExtraFormat(format) {
+    var year = getYearValue();
+    var filenameBase = "papan-peringkat-gpa-semester-1-2-" + year;
+
+    if (format === "webp") {
+      var canvas = await targetToCanvas();
+      var webpBlob = await canvasToBlob(canvas, "image/webp", 0.96);
+      downloadBlob(webpBlob, filenameBase + ".webp");
+      return;
+    }
+
+    if (format === "svg") {
+      var svgBlob = await targetToSvgBlob();
+      downloadBlob(svgBlob, filenameBase + ".svg");
+    }
+  }
+
+  ready(function () {
+    var formatSelect = getFormatSelect();
+    var downloadButton = getDownloadButton();
+
+    if (!formatSelect || !downloadButton) {
+      return;
+    }
+
+    if (downloadButton.getAttribute("data-webp-svg-safe-export") === "1") {
+      return;
+    }
+
+    downloadButton.setAttribute("data-webp-svg-safe-export", "1");
+
+    downloadButton.addEventListener("click", function (event) {
+      var format = String(formatSelect.value || "").toLowerCase();
+
+      if (format !== "webp" && format !== "svg") {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      downloadExtraFormat(format).catch(function (error) {
+        console.error(error);
+        alert("Download " + format.toUpperCase() + " gagal. Coba refresh halaman lalu ulangi.");
+      });
+    }, true);
+  });
+})();
+ /* /FFT_RANKING_BOARD_EXPORT_WEBP_SVG_SAFE_20260607 */
