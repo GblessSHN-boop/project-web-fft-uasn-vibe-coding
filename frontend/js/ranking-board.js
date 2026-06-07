@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return "id";
   }
 
-
   function applyLabels() {
     const lang = getLang();
 
@@ -1077,3 +1076,287 @@ document.addEventListener("DOMContentLoaded", function () {
     window.setTimeout(applyConceptData, 1500);
   });
 })();
+
+/* FFT_RANKING_BOARD_GPA_EXACT_CONCEPT_REPLACEMENT_20260607
+   Replace leaderboard board with user landing page GPA concept.
+   Row 2-10 animation is hover-only.
+*/
+(function () {
+  "use strict";
+
+  var gpaAssets = {
+    personImage: "../assets/images/orang.png",
+    titleIcon: "../assets/icons/title/tittle-by-gland.png",
+    upIcon: "../assets/icons/movement/up-clean.png",
+    downIcon: "../assets/icons/movement/down-clean.png"
+  };
+
+  var gpaData = [
+    {
+      title: "GPA SEMESTER 1",
+      featuredName: "NO NAME",
+      featuredScore: "GPA 4.00",
+      rows: [
+        { rank: 2, name: "NO NAME", score: "GPA 4.00", movement: "up", change: 1 },
+        { rank: 3, name: "NO NAME", score: "GPA 4.00", movement: "up", change: 1 },
+        { rank: 4, name: "NO NAME", score: "GPA 4.00", movement: "down", change: 1 },
+        { rank: 5, name: "NO NAME", score: "GPA 4.00", movement: "up", change: 1 },
+        { rank: 6, name: "NO NAME", score: "GPA 4.00", movement: "down", change: 1 },
+        { rank: 7, name: "NO NAME", score: "GPA 4.00", movement: "up", change: 1 },
+        { rank: 8, name: "NO NAME", score: "GPA 4.00", movement: "up", change: 1 },
+        { rank: 9, name: "NO NAME", score: "GPA 4.00", movement: "down", change: 1 },
+        { rank: 10, name: "NO NAME", score: "GPA 4.00", movement: "up", change: 1 }
+      ]
+    },
+    {
+      title: "GPA SEMESTER 2",
+      featuredName: "NO NAME",
+      featuredScore: "GPA 4.00",
+      rows: [
+        { rank: 2, name: "NO NAME", score: "GPA 4.00", movement: "up", change: 1 },
+        { rank: 3, name: "NO NAME", score: "GPA 4.00", movement: "up", change: 1 },
+        { rank: 4, name: "NO NAME", score: "GPA 4.00", movement: "down", change: 1 },
+        { rank: 5, name: "NO NAME", score: "GPA 4.00", movement: "up", change: 1 },
+        { rank: 6, name: "NO NAME", score: "GPA 4.00", movement: "down", change: 1 },
+        { rank: 7, name: "NO NAME", score: "GPA 4.00", movement: "up", change: 1 },
+        { rank: 8, name: "NO NAME", score: "GPA 4.00", movement: "up", change: 1 },
+        { rank: 9, name: "NO NAME", score: "GPA 4.00", movement: "down", change: 1 },
+        { rank: 10, name: "NO NAME", score: "GPA 4.00", movement: "up", change: 1 }
+      ]
+    }
+  ];
+
+  var rendering = false;
+
+  function escapeHtml(value) {
+    return String(value === null || value === undefined ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function createGpaMovement(row) {
+    var movementClass = row.movement === "down" ? "down" : "up";
+    var icon = movementClass === "down" ? gpaAssets.downIcon : gpaAssets.upIcon;
+
+    return [
+      '<span class="gpa-movement ' + movementClass + '">',
+      '<img class="gpa-movement-icon" src="' + icon + '" alt="' + movementClass + '" onerror="this.remove()">',
+      '<span>' + escapeHtml(row.change) + '</span>',
+      '</span>'
+    ].join("");
+  }
+
+  function createGpaRow(row) {
+    return [
+      '<li class="gpa-row">',
+      '<span class="gpa-row-rank">' + escapeHtml(row.rank) + '</span>',
+      '<span class="gpa-row-name" title="' + escapeHtml(row.score) + '">',
+      '<span class="gpa-row-name-text">' + escapeHtml(row.name) + '</span>',
+      '<span class="gpa-row-score-text">' + escapeHtml(row.score) + '</span>',
+      '</span>',
+      createGpaMovement(row),
+      '</li>'
+    ].join("");
+  }
+
+  function createGpaCard(item) {
+    return [
+      '<article class="gpa-card">',
+      '<header class="gpa-card-title">' + escapeHtml(item.title) + '</header>',
+      '<div class="gpa-featured">',
+      '<div class="gpa-featured-info">',
+      '<div class="gpa-rank-title">',
+      '<span>#1</span>',
+      '<a class="gpa-title-icon-link" href="#" title="Tittle by Gland Siahaan" aria-label="Tittle by Gland Siahaan">',
+      '<img class="gpa-title-icon" src="' + gpaAssets.titleIcon + '" alt="Tittle by Gland Siahaan" onerror="this.remove()">',
+      '</a>',
+      '</div>',
+      '<div class="gpa-featured-name">' + escapeHtml(item.featuredName) + '</div>',
+      '<div class="gpa-score-badge">' + escapeHtml(item.featuredScore) + '</div>',
+      '</div>',
+      '<a class="gpa-featured-image-link" href="#" title="' + escapeHtml(item.featuredName) + '" aria-label="' + escapeHtml(item.featuredName) + '">',
+      '<img class="gpa-featured-image" src="' + gpaAssets.personImage + '" alt="' + escapeHtml(item.featuredName) + '" loading="lazy" onerror="this.parentElement.classList.add(\'is-missing\'); this.remove();">',
+      '<span class="gpa-image-placeholder">FOTO</span>',
+      '</a>',
+      '</div>',
+      '<ol class="gpa-list">',
+      item.rows.map(createGpaRow).join(""),
+      '</ol>',
+      '</article>'
+    ].join("");
+  }
+
+  function getPoster() {
+    return document.querySelector("#rankingBoard .ranking-poster") ||
+      document.querySelector(".ranking-poster") ||
+      document.getElementById("rankingBoard");
+  }
+
+  function renderGpaLeaderboard() {
+    if (rendering) {
+      return;
+    }
+
+    var poster = getPoster();
+
+    if (!poster) {
+      return;
+    }
+
+    rendering = true;
+
+    try {
+      var section = poster.querySelector(".gpa-board-section[data-gpa-exact-concept='1']");
+
+      if (!section) {
+        section = document.createElement("section");
+        section.className = "gpa-board-section";
+        section.id = "gpa-leaderboard";
+        section.setAttribute("data-gpa-exact-concept", "1");
+        section.innerHTML = '<div class="gpa-board-grid" data-gpa-board></div>';
+
+        var oldBoard = poster.querySelector(".ranking-dual-board");
+
+        if (oldBoard) {
+          oldBoard.replaceWith(section);
+        } else {
+          poster.appendChild(section);
+        }
+      }
+
+      poster.querySelectorAll(".ranking-dual-board").forEach(function (board) {
+        board.remove();
+      });
+
+      var target = section.querySelector("[data-gpa-board]");
+      var html = gpaData.map(createGpaCard).join("");
+
+      if (target && target.getAttribute("data-gpa-exact-hash") !== html) {
+        target.innerHTML = html;
+        target.setAttribute("data-gpa-exact-hash", html);
+      }
+    } finally {
+      rendering = false;
+    }
+  }
+
+  function ready(callback) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", callback, { once: true });
+      return;
+    }
+
+    callback();
+  }
+
+  ready(function () {
+    renderGpaLeaderboard();
+    window.setTimeout(renderGpaLeaderboard, 250);
+    window.setTimeout(renderGpaLeaderboard, 900);
+    window.setTimeout(renderGpaLeaderboard, 1600);
+  });
+
+  window.FFTRenderGpaExactConcept = renderGpaLeaderboard;
+})();
+/* /FFT_RANKING_BOARD_GPA_EXACT_CONCEPT_REPLACEMENT_20260607 */
+
+/* FFT_RANKING_BOARD_GPA_FORCE_WIN_20260607
+   Memastikan GPA exact concept menang dari renderer ranking lama.
+*/
+(function () {
+  "use strict";
+
+  var started = false;
+  var running = false;
+
+  function getPoster() {
+    return document.querySelector("#rankingBoard .ranking-poster") ||
+      document.querySelector(".ranking-poster") ||
+      document.getElementById("rankingBoard");
+  }
+
+  function forceGpaBoard() {
+    if (running) {
+      return;
+    }
+
+    running = true;
+
+    try {
+      var poster = getPoster();
+
+      if (!poster) {
+        return;
+      }
+
+      if (typeof window.FFTRenderGpaExactConcept === "function") {
+        window.FFTRenderGpaExactConcept();
+      }
+
+      var gpaSection = poster.querySelector(".gpa-board-section[data-gpa-exact-concept='1']");
+
+      if (!gpaSection) {
+        return;
+      }
+
+      poster.classList.add("gpa-exact-board-ready");
+
+      poster.querySelectorAll(".ranking-dual-board").forEach(function (board) {
+        board.remove();
+      });
+    } finally {
+      running = false;
+    }
+  }
+
+  function start() {
+    if (started) {
+      return;
+    }
+
+    started = true;
+
+    forceGpaBoard();
+
+    var ticks = 0;
+    var interval = window.setInterval(function () {
+      ticks += 1;
+      forceGpaBoard();
+
+      if (ticks >= 30) {
+        window.clearInterval(interval);
+      }
+    }, 400);
+
+    if (window.MutationObserver) {
+      var root = document.querySelector(".ranking-board") || document.body;
+      var timer = null;
+
+      var observer = new MutationObserver(function () {
+        window.clearTimeout(timer);
+        timer = window.setTimeout(forceGpaBoard, 80);
+      });
+
+      observer.observe(root, {
+        childList: true,
+        subtree: true
+      });
+    }
+
+    window.addEventListener("load", forceGpaBoard);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start, { once: true });
+  } else {
+    start();
+  }
+
+  window.setTimeout(start, 250);
+  window.setTimeout(forceGpaBoard, 900);
+  window.setTimeout(forceGpaBoard, 1800);
+})();
+ /* /FFT_RANKING_BOARD_GPA_FORCE_WIN_20260607 */

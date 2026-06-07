@@ -1628,3 +1628,495 @@
   }
 }
 /* /FFT_RANKING_BOARD_NAME_CROSSFADE_FINAL_20260607 */
+
+/* FFT_RANKING_BOARD_GPA_EXACT_CONCEPT_UI_20260607
+   Replace board card with user landing page GPA concept.
+   Header poster remains intact.
+*/
+.page-content-body .ranking-poster .gpa-board-section,
+.page-content-body .ranking-poster .gpa-board-section * {
+  box-sizing: border-box !important;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif !important;
+}
+
+.page-content-body .ranking-poster .gpa-board-section {
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+.page-content-body .ranking-poster .gpa-board-grid {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.page-content-body .ranking-poster .gpa-card {
+  width: 100% !important;
+  background: #f2f2f2 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+.page-content-body .ranking-poster .gpa-card-title {
+  height: 48px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 20px !important;
+  background: #f7f7f7 !important;
+  color: #25303a !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+.page-content-body .ranking-poster .gpa-featured {
+  position: relative !important;
+  min-height: 260px !important;
+  padding: 84px 20px 0 !important;
+  overflow: hidden !important;
+  background:
+    linear-gradient(90deg, rgba(224, 224, 224, 1) 0%, rgba(232, 232, 232, 0.96) 48%, rgba(245, 245, 245, 0.72) 100%),
+    radial-gradient(circle at 72% 18%, rgba(255, 255, 255, 0.9), transparent 270px) !important;
+}
+
+.page-content-body .ranking-poster .gpa-featured-info {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.page-content-body .ranking-poster .gpa-rank-title {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  color: #430808 !important;
+  font-size: 40px !important;
+  line-height: 1 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.page-content-body .ranking-poster .gpa-title-icon-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 0 !important;
+  text-decoration: none !important;
+}
+
+.page-content-body .ranking-poster .gpa-title-icon {
+  width: 52px !important;
+  height: auto !important;
+  display: block !important;
+  object-fit: contain !important;
+}
+
+.page-content-body .ranking-poster .gpa-featured-name {
+  margin-top: 16px !important;
+  color: #2f3942 !important;
+  font-size: 32px !important;
+  line-height: 1 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+.page-content-body .ranking-poster .gpa-score-badge {
+  width: fit-content !important;
+  margin-top: 14px !important;
+  padding: 8px 12px !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+.page-content-body .ranking-poster .gpa-featured-image-link {
+  position: absolute !important;
+  right: 22px !important;
+  bottom: 0 !important;
+  z-index: 1 !important;
+  display: block !important;
+  width: 52% !important;
+  max-width: 320px !important;
+  line-height: 0 !important;
+  text-decoration: none !important;
+}
+
+.page-content-body .ranking-poster .gpa-featured-image {
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  object-fit: contain !important;
+  object-position: bottom right !important;
+}
+
+.page-content-body .ranking-poster .gpa-image-placeholder {
+  display: none !important;
+  width: 100% !important;
+  aspect-ratio: 3 / 4 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #eeeeee !important;
+  border: 2px solid #dddddd !important;
+  color: #b8b8b8 !important;
+  font-size: 26px !important;
+  letter-spacing: 0.06em !important;
+}
+
+.page-content-body .ranking-poster .gpa-featured-image-link.is-missing .gpa-image-placeholder {
+  display: grid !important;
+}
+
+.page-content-body .ranking-poster .gpa-list {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+.page-content-body .ranking-poster .gpa-row {
+  min-height: 44px !important;
+  display: grid !important;
+  grid-template-columns: 48px minmax(0, 1fr) 70px !important;
+  align-items: center !important;
+  padding: 0 14px !important;
+  color: #25303a !important;
+}
+
+.page-content-body .ranking-poster .gpa-row:nth-child(odd) {
+  background: #eeeeee !important;
+}
+
+.page-content-body .ranking-poster .gpa-row:nth-child(even) {
+  background: #c9c9c9 !important;
+}
+
+.page-content-body .ranking-poster .gpa-row-rank {
+  color: #25303a !important;
+  font-size: 22px !important;
+  line-height: 1 !important;
+}
+
+.page-content-body .ranking-poster .gpa-row-name {
+  position: relative !important;
+  display: inline-block !important;
+  min-width: 150px !important;
+  max-width: 100% !important;
+  height: 1.25em !important;
+  line-height: 1.25em !important;
+  color: #25303a !important;
+  font-size: 15px !important;
+  letter-spacing: 0.09em !important;
+  text-transform: uppercase !important;
+  overflow: visible !important;
+}
+
+.page-content-body .ranking-poster .gpa-row-name-text,
+.page-content-body .ranking-poster .gpa-row-score-text {
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  display: inline-block !important;
+  white-space: nowrap !important;
+  transition:
+    opacity 260ms ease,
+    filter 260ms ease,
+    transform 260ms ease !important;
+}
+
+.page-content-body .ranking-poster .gpa-row-name-text {
+  opacity: 1 !important;
+  filter: blur(0) !important;
+  transform: translateY(0) !important;
+}
+
+.page-content-body .ranking-poster .gpa-row-score-text {
+  opacity: 0 !important;
+  filter: blur(7px) !important;
+  transform: translateY(4px) !important;
+}
+
+.page-content-body .ranking-poster .gpa-row:hover .gpa-row-name-text {
+  opacity: 0 !important;
+  filter: blur(7px) !important;
+  transform: translateY(-4px) !important;
+}
+
+.page-content-body .ranking-poster .gpa-row:hover .gpa-row-score-text {
+  opacity: 1 !important;
+  filter: blur(0) !important;
+  transform: translateY(0) !important;
+}
+
+.page-content-body .ranking-poster .gpa-movement {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 6px !important;
+  font-size: 15px !important;
+  line-height: 1 !important;
+  letter-spacing: 0.04em !important;
+}
+
+.page-content-body .ranking-poster .gpa-movement-icon {
+  width: 16px !important;
+  height: 16px !important;
+  display: block !important;
+  object-fit: contain !important;
+  background: transparent !important;
+}
+
+.page-content-body .ranking-poster .gpa-movement.up {
+  color: #00b817 !important;
+}
+
+.page-content-body .ranking-poster .gpa-movement.down {
+  color: #d10b0b !important;
+}
+
+@media (max-width: 900px) {
+  .page-content-body .ranking-poster .gpa-board-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-featured {
+    min-height: 250px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .page-content-body .ranking-poster .gpa-card-title {
+    height: 44px !important;
+    padding: 0 14px !important;
+    font-size: 15px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-featured {
+    min-height: 220px !important;
+    padding: 62px 14px 0 !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-rank-title {
+    font-size: 32px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-title-icon {
+    width: 42px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-featured-name {
+    font-size: 25px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-score-badge {
+    font-size: 11px !important;
+    padding: 7px 10px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-featured-image-link {
+    right: 8px !important;
+    width: 58% !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-row {
+    min-height: 40px !important;
+    grid-template-columns: 38px minmax(0, 1fr) 54px !important;
+    padding: 0 10px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-row-rank {
+    font-size: 19px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-row-name {
+    font-size: 12px !important;
+    min-width: 120px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-movement {
+    font-size: 12px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-movement-icon {
+    width: 13px !important;
+    height: 13px !important;
+  }
+}
+/* /FFT_RANKING_BOARD_GPA_EXACT_CONCEPT_UI_20260607 */
+
+/* FFT_RANKING_BOARD_GPA_FORCE_WIN_UI_20260607
+   Saat GPA concept aktif, board ranking lama disembunyikan.
+*/
+.page-content-body .ranking-poster.gpa-exact-board-ready .ranking-dual-board {
+  display: none !important;
+}
+/* /FFT_RANKING_BOARD_GPA_FORCE_WIN_UI_20260607 */
+
+/* FFT_RANKING_BOARD_GPA_TRIAL_PHOTO_RESPONSIVE_20260607
+   Ganti foto ke Trial.png dan rapikan layout desktop + HP.
+   Fokus:
+   - foto kanan bawah
+   - tidak kepotong aneh
+   - card HP lebih proporsional
+*/
+.page-content-body .ranking-poster .gpa-board-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.page-content-body .ranking-poster .gpa-featured {
+  position: relative !important;
+  min-height: 280px !important;
+  padding: 36px 24px 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 250px !important;
+  align-items: end !important;
+  overflow: hidden !important;
+}
+
+.page-content-body .ranking-poster .gpa-featured-info {
+  position: relative !important;
+  z-index: 2 !important;
+  align-self: center !important;
+  padding-bottom: 26px !important;
+}
+
+.page-content-body .ranking-poster .gpa-featured-image-link {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 1 !important;
+  justify-self: end !important;
+  align-self: end !important;
+  width: 250px !important;
+  max-width: 250px !important;
+  height: 300px !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: flex-end !important;
+  overflow: visible !important;
+  line-height: 0 !important;
+}
+
+.page-content-body .ranking-poster .gpa-featured-image {
+  width: auto !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: none !important;
+  display: block !important;
+  object-fit: contain !important;
+  object-position: bottom right !important;
+}
+
+@media (max-width: 900px) {
+  .page-content-body .ranking-poster .gpa-board-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-featured {
+    min-height: 250px !important;
+    padding: 28px 18px 0 !important;
+    grid-template-columns: minmax(0, 1fr) 210px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-featured-info {
+    padding-bottom: 20px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-featured-image-link {
+    width: 210px !important;
+    max-width: 210px !important;
+    height: 250px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-content-body .ranking-poster .gpa-card-title {
+    height: 44px !important;
+    padding: 0 14px !important;
+    font-size: 15px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-featured {
+    min-height: 230px !important;
+    padding: 22px 14px 0 !important;
+    grid-template-columns: minmax(0, 1fr) 44% !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-featured-info {
+    padding-bottom: 16px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-rank-title {
+    font-size: 30px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-title-icon {
+    width: 42px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-featured-name {
+    margin-top: 12px !important;
+    font-size: 22px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-score-badge {
+    margin-top: 10px !important;
+    font-size: 11px !important;
+    padding: 7px 10px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-featured-image-link {
+    width: 100% !important;
+    max-width: 165px !important;
+    height: 210px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-row {
+    min-height: 40px !important;
+    grid-template-columns: 38px 1fr 54px !important;
+    padding: 0 10px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-row-rank {
+    font-size: 19px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-row-name {
+    min-width: 110px !important;
+    font-size: 12px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-movement {
+    font-size: 12px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-movement-icon {
+    width: 13px !important;
+    height: 13px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .page-content-body .ranking-poster .gpa-featured {
+    min-height: 215px !important;
+    padding: 18px 12px 0 !important;
+    grid-template-columns: minmax(0, 1fr) 40% !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-featured-name {
+    font-size: 19px !important;
+  }
+
+  .page-content-body .ranking-poster .gpa-featured-image-link {
+    max-width: 145px !important;
+    height: 190px !important;
+  }
+}
+/* /FFT_RANKING_BOARD_GPA_TRIAL_PHOTO_RESPONSIVE_20260607 */
