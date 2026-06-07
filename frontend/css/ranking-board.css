@@ -959,7 +959,6 @@
 }
 /* /FFT_RANKING_BOARD_MOBILE_FIT_V2_UI_20260604 */
 
-
 /* FFT_RANKING_BOARD_MOBILE_POSTER_POLISH_20260605
    Polish mobile Papan Peringkat.
    Scope aman: hanya ranking board dalam page-content-body.
@@ -1549,3 +1548,83 @@
   }
 }
 /* /FFT_RANKING_BOARD_NAME_WEIGHT_SOFTEN_20260606 */
+
+/* FFT_RANKING_BOARD_NAME_CROSSFADE_FINAL_20260607
+   Animasi nama ranking mengikuti feel hero slider:
+   crossfade opacity lembut, dengan blur sangat ringan.
+   Scope hanya teks nama dan IPK. Foto tidak disentuh.
+*/
+.page-content-body .ranking-top-tie-slot,
+.page-content-body .ranking-row-tie-slot {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.page-content-body .ranking-top-tie-slot {
+  min-height: 58px !important;
+}
+
+.page-content-body .ranking-row-tie-slot {
+  min-height: 24px !important;
+}
+
+.page-content-body .ranking-top-tie-slot .ranking-slide,
+.page-content-body .ranking-row-tie-slot .ranking-row-slide {
+  display: block !important;
+  position: absolute !important;
+  inset: 0 auto auto 0 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  opacity: 0 !important;
+  filter: blur(3px) !important;
+  transform: none !important;
+  pointer-events: none !important;
+  transition:
+    opacity 900ms ease,
+    filter 900ms ease !important;
+  animation: none !important;
+  will-change: opacity, filter !important;
+}
+
+.page-content-body .ranking-top-tie-slot .ranking-slide.is-active,
+.page-content-body .ranking-row-tie-slot .ranking-row-slide.is-active {
+  opacity: 1 !important;
+  filter: blur(0) !important;
+  pointer-events: auto !important;
+}
+
+.page-content-body .ranking-top-info h4,
+.page-content-body .ranking-top-subname,
+.page-content-body .ranking-row-person strong,
+.page-content-body .ranking-row-person small {
+  -webkit-font-smoothing: antialiased !important;
+  text-rendering: geometricPrecision !important;
+}
+
+@media (max-width: 760px) {
+  .page-content-body .ranking-top-tie-slot {
+    min-height: 52px !important;
+  }
+
+  .page-content-body .ranking-row-tie-slot {
+    min-height: 22px !important;
+  }
+
+  .page-content-body .ranking-top-tie-slot .ranking-slide,
+  .page-content-body .ranking-row-tie-slot .ranking-row-slide {
+    filter: blur(2.4px) !important;
+    transition:
+      opacity 980ms ease,
+      filter 980ms ease !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-content-body .ranking-top-tie-slot .ranking-slide,
+  .page-content-body .ranking-row-tie-slot .ranking-row-slide {
+    transition: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+}
+/* /FFT_RANKING_BOARD_NAME_CROSSFADE_FINAL_20260607 */
