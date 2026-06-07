@@ -2224,3 +2224,110 @@
   }
 }
 /* /FFT_RANKING_BOARD_STATIC_HTML_FIRST_RENDER_UI_20260607 */
+
+/* FFT_RANKING_BOARD_HEADER_TITLE_BACKEND_READY_20260607_UI
+   Header board lama dikembalikan:
+   logo UASN kiri, title/top-leader tengah, logo FFT kanan.
+   Title tengah backend-ready melalui bridge.
+*/
+.page-content-body #rankingBoard .ranking-title-header.gpa-ranking-title-header {
+  width: 100% !important;
+  min-height: 132px !important;
+  display: grid !important;
+  grid-template-columns: 120px minmax(0, 1fr) 120px !important;
+  align-items: center !important;
+  gap: 18px !important;
+  padding: 18px 28px 10px !important;
+  background: #ffffff !important;
+}
+
+.page-content-body #rankingBoard .ranking-corner-logo {
+  width: 78px !important;
+  height: 78px !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+.page-content-body #rankingBoard .ranking-corner-logo-left {
+  justify-self: start !important;
+}
+
+.page-content-body #rankingBoard .ranking-corner-logo-right {
+  justify-self: end !important;
+}
+
+.page-content-body #rankingBoard .ranking-title-center {
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.page-content-body #rankingBoard .ranking-title-image {
+  width: 92px !important;
+  height: auto !important;
+  max-height: 74px !important;
+  object-fit: contain !important;
+  display: block !important;
+  margin: 0 auto 4px !important;
+}
+
+.page-content-body #rankingBoard .ranking-title-fallback {
+  display: none !important;
+  color: #111111 !important;
+  font-size: 14px !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+.page-content-body #rankingBoard .ranking-year {
+  color: #000000 !important;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif !important;
+  font-size: clamp(40px, 5.2vw, 66px) !important;
+  line-height: 0.92 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.page-content-body #rankingBoard .ranking-subtitle {
+  margin: 4px 0 0 !important;
+  color: #000000 !important;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif !important;
+  font-size: clamp(12px, 1.6vw, 20px) !important;
+  line-height: 1 !important;
+  letter-spacing: 0.42em !important;
+  text-transform: uppercase !important;
+}
+
+@media (max-width: 760px) {
+  .page-content-body #rankingBoard .ranking-title-header.gpa-ranking-title-header {
+    min-height: 104px !important;
+    grid-template-columns: 58px minmax(0, 1fr) 58px !important;
+    gap: 8px !important;
+    padding: 12px 12px 8px !important;
+  }
+
+  .page-content-body #rankingBoard .ranking-corner-logo {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .page-content-body #rankingBoard .ranking-title-image {
+    width: 58px !important;
+    max-height: 48px !important;
+    margin-bottom: 3px !important;
+  }
+
+  .page-content-body #rankingBoard .ranking-year {
+    font-size: clamp(32px, 10vw, 44px) !important;
+    line-height: 0.9 !important;
+  }
+
+  .page-content-body #rankingBoard .ranking-subtitle {
+    font-size: 7px !important;
+    letter-spacing: 0.22em !important;
+  }
+}
+/* /FFT_RANKING_BOARD_HEADER_TITLE_BACKEND_READY_20260607_UI */

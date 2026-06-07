@@ -344,3 +344,197 @@
   }
 })();
 /* /FFT_RANKING_BOARD_BACKEND_BRIDGE_20260607 */
+
+/* FFT_RANKING_BOARD_HEADER_TITLE_BACKEND_READY_20260607_BRIDGE
+   Penghubung backend untuk header board:
+   - leftLogo: logo kiri, default UASN.
+   - titleIcon / boardTitleIcon / headerTitleIcon: title tengah, default top-leader-title.
+   - rightLogo: logo kanan, default FFT.
+   - academicYear: tahun tengah.
+   - subtitle: teks universitas.
+*/
+(function () {
+  "use strict";
+
+  var DEFAULT_LEFT_LOGO = "../assets/images/site/uasnlogo.png";
+  var DEFAULT_TITLE_ICON = "../assets/top-leader/top-leader-title.png";
+  var DEFAULT_RIGHT_LOGO = "../assets/images/site/fftkb.png";
+  var DEFAULT_YEAR = "2025-2026";
+  var DEFAULT_SUBTITLE = "UNIVERSITAS ADVENT SURYA NUSANTARA";
+
+  function text(value, fallback) {
+    if (value === null || value === undefined) {
+      return fallback || "";
+    }
+
+    return String(value).trim() || fallback || "";
+  }
+
+  function pickHeaderSource(payload) {
+    var source = payload || {};
+
+    return source.boardHeader ||
+      source.board_header ||
+      source.rankingHeader ||
+      source.ranking_header ||
+      source.header ||
+      source;
+  }
+
+  function pickHeaderData(payload) {
+    var source = payload || {};
+    var header = pickHeaderSource(source);
+
+    return {
+      leftLogo: text(
+        header.leftLogo ||
+        header.left_logo ||
+        header.uasnLogo ||
+        header.uasn_logo ||
+        source.leftLogo ||
+        source.left_logo,
+        DEFAULT_LEFT_LOGO
+      ),
+      titleIcon: text(
+        header.boardTitleIcon ||
+        header.board_title_icon ||
+        header.headerTitleIcon ||
+        header.header_title_icon ||
+        header.titleIcon ||
+        header.title_icon ||
+        header.titleImage ||
+        header.title_image ||
+        source.boardTitleIcon ||
+        source.board_title_icon ||
+        source.headerTitleIcon ||
+        source.header_title_icon,
+        DEFAULT_TITLE_ICON
+      ),
+      titleAlt: text(
+        header.titleAlt ||
+        header.title_alt ||
+        header.titleIconAlt ||
+        header.title_icon_alt,
+        "Papan Peringkat Fakultas Filsafat Teologi"
+      ),
+      rightLogo: text(
+        header.rightLogo ||
+        header.right_logo ||
+        header.fftLogo ||
+        header.fft_logo ||
+        source.rightLogo ||
+        source.right_logo,
+        DEFAULT_RIGHT_LOGO
+      ),
+      academicYear: text(
+        header.academicYear ||
+        header.academic_year ||
+        source.academicYear ||
+        source.academic_year ||
+        source.tahunAkademik ||
+        source.tahun_akademik,
+        DEFAULT_YEAR
+      ),
+      subtitle: text(
+        header.subtitle ||
+        header.subTitle ||
+        header.sub_title ||
+        source.subtitle,
+        DEFAULT_SUBTITLE
+      )
+    };
+  }
+
+  function setImage(selector, src, alt, sourceType) {
+    var image = document.querySelector(selector);
+
+    if (!image) {
+      return;
+    }
+
+    image.src = src;
+    image.alt = alt;
+    image.setAttribute("data-ranking-header-title-source", sourceType || "placeholder");
+  }
+
+  function applyHeader(payload) {
+    var board = document.getElementById("rankingBoard");
+
+    if (!board) {
+      return false;
+    }
+
+    var data = pickHeaderData(payload || {});
+    var titleSource = data.titleIcon === DEFAULT_TITLE_ICON ? "placeholder" : "backend";
+
+    setImage('#rankingBoard [data-ranking-header-logo="left"]', data.leftLogo, "UASN", "backend");
+    setImage('#rankingBoard [data-ranking-header-title-icon="1"]', data.titleIcon, data.titleAlt, titleSource);
+    setImage('#rankingBoard [data-ranking-header-logo="right"]', data.rightLogo, "FFT", "backend");
+
+    var year = board.querySelector("[data-ranking-header-year='1']");
+    var subtitle = board.querySelector("[data-ranking-header-subtitle='1']");
+
+    if (year) {
+      year.textContent = data.academicYear;
+    }
+
+    if (subtitle) {
+      subtitle.textContent = data.subtitle;
+    }
+
+    board.setAttribute("data-ranking-header-ready", "1");
+
+    return true;
+  }
+
+  function patchBridge() {
+    var bridge = window.FFTRankingBackendBridge;
+
+    if (!bridge || bridge.__headerTitleReady === true) {
+      return;
+    }
+
+    var originalRender = bridge.render;
+
+    bridge.render = function (payload) {
+      var result = true;
+
+      if (typeof originalRender === "function") {
+        result = originalRender.call(bridge, payload);
+      }
+
+      applyHeader(payload || window.FFTRankingInitialData || {});
+
+      return result;
+    };
+
+    bridge.applyHeader = applyHeader;
+    bridge.__headerTitleReady = true;
+
+    window.FFTRankingApplyBackendData = bridge.render;
+  }
+
+  patchBridge();
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () {
+      patchBridge();
+      applyHeader(window.FFTRankingInitialData || {});
+    }, { once: true });
+  } else {
+    applyHeader(window.FFTRankingInitialData || {});
+  }
+
+  window.addEventListener("fft-ranking-data", function (event) {
+    window.setTimeout(function () {
+      patchBridge();
+      applyHeader(event.detail || {});
+    }, 0);
+  });
+
+  window.setTimeout(function () {
+    patchBridge();
+    applyHeader(window.FFTRankingInitialData || {});
+  }, 150);
+})();
+/* /FFT_RANKING_BOARD_HEADER_TITLE_BACKEND_READY_20260607_BRIDGE */
