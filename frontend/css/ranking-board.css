@@ -1948,14 +1948,6 @@
 }
 /* /FFT_RANKING_BOARD_GPA_EXACT_CONCEPT_UI_20260607 */
 
-/* FFT_RANKING_BOARD_GPA_FORCE_WIN_UI_20260607
-   Saat GPA concept aktif, board ranking lama disembunyikan.
-*/
-.page-content-body .ranking-poster.gpa-exact-board-ready .ranking-dual-board {
-  display: none !important;
-}
-/* /FFT_RANKING_BOARD_GPA_FORCE_WIN_UI_20260607 */
-
 /* FFT_RANKING_BOARD_GPA_TRIAL_PHOTO_RESPONSIVE_20260607
    Ganti foto ke Trial.png dan rapikan layout desktop + HP.
    Fokus:
@@ -2120,3 +2112,115 @@
   }
 }
 /* /FFT_RANKING_BOARD_GPA_TRIAL_PHOTO_RESPONSIVE_20260607 */
+
+/* FFT_RANKING_BOARD_STATIC_HTML_FIRST_RENDER_UI_20260607
+   Board GPA langsung ada di HTML.
+   Ini mencegah flash layout mentah saat refresh mobile.
+*/
+.page-content-body #rankingBoard.ranking-poster {
+  width: 100% !important;
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.page-content-body #rankingBoard.ranking-poster .ranking-dual-board,
+.page-content-body #rankingBoard.ranking-poster::after,
+.page-content-body .ranking-loading,
+#rankingLoading {
+  display: none !important;
+  content: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+.page-content-body #rankingBoard.ranking-poster .gpa-board-section {
+  display: block !important;
+  width: 100% !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.page-content-body #rankingBoard.ranking-poster .gpa-board-grid {
+  display: grid !important;
+  width: 100% !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.page-content-body #rankingBoard.ranking-poster .gpa-card {
+  display: block !important;
+  overflow: hidden !important;
+}
+
+.page-content-body #rankingBoard.ranking-poster .gpa-title-icon {
+  width: 52px !important;
+  height: auto !important;
+  display: block !important;
+}
+
+.page-content-body #rankingBoard.ranking-poster .gpa-movement-icon {
+  width: 16px !important;
+  height: 16px !important;
+  display: block !important;
+  object-fit: contain !important;
+}
+
+.page-content-body #rankingBoard.ranking-poster .gpa-featured-image {
+  display: block !important;
+  object-fit: contain !important;
+  object-position: bottom right !important;
+}
+
+@media (max-width: 760px) {
+  .page-content-body #rankingBoard.ranking-poster .gpa-board-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .page-content-body #rankingBoard.ranking-poster .gpa-featured {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 44% !important;
+    min-height: 230px !important;
+    overflow: hidden !important;
+  }
+
+  .page-content-body #rankingBoard.ranking-poster .gpa-featured-image-link {
+    width: 100% !important;
+    max-width: 165px !important;
+    height: 210px !important;
+    align-self: end !important;
+    justify-self: end !important;
+    overflow: visible !important;
+  }
+
+  .page-content-body #rankingBoard.ranking-poster .gpa-featured-image {
+    width: auto !important;
+    height: 210px !important;
+    max-width: 165px !important;
+    max-height: none !important;
+    transform-origin: bottom right !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .page-content-body #rankingBoard.ranking-poster .gpa-featured {
+    grid-template-columns: minmax(0, 1fr) 40% !important;
+    min-height: 215px !important;
+  }
+
+  .page-content-body #rankingBoard.ranking-poster .gpa-featured-image-link {
+    max-width: 145px !important;
+    height: 190px !important;
+  }
+
+  .page-content-body #rankingBoard.ranking-poster .gpa-featured-image {
+    height: 190px !important;
+    max-width: 145px !important;
+  }
+}
+/* /FFT_RANKING_BOARD_STATIC_HTML_FIRST_RENDER_UI_20260607 */

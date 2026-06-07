@@ -201,8 +201,37 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function loadRanking() {
-    if (loading) loading.hidden = false;
+    if (loading) { loading.hidden = true; loading.textContent = ""; }
     if (errorBox) errorBox.hidden = true;
+
+    /* FFT_RANKING_BOARD_SKIP_BACKEND_DUMMY_20260607
+       Mode dummy frontend.
+       Jangan fetch backend dulu supaya board langsung tampil dan tidak menunggu timeout HP.
+    */
+    if (window.FFT_RANKING_USE_BACKEND !== true) {
+      payload = { data: [] };
+
+      if (loading) {
+        loading.hidden = true;
+        loading.textContent = "";
+      }
+
+      if (errorBox) {
+        errorBox.textContent = getLang() === "en"
+          ? "Backend ranking data is not connected yet."
+          : "Data ranking backend belum tersambung.";
+        errorBox.hidden = false;
+      }
+
+      window.setTimeout(function () {
+        if (typeof window.FFTRenderGpaExactConcept === "function") {
+          window.FFTRenderGpaExactConcept();
+        }
+      }, 0);
+
+      return;
+    }
+    /* /FFT_RANKING_BOARD_SKIP_BACKEND_DUMMY_20260607 */
 
     try {
       const response = await fetch(API_BASE + "/api/papan-peringkat", { cache: "no-store" });
@@ -1196,6 +1225,27 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function renderGpaLeaderboard() {
+    /* FFT_RANKING_BOARD_STATIC_HTML_FIRST_RENDER_JS_20260607
+       Board dummy GPA sudah ada langsung di HTML.
+       JS tidak boleh rebuild, agar tidak muncul layout mentah saat refresh.
+    */
+    var staticBoard = document.querySelector('#rankingBoard[data-gpa-static-board="1"] .gpa-board-section[data-gpa-exact-static="1"]');
+
+    if (staticBoard) {
+      var staticPoster = document.getElementById("rankingBoard");
+
+      if (staticPoster) {
+        staticPoster.classList.add("ranking-poster", "gpa-mobile-ready", "gpa-exact-board-ready");
+
+        staticPoster.querySelectorAll(".ranking-dual-board").forEach(function (board) {
+          board.remove();
+        });
+      }
+
+      rendering = false;
+      return;
+    }
+    /* /FFT_RANKING_BOARD_STATIC_HTML_FIRST_RENDER_JS_20260607 */
     if (rendering) {
       return;
     }
@@ -1254,109 +1304,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   ready(function () {
     renderGpaLeaderboard();
-    window.setTimeout(renderGpaLeaderboard, 250);
-    window.setTimeout(renderGpaLeaderboard, 900);
-    window.setTimeout(renderGpaLeaderboard, 1600);
   });
 
   window.FFTRenderGpaExactConcept = renderGpaLeaderboard;
 })();
 /* /FFT_RANKING_BOARD_GPA_EXACT_CONCEPT_REPLACEMENT_20260607 */
-
-/* FFT_RANKING_BOARD_GPA_FORCE_WIN_20260607
-   Memastikan GPA exact concept menang dari renderer ranking lama.
-*/
-(function () {
-  "use strict";
-
-  var started = false;
-  var running = false;
-
-  function getPoster() {
-    return document.querySelector("#rankingBoard .ranking-poster") ||
-      document.querySelector(".ranking-poster") ||
-      document.getElementById("rankingBoard");
-  }
-
-  function forceGpaBoard() {
-    if (running) {
-      return;
-    }
-
-    running = true;
-
-    try {
-      var poster = getPoster();
-
-      if (!poster) {
-        return;
-      }
-
-      if (typeof window.FFTRenderGpaExactConcept === "function") {
-        window.FFTRenderGpaExactConcept();
-      }
-
-      var gpaSection = poster.querySelector(".gpa-board-section[data-gpa-exact-concept='1']");
-
-      if (!gpaSection) {
-        return;
-      }
-
-      poster.classList.add("gpa-exact-board-ready");
-
-      poster.querySelectorAll(".ranking-dual-board").forEach(function (board) {
-        board.remove();
-      });
-    } finally {
-      running = false;
-    }
-  }
-
-  function start() {
-    if (started) {
-      return;
-    }
-
-    started = true;
-
-    forceGpaBoard();
-
-    var ticks = 0;
-    var interval = window.setInterval(function () {
-      ticks += 1;
-      forceGpaBoard();
-
-      if (ticks >= 30) {
-        window.clearInterval(interval);
-      }
-    }, 400);
-
-    if (window.MutationObserver) {
-      var root = document.querySelector(".ranking-board") || document.body;
-      var timer = null;
-
-      var observer = new MutationObserver(function () {
-        window.clearTimeout(timer);
-        timer = window.setTimeout(forceGpaBoard, 80);
-      });
-
-      observer.observe(root, {
-        childList: true,
-        subtree: true
-      });
-    }
-
-    window.addEventListener("load", forceGpaBoard);
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", start, { once: true });
-  } else {
-    start();
-  }
-
-  window.setTimeout(start, 250);
-  window.setTimeout(forceGpaBoard, 900);
-  window.setTimeout(forceGpaBoard, 1800);
-})();
- /* /FFT_RANKING_BOARD_GPA_FORCE_WIN_20260607 */
