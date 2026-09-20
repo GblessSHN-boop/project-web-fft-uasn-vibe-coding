@@ -51,7 +51,7 @@ ALLOWED_ORIGINS = [
     item.strip()
     for item in env_value(
         "ALLOWED_ORIGINS",
-        "http://127.0.0.1:5000,http://localhost:5000,https://domain-anda.com",
+        "http://127.0.0.1:5000,http://localhost:5000,http://127.0.0.1:5522,http://localhost:5522,https://domain-anda.com",
     ).split(",")
     if item.strip()
 ]
@@ -7018,18 +7018,6 @@ def _fft_pd_after_request_enrich_dosen_photos_v3(response):
 
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
-
-# FFT_PUBLIC_API_CORS_20260521
-@app.after_request
-def fft_public_api_cors(response):
-    if request.path.startswith("/api/") or request.path.startswith("/static/"):
-        response.headers["Access-Control-Allow-Origin"] = "*"
-        response.headers["Access-Control-Allow-Methods"] = "GET, OPTIONS"
-        response.headers["Access-Control-Allow-Headers"] = "Content-Type"
-    return response
-
 # FFT_PUBLIC_BERITA_DETAIL_API_20260521
 @app.route("/api/berita/<identifier>", methods=["GET"])
 @app.route("/api/berita/detail/<identifier>", methods=["GET"])
@@ -7114,3 +7102,6 @@ def api_berita_detail_public(identifier):
         "data": None,
         "error": "Berita tidak ditemukan.",
     }), 404
+
+if __name__ == "__main__":
+    app.run(debug=True)
