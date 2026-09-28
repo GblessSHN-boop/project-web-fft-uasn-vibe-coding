@@ -54,14 +54,9 @@ def env_value(name, default=None):
     return value if value not in (None, "") else default
 
 
-ALLOWED_ORIGINS = [
-    item.strip()
-    for item in env_value(
-        "ALLOWED_ORIGINS",
-        "http://127.0.0.1:5000,http://localhost:5000,http://127.0.0.1:5522,http://localhost:5522,https://domain-anda.com",
-    ).split(",")
-    if item.strip()
-]
+ALLOWED_ORIGINS = list(
+    _FFT_CONFIG.ALLOWED_ORIGINS
+)
 
 CORS(
     app,
@@ -118,12 +113,12 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 # Dinaikkan agar banner sampai 400 MB tidak ditolak Flask lebih dulu
 app.config["MAX_CONTENT_LENGTH"] = _FFT_CONFIG.MAX_CONTENT_LENGTH
 
-ADMIN_EMAIL = env_value("ADMIN_EMAIL", "admin@fft.dev").strip().lower()
-ADMIN_PASSWORD = env_value("ADMIN_PASSWORD", "")
-ADMIN_PASSWORD_HASH = env_value("ADMIN_PASSWORD_HASH", "")
+ADMIN_EMAIL = _FFT_CONFIG.ADMIN_EMAIL
+ADMIN_PASSWORD = _FFT_CONFIG.ADMIN_PASSWORD
+ADMIN_PASSWORD_HASH = _FFT_CONFIG.ADMIN_PASSWORD_HASH
 
-MAX_LOGIN_ATTEMPTS = 5
-LOCKOUT_SECONDS = 15 * 60
+MAX_LOGIN_ATTEMPTS = _FFT_CONFIG.MAX_LOGIN_ATTEMPTS
+LOCKOUT_SECONDS = _FFT_CONFIG.LOCKOUT_SECONDS
 LOGIN_ATTEMPTS = {}
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
