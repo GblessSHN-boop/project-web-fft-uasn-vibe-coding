@@ -79,14 +79,24 @@ app.config["PERMANENT_SESSION_LIFETIME"] = (
 )
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads", "dosen")
-DEKAN_UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads", "dekan")
-PUBLISHED_FOLDER = os.path.join(BASE_DIR, "static", "published")
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp"}
-ALLOWED_VIDEO_EXTENSIONS = {"mp4", "webm", "mov"}
 
-BANNER_MAX_FILE_SIZE_MB = 400
-BANNER_MAX_FILE_SIZE = BANNER_MAX_FILE_SIZE_MB * 1024 * 1024
+UPLOAD_FOLDER = _FFT_CONFIG.UPLOAD_FOLDER
+DEKAN_UPLOAD_FOLDER = _FFT_CONFIG.DEKAN_UPLOAD_FOLDER
+PUBLISHED_FOLDER = _FFT_CONFIG.PUBLISHED_FOLDER
+
+ALLOWED_EXTENSIONS = set(
+    _FFT_CONFIG.ALLOWED_IMAGE_EXTENSIONS
+)
+ALLOWED_VIDEO_EXTENSIONS = set(
+    _FFT_CONFIG.ALLOWED_VIDEO_EXTENSIONS
+)
+
+BANNER_MAX_FILE_SIZE_MB = (
+    _FFT_CONFIG.BANNER_MAX_FILE_SIZE_MB
+)
+BANNER_MAX_FILE_SIZE = (
+    BANNER_MAX_FILE_SIZE_MB * 1024 * 1024
+)
 
 # Sesuaikan sekali di sini bila ukuran card frontend berubah
 BANNER_CROP_WIDTH = 3150
@@ -104,8 +114,12 @@ STATUS_MAP = {
     "NONAKTIF": "Nonaktif",
 }
 
-BERITA_UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads", "berita")
-BANNER_UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads", "banner_informasi")
+BERITA_UPLOAD_FOLDER = (
+    _FFT_CONFIG.BERITA_UPLOAD_FOLDER
+)
+BANNER_UPLOAD_FOLDER = (
+    _FFT_CONFIG.BANNER_UPLOAD_FOLDER
+)
 
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
