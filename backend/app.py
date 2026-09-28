@@ -34,7 +34,10 @@ from flask import (
     send_from_directory,
 )
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
+try:
+    from .extensions import db
+except ImportError:
+    from extensions import db
 from sqlalchemy import cast, Integer, inspect, text, or_
 from PIL import Image, ImageDraw, ImageFont
 
@@ -130,7 +133,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
     app.config.get("SQLALCHEMY_DATABASE_URI", "sqlite:///fftuasn_local.db"),
 )
 
-db = SQLAlchemy(app)
+db.init_app(app)
 
 
 class Dekan(db.Model):
