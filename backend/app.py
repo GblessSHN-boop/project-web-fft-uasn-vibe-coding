@@ -42,6 +42,7 @@ try:
         add_security_headers,
         get_client_ip,
     )
+    from .utils.file_helper import FilePathHelper
 except ImportError:
     from extensions import db
     from config import get_config
@@ -50,6 +51,7 @@ except ImportError:
         add_security_headers,
         get_client_ip,
     )
+    from utils.file_helper import FilePathHelper
 from sqlalchemy import cast, Integer, inspect, text, or_
 from PIL import Image, ImageDraw, ImageFont
 
@@ -129,6 +131,75 @@ BERITA_UPLOAD_FOLDER = (
 )
 BANNER_UPLOAD_FOLDER = (
     _FFT_CONFIG.BANNER_UPLOAD_FOLDER
+)
+
+FILE_PATH_HELPER = FilePathHelper(
+    base_dir=BASE_DIR,
+    upload_folder=UPLOAD_FOLDER,
+    dekan_upload_folder=DEKAN_UPLOAD_FOLDER,
+    berita_upload_folder=BERITA_UPLOAD_FOLDER,
+    banner_upload_folder=BANNER_UPLOAD_FOLDER,
+    published_folder=PUBLISHED_FOLDER,
+    allowed_extensions=ALLOWED_EXTENSIONS,
+)
+
+allowed_file = FILE_PATH_HELPER.allowed_file
+ensure_berita_upload_folder = (
+    FILE_PATH_HELPER.ensure_berita_upload_folder
+)
+get_berita_folder = (
+    FILE_PATH_HELPER.get_berita_folder
+)
+ensure_banner_upload_folder = (
+    FILE_PATH_HELPER.ensure_banner_upload_folder
+)
+get_banner_single_folder = (
+    FILE_PATH_HELPER.get_banner_single_folder
+)
+get_uploaded_file_size = (
+    FILE_PATH_HELPER.get_uploaded_file_size
+)
+validate_target_url = (
+    FILE_PATH_HELPER.validate_target_url
+)
+
+ensure_upload_root = (
+    FILE_PATH_HELPER.ensure_upload_root
+)
+ensure_dekan_upload_folder = (
+    FILE_PATH_HELPER.ensure_dekan_upload_folder
+)
+ensure_published_folder = (
+    FILE_PATH_HELPER.ensure_published_folder
+)
+
+get_published_dekan_json_path = (
+    FILE_PATH_HELPER.get_published_dekan_json_path
+)
+get_published_berita_json_path = (
+    FILE_PATH_HELPER.get_published_berita_json_path
+)
+get_published_banner_json_path = (
+    FILE_PATH_HELPER.get_published_banner_json_path
+)
+get_published_dosen_json_path = (
+    FILE_PATH_HELPER.get_published_dosen_json_path
+)
+
+get_dosen_folder = (
+    FILE_PATH_HELPER.get_dosen_folder
+)
+get_absolute_upload_path = (
+    FILE_PATH_HELPER.get_absolute_upload_path
+)
+get_biodata_card_path = (
+    FILE_PATH_HELPER.get_biodata_card_path
+)
+get_dekan_photo_absolute_path = (
+    FILE_PATH_HELPER.get_dekan_photo_absolute_path
+)
+get_dekan_biodata_card_absolute_path = (
+    FILE_PATH_HELPER.get_dekan_biodata_card_absolute_path
 )
 
 
@@ -409,26 +480,14 @@ def get_site_setting():
     return setting
 
 
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-def ensure_berita_upload_folder():
-    os.makedirs(BERITA_UPLOAD_FOLDER, exist_ok=True)
 
 
-def get_berita_folder(kode_berita):
-    return os.path.join(BERITA_UPLOAD_FOLDER, kode_berita)
 
 
-def ensure_banner_upload_folder():
-    os.makedirs(BANNER_UPLOAD_FOLDER, exist_ok=True)
 
 
-def get_banner_single_folder():
-    folder_path = os.path.join(BANNER_UPLOAD_FOLDER, "single")
-    os.makedirs(folder_path, exist_ok=True)
-    return folder_path
 
 
 def is_allowed_banner_media_file(filename, media_type):
@@ -446,26 +505,8 @@ def is_allowed_banner_media_file(filename, media_type):
     return False
 
 
-def get_uploaded_file_size(file_storage):
-    if not file_storage or not hasattr(file_storage, "stream"):
-        return 0
-
-    current_position = file_storage.stream.tell()
-    file_storage.stream.seek(0, os.SEEK_END)
-    size = file_storage.stream.tell()
-    file_storage.stream.seek(current_position)
-    return size
 
 
-def validate_target_url(target_url):
-    if not target_url:
-        return False, "Target URL wajib diisi."
-
-    parsed = urlparse(target_url)
-    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
-        return False, "Target URL harus memakai http:// atau https://"
-
-    return True, ""
 
 
 def clear_old_banner_media_files(folder_path):
@@ -867,31 +908,16 @@ def normalize_status(value):
     return STATUS_MAP.get(raw.upper(), raw)
 
 
-def ensure_upload_root():
-    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 
-def ensure_dekan_upload_folder():
-    os.makedirs(DEKAN_UPLOAD_FOLDER, exist_ok=True)
 
 
-def ensure_published_folder():
-    os.makedirs(PUBLISHED_FOLDER, exist_ok=True)
 
 
-def get_published_dekan_json_path():
-    ensure_published_folder()
-    return os.path.join(PUBLISHED_FOLDER, "dekan.json")
 
 
-def get_published_berita_json_path():
-    ensure_published_folder()
-    return os.path.join(PUBLISHED_FOLDER, "berita.json")
 
 
-def get_published_banner_json_path():
-    ensure_published_folder()
-    return os.path.join(PUBLISHED_FOLDER, "banner_informasi.json")
 
 
 def publish_banner_snapshot(banner):
@@ -1022,24 +1048,12 @@ def publish_berita_snapshot():
     return output_path
 
 
-def get_dosen_folder(kode_dosen):
-    return os.path.join(app.config["UPLOAD_FOLDER"], kode_dosen)
 
 
-def get_absolute_upload_path(relative_path):
-    if not relative_path:
-        return None
-    return os.path.join(app.config["UPLOAD_FOLDER"], relative_path)
 
 
-def get_biodata_card_path(kode_dosen):
-    return os.path.join(get_dosen_folder(kode_dosen), "biodata_card.png")
 
 
-def get_dekan_photo_absolute_path(relative_path):
-    if not relative_path:
-        return None
-    return os.path.join(BASE_DIR, "static", relative_path)
 
 
 def save_dekan_variant(file_storage, prefix_name):
@@ -1087,9 +1101,6 @@ def delete_dekan_file(relative_path):
             pass
 
 
-def get_dekan_biodata_card_absolute_path():
-    ensure_dekan_upload_folder()
-    return os.path.join(DEKAN_UPLOAD_FOLDER, "biodata_dekan.png")
 
 
 def publish_dekan_snapshot(dekan):
@@ -1555,9 +1566,6 @@ def sync_dekan_schema():
     db.session.commit()
 
 
-def get_published_dosen_json_path():
-    ensure_published_folder()
-    return os.path.join(PUBLISHED_FOLDER, "dosen.json")
 
 
 def sync_dosen_schema():
