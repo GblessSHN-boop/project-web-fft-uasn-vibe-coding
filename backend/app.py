@@ -37,9 +37,19 @@ from flask_cors import CORS
 try:
     from .extensions import db
     from .config import get_config
+    from .services.admin_auth_service import AdminAuthService
+    from .utils.security_helper import (
+        add_security_headers,
+        get_client_ip,
+    )
 except ImportError:
     from extensions import db
     from config import get_config
+    from services.admin_auth_service import AdminAuthService
+    from utils.security_helper import (
+        add_security_headers,
+        get_client_ip,
+    )
 from sqlalchemy import cast, Integer, inspect, text, or_
 from PIL import Image, ImageDraw, ImageFont
 
@@ -133,7 +143,18 @@ ADMIN_PASSWORD_HASH = _FFT_CONFIG.ADMIN_PASSWORD_HASH
 
 MAX_LOGIN_ATTEMPTS = _FFT_CONFIG.MAX_LOGIN_ATTEMPTS
 LOCKOUT_SECONDS = _FFT_CONFIG.LOCKOUT_SECONDS
-LOGIN_ATTEMPTS = {}
+
+ADMIN_AUTH_SERVICE = AdminAuthService(
+    admin_password=ADMIN_PASSWORD,
+    admin_password_hash=ADMIN_PASSWORD_HASH,
+    max_login_attempts=MAX_LOGIN_ATTEMPTS,
+    lockout_seconds=LOCKOUT_SECONDS,
+)
+
+is_ip_locked = ADMIN_AUTH_SERVICE.is_ip_locked
+register_failed_login = ADMIN_AUTH_SERVICE.register_failed_login
+clear_failed_login = ADMIN_AUTH_SERVICE.clear_failed_login
+verify_admin_password = ADMIN_AUTH_SERVICE.verify_admin_password
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
     _FFT_CONFIG.SQLALCHEMY_DATABASE_URI
@@ -371,70 +392,8 @@ class BannerStock(db.Model):
     activated_at = db.Column(db.DateTime, nullable=True)
 
 
-def get_client_ip():
-    forwarded_for = request.headers.get("X-Forwarded-For", "")
-    if forwarded_for:
-        return forwarded_for.split(",")[0].strip()
-    return request.remote_addr or "unknown"
+app.after_request(add_security_headers)
 
-
-def clear_old_login_attempts():
-    now = time()
-    expired = [
-        ip
-        for ip, data in LOGIN_ATTEMPTS.items()
-        if now - data.get("last_attempt", 0) > LOCKOUT_SECONDS
-    ]
-    for ip in expired:
-        LOGIN_ATTEMPTS.pop(ip, None)
-
-
-def is_ip_locked(ip):
-    clear_old_login_attempts()
-    info = LOGIN_ATTEMPTS.get(ip)
-
-    if not info:
-        return False, 0
-
-    if info.get("count", 0) < MAX_LOGIN_ATTEMPTS:
-        return False, 0
-
-    remaining = int(LOCKOUT_SECONDS - (time() - info.get("last_attempt", 0)))
-    if remaining <= 0:
-        LOGIN_ATTEMPTS.pop(ip, None)
-        return False, 0
-
-    return True, remaining
-
-
-def register_failed_login(ip):
-    data = LOGIN_ATTEMPTS.get(ip, {"count": 0, "last_attempt": 0})
-    data["count"] += 1
-    data["last_attempt"] = time()
-    LOGIN_ATTEMPTS[ip] = data
-
-
-def clear_failed_login(ip):
-    LOGIN_ATTEMPTS.pop(ip, None)
-
-
-def verify_admin_password(plain_password):
-    if ADMIN_PASSWORD_HASH:
-        return check_password_hash(ADMIN_PASSWORD_HASH, plain_password)
-
-    if ADMIN_PASSWORD:
-        return hmac.compare_digest(ADMIN_PASSWORD, plain_password)
-
-    return False
-
-
-@app.after_request
-def add_security_headers(response):
-    response.headers["X-Content-Type-Options"] = "nosniff"
-    response.headers["X-Frame-Options"] = "SAMEORIGIN"
-    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
-    return response
 
 
 def get_site_setting():
