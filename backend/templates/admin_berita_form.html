@@ -161,8 +161,9 @@
               <div class="news-editor-field">
                 <label for="newsCategory">Kategori</label>
                 <select id="newsCategory" name="group_type" data-news-input="category">
-                  {% for option in ['UMUM', 'AKADEMIK', 'KEGIATAN', 'PENGUMUMAN', 'PRESTASI'] %}
-                    <option value="{{ option }}" {% if kategori_value|string|upper == option %}selected{% endif %}>{{ option.title() }}</option>
+                  {% set category_options = berita_categories if berita_categories is defined and berita_categories else ['UMUM'] %}
+                  {% for option in category_options %}
+                    <option value="{{ option }}" {% if kategori_value|string|upper == option|string|upper %}selected{% endif %}>{{ option.title() }}</option>
                   {% endfor %}
                 </select>
                 <input type="hidden" name="kategori" value="{{ kategori_value }}" data-news-alias="category">

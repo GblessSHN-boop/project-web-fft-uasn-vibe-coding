@@ -264,6 +264,23 @@ class Berita(db.Model):
     click_count = db.Column(db.Integer, nullable=False, default=0)
 
 
+class BeritaKategori(db.Model):
+    __tablename__ = "berita_kategori"
+
+    id = db.Column(db.Integer, primary_key=True)
+    nama = db.Column(db.String(20), unique=True, nullable=False)
+    slug = db.Column(db.String(80), unique=True, nullable=False)
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
+    sort_order = db.Column(db.Integer, nullable=False, default=0)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow,
+    )
+
+
 class BannerInformasi(db.Model):
     __tablename__ = "banner_informasi"
 
@@ -1971,9 +1988,104 @@ def ensure_publishing_status_columns():
 # === PUBLISHING STATUS MIGRATION END ===
 
 
+
+DEFAULT_BERITA_CATEGORIES = (
+    ("UMUM", 10),
+    ("AKADEMIK", 20),
+    ("KEGIATAN", 30),
+    ("PENGUMUMAN", 40),
+    ("PRESTASI", 50),
+)
+
+
+def fft_news_category_slug(value):
+    import re
+    import unicodedata
+
+    raw = str(value or "").strip().lower()
+
+    ascii_value = (
+        unicodedata.normalize("NFKD", raw)
+        .encode("ascii", "ignore")
+        .decode("ascii")
+    )
+
+    slug = re.sub(r"[^a-z0-9]+", "-", ascii_value).strip("-")
+
+    return slug or "kategori"
+
+
+def ensure_default_berita_categories():
+    existing = {
+        str(item.nama or "").strip().upper(): item
+        for item in BeritaKategori.query.all()
+    }
+
+    changed = False
+
+    for nama, sort_order in DEFAULT_BERITA_CATEGORIES:
+        if nama in existing:
+            continue
+
+        db.session.add(
+            BeritaKategori(
+                nama=nama,
+                slug=fft_news_category_slug(nama),
+                is_active=True,
+                sort_order=sort_order,
+            )
+        )
+        changed = True
+
+    if changed:
+        db.session.commit()
+
+
+def fft_news_category_options(current_value=""):
+    current = str(current_value or "").strip().upper()
+
+    rows = (
+        BeritaKategori.query
+        .order_by(BeritaKategori.sort_order.asc(), BeritaKategori.nama.asc())
+        .all()
+    )
+
+    options = [
+        str(item.nama or "").strip().upper()
+        for item in rows
+        if bool(item.is_active)
+    ]
+
+    if current and current not in options:
+        options.append(current)
+
+    return options
+
+
+def fft_news_category_usage_count(category_name):
+    category_name = str(category_name or "").strip().upper()
+
+    if not category_name:
+        return 0
+
+    return (
+        Berita.query
+        .filter(db.func.upper(Berita.group_type) == category_name)
+        .count()
+    )
+
+
+def fft_news_category_sort_order(value, default=0):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return int(default)
+
+
 def init_default_data():
     ensure_publishing_status_columns()
     db.create_all()
+    ensure_default_berita_categories()
     ensure_upload_root()
     ensure_dekan_upload_folder()
     ensure_published_folder()
@@ -3378,6 +3490,221 @@ def news_republish_frontend():
 
 
 
+
+@app.route("/admin/berita/categories")
+def admin_berita_categories():
+    if not fft_admin_is_logged_in():
+        return redirect(url_for("admin_login"))
+
+    rows = (
+        BeritaKategori.query
+        .order_by(BeritaKategori.sort_order.asc(), BeritaKategori.nama.asc())
+        .all()
+    )
+
+    categories = []
+
+    for item in rows:
+        categories.append(
+            {
+                "item": item,
+                "usage_count": fft_news_category_usage_count(item.nama),
+            }
+        )
+
+    return render_template(
+        "admin_berita_categories.html",
+        categories=categories,
+    )
+
+
+@app.route("/admin/berita/categories/create", methods=["POST"])
+def admin_berita_category_create():
+    if not fft_admin_is_logged_in():
+        return redirect(url_for("admin_login"))
+
+    nama = str(request.form.get("nama") or "").strip().upper()[:20]
+    sort_order = fft_news_category_sort_order(
+        request.form.get("sort_order"),
+        0,
+    )
+
+    if not nama:
+        flash("Nama kategori wajib diisi.", "warning")
+        return redirect(url_for("admin_berita_categories"))
+
+    existing = (
+        BeritaKategori.query
+        .filter(db.func.upper(BeritaKategori.nama) == nama)
+        .first()
+    )
+
+    if existing:
+        flash("Kategori dengan nama tersebut sudah ada.", "warning")
+        return redirect(url_for("admin_berita_categories"))
+
+    slug = fft_news_category_slug(nama)
+
+    slug_existing = BeritaKategori.query.filter_by(slug=slug).first()
+
+    if slug_existing:
+        flash("Slug kategori sudah digunakan kategori lain.", "warning")
+        return redirect(url_for("admin_berita_categories"))
+
+    category = BeritaKategori(
+        nama=nama,
+        slug=slug,
+        is_active=True,
+        sort_order=sort_order,
+    )
+
+    db.session.add(category)
+    db.session.commit()
+
+    flash("Kategori berita berhasil ditambahkan.", "success")
+    return redirect(url_for("admin_berita_categories"))
+
+
+@app.route(
+    "/admin/berita/categories/<int:category_id>/edit",
+    methods=["POST"],
+)
+def admin_berita_category_edit(category_id):
+    if not fft_admin_is_logged_in():
+        return redirect(url_for("admin_login"))
+
+    category = BeritaKategori.query.get_or_404(category_id)
+
+    old_name = str(category.nama or "").strip().upper()
+    nama = str(request.form.get("nama") or "").strip().upper()[:20]
+
+    sort_order = fft_news_category_sort_order(
+        request.form.get("sort_order"),
+        category.sort_order,
+    )
+
+    if not nama:
+        flash("Nama kategori wajib diisi.", "warning")
+        return redirect(url_for("admin_berita_categories"))
+
+    duplicate = (
+        BeritaKategori.query
+        .filter(
+            db.func.upper(BeritaKategori.nama) == nama,
+            BeritaKategori.id != category.id,
+        )
+        .first()
+    )
+
+    if duplicate:
+        flash("Kategori dengan nama tersebut sudah ada.", "warning")
+        return redirect(url_for("admin_berita_categories"))
+
+    slug = fft_news_category_slug(nama)
+
+    slug_duplicate = (
+        BeritaKategori.query
+        .filter(
+            BeritaKategori.slug == slug,
+            BeritaKategori.id != category.id,
+        )
+        .first()
+    )
+
+    if slug_duplicate:
+        flash("Slug kategori sudah digunakan kategori lain.", "warning")
+        return redirect(url_for("admin_berita_categories"))
+
+    category.nama = nama
+    category.slug = slug
+    category.sort_order = sort_order
+
+    if old_name != nama:
+        related_news = (
+            Berita.query
+            .filter(db.func.upper(Berita.group_type) == old_name)
+            .all()
+        )
+
+        for news in related_news:
+            news.group_type = nama
+
+    db.session.commit()
+
+    flash("Kategori berita berhasil diperbarui.", "success")
+    return redirect(url_for("admin_berita_categories"))
+
+
+@app.route(
+    "/admin/berita/categories/<int:category_id>/toggle",
+    methods=["POST"],
+)
+def admin_berita_category_toggle(category_id):
+    if not fft_admin_is_logged_in():
+        return redirect(url_for("admin_login"))
+
+    category = BeritaKategori.query.get_or_404(category_id)
+
+    if bool(category.is_active):
+        active_count = BeritaKategori.query.filter_by(is_active=True).count()
+
+        if active_count <= 1:
+            flash(
+                "Minimal satu kategori berita harus tetap aktif.",
+                "warning",
+            )
+            return redirect(url_for("admin_berita_categories"))
+
+    category.is_active = not bool(category.is_active)
+    db.session.commit()
+
+    if category.is_active:
+        flash("Kategori berita berhasil diaktifkan.", "success")
+    else:
+        flash(
+            "Kategori dinonaktifkan. Berita lama tetap mempertahankan kategorinya.",
+            "success",
+        )
+
+    return redirect(url_for("admin_berita_categories"))
+
+
+@app.route(
+    "/admin/berita/categories/<int:category_id>/delete",
+    methods=["POST"],
+)
+def admin_berita_category_delete(category_id):
+    if not fft_admin_is_logged_in():
+        return redirect(url_for("admin_login"))
+
+    category = BeritaKategori.query.get_or_404(category_id)
+
+    usage_count = fft_news_category_usage_count(category.nama)
+
+    if usage_count > 0:
+        flash(
+            f"Kategori tidak dapat dihapus karena masih dipakai oleh {usage_count} berita.",
+            "warning",
+        )
+        return redirect(url_for("admin_berita_categories"))
+
+    if bool(category.is_active):
+        active_count = BeritaKategori.query.filter_by(is_active=True).count()
+
+        if active_count <= 1:
+            flash(
+                "Kategori aktif terakhir tidak dapat dihapus.",
+                "warning",
+            )
+            return redirect(url_for("admin_berita_categories"))
+
+    db.session.delete(category)
+    db.session.commit()
+
+    flash("Kategori berita berhasil dihapus.", "success")
+    return redirect(url_for("admin_berita_categories"))
+
+
 @app.route("/admin/berita/list")
 def admin_berita_list():
     if not session.get("logged_in") and not session.get("is_logged_in"):
@@ -3421,6 +3748,7 @@ def admin_berita_add():
         "admin_berita_form.html",
         berita=None,
         is_edit=False,
+        berita_categories=fft_news_category_options(),
         form_publish_mode="stock",
         berita_thumb_crop_width=BERITA_THUMB_CROP_WIDTH,
         berita_thumb_crop_height=BERITA_THUMB_CROP_HEIGHT,
@@ -3452,6 +3780,9 @@ def admin_berita_edit(berita_id):
         "admin_berita_form.html",
         berita=berita,
         is_edit=True,
+        berita_categories=fft_news_category_options(
+            getattr(berita, "group_type", "")
+        ),
         form_publish_mode=form_publish_mode,
         berita_thumb_crop_width=BERITA_THUMB_CROP_WIDTH,
         berita_thumb_crop_height=BERITA_THUMB_CROP_HEIGHT,
@@ -5911,6 +6242,7 @@ def _fft_news_guard_add():
         "admin_berita_form.html",
         berita=None,
         is_edit=False,
+        berita_categories=fft_news_category_options(),
         form_publish_mode="stock",
         berita_thumb_crop_width=globals().get("BERITA_THUMB_CROP_WIDTH", 1450),
         berita_thumb_crop_height=globals().get("BERITA_THUMB_CROP_HEIGHT", 1000),
@@ -5932,6 +6264,7 @@ def _fft_news_guard_edit(berita_id):
         "admin_berita_form.html",
         berita=berita,
         is_edit=True,
+        berita_categories=fft_news_category_options(getattr(berita, "group_type", "")),
         form_publish_mode="published" if _fft_news_guard_is_live(berita) else "stock",
         berita_thumb_crop_width=globals().get("BERITA_THUMB_CROP_WIDTH", 1450),
         berita_thumb_crop_height=globals().get("BERITA_THUMB_CROP_HEIGHT", 1000),

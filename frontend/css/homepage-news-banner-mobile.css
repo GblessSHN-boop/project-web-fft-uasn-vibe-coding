@@ -243,3 +243,44 @@ body.fft-homepage #berita #frontendBannerEmpty.fft-banner-empty-visible {
   padding: 0 !important;
   overflow: hidden !important;
 }
+
+
+/* FFT_FIX_HOME_NEWS_BANNER_DESKTOP_CROP_20260927
+   Mobile memakai komposisi/crop banner yang sama dengan desktop.
+   Menghindari gambar original tampil utuh dengan ruang hitam.
+*/
+@media (max-width: 768px) {
+  body.fft-homepage .berita-section #frontendBannerLink {
+    position: relative !important;
+
+    width: 100% !important;
+
+    aspect-ratio: 3150 / 900 !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    overflow: hidden !important;
+
+    background: #0d0d0d !important;
+  }
+
+  body.fft-homepage .berita-section #frontendBannerImage,
+  body.fft-homepage .berita-section #frontendBannerVideo {
+    position: absolute !important;
+
+    inset: 0 !important;
+
+    display: block;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    aspect-ratio: auto !important;
+
+    object-fit: cover !important;
+    object-position: center center !important;
+
+    background: #0d0d0d !important;
+  }
+}

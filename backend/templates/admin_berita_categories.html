@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kategori Berita | FFT UASN Content Center</title>
+  <meta name="robots" content="noindex,nofollow,noarchive">
+
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='admin/images/logo-fft.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin-module.css') }}">
+
+  <style>
+    .category-admin-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.7fr);
+      gap: 24px;
+      align-items: start;
+      margin-top: 24px;
+    }
+
+    .category-panel {
+      background: #fff;
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .category-panel h2 {
+      margin-top: 0;
+    }
+
+    .category-form-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .category-form-grid label {
+      display: grid;
+      gap: 7px;
+      font-weight: 700;
+    }
+
+    .category-form-grid input {
+      width: 100%;
+      min-height: 44px;
+      box-sizing: border-box;
+      border: 1px solid rgba(15, 23, 42, 0.18);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font: inherit;
+    }
+
+    .category-row {
+      display: grid;
+      grid-template-columns: minmax(150px, 1fr) 110px 100px 120px minmax(260px, auto);
+      gap: 12px;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    }
+
+    .category-row:last-child {
+      border-bottom: 0;
+    }
+
+    .category-row input {
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 40px;
+      border: 1px solid rgba(15, 23, 42, 0.16);
+      border-radius: 9px;
+      padding: 8px 10px;
+      font: inherit;
+    }
+
+    .category-meta {
+      display: grid;
+      gap: 4px;
+    }
+
+    .category-meta strong {
+      word-break: break-word;
+    }
+
+    .category-meta small {
+      color: #64748b;
+    }
+
+    .category-status {
+      font-weight: 800;
+    }
+
+    .category-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .category-actions form {
+      margin: 0;
+    }
+
+    .category-empty {
+      padding: 28px 0;
+      color: #64748b;
+    }
+
+    @media (max-width: 1050px) {
+      .category-admin-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .category-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body class="fft-admin-module-body">
+  <div class="fft-admin-app">
+    <aside class="fft-admin-rail">
+      <a class="fft-admin-brand" href="{{ url_for('admin_choose') }}">
+        <img src="{{ url_for('static', filename='admin/images/logo-fft.png') }}" alt="Logo FFT">
+        <span>
+          <strong>Panel FFT</strong>
+          <small>Content Center</small>
+        </span>
+      </a>
+
+      <nav class="fft-admin-menu">
+        <a href="{{ url_for('admin_choose') }}">Dashboard</a>
+        <a href="{{ url_for('admin_berita_list') }}">Berita</a>
+        <a class="is-active" href="{{ url_for('admin_berita_categories') }}">Kategori Berita</a>
+        <a href="{{ url_for('admin_banner_stock') }}">Stok Banner</a>
+        <a href="{{ url_for('admin_dekan') }}">Dekan</a>
+        <a href="{{ url_for('admin_dosen_list') }}">Dosen</a>
+      </nav>
+
+      <div class="fft-admin-rail-footer">
+        <a href="{{ url_for('fft_frontend_file', filename='pages/indexfft.html') }}">Lihat Website</a>
+        <a href="{{ url_for('admin_logout') }}">Keluar</a>
+      </div>
+    </aside>
+
+    <main class="fft-admin-work">
+      <section class="news-control-hero">
+        <div>
+          <p class="fft-kicker">Manajemen Berita</p>
+          <h1>Kategori Berita</h1>
+          <p>
+            Atur kategori yang tersedia pada form berita. Berita lama tetap menggunakan
+            field group_type agar kompatibel dengan API dan frontend yang sudah berjalan.
+          </p>
+        </div>
+
+        <div class="news-control-hero-actions">
+          <a class="fft-btn fft-btn-light" href="{{ url_for('admin_berita_list') }}">Kembali ke Berita</a>
+          <a class="fft-btn fft-btn-primary" href="{{ url_for('admin_berita_add') }}">Tambah Berita</a>
+        </div>
+      </section>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <section class="fft-alert-stack">
+            {% for category, message in messages %}
+              <div class="fft-alert fft-alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          </section>
+        {% endif %}
+      {% endwith %}
+
+      <div class="category-admin-grid">
+        <section class="category-panel">
+          <h2>Tambah Kategori</h2>
+          <p>
+            Nama kategori maksimal 20 karakter karena tetap disimpan pada
+            <code>Berita.group_type</code>.
+          </p>
+
+          <form
+            class="category-form-grid"
+            method="post"
+            action="{{ url_for('admin_berita_category_create') }}"
+          >
+            <label>
+              Nama Kategori
+              <input
+                type="text"
+                name="nama"
+                maxlength="20"
+                placeholder="Contoh: SEMINAR"
+                required
+              >
+            </label>
+
+            <label>
+              Urutan
+              <input
+                type="number"
+                name="sort_order"
+                value="60"
+                step="1"
+              >
+            </label>
+
+            <button class="fft-btn fft-btn-primary" type="submit">
+              Tambah Kategori
+            </button>
+          </form>
+        </section>
+
+        <section class="category-panel">
+          <h2>Daftar Kategori</h2>
+
+          {% if categories %}
+            {% for row in categories %}
+              {% set item = row.item %}
+              <article class="category-row">
+                <form
+                  id="categoryEdit{{ item.id }}"
+                  method="post"
+                  action="{{ url_for('admin_berita_category_edit', category_id=item.id) }}"
+                ></form>
+
+                <div class="category-meta">
+                  <input
+                    form="categoryEdit{{ item.id }}"
+                    type="text"
+                    name="nama"
+                    maxlength="20"
+                    value="{{ item.nama }}"
+                    required
+                  >
+                  <small>Slug: {{ item.slug }}</small>
+                </div>
+
+                <div>
+                  <input
+                    form="categoryEdit{{ item.id }}"
+                    type="number"
+                    name="sort_order"
+                    value="{{ item.sort_order }}"
+                    step="1"
+                    aria-label="Urutan {{ item.nama }}"
+                  >
+                </div>
+
+                <div class="category-meta">
+                  <strong>{{ row.usage_count }}</strong>
+                  <small>berita</small>
+                </div>
+
+                <div class="category-status">
+                  {% if item.is_active %}
+                    Aktif
+                  {% else %}
+                    Nonaktif
+                  {% endif %}
+                </div>
+
+                <div class="category-actions">
+                  <button
+                    class="fft-btn fft-btn-light"
+                    type="submit"
+                    form="categoryEdit{{ item.id }}"
+                  >
+                    Simpan
+                  </button>
+
+                  <form
+                    method="post"
+                    action="{{ url_for('admin_berita_category_toggle', category_id=item.id) }}"
+                  >
+                    <button class="fft-btn fft-btn-light" type="submit">
+                      {% if item.is_active %}Nonaktifkan{% else %}Aktifkan{% endif %}
+                    </button>
+                  </form>
+
+                  <form
+                    method="post"
+                    action="{{ url_for('admin_berita_category_delete', category_id=item.id) }}"
+                    onsubmit="return confirm('Hapus kategori {{ item.nama }}?');"
+                  >
+                    <button class="fft-btn fft-btn-light" type="submit">
+                      Hapus
+                    </button>
+                  </form>
+                </div>
+              </article>
+            {% endfor %}
+          {% else %}
+            <div class="category-empty">
+              Belum ada kategori berita.
+            </div>
+          {% endif %}
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

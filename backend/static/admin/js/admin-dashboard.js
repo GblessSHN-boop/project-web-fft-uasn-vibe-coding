@@ -30,7 +30,7 @@
       features: [
         ["Kelola Berita", "Tambah, edit, hapus, draft, publish, thumbnail, dan tag berita.", "Ada", "/admin/berita/list"],
         ["Stok Banner", "Mengelola banner informasi utama dalam bentuk gambar atau video.", "Ada", "/admin/banner/stock"],
-        ["Kategori Berita", "Mengelompokkan berita agar arsip lebih rapi.", "Konsep", null],
+        ["Kategori Berita", "Mengelompokkan berita agar arsip lebih rapi.", "Ada", "/admin/berita/categories"],
         ["Tag Berita", "Mengatur label seperti New, Akademik, Pengumuman, dan Kegiatan.", "Konsep", null],
         ["Halaman Statis", "Mengelola halaman tetap seperti tentang fakultas dan visi misi.", "Konsep", null],
         ["Pengumuman Penting", "Menerbitkan pengumuman singkat yang perlu cepat tampil.", "Konsep", null]

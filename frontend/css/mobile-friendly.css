@@ -793,3 +793,41 @@
     z-index: 10030 !important;
   }
 }
+
+
+/* FFT_FIX_HOME_NEWS_MOBILE_SCROLL_20260927
+   Mengembalikan scroll internal berita homepage pada HP.
+   Desktop tidak terpengaruh.
+*/
+@media (max-width: 768px) {
+  body.fft-homepage .berita-section .berita-grid-column-scroll {
+    display: block !important;
+    width: 100% !important;
+
+    height: clamp(290px, 52vh, 340px) !important;
+    max-height: clamp(290px, 52vh, 340px) !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    padding-top: 4px !important;
+    padding-right: 6px !important;
+
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body.fft-homepage .berita-section .berita-grid-column {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+
+    width: 100% !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body.fft-homepage .berita-section .berita-grid-column-scroll::-webkit-scrollbar {
+    width: 5px;
+  }
+}
