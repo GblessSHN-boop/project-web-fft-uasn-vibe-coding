@@ -36,13 +36,17 @@ from flask import (
 from flask_cors import CORS
 try:
     from .extensions import db
+    from .config import get_config
 except ImportError:
     from extensions import db
+    from config import get_config
 from sqlalchemy import cast, Integer, inspect, text, or_
 from PIL import Image, ImageDraw, ImageFont
 
 app = Flask(__name__)
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
+
+_FFT_CONFIG = get_config()
 
 
 def env_value(name, default=None):
@@ -65,13 +69,19 @@ CORS(
     supports_credentials=True,
 )
 
-app.secret_key = env_value("SECRET_KEY", "ganti-secret-key-anda")
-app.config["SESSION_COOKIE_HTTPONLY"] = True
-app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
-app.config["SESSION_COOKIE_SECURE"] = (
-    env_value("FLASK_ENV", "development").lower() == "production"
+app.secret_key = _FFT_CONFIG.SECRET_KEY
+app.config["SESSION_COOKIE_HTTPONLY"] = (
+    _FFT_CONFIG.SESSION_COOKIE_HTTPONLY
 )
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=8)
+app.config["SESSION_COOKIE_SAMESITE"] = (
+    _FFT_CONFIG.SESSION_COOKIE_SAMESITE
+)
+app.config["SESSION_COOKIE_SECURE"] = (
+    _FFT_CONFIG.SESSION_COOKIE_SECURE
+)
+app.config["PERMANENT_SESSION_LIFETIME"] = (
+    _FFT_CONFIG.PERMANENT_SESSION_LIFETIME
+)
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads", "dosen")
@@ -106,13 +116,7 @@ BANNER_UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads", "banner_infor
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 # Dinaikkan agar banner sampai 400 MB tidak ditolak Flask lebih dulu
-app.config["MAX_CONTENT_LENGTH"] = (BANNER_MAX_FILE_SIZE_MB + 10) * 1024 * 1024
-
-DB_USER = env_value("DB_USER", "postgres")
-DB_PASSWORD = env_value("DB_PASSWORD", "")
-DB_HOST = env_value("DB_HOST", "localhost")
-DB_PORT = env_value("DB_PORT", "5432")
-DB_NAME = env_value("DB_NAME", "fftuasn_admin")
+app.config["MAX_CONTENT_LENGTH"] = _FFT_CONFIG.MAX_CONTENT_LENGTH
 
 ADMIN_EMAIL = env_value("ADMIN_EMAIL", "admin@fft.dev").strip().lower()
 ADMIN_PASSWORD = env_value("ADMIN_PASSWORD", "")
@@ -123,14 +127,10 @@ LOCKOUT_SECONDS = 15 * 60
 LOGIN_ATTEMPTS = {}
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"postgresql+psycopg2://{DB_USER}:{quote_plus(DB_PASSWORD)}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    _FFT_CONFIG.SQLALCHEMY_DATABASE_URI
 )
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-# Database configuration from environment.
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
-    "DATABASE_URL",
-    app.config.get("SQLALCHEMY_DATABASE_URI", "sqlite:///fftuasn_local.db"),
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = (
+    _FFT_CONFIG.SQLALCHEMY_TRACK_MODIFICATIONS
 )
 
 db.init_app(app)
